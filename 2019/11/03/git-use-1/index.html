@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="创建SSH key创建密钥在Windows下，使用Git bash，创建秘钥。 1ssh-keygen -t rsa  在这一步可以使用-C &amp;#39;comment&amp;#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。 1ssh-keygen -t rsa -C &amp;apos;comment&amp;apos;  默认的密钥为2048位，可以使用-b指定密钥位数。 1ssh-keyge">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-03T07:35:08.846Z">
+<meta property="og:updated_time" content="2019-11-03T09:53:05.296Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
@@ -304,6 +304,8 @@
 
 <p>上述设置结果均可使用<code>git config -l</code>命令进行检查。</p>
 <h2 id="在Git上提交代码"><a href="#在Git上提交代码" class="headerlink" title="在Git上提交代码"></a>在Git上提交代码</h2><p>拉取代码到本地。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master</span><br></pre></td></tr></table></figure>
+
 <p>写完代码后，在Git bash中进入代码文件夹下，将代码写入缓存。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure>
 
@@ -321,6 +323,12 @@
 
 
     <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2019/11/19/trans-c-to-cpp/">
+                    记一次C语言代码迁移到C++的记录——初次接触VapourSynth API
+                </a>
+            </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
@@ -368,7 +376,9 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+            <a href="/2019/11/19/trans-c-to-cpp/" title="Pre: 记一次C语言代码迁移到C++的记录——初次接触VapourSynth API">
+                <i class="fa fa-angle-left"></i>
+            </a>
         
 
         <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
@@ -380,7 +390,7 @@
         
     </div>
 
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/11/03/git-use-1/">Git的使用：创建SSH key、多账号共存及提交代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/python-Q-A/">Python Q&A</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/mxnet-install-win/">Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/from-avs-to-vs/">从Avisynth到VapourSynth：一些方法的迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/17/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/11/19/trans-c-to-cpp/">记一次C语言代码迁移到C++的记录——初次接触VapourSynth API</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/03/git-use-1/">Git的使用：创建SSH key、多账号共存及提交代码</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/python-Q-A/">Python Q&A</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/mxnet-install-win/">Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/20/from-avs-to-vs/">从Avisynth到VapourSynth：一些方法的迁移</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/17/hello-world/">Hello World</a></li></ul>
 
 
 
