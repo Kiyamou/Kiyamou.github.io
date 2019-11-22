@@ -6,23 +6,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Python Q&amp;A - 308实验室</title>
+    <title>C++学习笔记之一——某培训课程的笔记 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
         <link rel="icon" href="http://yoursite.com/assets/images/favicon.png">
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦\nQuestion：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\\Python3x\\Lib\\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。\nAnswer：把Python\\Python3x\\Lib\\site-packages写入系统环境变量，否则PyCharm依旧找不到。\n","dateCreated":"2019-10-24T23:31:39+08:00","dateModified":"2019-10-24T23:40:39+08:00","datePublished":"2019-10-24T23:31:39+08:00","description":"","headline":"Python Q&A","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/10/24/python-Q-A/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/10/24/python-Q-A/","keywords":"Python"}</script>
-    <meta name="description" content="记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦 Question：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\Python3x\Lib\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。 Answer：把Python\Python3x\">
-<meta name="keywords" content="Python">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"写在开头的话有人讲解，学习效率还是会高一些的吧。\n愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。\n\n\nDay1先说一下直观地感受，比起自学，视频更让我有了系统学习、或者说科班的感受。毕竟我自己是遇到什么问题才去学相应的内容。不过我之前的基础或者说经历，还是有些用的。老师讲到一些地方，我能和我之前的经验联系起来。\n原来C++ primer plus比C++ primer更基础\nC++的特点说到内存分配，前几天修改Jinc放大算法时还遇到过（给Data分配内存，C++中更推荐用new代替C的malloc()），联系之前用Python写作业的经历。确实是，定义一个变量，C++需要考虑内存分配和释放的问题，而Python完全不用管。所以这也是C++更高效的原因，开发者可以控制、优化内存的使用。\n命名空间（namespace）相关std标准命名空间，来自&lt;iostream&gt;，自定义命名空间则通过以下方式实现。\n1namespace space &#123; ... &#125; // 注意没有分号\n\nstruct类型struct类型是我自己接触较多的，但可能是视频里讲得不多，还是没听太明白。视频给我的感受，和定义了一个类差不都，但平时的经历让我觉得这只是给变量起了个新名字。\nOther其余就是比较基础的东西了，命名空间的调用、变量的定义、bool类型，以及在这些过程中学到的基础的代码和VS使用。\n","dateCreated":"2019-11-22T23:30:31+08:00","dateModified":"2019-11-22T23:52:41+08:00","datePublished":"2019-11-22T23:30:31+08:00","description":"写在开头的话有人讲解，学习效率还是会高一些的吧。\n愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。","headline":"C++学习笔记之一——某培训课程的笔记","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/11/22/learn-cpp-note-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/11/22/learn-cpp-note-1/","keywords":"C++"}</script>
+    <meta name="description" content="写在开头的话有人讲解，学习效率还是会高一些的吧。 愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。">
+<meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Python Q&amp;A">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;24&#x2F;python-Q-A&#x2F;index.html">
+<meta property="og:title" content="C++学习笔记之一——某培训课程的笔记">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;22&#x2F;learn-cpp-note-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦 Question：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\Python3x\Lib\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。 Answer：把Python\Python3x\">
+<meta property="og:description" content="写在开头的话有人讲解，学习效率还是会高一些的吧。 愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-24T15:40:39.763Z">
+<meta property="og:updated_time" content="2019-11-22T15:52:41.617Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -213,14 +213,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Python Q&amp;A
+            C++学习笔记之一——某培训课程的笔记
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2019-10-24T23:31:39+08:00">
+    <time datetime="2019-11-22T23:30:31+08:00">
 	
-		    Oct 24, 2019
+		    Nov 22, 2019
     	
     </time>
     
@@ -238,9 +238,18 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>记录一些基础简单的东西，随时更新。<del>我太笨了记不住东西，啦啦啦</del></p>
-<p><strong>Question</strong>：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了<code>Python\Python3x\Lib\site-packages</code>中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似<code>dll failed</code>的错误。</p>
-<p><strong>Answer</strong>：把<code>Python\Python3x\Lib\site-packages</code>写入系统环境变量，否则PyCharm依旧找不到。</p>
+            <h3 id="写在开头的话"><a href="#写在开头的话" class="headerlink" title="写在开头的话"></a>写在开头的话</h3><p>有人讲解，学习效率还是会高一些的吧。</p>
+<p>愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。</p>
+<a id="more"></a>
+
+<h3 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h3><p>先说一下直观地感受，比起自学，视频更让我有了系统学习、或者说科班的感受。毕竟我自己是遇到什么问题才去学相应的内容。不过我之前的基础或者说经历，还是有些用的。老师讲到一些地方，我能和我之前的经验联系起来。</p>
+<p><del>原来C++ primer plus比C++ primer更基础</del></p>
+<h4 id="C-的特点"><a href="#C-的特点" class="headerlink" title="C++的特点"></a>C++的特点</h4><p>说到内存分配，前几天修改Jinc放大算法时还遇到过（给Data分配内存，C++中更推荐用<code>new</code>代替C的<code>malloc()</code>），联系之前用Python写作业的经历。确实是，定义一个变量，C++需要考虑内存分配和释放的问题，而Python完全不用管。所以这也是C++更高效的原因，开发者可以控制、优化内存的使用。</p>
+<h4 id="命名空间（namespace）相关"><a href="#命名空间（namespace）相关" class="headerlink" title="命名空间（namespace）相关"></a>命名空间（namespace）相关</h4><p>std标准命名空间，来自<code>&lt;iostream&gt;</code>，自定义命名空间则通过以下方式实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> space &#123; ... &#125; <span class="comment">// 注意没有分号</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="struct类型"><a href="#struct类型" class="headerlink" title="struct类型"></a>struct类型</h4><p>struct类型是我自己接触较多的，但可能是视频里讲得不多，还是没听太明白。视频给我的感受，和定义了一个类差不都，但平时的经历让我觉得这只是给变量起了个新名字。</p>
+<h4 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h4><p>其余就是比较基础的东西了，命名空间的调用、变量的定义、bool类型，以及在这些过程中学到的基础的代码和VS使用。</p>
 
             
 
@@ -252,7 +261,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Python/" rel="tag">Python</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a>
 
             </div>
         
@@ -262,14 +271,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/03/git-use-1/"
-                    data-tooltip="Git的使用：创建SSH key、多账号共存及提交代码"
-                    aria-label="PREVIOUS: Git的使用：创建SSH key、多账号共存及提交代码"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -279,9 +285,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/20/mxnet-install-win/"
-                    data-tooltip="Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
-                    aria-label="NEXT: Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
+                    href="/2019/11/19/trans-c-to-cpp/"
+                    data-tooltip="记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                    aria-label="NEXT: 记一次从C语言到C++的迁移——初次接触VapourSynth API"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -306,7 +312,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -319,7 +325,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -332,7 +338,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -378,14 +384,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/03/git-use-1/"
-                    data-tooltip="Git的使用：创建SSH key、多账号共存及提交代码"
-                    aria-label="PREVIOUS: Git的使用：创建SSH key、多账号共存及提交代码"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -395,9 +398,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/10/20/mxnet-install-win/"
-                    data-tooltip="Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
-                    aria-label="NEXT: Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
+                    href="/2019/11/19/trans-c-to-cpp/"
+                    data-tooltip="记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                    aria-label="NEXT: 记一次从C语言到C++的迁移——初次接触VapourSynth API"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -422,7 +425,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -435,7 +438,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -448,7 +451,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/10/24/python-Q-A/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -482,7 +485,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/10/24/python-Q-A/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -495,7 +498,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/10/24/python-Q-A/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -508,7 +511,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2019/10/24/python-Q-A/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
