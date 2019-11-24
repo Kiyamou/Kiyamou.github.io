@@ -211,6 +211,64 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/11/24/rebuild-JincResize/"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            JincResize代码的重构
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-24T14:00:58+08:00">
+	
+		    Nov 24, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>前一篇Blog记录了将原作者代码（初步）从C语言迁移到C++上的过程，以及添加8bit输入支持的方法。下一步我想模仿HomeOfVapourSynthEvolution的代码风格，对上述代码进行重构。同时，也期待能发现，我先前修改的代码运行缓慢的原因。</p>
+<p>Blog写得详细一些，这也是我学习C++基础知识的过程。</p>
+<h3 id="未完成的C语言到C-迁移"><a href="#未完成的C语言到C-迁移" class="headerlink" title="未完成的C语言到C++迁移"></a>未完成的C语言到C++迁移</h3><p>其实C语言和C++的区别还有很多。</p>
+<h4 id="C-的类型转换"><a href="#C-的类型转换" class="headerlink" title="C++的类型转换"></a>C++的类型转换</h4><p>编写VapourSynth插件，在四个<code>VS__CC</code>函数的开头，都需要进行类型转换，原始代码使用C语言风格的类型转换，类似下面这样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = (FilterData*)* instanceData;</span><br></pre></td></tr></table></figure>
+
+<p>如果让代码“更C++”一些，则使用类型转换运算符（Type Conversion Operator）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2019/11/24/rebuild-JincResize/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/11/22/learn-cpp-note-1/"
                             aria-label=": C++学习笔记之一——某培训课程的笔记"
                         >
