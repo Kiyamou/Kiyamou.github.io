@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>Windows下使用gcc/g++编译器 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+        <link rel="icon" href="http://yoursite.com/assets/images/favicon.png">
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。\n\n\n使用gcc编译C语言代码前两天用了一次gcc编译C语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。\n今天明白了，库文件不一定需要，而反正我所需要的头文件就两个，直接复制过来就好了。\n直接编译原作者代码。\n1gcc -o ewa_lanczos.dll -shared ewa_lanczos.c\n\n能编译通过，但VapourSynth中无法调用。想了一下，这里的gcc是32位，和64位的VapourSynth不搭，于是换用64位的gcc，并打开-O2优化。\n1x86_64-w64-mingw32-gcc -o ewa_lanczos.dll -shared -O2 ewa_lanczos.c\n\nVapourSynth成功运行，而且速度也和原作者的差不多了！Dll体积也差不多，我感觉原作者就是这么编译的。\n使用g++编译C++代码动态编译虽说gcc也不是不能编译C++，但毕竟…还是用专业的g++吧。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 JincResize.cpp\n\n编译出来的dll，VapourSynth无法调用。我怀疑是没有配置库文件的锅，因为在CSDN上看到一篇博文，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题\n于是我照这篇博文的方法，加上了-Wl,--no-undefined参数，这样就能暴露缺失库文件问题。\n1x86_64-w64-mingw32-g++ -o JincResize.dll -shared -O2 -Wl,--no-undefined JincResize.cpp\n\n但我试了一次，仍没有报错，正常地编译通过。\n在这篇博文的帮助下，我明白了g++是动态编译，编译好的dll依赖于其他dll。想起了之前安装MXNet的踩坑经历，（我也能自引了，积累是有用的）。使用Visual Studio的dumpbin工具查到了依赖的两个dll。\n但与博文中把dll放到程序目录就OK不同的是，这两个dll我无论是放到VapourSynth的文件（VapourSynth下各种文件夹都试过了），还是System32中，都依然无法调用我编译的dll。只得另寻他法。\n（况且就算这种方法能行，我也不能这么干，我不可能在发布时再“顺带”发布两个依赖，这也太蛋疼了）\n静态编译这篇博文告诉我，可以通过静态编译的方式避免上述依赖的问题。\n只加上-static-libgcc和-static-libstdc++这两个参数，还是不行。于是干脆使用-static，全局静态编译。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 -static JincResize.cpp\n\n终于成功了。（dll大小：63kb -&gt; 415kb -&gt; 451kb）\nDll运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。\n这样后续的代码重构也有动力了！\n后记这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾CodeBlocks和MinGW，从第一次使用gcc编译成功C语言代码、获得能用的dll，到动态编译C++虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。\n加油吧，相信自己。\n","dateCreated":"2019-11-25T23:37:03+08:00","dateModified":"2019-11-26T00:26:17+08:00","datePublished":"2019-11-25T23:37:03+08:00","description":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。","headline":"Windows下使用gcc/g++编译器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/11/25/gcc-use-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/11/25/gcc-use-1/","keywords":"gcc, C++"}</script>
+    <meta name="description" content="VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。 思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代">
+<meta name="keywords" content="gcc,C++">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Windows下使用gcc&#x2F;g++编译器">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;gcc-use-1&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。 思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-25T16:26:17.945Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Windows下使用gcc/g++编译器
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-11-25T23:37:03+08:00">
+	
+		    Nov 25, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
+<a id="more"></a>
+
+<h3 id="使用gcc编译C语言代码"><a href="#使用gcc编译C语言代码" class="headerlink" title="使用gcc编译C语言代码"></a>使用gcc编译C语言代码</h3><p>前两天用了一次gcc编译C语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。</p>
+<p>今天明白了，库文件不一定需要，而反正我所需要的头文件就两个，直接复制过来就好了。</p>
+<p>直接编译原作者代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -o ewa_lanczos.dll -shared ewa_lanczos.c</span><br></pre></td></tr></table></figure>
+
+<p>能编译通过，但VapourSynth中无法调用。想了一下，这里的gcc是32位，和64位的VapourSynth不搭，于是换用64位的gcc，并打开<code>-O2</code>优化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x86_64-w64-mingw32-gcc -o ewa_lanczos.dll -shared -O2 ewa_lanczos.c</span><br></pre></td></tr></table></figure>
+
+<p>VapourSynth成功运行，而且速度也和原作者的差不多了！Dll体积也差不多，<del>我感觉原作者就是这么编译的</del>。</p>
+<h3 id="使用g-编译C-代码"><a href="#使用g-编译C-代码" class="headerlink" title="使用g++编译C++代码"></a>使用g++编译C++代码</h3><h4 id="动态编译"><a href="#动态编译" class="headerlink" title="动态编译"></a>动态编译</h4><p>虽说gcc也不是不能编译C++，但毕竟…还是用专业的g++吧。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 JincResize.cpp</span><br></pre></td></tr></table></figure>
+
+<p>编译出来的dll，VapourSynth无法调用。我怀疑是没有配置库文件的锅，因为在CSDN上看到<a href="https://blog.csdn.net/jmppok/article/details/17118669" target="_blank" rel="noopener">一篇博文</a>，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题</p>
+<p>于是我照这篇博文的方法，加上了<code>-Wl,--no-undefined</code>参数，这样就能暴露缺失库文件问题。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x86_64-w64-mingw32-g++ -o JincResize.dll -shared -O2 -Wl,--no-undefined JincResize.cpp</span><br></pre></td></tr></table></figure>
+
+<p>但我试了一次，仍没有报错，正常地编译通过。</p>
+<p>在<a href="http://turbinee.blog.sohu.com/271861881.html" target="_blank" rel="noopener">这篇博文</a>的帮助下，我明白了g++是动态编译，编译好的dll依赖于其他dll。想起了之前<a href="https://kiyamou.github.io/2019/10/20/mxnet-install-win/" target="_blank" rel="noopener">安装MXNet的踩坑经历</a>，（<del>我也能自引了</del>，积累是有用的）。使用Visual Studio的dumpbin工具查到了依赖的两个dll。</p>
+<p>但与博文中把dll放到程序目录就OK不同的是，这两个dll我无论是放到VapourSynth的文件（VapourSynth下各种文件夹都试过了），还是<code>System32</code>中，都依然无法调用我编译的dll。只得另寻他法。</p>
+<p>（况且就算这种方法能行，我也不能这么干，我不可能在发布时再“顺带”发布两个依赖，这也太蛋疼了）</p>
+<h4 id="静态编译"><a href="#静态编译" class="headerlink" title="静态编译"></a>静态编译</h4><p><a href="https://blog.csdn.net/houjin_cn/article/details/37507781" target="_blank" rel="noopener">这篇博文</a>告诉我，可以通过静态编译的方式避免上述依赖的问题。</p>
+<p>只加上<code>-static-libgcc</code>和<code>-static-libstdc++</code>这两个参数，还是不行。于是干脆使用<code>-static</code>，全局静态编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 -static JincResize.cpp</span><br></pre></td></tr></table></figure>
+
+<p>终于成功了。（dll大小：63kb -&gt; 415kb -&gt; 451kb）</p>
+<p>Dll运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。</p>
+<p>这样后续的代码重构也有动力了！</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾CodeBlocks和MinGW，从第一次使用gcc编译成功C语言代码、获得能用的dll，到动态编译C++虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。</p>
+<p>加油吧，相信自己。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/gcc/" rel="tag">gcc</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/11/24/rebuild-JincResize/"
+                    data-tooltip="JincResize代码的重构"
+                    aria-label="NEXT: JincResize代码的重构"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/11/24/rebuild-JincResize/"
+                    data-tooltip="JincResize代码的重构"
+                    aria-label="NEXT: JincResize代码的重构"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/25/gcc-use-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/25/gcc-use-1/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/25/gcc-use-1/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/11/25/gcc-use-1/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
