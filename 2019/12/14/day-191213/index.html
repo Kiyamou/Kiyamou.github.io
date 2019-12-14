@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>日记（2019.12.13） - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。\n感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的.proto储存格式。\nLoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。\n而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写这种Python“前端”了。\n2 Next既然是将算法复现，那我趁热把熟悉的手写数字识别和之前大作业的文章内容理解拿过来用一下。\n\n\n3日记嘛，说一点湿的。\n开始写文档时，感觉真有些累。经历白天的看C++，晚上写文档，之后再看paddle，这种思维的转换感觉很不错。\n","dateCreated":"2019-12-14T23:03:08+08:00","dateModified":"2019-12-14T23:04:42+08:00","datePublished":"2019-12-14T23:03:08+08:00","description":"1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。\n感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的.proto储存格式。\nLoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。\n而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写这种Python“前端”了。\n2 Next既然是将算法复现，那我趁热把熟悉的手写数字识别和之前大作业的文章内容理解拿过来用一下。","headline":"日记（2019.12.13）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/14/day-191213/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/14/day-191213/"}</script>
+    <meta name="description" content="1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。 感觉和Caffe好像，无论是block、program等逻辑&#x2F;数据结构，还是具体的.proto储存格式。 LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。 而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="日记（2019.12.13）">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;14&#x2F;day-191213&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。 感觉和Caffe好像，无论是block、program等逻辑&#x2F;数据结构，还是具体的.proto储存格式。 LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。 而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-14T15:04:42.307Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            日记（2019.12.13）
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-14T23:03:08+08:00">
+	
+		    Dec 14, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="1-飞浆开始"><a href="#1-飞浆开始" class="headerlink" title="1 飞浆开始"></a>1 飞浆开始</h3><p>看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。</p>
+<p>感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的<code>.proto</code>储存格式。</p>
+<p>LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。</p>
+<p>而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写这种Python“前端”了。</p>
+<h3 id="2-Next"><a href="#2-Next" class="headerlink" title="2 Next"></a>2 Next</h3><p>既然是将算法复现，那我趁热把熟悉的手写数字识别和之前大作业的文章内容理解拿过来用一下。</p>
+<a id="more"></a>
+
+<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><p>日记嘛，说一点湿的。</p>
+<p>开始写文档时，感觉真有些累。经历白天的看C++，晚上写文档，之后再看paddle，这种思维的转换感觉很不错。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/14/day-191214/"
+                    data-tooltip="日记（2019.12.14）"
+                    aria-label="PREVIOUS: 日记（2019.12.14）"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/12/day-191212/"
+                    data-tooltip="日记（2019.12.12）"
+                    aria-label="NEXT: 日记（2019.12.12）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/14/day-191214/"
+                    data-tooltip="日记（2019.12.14）"
+                    aria-label="PREVIOUS: 日记（2019.12.14）"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/12/day-191212/"
+                    data-tooltip="日记（2019.12.12）"
+                    aria-label="NEXT: 日记（2019.12.12）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191213/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191213/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191213/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191213/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
