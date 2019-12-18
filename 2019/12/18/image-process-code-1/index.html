@@ -6,20 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>日记（2019.12.14） - 308实验室</title>
+    <title>图像处理代码：一些稍微底层的东西 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1继续基础知识\n“C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。”\n“C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。”\n2开始刷洛谷…明明是给中学生做的题…\n也开始Leetcode，但感觉有点难…\n","dateCreated":"2019-12-14T23:04:12+08:00","dateModified":"2019-12-14T23:06:34+08:00","datePublished":"2019-12-14T23:04:12+08:00","description":"","headline":"日记（2019.12.14）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/14/day-191214/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/14/day-191214/"}</script>
-    <meta name="description" content="1继续基础知识 “C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。” “C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。” 2开始刷洛谷…明明是给中学生做的题… 也开始Leetcode，但感觉有点难…">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2019-12-18T13:17:05+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"C++, 图像处理, VapourSynth, Avisynth"}</script>
+    <meta name="description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
+<meta name="keywords" content="C++,图像处理,VapourSynth,Avisynth">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="日记（2019.12.14）">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;14&#x2F;day-191214&#x2F;index.html">
+<meta property="og:title" content="图像处理代码：一些稍微底层的东西">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;image-process-code-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1继续基础知识 “C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。” “C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。” 2开始刷洛谷…明明是给中学生做的题… 也开始Leetcode，但感觉有点难…">
+<meta property="og:description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-14T15:06:34.264Z">
+<meta property="og:updated_time" content="2019-12-18T05:17:05.221Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,20 +211,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            日记（2019.12.14）
+            图像处理代码：一些稍微底层的东西
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2019-12-14T23:04:12+08:00">
+    <time datetime="2019-12-18T12:57:06+08:00">
 	
-		    Dec 14, 2019
+		    Dec 18, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
 
 
     
@@ -235,12 +236,15 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>继续基础知识</p>
-<p>“C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。”</p>
-<p>“C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 <strong>static</strong> 变量。”</p>
-<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>开始刷洛谷…明明是给中学生做的题…</p>
-<p>也开始Leetcode，但感觉有点难…</p>
+            <h3 id="关于储存方式"><a href="#关于储存方式" class="headerlink" title="关于储存方式"></a>关于储存方式</h3><p>继续读VapourSynth滤镜的代码，这次看<code>Deblock()</code>，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。</p>
+<p>但直观上来看，使用AviSynth API，感觉代码要短一些…</p>
+<p>回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有<code>pitch</code>的变量。</p>
+<p>之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用<code>pitch</code>变量实现上述存储方式。</p>
+<p>云里雾里地，不知道在说什么。这次看<code>Deblock()</code>的代码，因为涉及了判断块是否要被处理，类似下面的语句。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T * VS_RESTRICT sq0 = dstpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(sq0[i] - sq[i]) &lt; alpha)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">srcp += src_pitch</span><br></pre></td></tr></table></figure>
 
+<p>看了上面这样的代码，似乎明白很多了，带有<code>pitch</code>的变量就是和内存/储存相关的（“单位内存”），<code>srcp</code>（或<code>dstp</code>）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。</p>
+<a id="more"></a>
             
 
 
@@ -248,20 +252,24 @@
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a>
+
+            </div>
+        
         
             <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/18/image-process-code-1/"
-                    data-tooltip="图像处理代码：一些稍微底层的东西"
-                    aria-label="PREVIOUS: 图像处理代码：一些稍微底层的东西"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -271,9 +279,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/14/day-191213/"
-                    data-tooltip="日记（2019.12.13）"
-                    aria-label="NEXT: 日记（2019.12.13）"
+                    href="/2019/12/14/day-191214/"
+                    data-tooltip="日记（2019.12.14）"
+                    aria-label="NEXT: 日记（2019.12.14）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -298,7 +306,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -311,7 +319,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -324,7 +332,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -370,14 +378,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/18/image-process-code-1/"
-                    data-tooltip="图像处理代码：一些稍微底层的东西"
-                    aria-label="PREVIOUS: 图像处理代码：一些稍微底层的东西"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -387,9 +392,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/14/day-191213/"
-                    data-tooltip="日记（2019.12.13）"
-                    aria-label="NEXT: 日记（2019.12.13）"
+                    href="/2019/12/14/day-191214/"
+                    data-tooltip="日记（2019.12.14）"
+                    aria-label="NEXT: 日记（2019.12.14）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -414,7 +419,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -427,7 +432,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -440,7 +445,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191214/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -474,7 +479,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/14/day-191214/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -487,7 +492,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/14/day-191214/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -500,7 +505,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/14/day-191214/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
