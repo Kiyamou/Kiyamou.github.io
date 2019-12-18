@@ -11,16 +11,16 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2019-12-18T13:17:05+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"C++, 图像处理, VapourSynth, Avisynth"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n\n\n虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。\n一些基础概念本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。\n123456YV24  = YUV444YV16  = YUV422YV12  = YUV420YV411 = YUV411RGB24 = 8bitRGB32 = 8bit（含透明通道）\n\n顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2019-12-18T23:26:05+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"图像处理, VapourSynth, Avisynth, C++"}</script>
     <meta name="description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
-<meta name="keywords" content="C++,图像处理,VapourSynth,Avisynth">
+<meta name="keywords" content="图像处理,VapourSynth,Avisynth,C++">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="图像处理代码：一些稍微底层的东西">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;image-process-code-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-18T05:17:05.221Z">
+<meta property="og:updated_time" content="2019-12-18T15:26:05.269Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -245,6 +245,13 @@
 
 <p>看了上面这样的代码，似乎明白很多了，带有<code>pitch</code>的变量就是和内存/储存相关的（“单位内存”），<code>srcp</code>（或<code>dstp</code>）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。</p>
 <a id="more"></a>
+
+<p>虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。</p>
+<h3 id="一些基础概念"><a href="#一些基础概念" class="headerlink" title="一些基础概念"></a>一些基础概念</h3><p>本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">YV24  = YUV444</span><br><span class="line">YV16  = YUV422</span><br><span class="line">YV12  = YUV420</span><br><span class="line">YV411 = YUV411</span><br><span class="line">RGB24 = 8bit</span><br><span class="line">RGB32 = 8bit（含透明通道）</span><br></pre></td></tr></table></figure>
+
+<p>顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。</p>
+
             
 
 
