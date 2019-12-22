@@ -6,21 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>图像处理代码：一些稍微底层的东西 - 308实验室</title>
+    <title>周记 2019.12.16-12.22 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n\n\n虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。\n一些基础概念本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。\n123456YV24  = YUV444YV16  = YUV422YV12  = YUV420YV411 = YUV411RGB24 = 8bitRGB32 = 8bit（含透明通道）\n\n顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。\n一个直观的问题在缩小时，插值算法做了什么\n可以看一下这个回答\n\n无论是放大还是缩小，正在进行的“插值”实际上都是在重新采样。\n\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2019-12-21T23:49:01+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"图像处理, VapourSynth, Avisynth, C++"}</script>
-    <meta name="description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
-<meta name="keywords" content="图像处理,VapourSynth,Avisynth,C++">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。\n总之，把日记改成周记吧。\n还是别用“周报”这个字眼了2333\n对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。\n要是再补充一句的话，就是多个分支的if语句的写法，之前用Python时只写过if else和if elif，没有把三者写在一起过…没错…我的基础知识实在是匮乏得可怜。\n在C++中\n123456if ()\t...else if ()\t...else\t...\n\n在Python中\n123456if ...:\t...elif ...:\t...else:\t...\n\n提高安全性，修正输入变量的类型转换代码中的面向Python接口的int型输入参数，有些是直接用(int)做了一次强制类型转换，有些则干脆什么都没有写。\n统一修改成了VSHelper.h中的int64ToIntS()。\n在提高速度的边缘反复挣扎论如何更快地做double到int的转换然而我没感到有卵用，特别是定义函数后似乎没有内联，反而由于调用函数的成本让速度更慢了\n但话说回来，从这里我感受到了编程的奇妙，正如看到的一篇博文中所说，“螺蛳壳里做道场，一行代码有学问”。\n而这也让我切实地感受到，我的编程功底在提升。\n\n\n从Tensorflow到Paddle额…这个标题起得太大了，只是把一些Tensorflow的函数用Paddle的代替。\n（话说这和我现在做的AviSynth到VapourSynth的迁移不正是很像吗，都是从一个框架到另一个框架的迁移）\nAreaResize的迁移从D9上找到一个尚未被前辈迁移到vs的avs plugin，开始迁移，作为练习。\n周四周五下午，和周六一天，基本上都在做基础的迁移（搭框架、改写不一样的C++后端函数、人工copy代码）。说实话，看着400+行的代码，还是很满意这几天的工作的。\n虽然周日从文本编辑器到IDE后，望着80++20+的error，让我有种写了两天bug的感觉。\n日常生活把超期半年多的书还回了图书馆，借了两本和并行计算相关的书，外加我之前借过的数字图像处理。\n我只是想看看和AVX/SSE指令集优化相关的，但..那两本书讲得也是…比较宏观，甚至让我有种上并行计算课的感觉。而搜索网上的教程，也不知从何下手，似乎最直接地，还是死磕现有的代码…\n","dateCreated":"2019-12-22T22:59:56+08:00","dateModified":"2019-12-22T23:38:32+08:00","datePublished":"2019-12-22T22:59:56+08:00","description":"引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。\n总之，把日记改成周记吧。\n还是别用“周报”这个字眼了2333\n对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。\n要是再补充一句的话，就是多个分支的if语句的写法，之前用Python时只写过if else和if elif，没有把三者写在一起过…没错…我的基础知识实在是匮乏得可怜。\n在C++中\n123456if ()\t...else if ()\t...else\t...\n\n在Python中\n123456if ...:\t...elif ...:\t...else:\t...\n\n提高安全性，修正输入变量的类型转换代码中的面向Python接口的int型输入参数，有些是直接用(int)做了一次强制类型转换，有些则干脆什么都没有写。\n统一修改成了VSHelper.h中的int64ToIntS()。\n在提高速度的边缘反复挣扎论如何更快地做double到int的转换然而我没感到有卵用，特别是定义函数后似乎没有内联，反而由于调用函数的成本让速度更慢了\n但话说回来，从这里我感受到了编程的奇妙，正如看到的一篇博文中所说，“螺蛳壳里做道场，一行代码有学问”。\n而这也让我切实地感受到，我的编程功底在提升。","headline":"周记 2019.12.16-12.22","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/22/week-201912-3/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/22/week-201912-3/"}</script>
+    <meta name="description" content="引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前用Py">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="图像处理代码：一些稍微底层的东西">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;image-process-code-1&#x2F;index.html">
+<meta property="og:title" content="周记 2019.12.16-12.22">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;22&#x2F;week-201912-3&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
+<meta property="og:description" content="引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前用Py">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-21T15:49:01.605Z">
+<meta property="og:updated_time" content="2019-12-22T15:38:32.799Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,20 +210,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            图像处理代码：一些稍微底层的东西
+            周记 2019.12.16-12.22
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2019-12-18T12:57:06+08:00">
+    <time datetime="2019-12-22T22:59:56+08:00">
 	
-		    Dec 18, 2019
+		    Dec 22, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
 
 
     
@@ -236,26 +235,31 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="关于储存方式"><a href="#关于储存方式" class="headerlink" title="关于储存方式"></a>关于储存方式</h3><p>继续读VapourSynth滤镜的代码，这次看<code>Deblock()</code>，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。</p>
-<p>但直观上来看，使用AviSynth API，感觉代码要短一些…</p>
-<p>回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有<code>pitch</code>的变量。</p>
-<p>之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用<code>pitch</code>变量实现上述存储方式。</p>
-<p>云里雾里地，不知道在说什么。这次看<code>Deblock()</code>的代码，因为涉及了判断块是否要被处理，类似下面的语句。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T * VS_RESTRICT sq0 = dstpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(sq0[i] - sq[i]) &lt; alpha)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">srcp += src_pitch</span><br></pre></td></tr></table></figure>
+            <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。</p>
+<p>总之，把日记改成周记吧。</p>
+<p><del>还是别用“周报”这个字眼了2333</del></p>
+<h3 id="对JincResize的完善"><a href="#对JincResize的完善" class="headerlink" title="对JincResize的完善"></a>对JincResize的完善</h3><h4 id="发布r4：添加32bit支持"><a href="#发布r4：添加32bit支持" class="headerlink" title="发布r4：添加32bit支持"></a>发布r4：添加32bit支持</h4><p>详情写在<a href="https://kiyamou.github.io/2019/11/24/rebuild-JincResize/" target="_blank" rel="noopener">JincResize代码的重构</a>，这里就不再copy了。</p>
+<p>要是再补充一句的话，就是多个分支的if语句的写法，之前用Python时只写过<code>if else</code>和<code>if elif</code>，没有把三者写在一起过…没错…我的基础知识实在是匮乏得可怜。</p>
+<p>在C++中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ()</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ()</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
 
-<p>看了上面这样的代码，似乎明白很多了，带有<code>pitch</code>的变量就是和内存/储存相关的（“单位内存”），<code>srcp</code>（或<code>dstp</code>）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。</p>
+<p>在Python中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ...:</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">elif</span> ...:</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<h4 id="提高安全性，修正输入变量的类型转换"><a href="#提高安全性，修正输入变量的类型转换" class="headerlink" title="提高安全性，修正输入变量的类型转换"></a>提高安全性，修正输入变量的类型转换</h4><p>代码中的面向Python接口的int型输入参数，有些是直接用<code>(int)</code>做了一次强制类型转换，有些则干脆什么都没有写。</p>
+<p>统一修改成了<code>VSHelper.h</code>中的<code>int64ToIntS()</code>。</p>
+<h4 id="在提高速度的边缘反复挣扎"><a href="#在提高速度的边缘反复挣扎" class="headerlink" title="在提高速度的边缘反复挣扎"></a>在提高速度的边缘反复挣扎</h4><p>论如何更快地做double到int的转换<br><del>然而我没感到有卵用，特别是定义函数后似乎没有内联，反而由于调用函数的成本让速度更慢了</del></p>
+<p>但话说回来，从这里我感受到了编程的奇妙，正如看到的一篇博文中所说，“螺蛳壳里做道场，一行代码有学问”。</p>
+<p>而这也让我切实地感受到，我的编程功底在提升。</p>
 <a id="more"></a>
 
-<p>虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。</p>
-<h3 id="一些基础概念"><a href="#一些基础概念" class="headerlink" title="一些基础概念"></a>一些基础概念</h3><p>本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">YV24  = YUV444</span><br><span class="line">YV16  = YUV422</span><br><span class="line">YV12  = YUV420</span><br><span class="line">YV411 = YUV411</span><br><span class="line">RGB24 = 8bit</span><br><span class="line">RGB32 = 8bit（含透明通道）</span><br></pre></td></tr></table></figure>
-
-<p>顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。</p>
-<h3 id="一个直观的问题"><a href="#一个直观的问题" class="headerlink" title="一个直观的问题"></a>一个直观的问题</h3><p>在缩小时，插值算法做了什么</p>
-<p>可以看一下<a href="https://stackoverflow.com/questions/875856/interpolation-algorithms-when-downscaling" target="_blank" rel="noopener">这个回答</a></p>
-<blockquote>
-<p>无论是放大还是缩小，正在进行的“插值”实际上都是在重新采样。</p>
-</blockquote>
+<h3 id="从Tensorflow到Paddle"><a href="#从Tensorflow到Paddle" class="headerlink" title="从Tensorflow到Paddle"></a>从Tensorflow到Paddle</h3><p>额…这个标题起得太大了，只是把一些Tensorflow的函数用Paddle的代替。</p>
+<p>（话说这和我现在做的AviSynth到VapourSynth的迁移不正是很像吗，都是从一个框架到另一个框架的迁移）</p>
+<h3 id="AreaResize的迁移"><a href="#AreaResize的迁移" class="headerlink" title="AreaResize的迁移"></a>AreaResize的迁移</h3><p>从D9上找到一个尚未被前辈迁移到vs的avs plugin，开始迁移，作为练习。</p>
+<p>周四周五下午，和周六一天，基本上都在做基础的迁移（搭框架、改写不一样的C++后端函数、<del>人工copy代码</del>）。说实话，看着400+行的代码，还是很满意这几天的工作的。</p>
+<p>虽然周日从文本编辑器到IDE后，望着<code>80+</code>+<code>20+</code>的error，让我有种写了两天bug的感觉。</p>
+<h3 id="日常生活"><a href="#日常生活" class="headerlink" title="日常生活"></a>日常生活</h3><p>把超期半年多的书还回了图书馆，借了两本和并行计算相关的书，外加我之前借过的数字图像处理。</p>
+<p>我只是想看看和AVX/SSE指令集优化相关的，但..那两本书讲得也是…比较宏观，甚至让我有种上并行计算课的感觉。而搜索网上的教程，也不知从何下手，似乎最直接地，还是死磕现有的代码…</p>
 
             
 
@@ -264,27 +268,17 @@
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a>
-
-            </div>
-        
         
             <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/22/week-201912-3/"
-                    data-tooltip="周记 2019.12.16-12.22"
-                    aria-label="PREVIOUS: 周记 2019.12.16-12.22"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -294,9 +288,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/14/day-191214/"
-                    data-tooltip="日记（2019.12.14）"
-                    aria-label="NEXT: 日记（2019.12.14）"
+                    href="/2019/12/18/image-process-code-1/"
+                    data-tooltip="图像处理代码：一些稍微底层的东西"
+                    aria-label="NEXT: 图像处理代码：一些稍微底层的东西"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -321,7 +315,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -334,7 +328,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -347,7 +341,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -393,14 +387,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/22/week-201912-3/"
-                    data-tooltip="周记 2019.12.16-12.22"
-                    aria-label="PREVIOUS: 周记 2019.12.16-12.22"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -410,9 +401,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/14/day-191214/"
-                    data-tooltip="日记（2019.12.14）"
-                    aria-label="NEXT: 日记（2019.12.14）"
+                    href="/2019/12/18/image-process-code-1/"
+                    data-tooltip="图像处理代码：一些稍微底层的东西"
+                    aria-label="NEXT: 图像处理代码：一些稍微底层的东西"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -437,7 +428,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -450,7 +441,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -463,7 +454,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/22/week-201912-3/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -497,7 +488,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/18/image-process-code-1/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/22/week-201912-3/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -510,7 +501,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/18/image-process-code-1/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/22/week-201912-3/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -523,7 +514,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/18/image-process-code-1/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/22/week-201912-3/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

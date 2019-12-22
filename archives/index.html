@@ -210,6 +210,72 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/12/22/week-201912-3/"
+                            aria-label=": 周记 2019.12.16-12.22"
+                        >
+                            周记 2019.12.16-12.22
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-22T22:59:56+08:00">
+	
+		    Dec 22, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。</p>
+<p>总之，把日记改成周记吧。</p>
+<p><del>还是别用“周报”这个字眼了2333</del></p>
+<h3 id="对JincResize的完善"><a href="#对JincResize的完善" class="headerlink" title="对JincResize的完善"></a>对JincResize的完善</h3><h4 id="发布r4：添加32bit支持"><a href="#发布r4：添加32bit支持" class="headerlink" title="发布r4：添加32bit支持"></a>发布r4：添加32bit支持</h4><p>详情写在<a href="https://kiyamou.github.io/2019/11/24/rebuild-JincResize/" target="_blank" rel="noopener">JincResize代码的重构</a>，这里就不再copy了。</p>
+<p>要是再补充一句的话，就是多个分支的if语句的写法，之前用Python时只写过<code>if else</code>和<code>if elif</code>，没有把三者写在一起过…没错…我的基础知识实在是匮乏得可怜。</p>
+<p>在C++中</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ()</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ()</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>在Python中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ...:</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">elif</span> ...:</span><br><span class="line">	...</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<h4 id="提高安全性，修正输入变量的类型转换"><a href="#提高安全性，修正输入变量的类型转换" class="headerlink" title="提高安全性，修正输入变量的类型转换"></a>提高安全性，修正输入变量的类型转换</h4><p>代码中的面向Python接口的int型输入参数，有些是直接用<code>(int)</code>做了一次强制类型转换，有些则干脆什么都没有写。</p>
+<p>统一修改成了<code>VSHelper.h</code>中的<code>int64ToIntS()</code>。</p>
+<h4 id="在提高速度的边缘反复挣扎"><a href="#在提高速度的边缘反复挣扎" class="headerlink" title="在提高速度的边缘反复挣扎"></a>在提高速度的边缘反复挣扎</h4><p>论如何更快地做double到int的转换<br><del>然而我没感到有卵用，特别是定义函数后似乎没有内联，反而由于调用函数的成本让速度更慢了</del></p>
+<p>但话说回来，从这里我感受到了编程的奇妙，正如看到的一篇博文中所说，“螺蛳壳里做道场，一行代码有学问”。</p>
+<p>而这也让我切实地感受到，我的编程功底在提升。</p>
+                    
+                        <a
+                            href="/2019/12/22/week-201912-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2019.12.16-12.22"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/12/18/image-process-code-1/"
                             aria-label=": 图像处理代码：一些稍微底层的东西"
                         >
@@ -695,71 +761,6 @@
                             href="/2019/11/19/trans-c-to-cpp/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/03/git-use-1/"
-                            aria-label=": Git的使用：创建SSH key、多账号共存及提交代码"
-                        >
-                            Git的使用：创建SSH key、多账号共存及提交代码
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-03T12:33:32+08:00">
-	
-		    Nov 03, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h2 id="创建SSH-key"><a href="#创建SSH-key" class="headerlink" title="创建SSH key"></a>创建SSH key</h2><h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>在Windows下，使用Git bash，创建秘钥。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>在这一步可以使用<code>-C &#39;comment&#39;</code>对秘钥进行注释。一些教程中要求在<code>-C</code>后写邮箱，其实写什么都可以，不写也行，注释而已。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
-
-<p>默认的密钥为2048位，可以使用<code>-b</code>指定密钥位数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
-
-<p>之后会确认密钥文件的存放位置和文件名，如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file in which to save the key (/c/Users/UserName/.ssh/id_rsa):</span><br></pre></td></tr></table></figure>
-
-<p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
-<p>之后会要求设置密码，回车则密码留空。</p>
-<p>看到<code>The key&#39;s randomart image is:</code>和创建密钥时的随机图像，即为创建成功。</p>
-                    
-                        <a
-                            href="/2019/11/03/git-use-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Git的使用：创建SSH key、多账号共存及提交代码"
                         >
                             Continue reading
                         </a>
