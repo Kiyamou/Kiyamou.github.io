@@ -209,6 +209,63 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/12/27/Phase-trans-to-vs/"
+                            aria-label=": 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                        >
+                            从VC++ 6.0到VS——记一个简单窗口程序的迁移
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-27T19:21:11+08:00">
+	
+		    Dec 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。</p>
+<p>讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。</p>
+<p>印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…</p>
+<p>限于教学条件，那个时候自然是基于VC++ 6.0把代码重新改了一遍，然后就交作业了。分数还不错。</p>
+<p>OK，回忆就到这里。昨天心血来潮，想在Visual Studio下重新跑一遍。于是…我就掉进了坑里…</p>
+<h3 id="代码功能与现状"><a href="#代码功能与现状" class="headerlink" title="代码功能与现状"></a>代码功能与现状</h3><p>代码实现的功能其实简陋，执行一下，跳出来一个NiO-MgO固溶体相图的窗口，就完了。所以虽然是窗口程序，用户完全没法做什么。</p>
+<p>代码方面，除了在现在看来中了毒一般的代码风格和陈旧的头文件，还隐藏着C++标准改变埋下的坑。</p>
+                    
+                        <a
+                            href="/2019/12/27/Phase-trans-to-vs/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/12/22/week-201912-3/"
                             aria-label=": 周记 2019.12.16-12.22"
                         >
@@ -705,61 +762,6 @@
                             href="/2019/11/22/learn-cpp-note-1/"
                             class="postShorten-excerpt_link link"
                             aria-label=": C++学习笔记之一——某培训课程的笔记"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            记一次从C语言到C++的迁移——初次接触VapourSynth API
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T19:18:52+08:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
-                    
-                        <a
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
                         >
                             Continue reading
                         </a>
