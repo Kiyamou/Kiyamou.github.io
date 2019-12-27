@@ -1,0 +1,593 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>OpenCV学习笔记1 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"记录一下学习《OpenCV3编程入门》的过程。由于图像处理的基础，感觉很多内容都很亲切。\n这几天学习的提纲\nOpenCV在VS下的配置，OpenCV头文件的引用关系（第一章）\nOpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章）\nOpenCV的常用函数（第三章）\nMat矩阵变量的初始化和输出（第四章）\n一些C++相关的基础知识（第二章）\nprintf()格式输出函数\n一些变量的命名规范\n通过宏来定义的常量，通常所有字母集体大写\n\n\n图像混合、亮度与对比度调整、傅立叶变换（第五章）（顺带复习了第四章的基础函数，Rect()、Scalar()、Szie()等）\n窗口程序相关：滑动条的创建（第三章与第五章）\n\n\n\n《OpenCV3编程入门》这本书一个特点就是前后知识会有相关和重合，这样学起来感觉不错。\n傅立叶变换有个之前接触过，但没有亲自操作过的概念，对数尺度缩放。\n单纯对二维图像进行傅立叶变换，变换结果通常不容易观察，明亮的高频区域过小。为便于观察，可以进行对数缩放。\n对数缩放在大二的课上没有讲过，但我在一个小工具里用过，比直接变换“美观”很多。\n先回忆一下大二课堂上用matlab做过的傅立叶变换。\n1234567891011121314[Image, map] = imread('C:/code/test.png', 'png');imshow(Image);Image = rgb2gray(Image);    % 转换为灰度图像fftI = fft2(Image);         % 进行傅立叶变化sfftI = fftshift(fftI);     % 将频谱中心移至图像中心RR = real(sfftI);II = imag(sfftI);A = sqrt(RR.^2 + II.^2);    % 计算频谱幅值A = (A - min(min(A))) / (max(max(A)) - min(min(A))) * 225;  % 归一化figure;imshow(A);axis square;                % 将频谱图调整为正方形\n\n再重温一下用OpenCV在C++中的实现。\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768#include &lt;iostream&gt;#include &lt;opencv2/core/core.hpp&gt;#include &lt;opencv2/imgproc/imgproc.hpp&gt;#include &lt;opencv2/highgui/highgui.hpp&gt;using namespace cv;int main()&#123;    Mat srcImage = imread('C:/code/test.png');    // 和matlab一样    imshow(\"Original Image\", srcImage);        int m = getOptimalDFTSize(srcImage.rows);     // 扩充边界（不知道matlab是如何处理的）    int n = getOptimalDFTSize(srcImage.cols);     // OpenCV的函数果然丰富，专门为DFT扩充边界的都有    Mat padded;    copyMakeBorder(srcImage, padded, 0, m - srcImage.rows, 0, n - srcImage.cols,                   BORDER_CONSTANT, Scalar::all(0));    // BORDER_CONSTANT = 0        // 为傅立叶变换结果分配储存空间——这是C++作为程序语言与matlab的不同之处    Mat planes[] = &#123;Mat_&lt;float&gt;(padded),                    Mat::zeros(padded.size(), CV_32F)&#125;; // 另创建一个与padded同样大小的空矩阵    Mat complexI;    merge(planes, 2, complexI);   // 增加一个通道，将两个planes合并，为了存储复数        dft(complexI, complexI);      // 进行傅立叶变换        split(comlexI, planes);    magnitude(planes[0], planes[1], planes[0]);  // 计算复数幅值，并将结果储存到planes[0]    // CV_EXPORTS_W void magnitude(InputArray x, InputArray y, OutputArray magnitude);    Mat magnitudeImage = planes[0];        magnitudeImage += Scalar::all(1);    // M = log(1 + M)    log(magnitudeImage, magnitudeImage); // 结果也储存在magnitudeImage中        // 若有奇数行、列，则进行裁剪（matlab里没做这步）    magnitudeIamge = magnitudeImage(Rect(0, 0, magnitudeImage.cols &amp; -2, magnitudeImage.rows &amp; -2));        // 将频谱中心移至图像中心，显然比matlab要繁琐很多    int cx = magnitudeImage.cols / 2;    int cy = magnitudeImage.rows / 2;    Mat q0(magnitudeImage, Rect(0, 0, cx, cy));   // 左上    Mat q1(magnitudeImage, Rect(cx, 0, cx, cy));  // 右上    Mat q2(magnitudeImage, Rect(0, cy, cx, cy));  // 左下    Mat q3(magnitudeImage, Rect(cx, cy, cx, cy)); // 右下    /*     origin:       q0 | q1       q2 | q3    new:       q3 | q2       q1 | q0    */    Mat temp;    q0.copyTo(temp);  // temp = q0    q3.copyTo(q0);    // q0 = q3    q0.copyTo(q3);    // q3 = q0   // 这种写法就很“面向对象”了，和之前写脚本语言的路数完全一样    q1.copyTo(temp);    q2.copyTo(q1);    q1.copyTo(q2);        // 归一化    normalize(magnitudeImage, magnitudeImage, 0, 1, NORM_MINMAX);  // NORM_MINMAX = 32        imshow(\"DFT Image\", magnitudeImage);    watiKey(0);        return 0;&#125;\n\n结语OpenCV与VapourSynth比较，虽然VapourSynth为处理视频提供了（面向视频的）高级API，但毕竟没有像OpenCV那样提供丰富的“半成品”函数，像扩充图像边界这样的操作要自己去写，反而体验到一些偏“底层”的东西。\n顺带一提，刚刚会用了VS的“转到定义”功能，确实好方便。\n","dateCreated":"2019-12-27T23:25:16+08:00","dateModified":"2019-12-27T23:27:48+08:00","datePublished":"2019-12-27T23:25:16+08:00","description":"记录一下学习《OpenCV3编程入门》的过程。由于图像处理的基础，感觉很多内容都很亲切。\n这几天学习的提纲\nOpenCV在VS下的配置，OpenCV头文件的引用关系（第一章）\nOpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章）\nOpenCV的常用函数（第三章）\nMat矩阵变量的初始化和输出（第四章）\n一些C++相关的基础知识（第二章）\nprintf()格式输出函数\n一些变量的命名规范\n通过宏来定义的常量，通常所有字母集体大写\n\n\n图像混合、亮度与对比度调整、傅立叶变换（第五章）（顺带复习了第四章的基础函数，Rect()、Scalar()、Szie()等）\n窗口程序相关：滑动条的创建（第三章与第五章）\n","headline":"OpenCV学习笔记1","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/27/OpenCV-learn-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/27/OpenCV-learn-1/","keywords":"C++, OpenCV"}</script>
+    <meta name="description" content="记录一下学习《OpenCV3编程入门》的过程。由于图像处理的基础，感觉很多内容都很亲切。 这几天学习的提纲 OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章） OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章） OpenCV的常用函数（第三章） Mat矩阵变量的初始化和输出（第四章） 一些C++相关的基础知识（第二章） printf()格式输出函数 一些变量的命名规">
+<meta name="keywords" content="C++,OpenCV">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="OpenCV学习笔记1">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;27&#x2F;OpenCV-learn-1&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="记录一下学习《OpenCV3编程入门》的过程。由于图像处理的基础，感觉很多内容都很亲切。 这几天学习的提纲 OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章） OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章） OpenCV的常用函数（第三章） Mat矩阵变量的初始化和输出（第四章） 一些C++相关的基础知识（第二章） printf()格式输出函数 一些变量的命名规">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-27T15:27:48.369Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            OpenCV学习笔记1
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-12-27T23:25:16+08:00">
+	
+		    Dec 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>记录一下学习《OpenCV3编程入门》的过程。由于图像处理的基础，感觉很多内容都很亲切。</p>
+<h3 id="这几天学习的提纲"><a href="#这几天学习的提纲" class="headerlink" title="这几天学习的提纲"></a>这几天学习的提纲</h3><ul>
+<li>OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章）</li>
+<li>OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章）</li>
+<li>OpenCV的常用函数（第三章）</li>
+<li>Mat矩阵变量的初始化和输出（第四章）</li>
+<li>一些C++相关的基础知识（第二章）<ul>
+<li><code>printf()</code>格式输出函数</li>
+<li>一些变量的命名规范</li>
+<li>通过宏来定义的常量，通常所有字母集体大写</li>
+</ul>
+</li>
+<li>图像混合、亮度与对比度调整、傅立叶变换（第五章）（顺带复习了第四章的基础函数，<code>Rect()</code>、<code>Scalar()</code>、<code>Szie()</code>等）</li>
+<li>窗口程序相关：滑动条的创建（第三章与第五章）</li>
+</ul>
+<a id="more"></a>
+
+<p>《OpenCV3编程入门》这本书一个特点就是前后知识会有相关和重合，这样学起来感觉不错。</p>
+<h3 id="傅立叶变换"><a href="#傅立叶变换" class="headerlink" title="傅立叶变换"></a>傅立叶变换</h3><p>有个之前接触过，但没有亲自操作过的概念，对数尺度缩放。</p>
+<p>单纯对二维图像进行傅立叶变换，变换结果通常不容易观察，明亮的高频区域过小。为便于观察，可以进行对数缩放。</p>
+<p>对数缩放在大二的课上没有讲过，但我在一个小工具里用过，比直接变换“美观”很多。</p>
+<p>先回忆一下大二课堂上用matlab做过的傅立叶变换。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[Image, map] = imread(<span class="string">'C:/code/test.png'</span>, <span class="string">'png'</span>);</span><br><span class="line">imshow(Image);</span><br><span class="line"></span><br><span class="line">Image = rgb2gray(Image);    <span class="comment">% 转换为灰度图像</span></span><br><span class="line">fftI = fft2(Image);         <span class="comment">% 进行傅立叶变化</span></span><br><span class="line">sfftI = fftshift(fftI);     <span class="comment">% 将频谱中心移至图像中心</span></span><br><span class="line">RR = <span class="built_in">real</span>(sfftI);</span><br><span class="line">II = <span class="built_in">imag</span>(sfftI);</span><br><span class="line">A = <span class="built_in">sqrt</span>(RR.^<span class="number">2</span> + II.^<span class="number">2</span>);    <span class="comment">% 计算频谱幅值</span></span><br><span class="line">A = (A - <span class="built_in">min</span>(<span class="built_in">min</span>(A))) / (<span class="built_in">max</span>(<span class="built_in">max</span>(A)) - <span class="built_in">min</span>(<span class="built_in">min</span>(A))) * <span class="number">225</span>;  <span class="comment">% 归一化</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">imshow(A);</span><br><span class="line">axis square;                <span class="comment">% 将频谱图调整为正方形</span></span><br></pre></td></tr></table></figure>
+
+<p>再重温一下用OpenCV在C++中的实现。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/core/core.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/imgproc/imgproc.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Mat srcImage = imread('C:/code/test.png');    // 和matlab一样</span><br><span class="line">    imshow(<span class="string">"Original Image"</span>, srcImage);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> m = getOptimalDFTSize(srcImage.rows);     <span class="comment">// 扩充边界（不知道matlab是如何处理的）</span></span><br><span class="line">    <span class="keyword">int</span> n = getOptimalDFTSize(srcImage.cols);     <span class="comment">// OpenCV的函数果然丰富，专门为DFT扩充边界的都有</span></span><br><span class="line">    Mat padded;</span><br><span class="line">    copyMakeBorder(srcImage, padded, <span class="number">0</span>, m - srcImage.rows, <span class="number">0</span>, n - srcImage.cols,</span><br><span class="line">                   BORDER_CONSTANT, Scalar::all(<span class="number">0</span>));    <span class="comment">// BORDER_CONSTANT = 0</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 为傅立叶变换结果分配储存空间——这是C++作为程序语言与matlab的不同之处</span></span><br><span class="line">    Mat planes[] = &#123;Mat_&lt;<span class="keyword">float</span>&gt;(padded),</span><br><span class="line">                    Mat::zeros(padded.size(), CV_32F)&#125;; <span class="comment">// 另创建一个与padded同样大小的空矩阵</span></span><br><span class="line">    Mat complexI;</span><br><span class="line">    merge(planes, <span class="number">2</span>, complexI);   <span class="comment">// 增加一个通道，将两个planes合并，为了存储复数</span></span><br><span class="line">    </span><br><span class="line">    dft(complexI, complexI);      <span class="comment">// 进行傅立叶变换</span></span><br><span class="line">    </span><br><span class="line">    split(comlexI, planes);</span><br><span class="line">    magnitude(planes[<span class="number">0</span>], planes[<span class="number">1</span>], planes[<span class="number">0</span>]);  <span class="comment">// 计算复数幅值，并将结果储存到planes[0]</span></span><br><span class="line">    <span class="comment">// CV_EXPORTS_W void magnitude(InputArray x, InputArray y, OutputArray magnitude);</span></span><br><span class="line">    Mat magnitudeImage = planes[<span class="number">0</span>];</span><br><span class="line">    </span><br><span class="line">    magnitudeImage += Scalar::all(<span class="number">1</span>);    <span class="comment">// M = log(1 + M)</span></span><br><span class="line">    <span class="built_in">log</span>(magnitudeImage, magnitudeImage); <span class="comment">// 结果也储存在magnitudeImage中</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 若有奇数行、列，则进行裁剪（matlab里没做这步）</span></span><br><span class="line">    magnitudeIamge = magnitudeImage(Rect(<span class="number">0</span>, <span class="number">0</span>, magnitudeImage.cols &amp; <span class="number">-2</span>, magnitudeImage.rows &amp; <span class="number">-2</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将频谱中心移至图像中心，显然比matlab要繁琐很多</span></span><br><span class="line">    <span class="keyword">int</span> cx = magnitudeImage.cols / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">int</span> cy = magnitudeImage.rows / <span class="number">2</span>;</span><br><span class="line">    <span class="function">Mat <span class="title">q0</span><span class="params">(magnitudeImage, Rect(<span class="number">0</span>, <span class="number">0</span>, cx, cy))</span></span>;   <span class="comment">// 左上</span></span><br><span class="line">    <span class="function">Mat <span class="title">q1</span><span class="params">(magnitudeImage, Rect(cx, <span class="number">0</span>, cx, cy))</span></span>;  <span class="comment">// 右上</span></span><br><span class="line">    <span class="function">Mat <span class="title">q2</span><span class="params">(magnitudeImage, Rect(<span class="number">0</span>, cy, cx, cy))</span></span>;  <span class="comment">// 左下</span></span><br><span class="line">    <span class="function">Mat <span class="title">q3</span><span class="params">(magnitudeImage, Rect(cx, cy, cx, cy))</span></span>; <span class="comment">// 右下</span></span><br><span class="line">    <span class="comment">/* </span></span><br><span class="line"><span class="comment">    origin:</span></span><br><span class="line"><span class="comment">       q0 | q1</span></span><br><span class="line"><span class="comment">       q2 | q3</span></span><br><span class="line"><span class="comment">    new:</span></span><br><span class="line"><span class="comment">       q3 | q2</span></span><br><span class="line"><span class="comment">       q1 | q0</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    Mat temp;</span><br><span class="line">    q0.copyTo(temp);  <span class="comment">// temp = q0</span></span><br><span class="line">    q3.copyTo(q0);    <span class="comment">// q0 = q3</span></span><br><span class="line">    q0.copyTo(q3);    <span class="comment">// q3 = q0   // 这种写法就很“面向对象”了，和之前写脚本语言的路数完全一样</span></span><br><span class="line">    q1.copyTo(temp);</span><br><span class="line">    q2.copyTo(q1);</span><br><span class="line">    q1.copyTo(q2);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 归一化</span></span><br><span class="line">    normalize(magnitudeImage, magnitudeImage, <span class="number">0</span>, <span class="number">1</span>, NORM_MINMAX);  <span class="comment">// NORM_MINMAX = 32</span></span><br><span class="line">    </span><br><span class="line">    imshow(<span class="string">"DFT Image"</span>, magnitudeImage);</span><br><span class="line">    watiKey(<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>OpenCV与VapourSynth比较，虽然VapourSynth为处理视频提供了（面向视频的）高级API，但毕竟没有像OpenCV那样提供丰富的“半成品”函数，像扩充图像边界这样的操作要自己去写，反而体验到一些偏“底层”的东西。</p>
+<p>顺带一提，刚刚会用了VS的“转到定义”功能，确实好方便。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/OpenCV/" rel="tag">OpenCV</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/27/Phase-trans-to-vs/"
+                    data-tooltip="从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                    aria-label="NEXT: 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/27/Phase-trans-to-vs/"
+                    data-tooltip="从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                    aria-label="NEXT: 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/27/OpenCV-learn-1/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
