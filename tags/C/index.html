@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Tag: c++ - 308实验室</title>
+    <title>Tag: C++ - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
@@ -14,7 +14,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="308实验室">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;c&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;C&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -210,23 +210,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/12/28/ported-to-vs/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API"
+                            href="/2019/12/27/OpenCV-learn-1/"
+                            aria-label=": OpenCV学习笔记1"
                         >
-                            记一次从AviSynth到VapourSynth的迁移——感受不同的API
+                            OpenCV学习笔记1
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-12-28T23:04:52+08:00">
+    <time datetime="2019-12-27T23:25:16+08:00">
 	
-		    Dec 28, 2019
+		    Dec 27, 2019
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/code/">code</a>
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
 
 
     
@@ -235,15 +235,361 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>（未完待续…orz）</p>
-<h3 id="1-细碎的问题"><a href="#1-细碎的问题" class="headerlink" title="1.细碎的问题"></a>1.细碎的问题</h3><h4 id="变量命名习惯的变化"><a href="#变量命名习惯的变化" class="headerlink" title="变量命名习惯的变化"></a>变量命名习惯的变化</h4><p>avs的<code>pitch</code> = vs的<code>stride</code></p>
-<p>avs的<code>env</code> = vs的<code>vi</code>？那avs的<code>params</code>呢？</p>
-<p>vs中很少见<code>dst-&gt;width</code>之类的写法，而是<code>d-&gt;width</code></p>
+                    <p>记录一下学习《OpenCV3编程入门》的过程。由于有图像处理的基础，感觉很多内容都很亲切。</p>
+<h3 id="这几天学习的总结"><a href="#这几天学习的总结" class="headerlink" title="这几天学习的总结"></a>这几天学习的总结</h3><ul>
+<li>OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章）</li>
+<li>OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章）</li>
+<li>OpenCV的常用函数（第三章）</li>
+<li>Mat矩阵变量的初始化和输出（第四章）</li>
+<li>一些C++相关的基础知识（第二章）<ul>
+<li><code>printf()</code>格式输出函数</li>
+<li>一些变量的命名规范</li>
+<li>通过宏来定义的常量，通常所有字母集体大写</li>
+</ul>
+</li>
+<li>图像混合、亮度与对比度调整、傅里叶变换（第五章）（顺带复习了第四章的基础函数，<code>Rect()</code>、<code>Scalar()</code>、<code>Szie()</code>等）</li>
+<li>窗口程序相关：滑动条的创建（第三章与第五章）</li>
+</ul>
                     
                         <a
-                            href="/2019/12/28/ported-to-vs/"
+                            href="/2019/12/27/OpenCV-learn-1/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API"
+                            aria-label=": OpenCV学习笔记1"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/12/27/Phase-trans-to-vs/"
+                            aria-label=": 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                        >
+                            从VC++ 6.0到VS——记一个简单窗口程序的迁移
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-27T19:21:11+08:00">
+	
+		    Dec 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。</p>
+<p>讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。</p>
+<p>印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…</p>
+<p>限于教学条件，那个时候自然是基于VC++ 6.0把代码重新改了一遍，然后就交作业了。分数还不错。</p>
+<p>OK，回忆就到这里。昨天心血来潮，想在Visual Studio下重新跑一遍。于是…我就掉进了坑里…</p>
+<h3 id="代码功能与现状"><a href="#代码功能与现状" class="headerlink" title="代码功能与现状"></a>代码功能与现状</h3><p>代码实现的功能其实简陋，执行一下，跳出来一个NiO-MgO固溶体相图的窗口，就完了。所以虽然是窗口程序，用户完全没法做什么。</p>
+<p>代码方面，除了在现在看来中了毒一般的代码风格和陈旧的头文件，还隐藏着C++标准改变埋下的坑。</p>
+                    
+                        <a
+                            href="/2019/12/27/Phase-trans-to-vs/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 从VC++ 6.0到VS——记一个简单窗口程序的迁移"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/12/18/image-process-code-1/"
+                            aria-label=": 图像处理代码：一些稍微底层的东西"
+                        >
+                            图像处理代码：一些稍微底层的东西
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-18T12:57:06+08:00">
+	
+		    Dec 18, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="关于储存方式"><a href="#关于储存方式" class="headerlink" title="关于储存方式"></a>关于储存方式</h3><p>继续读VapourSynth滤镜的代码，这次看<code>Deblock()</code>，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。</p>
+<p>但直观上来看，使用AviSynth API，感觉代码要短一些…</p>
+<p>回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有<code>pitch</code>的变量。</p>
+<p>之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用<code>pitch</code>变量实现上述存储方式。</p>
+<p>云里雾里地，不知道在说什么。这次看<code>Deblock()</code>的代码，因为涉及了判断块是否要被处理，类似下面的语句。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T * VS_RESTRICT sq0 = dstpl;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(sq0[i] - sq[i]) &lt; alpha)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">srcp += src_pitch</span><br></pre></td></tr></table></figure>
+
+<p>看了上面这样的代码，似乎明白很多了，带有<code>pitch</code>的变量就是和内存/储存相关的（“单位内存”），<code>srcp</code>（或<code>dstp</code>）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。</p>
+                    
+                        <a
+                            href="/2019/12/18/image-process-code-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 图像处理代码：一些稍微底层的东西"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/25/gcc-use-1/"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Windows下使用gcc/g++编译器
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-25T23:37:03+08:00">
+	
+		    Nov 25, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
+                    
+                        <a
+                            href="/2019/11/25/gcc-use-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/24/rebuild-JincResize/"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            JincResize代码的重构
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-24T14:00:58+08:00">
+	
+		    Nov 24, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>前一篇Blog记录了将原作者代码（初步）从C语言迁移到C++上的过程，以及添加8bit输入支持的方法。下一步我想模仿HomeOfVapourSynthEvolution的代码风格，对上述代码进行重构。同时，也期待能发现，我先前修改的代码运行缓慢的原因。</p>
+<p>Blog写得详细一些，这也是我学习C++基础知识的过程。</p>
+<h3 id="未完成的C语言到C-迁移"><a href="#未完成的C语言到C-迁移" class="headerlink" title="未完成的C语言到C++迁移"></a>未完成的C语言到C++迁移</h3><p>其实C语言和C++的区别还有很多。</p>
+<h4 id="C-的类型转换"><a href="#C-的类型转换" class="headerlink" title="C++的类型转换"></a>C++的类型转换</h4><p>编写VapourSynth插件，在四个<code>VS__CC</code>函数的开头，都需要进行类型转换，原始代码使用C语言风格的类型转换，类似下面这样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = (FilterData*)* instanceData;</span><br></pre></td></tr></table></figure>
+
+<p>如果让代码“更C++”一些，则使用类型转换运算符（Type Conversion Operator）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2019/11/24/rebuild-JincResize/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/22/learn-cpp-note-1/"
+                            aria-label=": C++学习笔记之一——某培训课程的笔记"
+                        >
+                            C++学习笔记之一——某培训课程的笔记
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-22T23:30:31+08:00">
+	
+		    Nov 22, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="写在开头的话"><a href="#写在开头的话" class="headerlink" title="写在开头的话"></a>写在开头的话</h3><p>有人讲解，学习效率还是会高一些的吧。</p>
+<p>愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。</p>
+                    
+                        <a
+                            href="/2019/11/22/learn-cpp-note-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": C++学习笔记之一——某培训课程的笔记"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/19/trans-c-to-cpp/"
+                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                        >
+                            记一次从C语言到C++的迁移——初次接触VapourSynth API
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-19T19:18:52+08:00">
+	
+		    Nov 19, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
+<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
+<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
+<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
+<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
+                    
+                        <a
+                            href="/2019/11/19/trans-c-to-cpp/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
                         >
                             Continue reading
                         </a>
