@@ -209,6 +209,61 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/11/25/gcc-use-1/"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Windows下使用gcc/g++编译器
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-25T23:37:03+08:00">
+	
+		    Nov 25, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
+                    
+                        <a
+                            href="/2019/11/25/gcc-use-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/11/24/rebuild-JincResize/"
                             aria-label=": JincResize代码的重构"
                         >
@@ -687,7 +742,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 

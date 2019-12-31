@@ -210,10 +210,71 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/12/28/ported-to-vs/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API"
+                            href="/2020/01/01/ported-to-vs-2/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）"
                         >
-                            记一次从AviSynth到VapourSynth的迁移——感受不同的API
+                            记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-01-01T00:54:47+08:00">
+	
+		    Jan 01, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
+<p>为了加强理解、尽量全面，可能会有些重复的话。</p>
+<h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
+<p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
+<li>需要注意到，<code>srcp</code>和<code>dstp</code>已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于<code>srcp</code>和<code>dstp</code>，对单个平面做处理。</li>
+<li>注意<code>srcp</code>、<code>dstp</code>是指针，这个在稍后会继续说。</li>
+</ol>
+                    
+                        <a
+                            href="/2020/01/01/ported-to-vs-2/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/12/28/ported-to-vs/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）
                         </a>
                     
                 </h1>
@@ -226,7 +287,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/code/">code</a>
+    <a class="category-link" href="/categories/Code/">Code</a>
 
 
     
@@ -235,7 +296,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <p>（未完待续…orz）</p>
+                    <p>（内容待整理…orz）</p>
 <h3 id="1-细碎的问题"><a href="#1-细碎的问题" class="headerlink" title="1.细碎的问题"></a>1.细碎的问题</h3><h4 id="变量命名习惯的变化"><a href="#变量命名习惯的变化" class="headerlink" title="变量命名习惯的变化"></a>变量命名习惯的变化</h4><p>avs的<code>pitch</code> = vs的<code>stride</code></p>
 <p>avs的<code>env</code> = vs的<code>vi</code>？那avs的<code>params</code>呢？</p>
 <p>vs中很少见<code>dst-&gt;width</code>之类的写法，而是<code>d-&gt;width</code></p>
@@ -243,7 +304,7 @@
                         <a
                             href="/2019/12/28/ported-to-vs/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
                         >
                             Continue reading
                         </a>
@@ -437,7 +498,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 

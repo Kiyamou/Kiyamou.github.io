@@ -11,16 +11,16 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n\n\n虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。\n一些基础概念本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。\n123456YV24  = YUV444YV16  = YUV422YV12  = YUV420YV411 = YUV411RGB24 = 8bitRGB32 = 8bit（含透明通道）\n\n顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。\n一个直观的问题在缩小时，插值算法做了什么\n可以看一下这个回答\n\n无论是放大还是缩小，正在进行的“插值”实际上都是在重新采样。\n\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2019-12-21T23:49:01+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"C++, 图像处理, VapourSynth, Avisynth"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。\n\n\n虽然我上面糊里糊涂说了一堆，可能我自己也不明白，但就代码部分而言，真的让我有种《21天实战caffe》里提到的“阅读源码自由”的感觉。\n一些基础概念本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。\n123456YV24  = YUV444YV16  = YUV422YV12  = YUV420YV411 = YUV411RGB24 = 8bitRGB32 = 8bit（含透明通道）\n\n顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。\n一个直观的问题在缩小时，插值算法做了什么\n可以看一下这个回答\n\n无论是放大还是缩小，正在进行的“插值”实际上都是在重新采样。\n\n","dateCreated":"2019-12-18T12:57:06+08:00","dateModified":"2020-01-01T00:46:36+08:00","datePublished":"2019-12-18T12:57:06+08:00","description":"关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。\n但直观上来看，使用AviSynth API，感觉代码要短一些…\n回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。\n之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用pitch变量实现上述存储方式。\n云里雾里地，不知道在说什么。这次看Deblock()的代码，因为涉及了判断块是否要被处理，类似下面的语句。\n1234567T * VS_RESTRICT sq0 = dstpl;if (std::abs(sq0[i] - sq[i]) &lt; alpha)&#123;    ...&#125;srcp += src_pitch\n\n看了上面这样的代码，似乎明白很多了，带有pitch的变量就是和内存/储存相关的（“单位内存”），srcp（或dstp）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。","headline":"图像处理代码：一些稍微底层的东西","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/18/image-process-code-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/18/image-process-code-1/","keywords":"C++, VapourSynth, Avisynth"}</script>
     <meta name="description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
-<meta name="keywords" content="C++,图像处理,VapourSynth,Avisynth">
+<meta name="keywords" content="C++,VapourSynth,Avisynth">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="图像处理代码：一些稍微底层的东西">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;image-process-code-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="关于储存方式继续读VapourSynth滤镜的代码，这次看Deblock()，和相应的AviSynth代码一起看的。这种同为C++语言，但调用了不同的API，比之前使用同一个API完成从C到C++的迁移，又是另一种感觉。 但直观上来看，使用AviSynth API，感觉代码要短一些… 回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有pitch的变量。 之前就查过，说是在">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-21T15:49:01.605Z">
+<meta property="og:updated_time" content="2019-12-31T16:46:36.735Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -267,7 +267,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/" rel="tag">图像处理</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
 
             </div>
         
@@ -295,8 +295,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/14/day-191214/"
-                    data-tooltip="日记（2019.12.14）"
-                    aria-label="NEXT: 日记（2019.12.14）"
+                    data-tooltip="日记 2019.12.14"
+                    aria-label="NEXT: 日记 2019.12.14"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -381,7 +381,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 
@@ -411,8 +411,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/14/day-191214/"
-                    data-tooltip="日记（2019.12.14）"
-                    aria-label="NEXT: 日记（2019.12.14）"
+                    data-tooltip="日记 2019.12.14"
+                    aria-label="NEXT: 日记 2019.12.14"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>

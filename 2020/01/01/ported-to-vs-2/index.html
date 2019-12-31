@@ -1,0 +1,612 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>记一次从AviSynth到VapourSynth的迁移——感受不同的API（二） - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。\n为了加强理解、尽量全面，可能会有些重复的话。\nsrcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。\n关于srcp和dstp，通常这样定义\n12const T* srcp = reinterpret_cast&lt;const T*&gt;(vsapi-&gt;getReadPtr(src, plane));T* VS_RESTRICT dstp = reinterpret_cast&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));\n\n\ngetReadPtr()和getWritePte()均是uint8_t *型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用reinterpret_cast做类型转换，转换为模版中的T。\n需要注意到，srcp和dstp已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于srcp和dstp，对单个平面做处理。\n注意srcp、dstp是指针，这个在稍后会继续说。\n\n\n\nstride的理解avs api和vs api的一大区别，就是隐藏在习惯变量名不同（pitch与stride）之下的单位问题。\n从Doc上看，avs api获取的pitch和vs api获取的stride都是以字节为单位。在使用中，vs框架下要除以变量所占的字节，即\n1int dst_stride = vsapi-&gt;getStride(dst, plane) / sizeof(T);\n\n但我读过的几份avs滤镜代码，都是直接用的，没有除sizeof。\n突然明白，我忘了一个事情，sizeof(uint8_t) = 1啊，所以不需要除sizeof，是不是以字节为单位，都是一样的啊。\n疑问的解释我一直在纠结下面的avs与vs代码会不会有区别。\n123456// avssrcp += src_pitch;dstp += target_width;// vssrcp += src_stride;dstp += target_width; // dstp += dst_stride;\n\n但其实这个问题是不存在的。对于avs，基于全程8bit的假设，sizeof = 1，虽然src_pitch是以字节为单位，但数值上与target_width是同级的；对于vs，src_stride是除过sizof的，与target_width单位一致。\n所以无论vs怎么写，与avs都是一致的，且srcp与dstp数值都是同级的。\nstride与dstp的共同作用类似dstp += dst_stride;这样的语句，实现了指针的移动，让继续处理下一帧？\n而dstp[y + x * dst_stride]应该是二维平面上的指针移动。\n（可以把“稍微底层一些”的那一篇博文先删了，内容移到这里，至少也是写边界扩展再起那样的标题）\nVapourSynth数据结构的猜测（有人说编程是算法+数据结构，现在终于能理解到这句话了）\n简单地说，是像一维数组那样横着排的？对dstp加上一个width就到下一帧？\n但这样想，上面那样的dstp[y + x * dst_stride]又说不通了。\nvoid函数做了什么这个问题看上去很蠢，但也许是我上半年写Python留下的后遗症。总以为函数后要return个什么东西，仿佛把封装好的函数当成一个计算黑箱。这样理解也谈不上错吧，但却让我在一开始读vs滤镜代码时一头雾水。\n经过了一个void函数，函数内的全局变量（或者是生存期大过该函数的变量）已经被改变。简单地说，就是“酒肉穿肠过，该变的都变了”的意思。\nvsapi的理解可以将滤镜分为两类：一类是resize型滤镜，输入输出的尺寸不一致；一类是非resize型滤镜，输入输出的尺寸一致。\n对于后者，在初始化函数FilterInit()中，只需原样写下vi即可\n12345static void VS_CC FilterInit(VSMap* in, VSMap* out, void** instanceData, VSNode* node, VSCore* core, const VSAPI* vsapi)&#123;    FilterData* d = static_cast&lt;FilterData*&gt;(*instanceData);    vsapi-&gt;setVideoInfo(d-&gt;vi, 1, node);&#125;\n\n对于前者，要在初始化中将尺寸改写为输出尺寸\n12345678static void VS_CC FilterInit(VSMap* in, VSMap* out, void** instanceData, VSNode* node, VSCore* core, const VSAPI* vsapi)&#123;    FilterData* d = static_cast&lt;FilterData*&gt;(*intanceData);    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;    dst_vi.width = d-&gt;output_width;    dst_vi.height = d-&gt;output_height;    vsapi-&gt;setVideoInfo(&amp;dst_vi, 1, node); // 注意d-&gt;vi是指针，这里要取地址&#125;\n\n这样就保证了输出的dst是resize后的尺寸，否则照上面那样写，（与输入源不一样的尺寸）会报错。\n写法不是唯一的，也可以在FilterCreate()函数里写，只是我还不太会…\n遇事不决用doubleemmm困扰了我一整天的颜色问题，把函数内部处理全变成double，直到输出时再改成所需的类型，颜色终于正常了。\n现在毕竟还在起步阶段，先把能正常运行的程序写出来，再考虑提升性能的事情。\n关于编译与调用要保持编译时用的头文件与VapourSynth SDK文件夹中的头文件一致，否则无法调用。\n（所以在配置编译文件时需要动点脑子）\nC++的基础进一步理解C++的类型转换编译相关两次编译的结果，hash不会一样的，但二进制文件大小一样。\n零散的知识点递归函数（调用了自身的函数）没法内联。\n静态函数（用static关键字声明）不可在文件外被调用。\n","dateCreated":"2020-01-01T00:54:47+08:00","dateModified":"2020-01-01T01:00:03+08:00","datePublished":"2020-01-01T00:54:47+08:00","description":"距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。\n为了加强理解、尽量全面，可能会有些重复的话。\nsrcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。\n关于srcp和dstp，通常这样定义\n12const T* srcp = reinterpret_cast&lt;const T*&gt;(vsapi-&gt;getReadPtr(src, plane));T* VS_RESTRICT dstp = reinterpret_cast&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));\n\n\ngetReadPtr()和getWritePte()均是uint8_t *型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用reinterpret_cast做类型转换，转换为模版中的T。\n需要注意到，srcp和dstp已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于srcp和dstp，对单个平面做处理。\n注意srcp、dstp是指针，这个在稍后会继续说。\n","headline":"记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/01/01/ported-to-vs-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/01/01/ported-to-vs-2/","keywords":"C++, VapourSynth, Avisynth"}</script>
+    <meta name="description" content="距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。 为了加强理解、尽量全面，可能会有些重复的话。 srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。 关于srcp和dstp，通常这样定义 12const T* srcp =">
+<meta name="keywords" content="C++,VapourSynth,Avisynth">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;01&#x2F;ported-to-vs-2&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。 为了加强理解、尽量全面，可能会有些重复的话。 srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。 关于srcp和dstp，通常这样定义 12const T* srcp =">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-12-31T17:00:03.071Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-01-01T00:54:47+08:00">
+	
+		    Jan 01, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
+<p>为了加强理解、尽量全面，可能会有些重复的话。</p>
+<h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
+<p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
+<li>需要注意到，<code>srcp</code>和<code>dstp</code>已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于<code>srcp</code>和<code>dstp</code>，对单个平面做处理。</li>
+<li>注意<code>srcp</code>、<code>dstp</code>是指针，这个在稍后会继续说。</li>
+</ol>
+<a id="more"></a>
+
+<h3 id="stride的理解"><a href="#stride的理解" class="headerlink" title="stride的理解"></a><code>stride</code>的理解</h3><p>avs api和vs api的一大区别，就是隐藏在习惯变量名不同（<code>pitch</code>与<code>stride</code>）之下的单位问题。</p>
+<p>从Doc上看，avs api获取的<code>pitch</code>和vs api获取的<code>stride</code>都是以字节为单位。在使用中，vs框架下要除以变量所占的字节，即</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="keyword">sizeof</span>(T);</span><br></pre></td></tr></table></figure>
+
+<p>但我读过的几份avs滤镜代码，都是直接用的，没有除<code>sizeof</code>。</p>
+<p>突然明白，我忘了一个事情，<strong><code>sizeof(uint8_t)</code> = 1啊</strong>，所以不需要除<code>sizeof</code>，是不是以字节为单位，都是一样的啊。</p>
+<h5 id="疑问的解释"><a href="#疑问的解释" class="headerlink" title="疑问的解释"></a>疑问的解释</h5><p>我一直在纠结下面的avs与vs代码会不会有区别。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// avs</span></span><br><span class="line">srcp += src_pitch;</span><br><span class="line">dstp += target_width;</span><br><span class="line"><span class="comment">// vs</span></span><br><span class="line">srcp += src_stride;</span><br><span class="line">dstp += target_width; <span class="comment">// dstp += dst_stride;</span></span><br></pre></td></tr></table></figure>
+
+<p>但其实这个问题是不存在的。对于avs，基于全程8bit的假设，<code>sizeof</code> = 1，虽然<code>src_pitch</code>是以字节为单位，但数值上与<code>target_width</code>是同级的；对于vs，<code>src_stride</code>是除过<code>sizof</code>的，与<code>target_width</code>单位一致。</p>
+<p>所以无论vs怎么写，与avs都是一致的，且<code>srcp</code>与<code>dstp</code>数值都是同级的。</p>
+<h3 id="stride与dstp的共同作用"><a href="#stride与dstp的共同作用" class="headerlink" title="stride与dstp的共同作用"></a><code>stride</code>与<code>dstp</code>的共同作用</h3><p>类似<code>dstp += dst_stride;</code>这样的语句，实现了指针的移动，让继续处理下一帧？</p>
+<p>而<code>dstp[y + x * dst_stride]</code>应该是二维平面上的指针移动。</p>
+<p>（可以把“稍微底层一些”的那一篇博文先删了，内容移到这里，至少也是写边界扩展再起那样的标题）</p>
+<h3 id="VapourSynth数据结构的猜测"><a href="#VapourSynth数据结构的猜测" class="headerlink" title="VapourSynth数据结构的猜测"></a>VapourSynth数据结构的猜测</h3><p>（有人说编程是算法+数据结构，现在终于能理解到这句话了）</p>
+<p>简单地说，是像一维数组那样横着排的？对<code>dstp</code>加上一个<code>width</code>就到下一帧？</p>
+<p>但这样想，上面那样的<code>dstp[y + x * dst_stride]</code>又说不通了。</p>
+<h3 id="void函数做了什么"><a href="#void函数做了什么" class="headerlink" title="void函数做了什么"></a><code>void</code>函数做了什么</h3><p>这个问题看上去很蠢，但也许是我上半年写Python留下的后遗症。总以为函数后要<code>return</code>个什么东西，仿佛把封装好的函数当成一个计算黑箱。这样理解也谈不上错吧，但却让我在一开始读vs滤镜代码时一头雾水。</p>
+<p>经过了一个<code>void</code>函数，函数内的全局变量（或者是生存期大过该函数的变量）已经被改变。简单地说，就是“酒肉穿肠过，该变的都变了”的意思。</p>
+<h3 id="vsapi的理解"><a href="#vsapi的理解" class="headerlink" title="vsapi的理解"></a><code>vsapi</code>的理解</h3><p>可以将滤镜分为两类：一类是resize型滤镜，输入输出的尺寸不一致；一类是非resize型滤镜，输入输出的尺寸一致。</p>
+<p>对于后者，在初始化函数<code>FilterInit()</code>中，只需原样写下<code>vi</code>即可</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> VS_CC <span class="title">FilterInit</span><span class="params">(VSMap* in, VSMap* out, <span class="keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br><span class="line">    vsapi-&gt;setVideoInfo(d-&gt;vi, <span class="number">1</span>, node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于前者，要在初始化中将尺寸改写为输出尺寸</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> VS_CC <span class="title">FilterInit</span><span class="params">(VSMap* in, VSMap* out, <span class="keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*intanceData);</span><br><span class="line">    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;</span><br><span class="line">    dst_vi.width = d-&gt;output_width;</span><br><span class="line">    dst_vi.height = d-&gt;output_height;</span><br><span class="line">    vsapi-&gt;setVideoInfo(&amp;dst_vi, <span class="number">1</span>, node); <span class="comment">// 注意d-&gt;vi是指针，这里要取地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就保证了输出的<code>dst</code>是resize后的尺寸，否则照上面那样写，（与输入源不一样的尺寸）会报错。</p>
+<p>写法不是唯一的，也可以在<code>FilterCreate()</code>函数里写，只是我还不太会…</p>
+<h3 id="遇事不决用double"><a href="#遇事不决用double" class="headerlink" title="遇事不决用double"></a>遇事不决用double</h3><p>emmm困扰了我一整天的颜色问题，把函数内部处理全变成double，直到输出时再改成所需的类型，颜色终于正常了。</p>
+<p>现在毕竟还在起步阶段，先把能正常运行的程序写出来，再考虑提升性能的事情。</p>
+<h3 id="关于编译与调用"><a href="#关于编译与调用" class="headerlink" title="关于编译与调用"></a>关于编译与调用</h3><p>要保持编译时用的头文件与VapourSynth SDK文件夹中的头文件一致，否则无法调用。</p>
+<p>（所以在配置编译文件时需要动点脑子）</p>
+<h3 id="C-的基础"><a href="#C-的基础" class="headerlink" title="C++的基础"></a>C++的基础</h3><h4 id="进一步理解C-的类型转换"><a href="#进一步理解C-的类型转换" class="headerlink" title="进一步理解C++的类型转换"></a>进一步理解C++的类型转换</h4><h4 id="编译相关"><a href="#编译相关" class="headerlink" title="编译相关"></a>编译相关</h4><p>两次编译的结果，hash不会一样的，但二进制文件大小一样。</p>
+<h4 id="零散的知识点"><a href="#零散的知识点" class="headerlink" title="零散的知识点"></a>零散的知识点</h4><p>递归函数（调用了自身的函数）没法内联。</p>
+<p>静态函数（用<code>static</code>关键字声明）不可在文件外被调用。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/28/ported-to-vs/"
+                    data-tooltip="记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                    aria-label="NEXT: 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/12/28/ported-to-vs/"
+                    data-tooltip="记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                    aria-label="NEXT: 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/01/01/ported-to-vs-2/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

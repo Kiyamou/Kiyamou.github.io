@@ -11,16 +11,16 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。\n\n\n使用gcc编译C语言代码前两天用了一次gcc编译C语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。\n今天明白了，库文件不一定需要，而反正我所需要的头文件就两个，直接复制过来就好了。\n直接编译原作者代码。\n1gcc -o ewa_lanczos.dll -shared ewa_lanczos.c\n\n能编译通过，但VapourSynth中无法调用。想了一下，这里的gcc是32位，和64位的VapourSynth不搭，于是换用64位的gcc，并打开-O2优化。\n1x86_64-w64-mingw32-gcc -o ewa_lanczos.dll -shared -O2 ewa_lanczos.c\n\nVapourSynth成功运行，而且速度也和原作者的差不多了！Dll体积也差不多，我感觉原作者就是这么编译的。\n使用g++编译C++代码动态编译虽说gcc也不是不能编译C++，但毕竟…还是用专业的g++吧。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 JincResize.cpp\n\n编译出来的dll，VapourSynth无法调用。我怀疑是没有配置库文件的锅，因为在CSDN上看到一篇博文，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题\n于是我照这篇博文的方法，加上了-Wl,--no-undefined参数，这样就能暴露缺失库文件问题。\n1x86_64-w64-mingw32-g++ -o JincResize.dll -shared -O2 -Wl,--no-undefined JincResize.cpp\n\n但我试了一次，仍没有报错，正常地编译通过。\n在这篇博文的帮助下，我明白了g++是动态编译，编译好的dll依赖于其他dll。想起了之前安装MXNet的踩坑经历，（我也能自引了，积累是有用的）。使用Visual Studio的dumpbin工具查到了依赖的两个dll。\n但与博文中把dll放到程序目录就OK不同的是，这两个dll我无论是放到VapourSynth的文件（VapourSynth下各种文件夹都试过了），还是System32中，都依然无法调用我编译的dll。只得另寻他法。\n（况且就算这种方法能行，我也不能这么干，我不可能在发布时再“顺带”发布两个依赖，这也太蛋疼了）\n静态编译这篇博文告诉我，可以通过静态编译的方式避免上述依赖的问题。\n只加上-static-libgcc和-static-libstdc++这两个参数，还是不行。于是干脆使用-static，全局静态编译。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 -static JincResize.cpp\n\n终于成功了。（dll大小：63kb -&gt; 415kb -&gt; 451kb）\nDll运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。\n这样后续的代码重构也有动力了！\n后记这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾CodeBlocks和MinGW，从第一次使用gcc编译成功C语言代码、获得能用的dll，到动态编译C++虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。\n加油吧，相信自己。\n","dateCreated":"2019-11-25T23:37:03+08:00","dateModified":"2019-11-26T00:26:17+08:00","datePublished":"2019-11-25T23:37:03+08:00","description":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。","headline":"Windows下使用gcc/g++编译器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/11/25/gcc-use-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/11/25/gcc-use-1/","keywords":"C++, gcc"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。\n\n\n使用gcc编译C语言代码前两天用了一次gcc编译C语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。\n今天明白了，库文件不一定需要，而反正我所需要的头文件就两个，直接复制过来就好了。\n直接编译原作者代码。\n1gcc -o ewa_lanczos.dll -shared ewa_lanczos.c\n\n能编译通过，但VapourSynth中无法调用。想了一下，这里的gcc是32位，和64位的VapourSynth不搭，于是换用64位的gcc，并打开-O2优化。\n1x86_64-w64-mingw32-gcc -o ewa_lanczos.dll -shared -O2 ewa_lanczos.c\n\nVapourSynth成功运行，而且速度也和原作者的差不多了！Dll体积也差不多，我感觉原作者就是这么编译的。\n使用g++编译C++代码动态编译虽说gcc也不是不能编译C++，但毕竟…还是用专业的g++吧。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 JincResize.cpp\n\n编译出来的dll，VapourSynth无法调用。我怀疑是没有配置库文件的锅，因为在CSDN上看到一篇博文，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题\n于是我照这篇博文的方法，加上了-Wl,--no-undefined参数，这样就能暴露缺失库文件问题。\n1x86_64-w64-mingw32-g++ -o JincResize.dll -shared -O2 -Wl,--no-undefined JincResize.cpp\n\n但我试了一次，仍没有报错，正常地编译通过。\n在这篇博文的帮助下，我明白了g++是动态编译，编译好的dll依赖于其他dll。想起了之前安装MXNet的踩坑经历，（我也能自引了，积累是有用的）。使用Visual Studio的dumpbin工具查到了依赖的两个dll。\n但与博文中把dll放到程序目录就OK不同的是，这两个dll我无论是放到VapourSynth的文件（VapourSynth下各种文件夹都试过了），还是System32中，都依然无法调用我编译的dll。只得另寻他法。\n（况且就算这种方法能行，我也不能这么干，我不可能在发布时再“顺带”发布两个依赖，这也太蛋疼了）\n静态编译这篇博文告诉我，可以通过静态编译的方式避免上述依赖的问题。\n只加上-static-libgcc和-static-libstdc++这两个参数，还是不行。于是干脆使用-static，全局静态编译。\n1x86_64-w64-mingw32-g++ -shared -o JincResize.dll -O2 -static JincResize.cpp\n\n终于成功了。（dll大小：63kb -&gt; 415kb -&gt; 451kb）\nDll运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。\n这样后续的代码重构也有动力了！\n后记这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾CodeBlocks和MinGW，从第一次使用gcc编译成功C语言代码、获得能用的dll，到动态编译C++虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。\n加油吧，相信自己。\n","dateCreated":"2019-11-25T23:37:03+08:00","dateModified":"2020-01-01T00:48:42+08:00","datePublished":"2019-11-25T23:37:03+08:00","description":"VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。\n思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。\n我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。\n所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）\n不管怎么说，改用gcc/g++。","headline":"Windows下使用gcc/g++编译器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/11/25/gcc-use-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/11/25/gcc-use-1/","keywords":"C++, 编译器"}</script>
     <meta name="description" content="VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。 思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代">
-<meta name="keywords" content="C++,gcc">
+<meta name="keywords" content="C++,编译器">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Windows下使用gcc&#x2F;g++编译器">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;25&#x2F;gcc-use-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="VS：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。 思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-25T16:26:17.945Z">
+<meta property="og:updated_time" content="2019-12-31T16:48:42.005Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -283,7 +283,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/gcc/" rel="tag">gcc</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">编译器</a>
 
             </div>
         
@@ -297,8 +297,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/11/day-191211/"
-                    data-tooltip="日记（2019.12.11）"
-                    aria-label="PREVIOUS: 日记（2019.12.11）"
+                    data-tooltip="日记 2019.12.11"
+                    aria-label="PREVIOUS: 日记 2019.12.11"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -397,7 +397,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 
@@ -413,8 +413,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/11/day-191211/"
-                    data-tooltip="日记（2019.12.11）"
-                    aria-label="PREVIOUS: 日记（2019.12.11）"
+                    data-tooltip="日记 2019.12.11"
+                    aria-label="PREVIOUS: 日记 2019.12.11"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>

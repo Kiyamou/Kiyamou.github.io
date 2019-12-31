@@ -6,20 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>日记（2019.12.12） - 308实验室</title>
+    <title>日记 2019.12.12 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1用malloc分配内存\n1double* lut = (double*) malloc(sizeof(double)*d.samples);\n\nsizeof(double)=8\n21data = malloc(sizeof(d));\n\n而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）\nPS：在HomeOfVapourSynthEvolution的Curve.cpp，能看到这种“成对”的模式，用malloc和calloc来分配内存的变量都用free做了释放。相比之下，我自己该的代码，在新定义lut这个变量时，用了malloc，却没有用free，而是用delete去删除的。\ndelete不仅释放内存，而且会调用析构函数，而free不会调用析构函数。\n\n\nCurve.cpp的代码\n123456789double (*matrix)[3] = reinterpret_cast&lt;double(*)[3]&gt;(calloc(n, sizeof(*matrix)));double * h = reinterpret_cast&lt;double *&gt;(malloc((n - 1) * sizeof(*h)));double * r = reinterpret_cast&lt;double *&gt;(calloc(n, sizeof(*r)));if (!matrix || !h || !r)    throw std::string&#123; \"malloc failure (matrix/h/r)\" &#125;;free(matrix);free(h);free(r);\n\n我自己的代码\n123double* lut = reinterpret_cast&lt;double*&gt;(malloc(sizeof(double) * d-&gt;samples));delete d-&gt;lut;\n\n如知乎上所说，可以把delete看成做了两件事，一是free，另一是调用析构。\n根据这篇博文测试的代码，得出“new 和 delete，malloc 和 free 只能匹配使用，不能混用”。\n虽然这么说，但我想了一会，还是说不出，把我现有代码中的delete d-&gt;lut;改成free(d-&gt;lut)的理由…emm先不管了，我记得之前测试过这两种代码，似乎也没么（速度上的）区别…先这样吧…\n312free(d-&gt;lut);free(d);\n\n是不是要这么理解：free和malloc是成对出现的，因为用了两次malloc，所以就要有两次free。\n4以下笔记照抄自菜鸟教程。\n“类声明只声明一个类的”尺寸和规格”，并不进行实际的内存分配”\n“static 被引入以告知编译器，将变量存储在程序的静态存储区而非栈上空间”\n“static 修饰全局变量的时候，这个全局变量只能在本文件中访问，不能在其它文件中访问”\n5从malloc可分配的最大内存，看似去与size_t相关，到一些关于size_t的基础知识。\n涉及到uintptr_t类型。\n在这篇博客中讲得清楚，uintptr_t是类型别名。\n具体的定义如下\n1234567891011121314/* Types for `void *' pointers.  */#if __WORDSIZE == 64# ifndef __intptr_t_definedtypedef long int            intptr_t;#  define __intptr_t_defined# endiftypedef unsigned long int   uintptr_t;#else# ifndef __intptr_t_definedtypedef int                 intptr_t;#  define __intptr_t_defined# endiftypedef unsigned int        uintptr_t;#endif\n\n可以看到，unintptr_t是类型unsigned long int（64bit）和unsigned int（32bit）的别名。\nPS：再回到修改代码的起点，看一下uint8_t和uint16_t等的定义（来自stdint.h）\n1234567891011typedef unsigned char           uint8_t;  typedef unsigned short int      uint16_t;  #ifndef __uint32_t_defined  typedef unsigned int            uint32_t;  # define __uint32_t_defined  #endif  #if __WORDSIZE == 64  typedef unsigned long int       uint64_t;  #else  __extension__  typedef unsigned long long int  uint64_t;\n\n由上可知，uint8_t对应char类型，长度为1字节，uint16_t对应short int类型，长度为2字节。\n在实际代码中，二者分别对应8bit图像和16bit图像（或者说9~16bit图像）。\n现在我需要回答一个问题，这样用不同类型/长度的变量去储存图像，究竟只是为了节省内存，还是必要之举？（我在测试用uint16_t类型变量储存8bit图像时，输出的图像是错误的，这样来看是必要的，但原理呢？为什么10bit图像就没事？-&gt;是否是对于10bit图像，有某种填0的机制？而8bit就会有内存越界的问题？）\n6 数组与指针的区别","dateCreated":"2019-12-12T23:23:20+08:00","dateModified":"2019-12-12T23:25:07+08:00","datePublished":"2019-12-12T23:23:20+08:00","description":"1用malloc分配内存\n1double* lut = (double*) malloc(sizeof(double)*d.samples);\n\nsizeof(double)=8\n21data = malloc(sizeof(d));\n\n而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）\nPS：在HomeOfVapourSynthEvolution的Curve.cpp，能看到这种“成对”的模式，用malloc和calloc来分配内存的变量都用free做了释放。相比之下，我自己该的代码，在新定义lut这个变量时，用了malloc，却没有用free，而是用delete去删除的。\ndelete不仅释放内存，而且会调用析构函数，而free不会调用析构函数。","headline":"日记（2019.12.12）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/12/day-191212/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/12/day-191212/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1用malloc分配内存\n1double* lut = (double*) malloc(sizeof(double)*d.samples);\n\nsizeof(double)=8\n21data = malloc(sizeof(d));\n\n而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）\nPS：在HomeOfVapourSynthEvolution的Curve.cpp，能看到这种“成对”的模式，用malloc和calloc来分配内存的变量都用free做了释放。相比之下，我自己该的代码，在新定义lut这个变量时，用了malloc，却没有用free，而是用delete去删除的。\ndelete不仅释放内存，而且会调用析构函数，而free不会调用析构函数。\n\n\nCurve.cpp的代码\n123456789double (*matrix)[3] = reinterpret_cast&lt;double(*)[3]&gt;(calloc(n, sizeof(*matrix)));double * h = reinterpret_cast&lt;double *&gt;(malloc((n - 1) * sizeof(*h)));double * r = reinterpret_cast&lt;double *&gt;(calloc(n, sizeof(*r)));if (!matrix || !h || !r)    throw std::string&#123; \"malloc failure (matrix/h/r)\" &#125;;free(matrix);free(h);free(r);\n\n我自己的代码\n123double* lut = reinterpret_cast&lt;double*&gt;(malloc(sizeof(double) * d-&gt;samples));delete d-&gt;lut;\n\n如知乎上所说，可以把delete看成做了两件事，一是free，另一是调用析构。\n根据这篇博文测试的代码，得出“new 和 delete，malloc 和 free 只能匹配使用，不能混用”。\n虽然这么说，但我想了一会，还是说不出，把我现有代码中的delete d-&gt;lut;改成free(d-&gt;lut)的理由…emm先不管了，我记得之前测试过这两种代码，似乎也没么（速度上的）区别…先这样吧…\n312free(d-&gt;lut);free(d);\n\n是不是要这么理解：free和malloc是成对出现的，因为用了两次malloc，所以就要有两次free。\n4以下笔记照抄自菜鸟教程。\n“类声明只声明一个类的”尺寸和规格”，并不进行实际的内存分配”\n“static 被引入以告知编译器，将变量存储在程序的静态存储区而非栈上空间”\n“static 修饰全局变量的时候，这个全局变量只能在本文件中访问，不能在其它文件中访问”\n5从malloc可分配的最大内存，看似去与size_t相关，到一些关于size_t的基础知识。\n涉及到uintptr_t类型。\n在这篇博客中讲得清楚，uintptr_t是类型别名。\n具体的定义如下\n1234567891011121314/* Types for `void *' pointers.  */#if __WORDSIZE == 64# ifndef __intptr_t_definedtypedef long int            intptr_t;#  define __intptr_t_defined# endiftypedef unsigned long int   uintptr_t;#else# ifndef __intptr_t_definedtypedef int                 intptr_t;#  define __intptr_t_defined# endiftypedef unsigned int        uintptr_t;#endif\n\n可以看到，unintptr_t是类型unsigned long int（64bit）和unsigned int（32bit）的别名。\nPS：再回到修改代码的起点，看一下uint8_t和uint16_t等的定义（来自stdint.h）\n1234567891011typedef unsigned char           uint8_t;  typedef unsigned short int      uint16_t;  #ifndef __uint32_t_defined  typedef unsigned int            uint32_t;  # define __uint32_t_defined  #endif  #if __WORDSIZE == 64  typedef unsigned long int       uint64_t;  #else  __extension__  typedef unsigned long long int  uint64_t;\n\n由上可知，uint8_t对应char类型，长度为1字节，uint16_t对应short int类型，长度为2字节。\n在实际代码中，二者分别对应8bit图像和16bit图像（或者说9~16bit图像）。\n现在我需要回答一个问题，这样用不同类型/长度的变量去储存图像，究竟只是为了节省内存，还是必要之举？（我在测试用uint16_t类型变量储存8bit图像时，输出的图像是错误的，这样来看是必要的，但原理呢？为什么10bit图像就没事？-&gt;是否是对于10bit图像，有某种填0的机制？而8bit就会有内存越界的问题？）\n6 数组与指针的区别","dateCreated":"2019-12-12T23:23:20+08:00","dateModified":"2020-01-01T00:47:07+08:00","datePublished":"2019-12-12T23:23:20+08:00","description":"1用malloc分配内存\n1double* lut = (double*) malloc(sizeof(double)*d.samples);\n\nsizeof(double)=8\n21data = malloc(sizeof(d));\n\n而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）\nPS：在HomeOfVapourSynthEvolution的Curve.cpp，能看到这种“成对”的模式，用malloc和calloc来分配内存的变量都用free做了释放。相比之下，我自己该的代码，在新定义lut这个变量时，用了malloc，却没有用free，而是用delete去删除的。\ndelete不仅释放内存，而且会调用析构函数，而free不会调用析构函数。","headline":"日记 2019.12.12","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/12/day-191212/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/12/day-191212/"}</script>
     <meta name="description" content="1用malloc分配内存 1double* lut = (double*) malloc(sizeof(double)*d.samples);  sizeof(double)=8 21data = malloc(sizeof(d));  而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？） PS：在HomeOfV">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="日记（2019.12.12）">
+<meta property="og:title" content="日记 2019.12.12">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;12&#x2F;day-191212&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="1用malloc分配内存 1double* lut = (double*) malloc(sizeof(double)*d.samples);  sizeof(double)=8 21data = malloc(sizeof(d));  而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？） PS：在HomeOfV">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-12T15:25:07.155Z">
+<meta property="og:updated_time" content="2019-12-31T16:47:07.231Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,7 +210,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            日记（2019.12.12）
+            日记 2019.12.12
         </h1>
     
     
@@ -293,8 +293,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/14/day-191213/"
-                    data-tooltip="日记（2019.12.13）"
-                    aria-label="PREVIOUS: 日记（2019.12.13）"
+                    data-tooltip="日记 2019.12.13"
+                    aria-label="PREVIOUS: 日记 2019.12.13"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -307,8 +307,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/11/day-191211/"
-                    data-tooltip="日记（2019.12.11）"
-                    aria-label="NEXT: 日记（2019.12.11）"
+                    data-tooltip="日记 2019.12.11"
+                    aria-label="NEXT: 日记 2019.12.11"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -393,7 +393,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 
@@ -409,8 +409,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/14/day-191213/"
-                    data-tooltip="日记（2019.12.13）"
-                    aria-label="PREVIOUS: 日记（2019.12.13）"
+                    data-tooltip="日记 2019.12.13"
+                    aria-label="PREVIOUS: 日记 2019.12.13"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -423,8 +423,8 @@
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
                     href="/2019/12/11/day-191211/"
-                    data-tooltip="日记（2019.12.11）"
-                    aria-label="NEXT: 日记（2019.12.11）"
+                    data-tooltip="日记 2019.12.11"
+                    aria-label="NEXT: 日记 2019.12.11"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>

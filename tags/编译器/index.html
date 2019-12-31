@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Tag: 密钥 - 308实验室</title>
+    <title>Tag: 编译器 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
@@ -14,7 +14,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="308实验室">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;%E5%AF%86%E9%92%A5&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;%E7%BC%96%E8%AF%91%E5%99%A8&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -210,17 +210,17 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/11/03/git-use-1/"
-                            aria-label=": Git的使用：创建SSH key、多账号共存及提交代码"
+                            href="/2019/11/25/gcc-use-1/"
+                            aria-label=": Windows下使用gcc/g++编译器"
                         >
-                            Git的使用：创建SSH key、多账号共存及提交代码
+                            Windows下使用gcc/g++编译器
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-11-03T12:33:32+08:00">
+    <time datetime="2019-11-25T23:37:03+08:00">
 	
-		    Nov 03, 2019
+		    Nov 25, 2019
     	
     </time>
     
@@ -235,26 +235,16 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h2 id="创建SSH-key"><a href="#创建SSH-key" class="headerlink" title="创建SSH key"></a>创建SSH key</h2><h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>在Windows下，使用Git bash，创建秘钥。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>在这一步可以使用<code>-C &#39;comment&#39;</code>对秘钥进行注释。一些教程中要求在<code>-C</code>后写邮箱，其实写什么都可以，不写也行，注释而已。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
-
-<p>默认的密钥为2048位，可以使用<code>-b</code>指定密钥位数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
-
-<p>之后会确认密钥文件的存放位置和文件名，如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file in which to save the key (/c/Users/UserName/.ssh/id_rsa):</span><br></pre></td></tr></table></figure>
-
-<p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
-<p>之后会要求设置密码，回车则密码留空。</p>
-<p>看到<code>The key&#39;s randomart image is:</code>和创建密钥时的随机图像，即为创建成功。</p>
+                    <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
                     
                         <a
-                            href="/2019/11/03/git-use-1/"
+                            href="/2019/11/25/gcc-use-1/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": Git的使用：创建SSH key、多账号共存及提交代码"
+                            aria-label=": Windows下使用gcc/g++编译器"
                         >
                             Continue reading
                         </a>
@@ -280,7 +270,7 @@
                 <footer id="footer" class="main-content-wrap">
     <span class="copyrights">
         Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
-        &copy; 2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
     </span>
 </footer>
 
