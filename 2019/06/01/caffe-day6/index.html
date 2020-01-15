@@ -1,0 +1,584 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>Day6 手写数字识别 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"《21天实战Caffe》学习笔记第6天\n练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh\n\n数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。\n12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh\n\n修改训练参数由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。\n在~/caffe/examples/cifar10文件件下，打开cifar10_full_solver.prototxt，将最后的solve mode改为CPU模式。\n12# solver mode: CPU or GPUsolver_mode: CPU\n\n\n\n进行训练Cifar10示例提供了多种训练脚本，这里使用train_full.sh进行训练，上一步中修改的参数文件同样是该训练脚本所对应的参数文件。\n1$ ./train_full.sh\n\n训练过程在虚拟机中用CPU训练了6h 10min，仍未完成，放弃。\n虚拟机的CPU分配为2*8，但在训练中只有两个核心在工作：主力核心，一个线程占用20-40%，另一个线程占用约80%；另一个核心，两个线程占用均在20%上下波动。\n所以，是我在CPU分配上的理解不对，还是“在原有虚拟机文件上新建虚拟机”导致只能沿用原有虚拟机的CPU分配方式（原有虚拟机的CPU分配是2*2）？根据上述CPU占用情况，似乎是后者。\n结果分析（TODO）\n收尾工作完成训练和分析，删除数据文件，以节省硬盘空间。\n","dateCreated":"2019-06-01T19:28:24+08:00","dateModified":"2020-01-15T23:38:39+08:00","datePublished":"2019-06-01T19:28:24+08:00","description":"《21天实战Caffe》学习笔记第6天\n练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh\n\n数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。\n12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh\n\n修改训练参数由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。\n在~/caffe/examples/cifar10文件件下，打开cifar10_full_solver.prototxt，将最后的solve mode改为CPU模式。\n12# solver mode: CPU or GPUsolver_mode: CPU","headline":"Day6 手写数字识别","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/01/caffe-day6/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/01/caffe-day6/","keywords":"Caffe"}</script>
+    <meta name="description" content="《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~&#x2F;caffe&#x2F;data&#x2F;cifar10$ .&#x2F;get_cifar10.sh  数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~&#x2F;caffe&#x2F;examples&#x2F;cifar10$ .&#x2F;create_cifar10.sh  修改训练参数由于在虚拟机下运行，无法使">
+<meta name="keywords" content="Caffe">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Day6 手写数字识别">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;01&#x2F;caffe-day6&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~&#x2F;caffe&#x2F;data&#x2F;cifar10$ .&#x2F;get_cifar10.sh  数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~&#x2F;caffe&#x2F;examples&#x2F;cifar10$ .&#x2F;create_cifar10.sh  修改训练参数由于在虚拟机下运行，无法使">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-15T15:38:39.063Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Day6 手写数字识别
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-06-01T19:28:24+08:00">
+	
+		    Jun 01, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>《21天实战Caffe》学习笔记第6天</p>
+<h3 id="练习题3：完成Caffe-Cifar10示例"><a href="#练习题3：完成Caffe-Cifar10示例" class="headerlink" title="练习题3：完成Caffe Cifar10示例"></a>练习题3：完成Caffe Cifar10示例</h3><h4 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/caffe/data/cifar10</span><br><span class="line">$ ./get_cifar10.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据的格式转换"><a href="#数据的格式转换" class="headerlink" title="数据的格式转换"></a>数据的格式转换</h4><p>将下载的数据集转换为caffe支持的lmdb格式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/caffe/examples/cifar10</span><br><span class="line">$ ./create_cifar10.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改训练参数"><a href="#修改训练参数" class="headerlink" title="修改训练参数"></a>修改训练参数</h4><p>由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。</p>
+<p>在<code>~/caffe/examples/cifar10</code>文件件下，打开<code>cifar10_full_solver.prototxt</code>，将最后的<code>solve mode</code>改为CPU模式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># solver mode: CPU or GPU</span></span><br><span class="line">solver_mode: CPU</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h4 id="进行训练"><a href="#进行训练" class="headerlink" title="进行训练"></a>进行训练</h4><p>Cifar10示例提供了多种训练脚本，这里使用<code>train_full.sh</code>进行训练，上一步中修改的参数文件同样是该训练脚本所对应的参数文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./train_full.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h4><p>在虚拟机中用CPU训练了6h 10min，仍未完成，放弃。</p>
+<p>虚拟机的CPU分配为2*8，但在训练中只有两个核心在工作：主力核心，一个线程占用20-40%，另一个线程占用约80%；另一个核心，两个线程占用均在20%上下波动。</p>
+<p>所以，是我在CPU分配上的理解不对，还是“在原有虚拟机文件上新建虚拟机”导致只能沿用原有虚拟机的CPU分配方式（原有虚拟机的CPU分配是2*2）？根据上述CPU占用情况，似乎是后者。</p>
+<h4 id="结果分析"><a href="#结果分析" class="headerlink" title="结果分析"></a>结果分析</h4><p>（TODO）</p>
+<h4 id="收尾工作"><a href="#收尾工作" class="headerlink" title="收尾工作"></a>收尾工作</h4><p>完成训练和分析，删除数据文件，以节省硬盘空间。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Caffe/" rel="tag">Caffe</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/06/01/caffe-day7/"
+                    data-tooltip="Day7 Caffe代码梳理"
+                    aria-label="PREVIOUS: Day7 Caffe代码梳理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2019/06/01/caffe-day7/"
+                    data-tooltip="Day7 Caffe代码梳理"
+                    aria-label="PREVIOUS: Day7 Caffe代码梳理"
+                >
+                    
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/06/01/caffe-day6/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/06/01/caffe-day6/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/06/01/caffe-day6/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2019/06/01/caffe-day6/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+    
+
+
+
+
+    </body>
+</html>
