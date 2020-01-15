@@ -243,7 +243,7 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__GNUC__) || defined(__clang__)</span></span><br></pre></td></tr></table></figure>
 
 <p>这是条件编译的意思</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_WIN32    // Windows</span><br><span class="line">__linux   // Linux</span><br><span class="line"></span><br><span class="line">__clang__ // Clang</span><br><span class="line">__GNUC__  // GCC（需要注意的是Clang也会定义这个宏）</span><br><span class="line">_MSC_VER  // MSVC</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_WIN32    <span class="comment">// Windows</span></span><br><span class="line">__linux   <span class="comment">// Linux</span></span><br><span class="line"></span><br><span class="line">__clang__ <span class="comment">// Clang</span></span><br><span class="line">__GNUC__  <span class="comment">// GCC（需要注意的是Clang也会定义这个宏）</span></span><br><span class="line">_MSC_VER  <span class="comment">// MSVC</span></span><br></pre></td></tr></table></figure>
 
 <p>所以我在vs代码中看到的，只是为了满足不同的编译器。</p>
                     
