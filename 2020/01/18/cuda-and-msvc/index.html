@@ -6,21 +6,21 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Windows下CUDA兼容性的问题——珍爱生命，远离MSVC - 308实验室</title>
+    <title>Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"前几天把CUDA 9.1升级到了CUDA 9.2，以便和Pytorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。\n…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。\n今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，CUDA 9.2: “NVIDIA Installer Failed”。\n在C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v9.2\\include\\crt\\host_config.h的131行开始，有如下语句。\n123#if _MSC_VER &lt; 1600 || _MSC_VER &gt; 1913#error -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!\n\n而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。\n","dateCreated":"2020-01-18T14:43:40+08:00","dateModified":"2020-01-18T15:12:58+08:00","datePublished":"2020-01-18T14:43:40+08:00","description":"","headline":"Windows下CUDA兼容性的问题——珍爱生命，远离MSVC","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/01/18/cuda-and-msvc/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/01/18/cuda-and-msvc/","keywords":"CUDA"}</script>
-    <meta name="description" content="前几天把CUDA 9.1升级到了CUDA 9.2，以便和Pytorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。 …除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。 今天去用CMake编译时，拿libtorch">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。\n…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。\n今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，CUDA 9.2: “NVIDIA Installer Failed”。\n在C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v9.2\\include\\crt\\host_config.h的131行开始，有如下语句。\n123#if _MSC_VER &lt; 1600 || _MSC_VER &gt; 1913#error -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!\n\n而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。\n\n\n升级到CUDA 10.1这次安装倒没出什么问题，无脑点next就OK了。\n12345678Installed:     - Nsight for Visual Studio 2019     - Nsight Monitor and HUD LauncherNot Installed:     - Nsight for Visual Studio 2017       Reason: VS2017 was not found     - Nsight for Visual Studio 2015       Reason: VS2015 was not found\n\n看到上面这样的提示，还是很放心的。然后把Python版和C++版的PyTorch都重装成CUDA 10.1版本的。\n虽然说远离MSVC…但在Windows平台上…不得不低头额…还是真香。\n编译LibTorch的示例示例在这里。\ncpp和CMakeLisits.txt的内容copy过来，编译。\n123mkdir build &amp; cd buildcmake ..cmake --build . --config Release\n\n在第二步和官方示例不一样，省了设置路径（其实是我忘了），官方示例是这样的。\n1cmake -DCMAKE_PREFIX_PATH=/absolute/path/to/libtorch ..\n\n因为已经把libtorch添加进了环境变量，所以省去也没关系吧。\n虽然还是没有看到Makefile，但已经编译好了exe。只是这个Release文件夹体积太吓人了，把cuDNN相关的dll、torch和torch_python的本体dll都复制进来了…（诶，话说为什么要有torch_python.dll？）\n最后纪念一下我编译出来的第一个C++版PyTorch代码。\n12345λ cd Releaseλ example-app 0.0935  0.2273  0.5856 0.0627  0.0996  0.7945[ CPUFloatType&#123;2,3&#125; ]\n\nLibTorch的模型调用与预测这里没太多好说的，照着官方教程跑了一遍。\n载入模型\n12λ libtorch-test model.ptok\n\n模型预测\n1234λ libtorch-test &quot;PATH/TO/model.pt&quot;-0.1862  0.3385 -0.3066 -0.3085 -0.3040[ CPUFloatType&#123;1,5&#125; ]ok\n\n代码上没遇到明显的问题，只是概念上要明白，虽然模型都是.pt的后缀，但PyTorch的Python前端和C++前端的模型格式并不一样，Python得到的模型，不能直接在C++中载入，需要转换格式。\n关于模型，额外的话顺带一提，在纯Python前端的项目，经常看到model文件夹下只是.py文件，这是生成模型的代码，而不是模型本身啊。\n","dateCreated":"2020-01-18T14:43:40+08:00","dateModified":"2020-01-18T21:51:20+08:00","datePublished":"2020-01-18T14:43:40+08:00","description":"前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。\n…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。\n今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，CUDA 9.2: “NVIDIA Installer Failed”。\n在C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v9.2\\include\\crt\\host_config.h的131行开始，有如下语句。\n123#if _MSC_VER &lt; 1600 || _MSC_VER &gt; 1913#error -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!\n\n而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。","headline":"Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/01/18/cuda-and-msvc/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/01/18/cuda-and-msvc/","keywords":"CUDA"}</script>
+    <meta name="description" content="前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。 …除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。 今天去用CMake编译时，拿libtorch">
 <meta name="keywords" content="CUDA">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Windows下CUDA兼容性的问题——珍爱生命，远离MSVC">
+<meta property="og:title" content="Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;18&#x2F;cuda-and-msvc&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="前几天把CUDA 9.1升级到了CUDA 9.2，以便和Pytorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。 …除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。 今天去用CMake编译时，拿libtorch">
+<meta property="og:description" content="前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。 …除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。 今天去用CMake编译时，拿libtorch">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-18T07:12:58.081Z">
+<meta property="og:updated_time" content="2020-01-18T13:51:20.191Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,7 +211,7 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Windows下CUDA兼容性的问题——珍爱生命，远离MSVC
+            Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC
         </h1>
     
     
@@ -236,13 +236,41 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>前几天把CUDA 9.1升级到了CUDA 9.2，以便和Pytorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。</p>
+            <p>前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。</p>
 <p>…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。</p>
 <p>今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，<a href="https://devtalk.nvidia.com/default/topic/1035794/cuda-setup-and-installation/cuda-9-2-quot-nvidia-installer-failed-quot-/2" target="_blank" rel="noopener">CUDA 9.2: “NVIDIA Installer Failed”</a>。</p>
 <p>在<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include\crt\host_config.h</code>的131行开始，有如下语句。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> _MSC_VER <span class="meta-string">&lt; 1600 || _MSC_VER &gt; 1913</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!</span></span><br></pre></td></tr></table></figure>
 
 <p>而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。</p>
+<a id="more"></a>
+
+<h3 id="升级到CUDA-10-1"><a href="#升级到CUDA-10-1" class="headerlink" title="升级到CUDA 10.1"></a>升级到CUDA 10.1</h3><p>这次安装倒没出什么问题，无脑点next就OK了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Installed:</span><br><span class="line">     - Nsight for Visual Studio 2019</span><br><span class="line">     - Nsight Monitor and HUD Launcher</span><br><span class="line">Not Installed:</span><br><span class="line">     - Nsight for Visual Studio 2017</span><br><span class="line">       Reason: VS2017 was not found</span><br><span class="line">     - Nsight for Visual Studio 2015</span><br><span class="line">       Reason: VS2015 was not found</span><br></pre></td></tr></table></figure>
+
+<p>看到上面这样的提示，还是很放心的。然后把Python版和C++版的PyTorch都重装成CUDA 10.1版本的。</p>
+<p>虽然说远离MSVC…但在Windows平台上…不得不低头额…还是真香。</p>
+<h3 id="编译LibTorch的示例"><a href="#编译LibTorch的示例" class="headerlink" title="编译LibTorch的示例"></a>编译LibTorch的示例</h3><p>示例在<a href="https://pytorch.org/cppdocs/installing.html" target="_blank" rel="noopener">这里</a>。</p>
+<p>cpp和CMakeLisits.txt的内容copy过来，编译。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir build &amp; cd build</span><br><span class="line">cmake ..</span><br><span class="line">cmake --build . --config Release</span><br></pre></td></tr></table></figure>
+
+<p>在第二步和官方示例不一样，省了设置路径（其实是我忘了），官方示例是这样的。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cmake -DCMAKE_PREFIX_PATH=/absolute/path/to/libtorch ..</span><br></pre></td></tr></table></figure>
+
+<p>因为已经把libtorch添加进了环境变量，所以省去也没关系吧。</p>
+<p>虽然还是没有看到Makefile，但已经编译好了exe。只是这个<code>Release</code>文件夹体积太吓人了，把cuDNN相关的dll、torch和torch_python的本体dll都复制进来了…（诶，话说为什么要有<code>torch_python.dll</code>？）</p>
+<p>最后纪念一下我编译出来的第一个C++版PyTorch代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">λ cd Release</span><br><span class="line">λ example-app</span><br><span class="line"> 0.0935  0.2273  0.5856</span><br><span class="line"> 0.0627  0.0996  0.7945</span><br><span class="line">[ CPUFloatType&#123;2,3&#125; ]</span><br></pre></td></tr></table></figure>
+
+<h3 id="LibTorch的模型调用与预测"><a href="#LibTorch的模型调用与预测" class="headerlink" title="LibTorch的模型调用与预测"></a>LibTorch的模型调用与预测</h3><p>这里没太多好说的，照着<a href="https://pytorch.org/tutorials/advanced/cpp_export.html" target="_blank" rel="noopener">官方教程</a>跑了一遍。</p>
+<p>载入模型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ libtorch-test model.pt</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
+
+<p>模型预测</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">λ libtorch-test &quot;PATH/TO/model.pt&quot;</span><br><span class="line">-0.1862  0.3385 -0.3066 -0.3085 -0.3040</span><br><span class="line">[ CPUFloatType&#123;1,5&#125; ]</span><br><span class="line">ok</span><br></pre></td></tr></table></figure>
+
+<p>代码上没遇到明显的问题，只是概念上要明白，虽然模型都是.pt的后缀，但PyTorch的Python前端和C++前端的模型格式并不一样，Python得到的模型，不能直接在C++中载入，需要转换格式。</p>
+<h4 id="关于模型，额外的话"><a href="#关于模型，额外的话" class="headerlink" title="关于模型，额外的话"></a>关于模型，额外的话</h4><p>顺带一提，在纯Python前端的项目，经常看到<code>model</code>文件夹下只是.py文件，这是生成模型的代码，而不是模型本身啊。</p>
 
             
 
