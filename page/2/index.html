@@ -209,6 +209,61 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/12/14/day-191213/"
+                            aria-label=": 日记 2019.12.13"
+                        >
+                            日记 2019.12.13
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-14T23:03:08+08:00">
+	
+		    Dec 14, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-飞浆开始"><a href="#1-飞浆开始" class="headerlink" title="1 飞浆开始"></a>1 飞浆开始</h3><p>看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。</p>
+<p>感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的<code>.proto</code>储存格式。</p>
+<p>LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。</p>
+<p>而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写这种Python“前端”了。</p>
+<h3 id="2-Next"><a href="#2-Next" class="headerlink" title="2 Next"></a>2 Next</h3><p>既然是将算法复现，那我趁热把熟悉的手写数字识别和之前大作业的文章内容理解拿过来用一下。</p>
+                    
+                        <a
+                            href="/2019/12/14/day-191213/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 日记 2019.12.13"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/12/12/day-191212/"
                             aria-label=": 日记 2019.12.12"
                         >
@@ -348,7 +403,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
 <p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
 <p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
 <p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
@@ -711,61 +766,6 @@
                             href="/2019/10/20/mxnet-install-win/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/20/from-avs-to-vs/"
-                            aria-label=": 从Avisynth到VapourSynth：一些方法的迁移"
-                        >
-                            从Avisynth到VapourSynth：一些方法的迁移
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-20T10:48:29+08:00">
-	
-		    Oct 20, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。</p>
-<p>因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。</p>
-<p>有什么错误的地方还请大家指正~</p>
-<p>默认import如下内容。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> vapoursynth <span class="keyword">as</span> vs</span><br><span class="line">core = vs.get_core()</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mvsfunc <span class="keyword">as</span> mvf</span><br><span class="line"><span class="keyword">import</span> havsfunc <span class="keyword">as</span> haf</span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2019/10/20/from-avs-to-vs/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 从Avisynth到VapourSynth：一些方法的迁移"
                         >
                             Continue reading
                         </a>

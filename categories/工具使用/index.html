@@ -210,6 +210,66 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/01/18/cuda-and-msvc/"
+                            aria-label=": Windows下CUDA兼容性的问题——珍爱生命，远离MSVC"
+                        >
+                            Windows下CUDA兼容性的问题——珍爱生命，远离MSVC
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-01-18T14:43:40+08:00">
+	
+		    Jan 18, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>前几天把CUDA 9.1升级到了CUDA 9.2，以便和Pytorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。</p>
+<p>…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。</p>
+<p>今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，<a href="https://devtalk.nvidia.com/default/topic/1035794/cuda-setup-and-installation/cuda-9-2-quot-nvidia-installer-failed-quot-/2" target="_blank" rel="noopener">CUDA 9.2: “NVIDIA Installer Failed”</a>。</p>
+<p>在<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include\crt\host_config.h</code>的131行开始，有如下语句。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> _MSC_VER <span class="meta-string">&lt; 1600 || _MSC_VER &gt; 1913</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!</span></span><br></pre></td></tr></table></figure>
+
+<p>而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。</p>
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/01/18/cuda-and-msvc/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/11/25/gcc-use-1/"
                             aria-label=": Windows下使用gcc/g++编译器"
                         >
@@ -235,7 +295,7 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h3 id="VS：从入门到放弃"><a href="#VS：从入门到放弃" class="headerlink" title="VS：从入门到放弃"></a>VS：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
 <p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
 <p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
 <p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
