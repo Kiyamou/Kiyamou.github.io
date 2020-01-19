@@ -209,6 +209,68 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/01/19/pytorch-model-waifu2x/"
+                            aria-label=": PyTorch流水账与基于Torch的Waifu2x代码分析"
+                        >
+                            PyTorch流水账与基于Torch的Waifu2x代码分析
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-01-19T22:29:10+08:00">
+	
+		    Jan 19, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）" target="_blank" rel="noopener">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
+<p>2.字面上，bias是偏差的意思。</p>
+<blockquote>
+<p>bias(<code>tensor</code>) - 卷积的偏置系数，大小是（<code>out_channel</code>）</p>
+</blockquote>
+<p>3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。</p>
+<p>现在的任务是明白网络内容，网络结构保存了什么信息。</p>
+<h3 id="模型保存的内容"><a href="#模型保存的内容" class="headerlink" title="模型保存的内容"></a>模型保存的内容</h3><ul>
+<li>网络的结构和模型参数</li>
+<li>只保存网络的模型参数</li>
+</ul>
+<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。</p>
+                    
+                        <a
+                            href="/2020/01/19/pytorch-model-waifu2x/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": PyTorch流水账与基于Torch的Waifu2x代码分析"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/01/18/cuda-and-msvc/"
                             aria-label=": Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
                         >
@@ -716,64 +778,6 @@
                             Continue reading
                         </a>
                         
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/12/14/day-191214/"
-                            aria-label=": 日记 2019.12.14"
-                        >
-                            日记 2019.12.14
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-14T23:04:12+08:00">
-	
-		    Dec 14, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>继续基础知识</p>
-<p>“C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。”</p>
-<p>“C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 <strong>static</strong> 变量。”</p>
-<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>开始刷洛谷…明明是给中学生做的题…</p>
-<p>也开始Leetcode，但感觉有点难…</p>
-
-                    
-                    
-                        <p>
-                            <a
-                                href="/2019/12/14/day-191214/#post-footer"
-                                class="postShorten-excerpt_link link"
-                                aria-label=""
-                            >
-                                Comment and share
-                            </a>
-                        </p>
                     
                 </div>
             

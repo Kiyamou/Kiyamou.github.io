@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>PyTorch流水账与基于Torch的Waifu2x代码分析 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）\n2.字面上，bias是偏差的意思。\n\nbias(tensor) - 卷积的偏置系数，大小是（out_channel）\n\n3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。\n现在的任务是明白网络内容，网络结构保存了什么信息。\n模型保存的内容\n网络的结构和模型参数\n只保存网络的模型参数\n\n在waifu2x的appendix/arch/cunet.txt中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。\n\n\n扫盲4.Waifu2x中vgg_7 -&gt; cunet?\n5.话说waifu-caffe中的cNet是代表什么啊，莫不就是cunet？\n6.一个灵魂发问，这些代码，抛开实用化的接口，不就是在搭网络吗？\n所以我现在学这些代码，除了我耽误之急要用的模型和前向传播相关，余下的核心，不就是怎么搭网络吗。\n7.Torch的函数\n\nSpatialZeroPadding()\n\nwaifu2x 项目结构分析\nappendix (附录 -&gt; 所以cunet.txt果然只是说明文件)\n\narch: descripte network for torch (only has two files for cunet)\n\ncaffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.\n\nGenerate prototxt of waifu2x’s cunet/upcunet arch. Training is not possible.\n\n\n其余是markdown说明和.sh文件\n\n\n\nassets\n看名字是和网站相关的，里面的文件也是html、css、js三剑客，不用管\n\ncache\n顾名思义，里面也没有内容\n\ndata\n同样没有内容，不知道这是什么套路\n\nimage_generators\n\ndots (字面上是点)\n\nOnly has a gen.lua file, which has this code. So it’s for generating images. However, I can’t understand the meanings of dots.\nBut ever, this is for cmd…So…I can ignore it now?\n12cmd:text(\"dot image generator\")image.save(path.join(opt.o, i .. \".png\"), img)\n\nimages\nUsing for description, although some images aren’t used in readme, yet they all seems to used to show the networks. \n\nlayer_outputs folder\n\nOther images and .sh file\n\n\n\nlib\nSeem to build the newtwork, such as srcnn.lua, which is decripted the SRCNN?\n看了一下w2nn.Lua，感觉Lua这门语言，有点…简单得过分了，调用其他文件，用类似这样的写法，还是在代码的结尾\n1require 'Print'\n\nmodels\nmodels\n\ntools\n在这里看到了export_model.Lua，这应该能解答我对模型内容的疑惑。\nemmm，export_model.Lua开篇第一句就是\n1-- adapted from https://github.com/marcan/cl-waifu2x\n\n这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实..在Lua里这是注释的意思）\n在代码结尾有好看的东西\n12cmd:option(\"-i\", \"input.t7\", 'Specify the input torch model')cmd:option(\"-o\", \"output.json\", 'Specify the output json file')\n\n这话说的是，进去t7，出来json。依此分析，文件名export的含义，并不是把Torch用的模型输出成t7，而是把导出的t7模型转换成json。也就是说，t7和json的内容，是一致的。\n（顺带一提，看这Lua写的命令行构建代码，真是简洁啊。之前看av1的rust命令行构建代码，虽然不能说比C++更复杂，但也挺长的。）\n\nwebgen\nFor web app, can ignore it.\n\nSingle Files\n\nconvert_data.lua -&gt; 似乎是图片预处理的过程\ninstall_lua_modules.sh -&gt; 安装依赖\ntrain.lua\nwaifu2x.lua\nweb.lua\nDockerfile\nOther Files\n\n\n\n综上分析，与核心处理相关的代码，位于lib文件夹（描述网络）和主文件（调用）下，核心代码并不是很多，甚至让我觉得，比Caffe版还要简洁一点。\n回到保存的模型由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的export_model.lua。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）\n1io.write(cjson.encode(jmodules))\n\n所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测/前向传播不限于Torch（+CUDA）的框架。\n当然，json模型下那一堆小数（与t7模型中整齐的模型参数形成了对比），应该是转换过程中近似计算导致的。这应该很好理解，在Torch下的函数别的地方没有，那只能把数值算出来，用类似查表的方式提供给其他框架。\n比如Waifu2x-convert，在modelHandler.hpp/.cpp就用下面的语句读取json模型的内容（借助picojson）\n1picojson::array &amp;wOutputPlane = jsonObj[\"weight\"].get&lt;picojson::array&gt;();\n\n所以可以推测，用json模型会比用t7模型（以及直接由t7转向其他框架模型，如由t7转向pt）精度低？\n所以延伸一下，我不能偷懒（或者说瞎折腾），把json模型喂给PyTorch，而还是要借助低版本PyTorch完成从t7到pt的模型转换。但忘了在哪看到了，说PyTorch的C++前端没有明显提速、甚至慢于Python前端，很大程度是因为读取pt模型拖慢了速度。那我能否使用json模型实现精度换速度？\n…有想法，但我目前还是按套路出牌吧…\n进一步说模型各版本模型情况\n\n\n版本\n主体文件\n辅助文件\nhash一致\n\n\n\nWaifu2x\njson/t7\n/\n√\n\n\nWaifu2x-caffe\njson\nprototxt\n√\n\n\nVapourSynth-Waifu2x-caffe\njson.caffemodel\nprotobin\n×\n\n\n关于t7转pt这个别想了，用目前查到的convert_torch.py，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，convert_torch.py不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。\n不过话说回来，json模型是怎么转成caffe的caffemodel的？（这样转是为了提高读入速度吗？）\n而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json/caffemodel），代码上总归得有点区别吧。\n下一步的模型转换计划所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？\n在Waifu2x-PyTorch版中，作者自定义了函数load_pre_train_weights()用以加载json模型，所以我可以直接拿来用了？\n但Waifu2x-PyTorch的Readme中有句话很让人在意。\n\nModel inference (32 fp only) can run in cpu only.\n\n像只做预测的VapourSynth-Waifu2x-caffe、ncnn版是在GPU中运行的。这里只能在CPU中运行，这是一个可改进的地方。\nWhatever，现在情况已经明了了，基于不重复造轮子的原则和我什么不会的实际情况，我完全可以在现有Waifu2x-PyTorch的基础上，去写libtorch的前向计算。至于是写出独立项目，还是基于VapourSynth，这个可以后续再考虑。\n","dateCreated":"2020-01-19T22:29:10+08:00","dateModified":"2020-01-19T22:31:34+08:00","datePublished":"2020-01-19T22:29:10+08:00","description":"开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）\n2.字面上，bias是偏差的意思。\n\nbias(tensor) - 卷积的偏置系数，大小是（out_channel）\n\n3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。\n现在的任务是明白网络内容，网络结构保存了什么信息。\n模型保存的内容\n网络的结构和模型参数\n只保存网络的模型参数\n\n在waifu2x的appendix/arch/cunet.txt中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。","headline":"PyTorch流水账与基于Torch的Waifu2x代码分析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/01/19/pytorch-model-waifu2x/","keywords":"Torch, PyTorch"}</script>
+    <meta name="description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
+<meta name="keywords" content="Torch,PyTorch">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="PyTorch流水账与基于Torch的Waifu2x代码分析">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;19&#x2F;pytorch-model-waifu2x&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-19T14:31:34.995Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            PyTorch流水账与基于Torch的Waifu2x代码分析
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-01-19T22:29:10+08:00">
+	
+		    Jan 19, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）" target="_blank" rel="noopener">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
+<p>2.字面上，bias是偏差的意思。</p>
+<blockquote>
+<p>bias(<code>tensor</code>) - 卷积的偏置系数，大小是（<code>out_channel</code>）</p>
+</blockquote>
+<p>3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。</p>
+<p>现在的任务是明白网络内容，网络结构保存了什么信息。</p>
+<h3 id="模型保存的内容"><a href="#模型保存的内容" class="headerlink" title="模型保存的内容"></a>模型保存的内容</h3><ul>
+<li>网络的结构和模型参数</li>
+<li>只保存网络的模型参数</li>
+</ul>
+<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。</p>
+<a id="more"></a>
+
+<h3 id="扫盲"><a href="#扫盲" class="headerlink" title="扫盲"></a>扫盲</h3><p>4.Waifu2x中vgg_7 -&gt; cunet?</p>
+<p>5.话说waifu-caffe中的cNet是代表什么啊，莫不就是cunet？</p>
+<p>6.一个灵魂发问，这些代码，抛开实用化的接口，不就是在搭网络吗？</p>
+<p>所以我现在学这些代码，除了我耽误之急要用的模型和前向传播相关，余下的核心，不就是怎么搭网络吗。</p>
+<p>7.Torch的函数</p>
+<ul>
+<li><code>SpatialZeroPadding()</code></li>
+</ul>
+<h3 id="waifu2x-项目结构分析"><a href="#waifu2x-项目结构分析" class="headerlink" title="waifu2x 项目结构分析"></a>waifu2x 项目结构分析</h3><ul>
+<li><p>appendix (附录 -&gt; 所以<code>cunet.txt</code>果然只是说明文件)</p>
+<ul>
+<li><p>arch: descripte network for torch (only has two files for cunet)</p>
+</li>
+<li><p>caffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.</p>
+<blockquote>
+<p>Generate prototxt of waifu2x’s cunet/upcunet arch. Training is not possible.</p>
+</blockquote>
+</li>
+<li><p>其余是markdown说明和.sh文件</p>
+</li>
+</ul>
+</li>
+<li><p>assets</p>
+<p>看名字是和网站相关的，里面的文件也是html、css、js三剑客，不用管</p>
+</li>
+<li><p>cache</p>
+<p>顾名思义，里面也没有内容</p>
+</li>
+<li><p>data</p>
+<p>同样没有内容，不知道这是什么套路</p>
+</li>
+<li><p>image_generators</p>
+<ul>
+<li>dots (字面上是点)</li>
+</ul>
+<p>Only has a gen.lua file, which has this code. So it’s for generating images. However, I can’t understand the meanings of dots.</p>
+<p>But ever, this is for cmd…So…I can ignore it now?</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmd:text(<span class="string">"dot image generator"</span>)</span><br><span class="line">image.save(<span class="built_in">path</span>.join(opt.o, i .. <span class="string">".png"</span>), img)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>images</p>
+<p>Using for description, although some images aren’t used in readme, yet they all seems to used to show the networks. </p>
+<ul>
+<li><p>layer_outputs folder</p>
+</li>
+<li><p>Other images and .sh file</p>
+</li>
+</ul>
+</li>
+<li><p>lib</p>
+<p>Seem to build the newtwork, such as <code>srcnn.lua</code>, which is decripted the SRCNN?</p>
+<p>看了一下w2nn.Lua，感觉Lua这门语言，有点…简单得过分了，调用其他文件，用类似这样的写法，还是在代码的结尾</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span> <span class="string">'Print'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>models</p>
+<p>models</p>
+</li>
+<li><p>tools</p>
+<p>在这里看到了<code>export_model.Lua</code>，这应该能解答我对模型内容的疑惑。</p>
+<p>emmm，<code>export_model.Lua</code>开篇第一句就是</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- adapted from https://github.com/marcan/cl-waifu2x</span></span><br></pre></td></tr></table></figure>
+
+<p>这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实..在Lua里这是注释的意思）</p>
+<p>在代码结尾有好看的东西</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmd:option(<span class="string">"-i"</span>, <span class="string">"input.t7"</span>, <span class="string">'Specify the input torch model'</span>)</span><br><span class="line">cmd:option(<span class="string">"-o"</span>, <span class="string">"output.json"</span>, <span class="string">'Specify the output json file'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这话说的是，进去t7，出来json。依此分析，文件名<code>export</code>的含义，并不是把Torch用的模型输出成t7，而是把导出的t7模型转换成json。也就是说，t7和json的内容，是一致的。</p>
+<p>（顺带一提，看这Lua写的命令行构建代码，真是简洁啊。之前看av1的rust命令行构建代码，虽然不能说比C++更复杂，但也挺长的。）</p>
+</li>
+<li><p>webgen</p>
+<p>For web app, can ignore it.</p>
+</li>
+<li><p>Single Files</p>
+<ul>
+<li>convert_data.lua -&gt; 似乎是图片预处理的过程</li>
+<li>install_lua_modules.sh -&gt; 安装依赖</li>
+<li>train.lua</li>
+<li>waifu2x.lua</li>
+<li>web.lua</li>
+<li>Dockerfile</li>
+<li><strong><em>Other Files</em></strong></li>
+</ul>
+</li>
+</ul>
+<p>综上分析，与核心处理相关的代码，位于<code>lib</code>文件夹（描述网络）和主文件（调用）下，核心代码并不是很多，甚至让我觉得，比Caffe版还要简洁一点。</p>
+<h3 id="回到保存的模型"><a href="#回到保存的模型" class="headerlink" title="回到保存的模型"></a>回到保存的模型</h3><p>由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的<code>export_model.lua</code>。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(cjson.encode(jmodules))</span><br></pre></td></tr></table></figure>
+
+<p>所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测/前向传播不限于Torch（+CUDA）的框架。</p>
+<p>当然，json模型下那一堆小数（与t7模型中整齐的模型参数形成了对比），应该是转换过程中近似计算导致的。这应该很好理解，在Torch下的函数别的地方没有，那只能把数值算出来，用类似查表的方式提供给其他框架。</p>
+<p>比如Waifu2x-convert，在<code>modelHandler.hpp/.cpp</code>就用下面的语句读取json模型的内容（借助picojson）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">picojson::<span class="built_in">array</span> &amp;wOutputPlane = jsonObj[<span class="string">"weight"</span>].get&lt;picojson::<span class="built_in">array</span>&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>所以可以推测，用json模型会比用t7模型（以及直接由t7转向其他框架模型，如由t7转向pt）精度低？</p>
+<p>所以延伸一下，我不能偷懒（或者说瞎折腾），把json模型喂给PyTorch，而还是要借助低版本PyTorch完成从t7到pt的模型转换。但忘了在哪看到了，说PyTorch的C++前端没有明显提速、甚至慢于Python前端，很大程度是因为读取pt模型拖慢了速度。那我能否使用json模型实现精度换速度？</p>
+<p>…有想法，但我目前还是按套路出牌吧…</p>
+<h3 id="进一步说模型"><a href="#进一步说模型" class="headerlink" title="进一步说模型"></a>进一步说模型</h3><h4 id="各版本模型情况"><a href="#各版本模型情况" class="headerlink" title="各版本模型情况"></a>各版本模型情况</h4><table>
+<thead>
+<tr>
+<th align="center">版本</th>
+<th align="center">主体文件</th>
+<th align="center">辅助文件</th>
+<th align="center">hash一致</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Waifu2x</td>
+<td align="center">json/t7</td>
+<td align="center">/</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">Waifu2x-caffe</td>
+<td align="center">json</td>
+<td align="center">prototxt</td>
+<td align="center">√</td>
+</tr>
+<tr>
+<td align="center">VapourSynth-Waifu2x-caffe</td>
+<td align="center">json.caffemodel</td>
+<td align="center">protobin</td>
+<td align="center">×</td>
+</tr>
+</tbody></table>
+<h4 id="关于t7转pt"><a href="#关于t7转pt" class="headerlink" title="关于t7转pt"></a>关于t7转pt</h4><p>这个别想了，用目前查到的<code>convert_torch.py</code>，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，<code>convert_torch.py</code>不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。</p>
+<p>不过话说回来，json模型是怎么转成caffe的caffemodel的？（这样转是为了提高读入速度吗？）</p>
+<p>而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json/caffemodel），代码上总归得有点区别吧。</p>
+<h4 id="下一步的模型转换计划"><a href="#下一步的模型转换计划" class="headerlink" title="下一步的模型转换计划"></a>下一步的模型转换计划</h4><p>所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？</p>
+<p>在<a href="https://github.com/yu45020/Waifu2x/blob/master/Models.py" target="_blank" rel="noopener">Waifu2x-PyTorch</a>版中，作者自定义了函数<code>load_pre_train_weights()</code>用以加载json模型，所以我可以直接拿来用了？</p>
+<p>但Waifu2x-PyTorch的Readme中有句话很让人在意。</p>
+<blockquote>
+<p>Model inference (32 fp only) can run in cpu only.</p>
+</blockquote>
+<p>像只做预测的VapourSynth-Waifu2x-caffe、ncnn版是在GPU中运行的。这里只能在CPU中运行，这是一个可改进的地方。</p>
+<p>Whatever，现在情况已经明了了，基于不重复造轮子的原则<del>和我什么不会的实际情况</del>，我完全可以在现有Waifu2x-PyTorch的基础上，去写libtorch的前向计算。至于是写出独立项目，还是基于VapourSynth，这个可以后续再考虑。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/PyTorch/" rel="tag">PyTorch</a> <a class="tag tag--primary tag--small t-link" href="/tags/Torch/" rel="tag">Torch</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/01/18/cuda-and-msvc/"
+                    data-tooltip="Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                    aria-label="NEXT: Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/01/18/cuda-and-msvc/"
+                    data-tooltip="Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                    aria-label="NEXT: Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+    
+
+
+
+
+    </body>
+</html>

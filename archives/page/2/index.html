@@ -210,6 +210,64 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/12/14/day-191214/"
+                            aria-label=": 日记 2019.12.14"
+                        >
+                            日记 2019.12.14
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-12-14T23:04:12+08:00">
+	
+		    Dec 14, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>继续基础知识</p>
+<p>“C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。”</p>
+<p>“C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 <strong>static</strong> 变量。”</p>
+<h3 id="2"><a href="#2" class="headerlink" title="2"></a>2</h3><p>开始刷洛谷…明明是给中学生做的题…</p>
+<p>也开始Leetcode，但感觉有点难…</p>
+
+                    
+                    
+                        <p>
+                            <a
+                                href="/2019/12/14/day-191214/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/12/14/day-191213/"
                             aria-label=": 日记 2019.12.13"
                         >
@@ -701,69 +759,6 @@
                             href="/2019/10/24/python-Q-A/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Python Q&amp;A"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/20/mxnet-install-win/"
-                            aria-label=": Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
-                        >
-                            Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-20T17:44:19+08:00">
-	
-		    Oct 20, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>记录一下在Windows下安装GPU版MXNet时踩到的坑。</p>
-<p>MXNet安装引导：<a href="http://mxnet.incubator.apache.org/get_started" target="_blank" rel="noopener">http://mxnet.incubator.apache.org/get_started</a></p>
-<p>MXNet版本选择master，其余根据实际情况选择。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install mxnet-cu91 --pre</span><br></pre></td></tr></table></figure>
-
-<p>安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">"import mxnet; print(mxnet.__version__)"</span></span><br></pre></td></tr></table></figure>
-
-<p>我在检测安装是否成功时，出现以下报错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\__init__.py&quot;, line 24, in &lt;module&gt;</span><br><span class="line">    from .context import Context, current_context, cpu, gpu, cpu_pinned</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\context.py&quot;, line 24, in &lt;module&gt;</span><br><span class="line">    from .base import classproperty, with_metaclass, _MXClassPropertyMetaClass</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;, line 214, in &lt;module&gt;</span><br><span class="line">    _LIB = _load_lib()</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;, line 205, in _load_lib</span><br><span class="line">    lib = ctypes.CDLL(lib_path[0], ctypes.RTLD_LOCAL)</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\ctypes\__init__.py&quot;, line 348, in __init__</span><br><span class="line">    self._handle = _dlopen(self._name, mode)</span><br><span class="line">OSError: [WinError 126] The specified module could not be found</span><br></pre></td></tr></table></figure>
-
-<p><code>OSError: [WinError 126]</code>应该是一个很通用的报错，可以理解为没有找到所需的dll。</p>
-<p>正如一位Github网友所说，这个报错只告诉你缺少dll，却不会告诉你缺少了什么dll。没办法，自力更生。</p>
-                    
-                        <a
-                            href="/2019/10/20/mxnet-install-win/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
                         >
                             Continue reading
                         </a>
