@@ -210,10 +210,68 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2020/01/15/week-202001-2/"
-                            aria-label=": 周记 2020.1.6-1.12"
+                            href="/2020/02/04/week-2020-5/"
+                            aria-label=": 周记 2020.01.27-02.02"
                         >
-                            周记 2020.1.6-1.12
+                            周记 2020.01.27-02.02
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T13:14:11+08:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
+<ul>
+<li>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</li>
+<li>头文件和库文件设置错误，64位和32位搞混</li>
+</ul>
+<h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
+<p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
+<p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
+                    
+                        <a
+                            href="/2020/02/04/week-2020-5/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.01.27-02.02"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/01/15/week-202001-2/"
+                            aria-label=": 周记 2020.01.06-01.12"
+                        >
+                            周记 2020.01.06-01.12
                         </a>
                     
                 </h1>
@@ -226,7 +284,7 @@
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
 
 
     
@@ -250,7 +308,7 @@
                         <a
                             href="/2020/01/15/week-202001-2/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 周记 2020.1.6-1.12"
+                            aria-label=": 周记 2020.01.06-01.12"
                         >
                             Continue reading
                         </a>
@@ -726,66 +784,22 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            记一次从C语言到C++的迁移——初次接触VapourSynth API
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T19:18:52+08:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
-                    
-                        <a
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
         
-        <li class="pagination-number">page 1 of 1</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/tags/C/page/2/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 1 of 2</li>
     </ul>
 </div>
 

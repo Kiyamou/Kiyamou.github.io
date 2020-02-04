@@ -6,20 +6,21 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>日记 2019.12.11 - 308实验室</title>
+    <title>周记 2020.01.27-02.02 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"如果不靠一个类似写日记的方法督促我学习，恐怕这学生阶段最后的时光也要溜走了…\nFirst《深入理解C指针》收到了，粗看了一下，收获确实很多，只是我看书的效率有点低啊…不过幸好有之前改代码的经验，配合着看，这样想似乎效率还可以。\nSecondemmm好像没有了，实验要明天才能进行下一步，至于刚看到的竞赛…emmm我早就不是十五岁的少年了，但看到这个竞赛，还是本能地激动。嘛~这样也好，整体死气沉沉地也不行。\n不过，必须冷静地看到，竞赛…应当算是一个调剂吧。我知道自己处在什么水平，不要自负也不要自卑，更不要陷入自负与自备的交织中。\n中午装好了框架，算是一个开头吧。\n\n\nThird这个12月，核心还是提升C++，快点做实验，然后能用MD画图就画一下，其余地尚不是重点。\n","dateCreated":"2019-12-11T23:26:54+08:00","dateModified":"2020-02-04T13:18:47+08:00","datePublished":"2019-12-11T23:26:54+08:00","description":"如果不靠一个类似写日记的方法督促我学习，恐怕这学生阶段最后的时光也要溜走了…\nFirst《深入理解C指针》收到了，粗看了一下，收获确实很多，只是我看书的效率有点低啊…不过幸好有之前改代码的经验，配合着看，这样想似乎效率还可以。\nSecondemmm好像没有了，实验要明天才能进行下一步，至于刚看到的竞赛…emmm我早就不是十五岁的少年了，但看到这个竞赛，还是本能地激动。嘛~这样也好，整体死气沉沉地也不行。\n不过，必须冷静地看到，竞赛…应当算是一个调剂吧。我知道自己处在什么水平，不要自负也不要自卑，更不要陷入自负与自备的交织中。\n中午装好了框架，算是一个开头吧。","headline":"日记 2019.12.11","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/11/day-191211/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/11/day-191211/"}</script>
-    <meta name="description" content="如果不靠一个类似写日记的方法督促我学习，恐怕这学生阶段最后的时光也要溜走了… First《深入理解C指针》收到了，粗看了一下，收获确实很多，只是我看书的效率有点低啊…不过幸好有之前改代码的经验，配合着看，这样想似乎效率还可以。 Secondemmm好像没有了，实验要明天才能进行下一步，至于刚看到的竞赛…emmm我早就不是十五岁的少年了，但看到这个竞赛，还是本能地激动。嘛~这样也好，整体死气沉沉地也">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n头文件和库文件设置错误，64位和32位搞混\n\n2.Debug的过程Q：Debug时，index值为-858993460\nA：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”\nQ：但我的问题是，start变量明明直接赋值为0，但在Debug过程却显示为-1。\n\n\n3.图像处理的warning 某张png图片\n1libpng warning: iCCP: cHRM chunk does not match sRGB\n\n另一张png图片报了两个warning，多了一个这个\n1libpng warning: iCPP: known incorrect sRGB profile\n\n4.__declspec(dllexport)关于__declspec(dllexport)\n一般的理解如下：\n\n__declspec(dllimport)和__declspec(dllexport)是一对的，在动态链接库中__declspec(dllexport)管导出，__declspec(dllimport)管导出，有出口也有进口\n\n","dateCreated":"2020-02-04T13:14:11+08:00","dateModified":"2020-02-04T13:17:09+08:00","datePublished":"2020-02-04T13:14:11+08:00","description":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n头文件和库文件设置错误，64位和32位搞混\n\n2.Debug的过程Q：Debug时，index值为-858993460\nA：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”\nQ：但我的问题是，start变量明明直接赋值为0，但在Debug过程却显示为-1。","headline":"周记 2020.01.27-02.02","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/04/week-2020-5/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/04/week-2020-5/","keywords":"C++"}</script>
+    <meta name="description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了… 头文件和库文件设置错误，64位和32位搞混  2.Debug的过程Q：Debug时，index值为-858993460 A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋">
+<meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="日记 2019.12.11">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;11&#x2F;day-191211&#x2F;index.html">
+<meta property="og:title" content="周记 2020.01.27-02.02">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;04&#x2F;week-2020-5&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="如果不靠一个类似写日记的方法督促我学习，恐怕这学生阶段最后的时光也要溜走了… First《深入理解C指针》收到了，粗看了一下，收获确实很多，只是我看书的效率有点低啊…不过幸好有之前改代码的经验，配合着看，这样想似乎效率还可以。 Secondemmm好像没有了，实验要明天才能进行下一步，至于刚看到的竞赛…emmm我早就不是十五岁的少年了，但看到这个竞赛，还是本能地激动。嘛~这样也好，整体死气沉沉地也">
+<meta property="og:description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了… 头文件和库文件设置错误，64位和32位搞混  2.Debug的过程Q：Debug时，index值为-858993460 A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-04T05:18:47.709Z">
+<meta property="og:updated_time" content="2020-02-04T05:17:09.786Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,14 +211,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            日记 2019.12.11
+            周记 2020.01.27-02.02
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2019-12-11T23:26:54+08:00">
+    <time datetime="2020-02-04T13:14:11+08:00">
 	
-		    Dec 11, 2019
+		    Feb 04, 2020
     	
     </time>
     
@@ -235,14 +236,27 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>如果不靠一个类似写日记的方法督促我学习，恐怕这学生阶段最后的时光也要溜走了…</p>
-<h3 id="First"><a href="#First" class="headerlink" title="First"></a>First</h3><p>《深入理解C指针》收到了，粗看了一下，收获确实很多，只是我看书的效率有点低啊…不过幸好有之前改代码的经验，配合着看，这样想似乎效率还可以。</p>
-<h3 id="Second"><a href="#Second" class="headerlink" title="Second"></a>Second</h3><p>emmm好像没有了，实验要明天才能进行下一步，至于刚看到的竞赛…emmm我早就不是十五岁的少年了，但看到这个竞赛，还是本能地激动。嘛~这样也好，整体死气沉沉地也不行。</p>
-<p>不过，必须冷静地看到，竞赛…应当算是一个调剂吧。我知道自己处在什么水平，不要自负也不要自卑，更不要陷入自负与自备的交织中。</p>
-<p>中午装好了框架，算是一个开头吧。</p>
+            <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
+<ul>
+<li>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</li>
+<li>头文件和库文件设置错误，64位和32位搞混</li>
+</ul>
+<h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
+<p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
+<p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
 <a id="more"></a>
 
-<h3 id="Third"><a href="#Third" class="headerlink" title="Third"></a>Third</h3><p>这个12月，核心还是提升C++，快点做实验，然后能用MD画图就画一下，其余地尚不是重点。</p>
+<h3 id="3-图像处理的warning"><a href="#3-图像处理的warning" class="headerlink" title="3.图像处理的warning"></a>3.图像处理的warning</h3><p> 某张png图片</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libpng warning: iCCP: cHRM chunk does not match sRGB</span><br></pre></td></tr></table></figure>
+
+<p>另一张png图片报了两个warning，多了一个这个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libpng warning: iCPP: known incorrect sRGB profile</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-declspec-dllexport"><a href="#4-declspec-dllexport" class="headerlink" title="4.__declspec(dllexport)"></a>4.<code>__declspec(dllexport)</code></h3><p>关于<code>__declspec(dllexport)</code></p>
+<p>一般的理解如下：</p>
+<blockquote>
+<p><code>__declspec(dllimport)</code>和<code>__declspec(dllexport)</code>是一对的，在动态链接库中<code>__declspec(dllexport)</code>管导出，<code>__declspec(dllimport)</code>管导出，有出口也有进口</p>
+</blockquote>
 
             
 
@@ -250,6 +264,13 @@
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a>
+
+            </div>
         
         
             <div class="post-actions-wrap">
@@ -260,9 +281,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/12/day-191212/"
-                    data-tooltip="日记 2019.12.12"
-                    aria-label="PREVIOUS: 日记 2019.12.12"
+                    href="/2020/02/04/2020-winter-holiday/"
+                    data-tooltip="2020寒假计划与回顾"
+                    aria-label="PREVIOUS: 2020寒假计划与回顾"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -274,9 +295,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/25/gcc-use-1/"
-                    data-tooltip="Windows下使用gcc/g++编译器"
-                    aria-label="NEXT: Windows下使用gcc/g++编译器"
+                    href="/2020/02/03/To-2020/"
+                    data-tooltip="To 2020"
+                    aria-label="NEXT: To 2020"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -301,7 +322,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -314,7 +335,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -327,7 +348,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -376,9 +397,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/12/12/day-191212/"
-                    data-tooltip="日记 2019.12.12"
-                    aria-label="PREVIOUS: 日记 2019.12.12"
+                    href="/2020/02/04/2020-winter-holiday/"
+                    data-tooltip="2020寒假计划与回顾"
+                    aria-label="PREVIOUS: 2020寒假计划与回顾"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -390,9 +411,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/25/gcc-use-1/"
-                    data-tooltip="Windows下使用gcc/g++编译器"
-                    aria-label="NEXT: Windows下使用gcc/g++编译器"
+                    href="/2020/02/03/To-2020/"
+                    data-tooltip="To 2020"
+                    aria-label="NEXT: To 2020"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -417,7 +438,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -430,7 +451,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -443,7 +464,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/12/11/day-191211/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/04/week-2020-5/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -477,7 +498,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/12/11/day-191211/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/04/week-2020-5/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -490,7 +511,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/12/11/day-191211/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/04/week-2020-5/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -503,7 +524,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2019/12/11/day-191211/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/04/week-2020-5/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

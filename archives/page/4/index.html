@@ -210,6 +210,120 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/06/28/caffe-day17/"
+                            aria-label=": Day17 Caffe迁移和部署"
+                        >
+                            Day17 Caffe迁移和部署
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-28T23:40:41+08:00">
+	
+		    Jun 28, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>《21天实战Caffe》学习笔记第17天</p>
+<h3 id="docker的使用"><a href="#docker的使用" class="headerlink" title="docker的使用"></a>docker的使用</h3><h4 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h4><p>主要是讲了docker的安装、配置与基本使用，内容相对而言不多。</p>
+<p>把运行docker时的log保存了下来，多少有些帮助。</p>
+<p>根据<a href="https://mirrors.tuna.tsinghua.edu.cn/help/centos/" target="_blank" rel="noopener">https://mirrors.tuna.tsinghua.edu.cn/help/centos/</a>，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。</p>
+                    
+                        <a
+                            href="/2019/06/28/caffe-day17/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Day17 Caffe迁移和部署"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/06/27/caffe-day16/"
+                            aria-label=": Day16 Caffe可视化方法"
+                        >
+                            Day16 Caffe可视化方法
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-27T18:27:29+08:00">
+	
+		    Jun 27, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>《21天实战Caffe》学习笔记第16天</p>
+<h3 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h3><p>把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。</p>
+<h3 id="模型可视化"><a href="#模型可视化" class="headerlink" title="模型可视化"></a>模型可视化</h3><h4 id="网络结构可视化"><a href="#网络结构可视化" class="headerlink" title="网络结构可视化"></a>网络结构可视化</h4><h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><p>用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-devel</span><br></pre></td></tr></table></figure>
+
+<p>numpy和<code>/caffe/python/requirements.txt</code>清单里的包，均用pip3安装的。</p>
+<p>安装时报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: matplotlib 3.1.0 has requirement python-dateutil&gt;=2.1, but you&apos;ll have python-dateutil 1.5 which is incompatible.</span><br><span class="line">ERROR: pandas 0.24.2 has requirement python-dateutil&gt;=2.5.0, but you&apos;ll have python-dateutil 1.5 which is incompatible.</span><br></pre></td></tr></table></figure>
+
+<p>因为清单里要求python-dateutil的版本不能大于2，所以出现上述问题。但只是不兼容，而上述三个包都装上了，所以先这样。</p>
+                    
+                        <a
+                            href="/2019/06/27/caffe-day16/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Day16 Caffe可视化方法"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/06/15/av1-aom/"
                             aria-label=": 编译AV1编码器aom的记录"
                         >
@@ -650,65 +764,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/01/caffe-day6/"
-                            aria-label=": Day6 手写数字识别"
-                        >
-                            Day6 手写数字识别
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-01T19:28:24+08:00">
-	
-		    Jun 01, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第6天</p>
-<h3 id="练习题3：完成Caffe-Cifar10示例"><a href="#练习题3：完成Caffe-Cifar10示例" class="headerlink" title="练习题3：完成Caffe Cifar10示例"></a>练习题3：完成Caffe Cifar10示例</h3><h4 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/caffe/data/cifar10</span><br><span class="line">$ ./get_cifar10.sh</span><br></pre></td></tr></table></figure>
-
-<h4 id="数据的格式转换"><a href="#数据的格式转换" class="headerlink" title="数据的格式转换"></a>数据的格式转换</h4><p>将下载的数据集转换为caffe支持的lmdb格式。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~/caffe/examples/cifar10</span><br><span class="line">$ ./create_cifar10.sh</span><br></pre></td></tr></table></figure>
-
-<h4 id="修改训练参数"><a href="#修改训练参数" class="headerlink" title="修改训练参数"></a>修改训练参数</h4><p>由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。</p>
-<p>在<code>~/caffe/examples/cifar10</code>文件件下，打开<code>cifar10_full_solver.prototxt</code>，将最后的<code>solve mode</code>改为CPU模式。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># solver mode: CPU or GPU</span></span><br><span class="line">solver_mode: CPU</span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2019/06/01/caffe-day6/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day6 手写数字识别"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -724,7 +779,18 @@
           </li>
         
         
-        <li class="pagination-number">page 4 of 4</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/archives/page/5/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 4 of 5</li>
     </ul>
 </div>
 
