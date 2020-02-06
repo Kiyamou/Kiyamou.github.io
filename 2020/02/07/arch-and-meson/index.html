@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>ArchLinux和Meson构建工具的使用 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。\n但这次编译VapourSynth着实让我感觉蛋疼。\n\n\n编译VapourSynth用了这么长时间的Linux，基本的编译套路也该熟悉了。一般开发者都会提供autogen.sh或者configure文件，运行一下。然后make和make install。\n12345cd vapoursynth./autogen.sh./configuremakemake install\n\n在make这一步，编译到exprfilter.cpp这个文件时，出现了一堆报错。我看了一下，exprfilter.cpp应该是针对32bit系统定义了一些常量，报的错是说这些常量没有被声明。\n这不是当然的吗？！难道编译器选择性地忽视了#ifndfe CPU_32和#endif…好像还真是，我把被#ifndfe CPU_32和#endif框起来的语句都删除后，就不报错了…\n感觉我的编译器是个智障…\n然而，继续编译，一个文件名带有avx2字样的cpp文件，编译器干脆连注释都不认识…\n搜索了一下，发现有人把GCC编译器从4.8升级到了5.3，就解决了类似不认识#ifndfe的问题。而且升级编译器，也能更好地支持C++的新标准。\n我盘算了一下，比起升级编译器，我干脆换个系统吧…之前有人说CentOS的依赖包陈旧，我在装caffe时就感觉到了（有些包需要手动编译新版本，而不能用yum直接装），而这次编译器出问题…emmm我还是尝试一下别的系统吧。\nArchLinux的安装使用这个也没啥好说的，虽然ArchLinux在Linux系统下也算是入门门槛较高的了，但教程很详尽，照着做就好。\n安装依赖使用pacman -S package，但是不能指定版本，只提供最新版。\n说起来，我的转变也是很大的：之前用最小安装的CentOS，只是好玩；现在用没有桌面的ArchLinux，也能完成实际工作了。\n因为没有装桌面，只说一下pacman给我的感受。感觉很方便，既不需要想Ubuntu那样没事敲sudo，又不需要担心CentOS提供的包没有更新，也不需要担心CentOS下的包有不一样的名字。\n顺便学了/复习了Linux下的常用命令。\nMeson与pkg-config的使用MesonMeson和ninja在ArchLinux下一键安装，基础的cmake、VapourSynth需要的pkg-config，都是一样。\n123pacman -S cmakepacman -S mesonpacman -S pkg-config\n\n只是VapourSynth需要版本限定的zimg v2.9，而pacman又只提供最新版。但我试了一下，目前最新版的zimg v2.9.2和VapourSynth R49（这个时候R49还没有发布，但我之后编译好，发现版本号已经改成R49了），至少在编译阶段没有冲突。\n目前Meson没什么好说的，因为我现在的项目，还是结构很简单的项目，而且Meson的语法简单明了。只是Meson的教程藏得有点深，推荐去Github上看，https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md 。\npkg-config关于pkg-config，我搜了一下，应该和Meson一样，也是一款跨平台的工具…但我觉得，还是只在Linux下用吧…\n使用pkg-config的项目要写一个.pc后缀的配置文件，具体到VapourSynth，就是说明了头文件的位置。这个.pc文件会在项目中提供，要自己放到usr/lib/pkgconf下面，然后使用pkg-config时就会到这里搜索。\n在我看来，这样避免了每新面对一个项目就重新配环境。\n.pc文件也容易读懂，就是通常的配置文件的内容。\n在Linux下编译VapourSynth Plugin上面的准备工作都完成后，两行命令\n12meson buildninja -C build\n\n即可完成编译，得到期待已久的libxxx.so文件。\n今天顺利用上ArchLinux，并确认编译出错源自GCC编译器的陈旧。\n成功编译VapourSynth。\n成功借助Meson在Linux下编译VapourSynth Plugin。\n虽然现在看来不算难事，但在不久的之前，还是困扰我的问题。所以，我的进步是看得见的。\n这种扎实的喜悦是一方面。而另一方面，在编译中看着跳动的命令行，感受到计算机内部是怎样运行，而且也不再把红色的Error看得不可解决，这也是感性的成长。\n","dateCreated":"2020-02-07T00:31:07+08:00","dateModified":"2020-02-07T01:33:19+08:00","datePublished":"2020-02-07T00:31:07+08:00","description":"爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。\n但这次编译VapourSynth着实让我感觉蛋疼。","headline":"ArchLinux和Meson构建工具的使用","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/07/arch-and-meson/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/07/arch-and-meson/","keywords":"编译器, 构建系统, Linux"}</script>
+    <meta name="description" content="爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。 但这次编译VapourSynth着实让我感觉蛋疼。">
+<meta name="keywords" content="编译器,构建系统,Linux">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="ArchLinux和Meson构建工具的使用">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;07&#x2F;arch-and-meson&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。 但这次编译VapourSynth着实让我感觉蛋疼。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-06T17:33:19.320Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            ArchLinux和Meson构建工具的使用
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-07T00:31:07+08:00">
+	
+		    Feb 07, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="爱恨交加的CentOS"><a href="#爱恨交加的CentOS" class="headerlink" title="爱恨交加的CentOS"></a>爱恨交加的CentOS</h3><p>我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。</p>
+<p>但这次编译VapourSynth着实让我感觉蛋疼。</p>
+<a id="more"></a>
+
+<h4 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h4><p>用了这么长时间的Linux，基本的编译套路也该熟悉了。一般开发者都会提供<code>autogen.sh</code>或者<code>configure</code>文件，运行一下。然后<code>make</code>和<code>make install</code>。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> vapoursynth</span><br><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>在<code>make</code>这一步，编译到<code>exprfilter.cpp</code>这个文件时，出现了一堆报错。我看了一下，<code>exprfilter.cpp</code>应该是针对32bit系统定义了一些常量，报的错是说这些常量没有被声明。</p>
+<p>这不是当然的吗？！难道编译器选择性地忽视了<code>#ifndfe CPU_32</code>和<code>#endif</code>…好像还真是，我把被<code>#ifndfe CPU_32</code>和<code>#endif</code>框起来的语句都删除后，就不报错了…</p>
+<p>感觉我的编译器是个智障…</p>
+<p>然而，继续编译，一个文件名带有<code>avx2</code>字样的cpp文件，编译器干脆连注释都不认识…</p>
+<p>搜索了一下，发现有人把GCC编译器从4.8升级到了5.3，就解决了类似不认识<code>#ifndfe</code>的问题。而且升级编译器，也能更好地支持C++的新标准。</p>
+<p>我盘算了一下，比起升级编译器，我干脆换个系统吧…之前有人说CentOS的依赖包陈旧，我在装caffe时就感觉到了（有些包需要手动编译新版本，而不能用yum直接装），而这次编译器出问题…emmm我还是尝试一下别的系统吧。</p>
+<h3 id="ArchLinux的安装使用"><a href="#ArchLinux的安装使用" class="headerlink" title="ArchLinux的安装使用"></a>ArchLinux的安装使用</h3><p>这个也没啥好说的，虽然ArchLinux在Linux系统下也算是入门门槛较高的了，但教程很详尽，照着做就好。</p>
+<p>安装依赖使用<code>pacman -S package</code>，但是不能指定版本，只提供最新版。</p>
+<p>说起来，我的转变也是很大的：之前用最小安装的CentOS，只是好玩；现在用没有桌面的ArchLinux，也能完成实际工作了。</p>
+<p>因为没有装桌面，只说一下<code>pacman</code>给我的感受。感觉很方便，既不需要想Ubuntu那样没事敲sudo，又不需要担心CentOS提供的包没有更新，也不需要担心CentOS下的包有不一样的名字。</p>
+<p>顺便学了/复习了Linux下的常用命令。</p>
+<h3 id="Meson与pkg-config的使用"><a href="#Meson与pkg-config的使用" class="headerlink" title="Meson与pkg-config的使用"></a>Meson与pkg-config的使用</h3><h4 id="Meson"><a href="#Meson" class="headerlink" title="Meson"></a>Meson</h4><p>Meson和ninja在ArchLinux下一键安装，基础的cmake、VapourSynth需要的pkg-config，都是一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pacman -S cmake</span><br><span class="line">pacman -S meson</span><br><span class="line">pacman -S pkg-config</span><br></pre></td></tr></table></figure>
+
+<p>只是VapourSynth需要版本限定的zimg v2.9，而<code>pacman</code>又只提供最新版。但我试了一下，目前最新版的zimg v2.9.2和VapourSynth R49（这个时候R49还没有发布，但我之后编译好，发现版本号已经改成R49了），至少在编译阶段没有冲突。</p>
+<p>目前Meson没什么好说的，因为我现在的项目，还是结构很简单的项目，而且Meson的语法简单明了。只是Meson的教程藏得有点深，推荐去Github上看，<a href="https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md" target="_blank" rel="noopener">https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md</a> 。</p>
+<h4 id="pkg-config"><a href="#pkg-config" class="headerlink" title="pkg-config"></a>pkg-config</h4><p>关于pkg-config，我搜了一下，应该和Meson一样，也是一款跨平台的工具…但我觉得，还是只在Linux下用吧…</p>
+<p>使用pkg-config的项目要写一个.pc后缀的配置文件，具体到VapourSynth，就是说明了头文件的位置。这个.pc文件会在项目中提供，要自己放到<code>usr/lib/pkgconf</code>下面，然后使用pkg-config时就会到这里搜索。</p>
+<p>在我看来，这样避免了每新面对一个项目就重新配环境。</p>
+<p>.pc文件也容易读懂，就是通常的配置文件的内容。</p>
+<h3 id="在Linux下编译VapourSynth-Plugin"><a href="#在Linux下编译VapourSynth-Plugin" class="headerlink" title="在Linux下编译VapourSynth Plugin"></a>在Linux下编译VapourSynth Plugin</h3><p>上面的准备工作都完成后，两行命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">meson build</span><br><span class="line">ninja -C build</span><br></pre></td></tr></table></figure>
+
+<p>即可完成编译，得到期待已久的<code>libxxx.so</code>文件。</p>
+<p>今天顺利用上ArchLinux，并确认编译出错源自GCC编译器的陈旧。</p>
+<p>成功编译VapourSynth。</p>
+<p>成功借助Meson在Linux下编译VapourSynth Plugin。</p>
+<p>虽然现在看来不算难事，但在不久的之前，还是困扰我的问题。所以，我的进步是看得见的。</p>
+<p>这种扎实的喜悦是一方面。而另一方面，在编译中看着跳动的命令行，感受到计算机内部是怎样运行，而且也不再把红色的Error看得不可解决，这也是感性的成长。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Linux/" rel="tag">Linux</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" rel="tag">构建系统</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E7%BC%96%E8%AF%91%E5%99%A8/" rel="tag">编译器</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/06/ported-to-vs-3/"
+                    data-tooltip="记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
+                    aria-label="NEXT: 记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/06/ported-to-vs-3/"
+                    data-tooltip="记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
+                    aria-label="NEXT: 记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/arch-and-meson/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/arch-and-meson/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/arch-and-meson/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/arch-and-meson/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+    
+
+
+
+
+    </body>
+</html>

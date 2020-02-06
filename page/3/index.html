@@ -209,6 +209,64 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/11/24/rebuild-JincResize/"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            JincResize代码的重构
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-24T14:00:58+08:00">
+	
+		    Nov 24, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>前一篇Blog记录了将原作者代码（初步）从C语言迁移到C++上的过程，以及添加8bit输入支持的方法。下一步我想模仿HomeOfVapourSynthEvolution的代码风格，对上述代码进行重构。同时，也期待能发现，我先前修改的代码运行缓慢的原因。</p>
+<p>Blog写得详细一些，这也是我学习C++基础知识的过程。</p>
+<h3 id="未完成的C语言到C-迁移"><a href="#未完成的C语言到C-迁移" class="headerlink" title="未完成的C语言到C++迁移"></a>未完成的C语言到C++迁移</h3><p>其实C语言和C++的区别还有很多。</p>
+<h4 id="C-的类型转换"><a href="#C-的类型转换" class="headerlink" title="C++的类型转换"></a>C++的类型转换</h4><p>编写VapourSynth插件，在四个<code>VS__CC</code>函数的开头，都需要进行类型转换，原始代码使用C语言风格的类型转换，类似下面这样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = (FilterData*)* instanceData;</span><br></pre></td></tr></table></figure>
+
+<p>如果让代码“更C++”一些，则使用类型转换运算符（Type Conversion Operator）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2019/11/24/rebuild-JincResize/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/11/22/learn-cpp-note-1/"
                             aria-label=": C++学习笔记之一——某培训课程的笔记"
                         >
@@ -698,70 +756,6 @@
                             href="/2019/07/04/caffe-day14/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Day14 Caffe实用工具"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/30/caffe-day19/"
-                            aria-label=": Day19 放之四海而皆准"
-                        >
-                            Day19 放之四海而皆准
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-30T22:51:07+08:00">
-	
-		    Jun 30, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第19天</p>
-<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a href="http://github.com/fzliu/style-transfer" target="_blank" rel="noopener">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
-<p>测试命令如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd style-transfer</span><br><span class="line">python style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1</span><br></pre></td></tr></table></figure>
-
-<p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
-<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: can not convert object to float64.</span><br></pre></td></tr></table></figure>
-
-<p>根据<a href="https://github.com/BVLC/caffe/issues/438" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
-<p>即在<code>style.py</code>开头添加如下语句。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io; io.use_plugin(<span class="string">'matplotlib'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>Error 1解决。</p>
-<p>（这个Error可能是我的python site-packages版本较旧的原因？）</p>
-                    
-                        <a
-                            href="/2019/06/30/caffe-day19/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day19 放之四海而皆准"
                         >
                             Continue reading
                         </a>

@@ -210,6 +210,70 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/06/30/caffe-day19/"
+                            aria-label=": Day19 放之四海而皆准"
+                        >
+                            Day19 放之四海而皆准
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-30T22:51:07+08:00">
+	
+		    Jun 30, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>《21天实战Caffe》学习笔记第19天</p>
+<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a href="http://github.com/fzliu/style-transfer" target="_blank" rel="noopener">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
+<p>测试命令如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd style-transfer</span><br><span class="line">python style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1</span><br></pre></td></tr></table></figure>
+
+<p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
+<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: can not convert object to float64.</span><br></pre></td></tr></table></figure>
+
+<p>根据<a href="https://github.com/BVLC/caffe/issues/438" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
+<p>即在<code>style.py</code>开头添加如下语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io; io.use_plugin(<span class="string">'matplotlib'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>Error 1解决。</p>
+<p>（这个Error可能是我的python site-packages版本较旧的原因？）</p>
+                    
+                        <a
+                            href="/2019/06/30/caffe-day19/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Day19 放之四海而皆准"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/06/28/caffe-day18/"
                             aria-label=": Day18 关于ILSVRC不得不说的一些事儿"
                         >
@@ -701,66 +765,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/02/caffe-day8/"
-                            aria-label=": Day8 Caffe数据结构"
-                        >
-                            Day8 Caffe数据结构
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-02T23:52:54+08:00">
-	
-		    Jun 02, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第8天</p>
-<h3 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h3><p>运行书中的测试代码，按照书中介绍的执行流程进行，遇到一些问题，如下。</p>
-<h4 id="报错1"><a href="#报错1" class="headerlink" title="报错1"></a>报错1</h4><p>执行如下编译语句时，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -o app blob_demo.cpp -I ~/caffe/include -D CPU_ONLY -I ~/caffe/.build_release/src -L ~/build/lib -lcaffe</span><br></pre></td></tr></table></figure>
-
-<p>报错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cannot find -lcaffe</span><br></pre></td></tr></table></figure>
-
-<p>解决方法是在编译前执行下列语句，将Caffe的<code>libcaffe.so</code>文件复制到系统的<code>/lib</code>文件下，否则g++编译命令中的<code>-lcaffe</code>无法执行。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp ~/caffe/build/lib/libcaffe.so /usr/local/lib</span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2019/06/02/caffe-day8/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day8 Caffe数据结构"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -847,24 +851,7 @@
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
-<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 

@@ -210,6 +210,66 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/06/02/caffe-day8/"
+                            aria-label=": Day8 Caffe数据结构"
+                        >
+                            Day8 Caffe数据结构
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-02T23:52:54+08:00">
+	
+		    Jun 02, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>《21天实战Caffe》学习笔记第8天</p>
+<h3 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h3><p>运行书中的测试代码，按照书中介绍的执行流程进行，遇到一些问题，如下。</p>
+<h4 id="报错1"><a href="#报错1" class="headerlink" title="报错1"></a>报错1</h4><p>执行如下编译语句时，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ g++ -o app blob_demo.cpp -I ~/caffe/include -D CPU_ONLY -I ~/caffe/.build_release/src -L ~/build/lib -lcaffe</span><br></pre></td></tr></table></figure>
+
+<p>报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cannot find -lcaffe</span><br></pre></td></tr></table></figure>
+
+<p>解决方法是在编译前执行下列语句，将Caffe的<code>libcaffe.so</code>文件复制到系统的<code>/lib</code>文件下，否则g++编译命令中的<code>-lcaffe</code>无法执行。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp ~/caffe/build/lib/libcaffe.so /usr/local/lib</span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2019/06/02/caffe-day8/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Day8 Caffe数据结构"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/06/01/caffe-day7/"
                             aria-label=": Day7 Caffe代码梳理"
                         >

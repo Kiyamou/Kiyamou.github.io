@@ -6,7 +6,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Tag: 编译器 - 308实验室</title>
+    <title>Tag: Linux - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
@@ -14,7 +14,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="308实验室">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;%E7%BC%96%E8%AF%91%E5%99%A8&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;Linux&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -242,119 +242,6 @@
                             href="/2020/02/07/arch-and-meson/"
                             class="postShorten-excerpt_link link"
                             aria-label=": ArchLinux和Meson构建工具的使用"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/25/gcc-use-1/"
-                            aria-label=": Windows下使用gcc/g++编译器"
-                        >
-                            Windows下使用gcc/g++编译器
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-25T23:37:03+08:00">
-	
-		    Nov 25, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
-<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
-<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
-<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
-<p>不管怎么说，改用gcc/g++。</p>
-                    
-                        <a
-                            href="/2019/11/25/gcc-use-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Windows下使用gcc/g++编译器"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/15/av1-aom/"
-                            aria-label=": 编译AV1编码器libaom的记录"
-                        >
-                            编译AV1编码器libaom的记录
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-15T18:24:58+08:00">
-	
-		    Jun 15, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="起始编译过程"><a href="#起始编译过程" class="headerlink" title="起始编译过程"></a>起始编译过程</h3><h4 id="pthread-h文件"><a href="#pthread-h文件" class="headerlink" title="pthread.h文件"></a><code>pthread.h</code>文件</h4><p>提示缺失<code>pthread.h</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Looking for pthread.h - not found</span><br></pre></td></tr></table></figure>
-
-<p>根据教程<a href="https://blog.csdn.net/qianchenglenger/article/details/16907821" target="_blank" rel="noopener">https://blog.csdn.net/qianchenglenger/article/details/16907821</a>，在windows下配置pthread。</p>
-<p>下载<code>pthreads-w32-2-9-1-release.zip</code>，由于年久失修，需要在镜像站下载<br><a href="https://sourceware.org/mirrors.html" target="_blank" rel="noopener">https://sourceware.org/mirrors.html</a>-&gt;<a href="https://mirrors.kernel.org/sourceware/pthreads-win32/" target="_blank" rel="noopener">https://mirrors.kernel.org/sourceware/pthreads-win32/</a>。</p>
-<p>具体操作只涉及<code>/Pre-built.2</code>中的文件。</p>
-<p>1.将<code>/Pre-built.2/include</code>和<code>/Pre-built.2/lib</code>的文件分别放入VS 2019的对应文件夹下。</p>
-<p>2.将<code>/Pre-built.2/dll</code>中<code>/x64</code>和<code>/x86</code>的文件分别放入<code>system32</code>和<code>SysWOW64</code>中。</p>
-                    
-                        <a
-                            href="/2019/06/15/av1-aom/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 编译AV1编码器libaom的记录"
                         >
                             Continue reading
                         </a>
