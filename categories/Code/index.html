@@ -210,10 +210,64 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2020/01/01/ported-to-vs-2/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）"
+                            href="/2020/02/06/ported-to-vs-3/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
                         >
-                            记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）
+                            记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-06T16:45:18+08:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
+<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
+<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
+                    
+                        <a
+                            href="/2020/02/06/ported-to-vs-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/01/01/ported-to-vs-2/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（二）：感受不同的API（下）"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移（二）：感受不同的API（下）
                         </a>
                     
                 </h1>
@@ -250,7 +304,7 @@
                         <a
                             href="/2020/01/01/ported-to-vs-2/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（二）"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（二）：感受不同的API（下）"
                         >
                             Continue reading
                         </a>
@@ -272,9 +326,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/12/28/ported-to-vs/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（一）：感受不同的API（上）"
                         >
-                            记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）
+                            记一次从AviSynth到VapourSynth的迁移（一）：感受不同的API（上）
                         </a>
                     
                 </h1>
@@ -304,7 +358,7 @@
                         <a
                             href="/2019/12/28/ported-to-vs/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移——感受不同的API（一）"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（一）：感受不同的API（上）"
                         >
                             Continue reading
                         </a>

@@ -1,0 +1,599 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。\n从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。\n总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。\n最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。\n\n\n神奇的优化如前面所说，我并没有发现原始avs版代码和优化avs版代码有除了速度优化之外的区别，但真的迁移了优化版代码后，上面的Bug就解决了。\n具体的分析，等我看明白了再写吧。代码改到这里，排查了手滑写错了一个循环，除了700x700这样奇怪格式外，对于YUV格式，在高位深、一般目标尺寸输入上都没有问题了。下面就是支持RGB的问题。\n在1月2号晚上和1月3号一天，都在解决支持RGB的问题，其实也就是在学相关的概念和数据结构。如同我在某个commit下面的评论中所写：“让我开始阅读VapourSynth的源码和官方plugins示例（就是vscore.cpp中的那些函数）。让我对vs api与框架有了近乎全面的认识，至少知道从头到尾是怎么计算的。”其中，数据结构的相关内容写在了这篇Blog中。\n支持RGB写一写支持RGB的代码实现。\n对于YUV格式，写一个循环，依次处理三个平面/通道即可。但我这么套在RGB上，不行，崩溃（但其实奔溃还有数据类型的问题，一开始的代码有整型处理，遇到浮点数就崩了）。让后又试着按stack格式写了代码，不循环，一个像素点依次处理三个通道，再移动到下一个像素点。像下面这样\n1234567891011121314151617ps = 3;  // plane_size，用于下面乘3，三个通道一起处理template &lt;typename T&gt;static void ResizeVerticalRGB() noexcept&#123;    for (int curPixel = 0; curPixel &lt; target_width * ps; curPixel++)    &#123;        const T* curSrcpR = srcR + curPixel * ps;        const T* curSrcpG = srcG + curPixel * ps + 1;        const T* curSrcpB = srcB + curPixel * ps + 2;        T* curDstpR = srcR + curPixel * ps;        T* curDstpG = srcG + curPixel * ps + 1;        T* curDstpB = srcB + curPixel * ps + 2;                ...    &#125;&#125;\n\n话说这改后，好像也是崩溃（或者是在关闭预览窗口后奔溃），所以放弃了，老老实实地（在process()函数中）先转换为Interleaved结构，在送到具体的Ver()中处理。\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657if (d-&gt;vi-&gt;format-&gt;colorFamily == cmYUV)&#123;    ...&#125;else&#123;    const T* srcpR = reinterpret_cast&lt;const T*&gt;(vsapi-&gt;getReadPtr(src, 0));    const T* srcpG = reinterpret_cast&lt;const T*&gt;(vsapi-&gt;getReadPtr(src, 1));    const T* srcpB = reinterpret_cast&lt;const T*&gt;(vsapi-&gt;getReadPtr(src, 2));        int src_stride = vsapi-&gt;getStride(src, 0) / sizeof(T);    int dst_stride = vsapi-&gt;getStirde(dst, 0) / sizeof(T);        T* srcInterleaved = new (std::nothrow) T[d-&gt;vi-&gt;width * d-&gt;vi-&gt;height * 3];    T* dstInterleaved = new (std::nothrow) T[d-&gt;target    * d-&gt;target     * 3];        // 将待处理的数据转换为Interleaved结构    for (int y = 0; y &lt; src_height; y++)    &#123;        for (int x = 0; x &lt; src_width; x++)        &#123;            const unsigned pos = (x + y * src_width) * 3; // 这里要乘3，因为是转成Interleaved            // 这里的RGB顺序其实无所谓，只要自洽即可，但为了显得专业，按BGR的顺序            srcInterleaved[pos] = srcpB[x];            srcInterleaved[pos + 1] = srcpG[x];            srcInterleaved[pos + 2] = srcpR[x];        &#125;        srcpB += src_stride; // src_stride ≈ src_width，完成整个帧的遍历        srcpG += src_stride;        srcpR += src_stride;    &#125;        // 核心处理    Func(dst, src, (const T*)srcInterleaved, dstInterleaved, src_stride, dst_stride, d, vsapi);        T* VS_RESTRICT dstpR = reinterpret_cast&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, 0));    T* VS_RESTRICT dstpG = reinterpret_cast&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, 1));    T* VS_RESTRICT dstpB = reinterpret_cast&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, 2));        // 将处理后的数据转换为Planar结构    for (int y = 0; y &lt; target_height; y++)    &#123;        for (int x = 0; x &lt; target_width; x++)        &#123;            const unsigned pos = (x + y * target_width) * 3;            dstpB[x] = dstInterleaved[pos];            dstpG[x] = dstInterleaved[pos + 1];            dstpR[x] = dstInterleaved[pos + 2];        &#125;        dstpB += dst_stride;        dstpG += dst_stride;        dstpR += dst_stride;    &#125;  // 此时，dst已经是Planar结构        delete[] srcInterleaved;    delete[] dstInterleaved;&#125;\n\n至此，数据结构的问题已经解决，但对于RGB输入仍不能正常处理。\n然后修正了一个蛋疼的Bug：我在写peak的时候，把1 &lt;&lt; bitsPerSample写成了1 &lt;&lt; sampleType，所以一直有问题、崩溃。改正之后，8bit RGB输入终于能看了。而16bit和32bit由于查表的范围问题，还会崩溃。\n然后将gamma_LUT声明为double。到这里，输出结果是图像中的一部分带有蓝点红点绿点（提高gamma_LUT的精度，在单个帧中，会让这些点变少，而正常图像的部分增多）。\n顺带，说一个C++的基础知识，对于auto声明，应该是确定了后就不能改了，而不能在不同变量类型间反复横跳。\n修正查表（LUT）的相关问题查表，即Look up table，在代码中一般缩写为LUT。\n论数组与指针的区别1月12号解决了上述（8bit）下图像带有红点绿点的问题。解决方法是把gamma_LUT的声明由数组变成指针。（开发版commit：a5dc85d）\n12double gamma_LUT[RGB_PIXEL_RANGE_EXTENDED];  // olddouble gamma_LUT = new (std::nothrow) duoble[RGB_PIXEL_RANGE_EXTENDED];  // new\n\n至于为什么从数组变到指针就没有问题了，这个…我猜是数组一些地方溢出了？但我尝试过加[0, 255]限制，也不能彻底解决啊。\n增加16bit支持这个更偏向于体力活，没有太多要写的。只是需要明白一个事情，在8bit处理中用到的宏常量RGB_PIXEL_RANGE_EXTENDED，是为了让8bit的计算不那么僵硬，增加中间数据的过渡，就和我们要把8bit的图像素材扩展到10bit或16bit处理是一个道理。这里定义的宏常量值为25501，相当于把8bit的计算范围扩大了100倍。\n事实上，log2(25501)介于14与15之间。所以对于喂给AreaResize的RGB输入，只有16bit（和一般不会有人用的15bit）能实现比8bit更“精细”的处理。（但话说回来，就算8bit的中间数据再精细，终归还要化为8bit，所以10bit的优势还是在的？）\n增加32bit支持与gamma参数1月13号做的事情包括增加16bit与32bit支持，增加gamma参数。\n先思考一下为要查表。就AreaResize而言，由于对RGB格式增加了Gamma校正（但我不太明白原作者为什么不给YUV格式增加Gamma校正？是一般的滤镜都不做的惯例吗？），计算量增大，不如把Gamma校正后的颜色值用查表的形式给出。\n但是，对32bit浮点数数据，由于数据过于精细，计算表格本身的计算量过大，已经不适合再查表了。而且查表的初衷是为了做Gamma校正，而无论是我查的一些资料，还是我的实际测试，在32bit下，由于精度足够高，做不做Gamma校正都没什么区别。\n所以在32bit的处理上，没有加Gamma校正，也没有做成查表的形式，直接是用到的时候再计算。\n另外，给8~16bit RGB增加了Gamma校正参数，让使用者能够自行调整Gamma校正的数值。因为Gamma校正具体用什么值，本身似乎就是需要商榷的。\n至此，面上的问题都解决了。然后整理了一下代码，就发布了。\n未来要做的bool型的函数其实我在迁移的过程中，一直都回避了一个问题。在avs版代码中，核心处理函数Ver()和Hor()都是bool型，在调用过程中会借此给一些特殊情况单独处理，以增强鲁棒性（在最开始，我以为这个判断是防止内存溢出的）。但我为了快点迁移代码，把这个问题暂时忽略了。\n代码优化了什么虽然说，优化前后的两版avs代码，都不难读懂，但这种优化的思路，值得我去学习。这是把实际项目和算法题联系起来的桥梁。况且，为什么换成优化后的代码，就没有“挑剔输入尺寸”的Bug，这个问题我还不知道。\n","dateCreated":"2020-02-06T16:45:18+08:00","dateModified":"2020-02-06T16:46:47+08:00","datePublished":"2020-02-06T16:45:18+08:00","description":"回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。\n从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。\n总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。\n最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。","headline":"记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/06/ported-to-vs-3/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/06/ported-to-vs-3/","keywords":"C++, VapourSynth"}</script>
+    <meta name="description" content="回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。 从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x9">
+<meta name="keywords" content="C++,VapourSynth">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;06&#x2F;ported-to-vs-3&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。 从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x9">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-02-06T08:46:47.596Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-02-06T16:45:18+08:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
+<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
+<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
+<a id="more"></a>
+
+<h3 id="神奇的优化"><a href="#神奇的优化" class="headerlink" title="神奇的优化"></a>神奇的优化</h3><p>如前面所说，我并没有发现原始avs版代码和优化avs版代码有除了速度优化之外的区别，但真的迁移了优化版代码后，上面的Bug就解决了。</p>
+<p>具体的分析，等我看明白了再写吧。代码改到这里，排查了手滑写错了一个循环，除了700x700这样奇怪格式外，对于YUV格式，在高位深、一般目标尺寸输入上都没有问题了。下面就是支持RGB的问题。</p>
+<p>在1月2号晚上和1月3号一天，都在解决支持RGB的问题，其实也就是在学相关的概念和数据结构。如同我在某个commit下面的评论中所写：“让我开始阅读VapourSynth的源码和官方plugins示例（就是vscore.cpp中的那些函数）。让我对vs api与框架有了近乎全面的认识，至少知道从头到尾是怎么计算的。”其中，数据结构的相关内容写在了<a href="https://kiyamou.github.io/2019/12/18/image-process-code-1/" target="_blank" rel="noopener">这篇Blog中</a>。</p>
+<h3 id="支持RGB"><a href="#支持RGB" class="headerlink" title="支持RGB"></a>支持RGB</h3><p>写一写支持RGB的代码实现。</p>
+<p>对于YUV格式，写一个循环，依次处理三个平面/通道即可。但我这么套在RGB上，不行，崩溃（但其实奔溃还有数据类型的问题，一开始的代码有整型处理，遇到浮点数就崩了）。让后又试着按stack格式写了代码，不循环，一个像素点依次处理三个通道，再移动到下一个像素点。像下面这样</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ps = <span class="number">3</span>;  <span class="comment">// plane_size，用于下面乘3，三个通道一起处理</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ResizeVerticalRGB</span><span class="params">()</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> curPixel = <span class="number">0</span>; curPixel &lt; target_width * ps; curPixel++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpR = srcR + curPixel * ps;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpG = srcG + curPixel * ps + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpB = srcB + curPixel * ps + <span class="number">2</span>;</span><br><span class="line">        T* curDstpR = srcR + curPixel * ps;</span><br><span class="line">        T* curDstpG = srcG + curPixel * ps + <span class="number">1</span>;</span><br><span class="line">        T* curDstpB = srcB + curPixel * ps + <span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>话说这改后，好像也是崩溃（或者是在关闭预览窗口后奔溃），所以放弃了，老老实实地（在<code>process()</code>函数中）先转换为Interleaved结构，在送到具体的<code>Ver()</code>中处理。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (d-&gt;vi-&gt;format-&gt;colorFamily == cmYUV)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> T* srcpR = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">const</span> T* srcpG = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">const</span> T* srcpB = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">2</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> src_stride = vsapi-&gt;getStride(src, <span class="number">0</span>) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">    <span class="keyword">int</span> dst_stride = vsapi-&gt;getStirde(dst, <span class="number">0</span>) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">    </span><br><span class="line">    T* srcInterleaved = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) T[d-&gt;vi-&gt;width * d-&gt;vi-&gt;height * <span class="number">3</span>];</span><br><span class="line">    T* dstInterleaved = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) T[d-&gt;target    * d-&gt;target     * <span class="number">3</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将待处理的数据转换为Interleaved结构</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; src_height; y++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; src_width; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">unsigned</span> pos = (x + y * src_width) * <span class="number">3</span>; <span class="comment">// 这里要乘3，因为是转成Interleaved</span></span><br><span class="line">            <span class="comment">// 这里的RGB顺序其实无所谓，只要自洽即可，但为了显得专业，按BGR的顺序</span></span><br><span class="line">            srcInterleaved[pos] = srcpB[x];</span><br><span class="line">            srcInterleaved[pos + <span class="number">1</span>] = srcpG[x];</span><br><span class="line">            srcInterleaved[pos + <span class="number">2</span>] = srcpR[x];</span><br><span class="line">        &#125;</span><br><span class="line">        srcpB += src_stride; <span class="comment">// src_stride ≈ src_width，完成整个帧的遍历</span></span><br><span class="line">        srcpG += src_stride;</span><br><span class="line">        srcpR += src_stride;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 核心处理</span></span><br><span class="line">    Func(dst, src, (<span class="keyword">const</span> T*)srcInterleaved, dstInterleaved, src_stride, dst_stride, d, vsapi);</span><br><span class="line">    </span><br><span class="line">    T* VS_RESTRICT dstpR = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">0</span>));</span><br><span class="line">    T* VS_RESTRICT dstpG = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">1</span>));</span><br><span class="line">    T* VS_RESTRICT dstpB = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">2</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将处理后的数据转换为Planar结构</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; target_height; y++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; target_width; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">unsigned</span> pos = (x + y * target_width) * <span class="number">3</span>;</span><br><span class="line">            dstpB[x] = dstInterleaved[pos];</span><br><span class="line">            dstpG[x] = dstInterleaved[pos + <span class="number">1</span>];</span><br><span class="line">            dstpR[x] = dstInterleaved[pos + <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        dstpB += dst_stride;</span><br><span class="line">        dstpG += dst_stride;</span><br><span class="line">        dstpR += dst_stride;</span><br><span class="line">    &#125;  <span class="comment">// 此时，dst已经是Planar结构</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">delete</span>[] srcInterleaved;</span><br><span class="line">    <span class="keyword">delete</span>[] dstInterleaved;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，数据结构的问题已经解决，但对于RGB输入仍不能正常处理。</p>
+<p>然后修正了一个蛋疼的Bug：我在写<code>peak</code>的时候，把<code>1 &lt;&lt; bitsPerSample</code>写成了<code>1 &lt;&lt; sampleType</code>，所以一直有问题、崩溃。改正之后，8bit RGB输入终于能看了。而16bit和32bit由于查表的范围问题，还会崩溃。</p>
+<p>然后将<code>gamma_LUT</code>声明为double。到这里，输出结果是图像中的一部分带有蓝点红点绿点（提高<code>gamma_LUT</code>的精度，在单个帧中，会让这些点变少，而正常图像的部分增多）。</p>
+<p>顺带，说一个C++的基础知识，对于<code>auto</code>声明，应该是确定了后就不能改了，而不能在不同变量类型间反复横跳。</p>
+<h3 id="修正查表（LUT）的相关问题"><a href="#修正查表（LUT）的相关问题" class="headerlink" title="修正查表（LUT）的相关问题"></a>修正查表（LUT）的相关问题</h3><p>查表，即Look up table，在代码中一般缩写为LUT。</p>
+<h4 id="论数组与指针的区别"><a href="#论数组与指针的区别" class="headerlink" title="论数组与指针的区别"></a>论数组与指针的区别</h4><p>1月12号解决了上述（8bit）下图像带有红点绿点的问题。解决方法是<strong>把<code>gamma_LUT</code>的声明由数组变成指针</strong>。（开发版commit：<code>a5dc85d</code>）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> gamma_LUT[RGB_PIXEL_RANGE_EXTENDED];  <span class="comment">// old</span></span><br><span class="line"><span class="keyword">double</span> gamma_LUT = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) duoble[RGB_PIXEL_RANGE_EXTENDED];  <span class="comment">// new</span></span><br></pre></td></tr></table></figure>
+
+<p>至于为什么从数组变到指针就没有问题了，这个…我猜是数组一些地方溢出了？但我尝试过加<code>[0, 255]</code>限制，也不能彻底解决啊。</p>
+<h4 id="增加16bit支持"><a href="#增加16bit支持" class="headerlink" title="增加16bit支持"></a>增加16bit支持</h4><p>这个更偏向于体力活，没有太多要写的。只是需要明白一个事情，在8bit处理中用到的宏常量<code>RGB_PIXEL_RANGE_EXTENDED</code>，是为了让8bit的计算不那么僵硬，增加中间数据的过渡，就和我们要把8bit的图像素材扩展到10bit或16bit处理是一个道理。这里定义的宏常量值为<code>25501</code>，相当于把8bit的计算范围扩大了100倍。</p>
+<p>事实上，<code>log2(25501)</code>介于14与15之间。所以对于喂给AreaResize的RGB输入，只有16bit（和一般不会有人用的15bit）能实现比8bit更“精细”的处理。（但话说回来，就算8bit的中间数据再精细，终归还要化为8bit，所以10bit的优势还是在的？）</p>
+<h4 id="增加32bit支持与gamma参数"><a href="#增加32bit支持与gamma参数" class="headerlink" title="增加32bit支持与gamma参数"></a>增加32bit支持与<code>gamma</code>参数</h4><p>1月13号做的事情包括增加16bit与32bit支持，增加<code>gamma</code>参数。</p>
+<p>先思考一下为要查表。就AreaResize而言，由于对RGB格式增加了Gamma校正（但我不太明白原作者为什么不给YUV格式增加Gamma校正？是一般的滤镜都不做的惯例吗？），计算量增大，不如把Gamma校正后的颜色值用查表的形式给出。</p>
+<p>但是，对32bit浮点数数据，由于数据过于精细，计算表格本身的计算量过大，已经不适合再查表了。而且查表的初衷是为了做Gamma校正，而无论是我查的一些资料，还是我的实际测试，在32bit下，由于精度足够高，做不做Gamma校正都没什么区别。</p>
+<p>所以在32bit的处理上，没有加Gamma校正，也没有做成查表的形式，直接是用到的时候再计算。</p>
+<p>另外，给8~16bit RGB增加了Gamma校正参数，让使用者能够自行调整Gamma校正的数值。因为Gamma校正具体用什么值，本身似乎就是需要商榷的。</p>
+<p>至此，面上的问题都解决了。然后整理了一下代码，就发布了。</p>
+<h3 id="未来要做的"><a href="#未来要做的" class="headerlink" title="未来要做的"></a>未来要做的</h3><h4 id="bool型的函数"><a href="#bool型的函数" class="headerlink" title="bool型的函数"></a>bool型的函数</h4><p>其实我在迁移的过程中，一直都回避了一个问题。在avs版代码中，核心处理函数<code>Ver()</code>和<code>Hor()</code>都是bool型，在调用过程中会借此给一些特殊情况单独处理，以增强鲁棒性（在最开始，我以为这个判断是防止内存溢出的）。但我为了快点迁移代码，把这个问题暂时忽略了。</p>
+<h4 id="代码优化了什么"><a href="#代码优化了什么" class="headerlink" title="代码优化了什么"></a>代码优化了什么</h4><p>虽然说，优化前后的两版avs代码，都不难读懂，但这种优化的思路，值得我去学习。这是把实际项目和算法题联系起来的桥梁。况且，为什么换成优化后的代码，就没有“挑剔输入尺寸”的Bug，这个问题我还不知道。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/04/2020-winter-holiday/"
+                    data-tooltip="2020寒假计划与回顾"
+                    aria-label="NEXT: 2020寒假计划与回顾"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/02/04/2020-winter-holiday/"
+                    data-tooltip="2020寒假计划与回顾"
+                    aria-label="NEXT: 2020寒假计划与回顾"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/06/ported-to-vs-3/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+    
+
+
+
+
+    </body>
+</html>
