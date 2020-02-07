@@ -210,10 +210,65 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/11/24/rebuild-JincResize/"
-                            aria-label=": JincResize代码的重构"
+                            href="/2019/11/25/gcc-use-1/"
+                            aria-label=": Windows下使用gcc/g++编译器"
                         >
-                            JincResize代码的重构
+                            Windows下使用gcc/g++编译器
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-25T23:37:03+08:00">
+	
+		    Nov 25, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
+                    
+                        <a
+                            href="/2019/11/25/gcc-use-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/24/rebuild-JincResize/"
+                            aria-label=": JincResize代码的重构（一）"
+                        >
+                            JincResize代码的重构（一）
                         </a>
                     
                 </h1>
@@ -247,7 +302,7 @@
                         <a
                             href="/2019/11/24/rebuild-JincResize/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": JincResize代码的重构"
+                            aria-label=": JincResize代码的重构（一）"
                         >
                             Continue reading
                         </a>
@@ -705,58 +760,6 @@
                             href="/2019/07/05/literature001/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 文献阅读 1811.12231"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/07/04/caffe-day14/"
-                            aria-label=": Day14 Caffe实用工具"
-                        >
-                            Day14 Caffe实用工具
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-07-04T23:25:52+08:00">
-	
-		    Jul 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第14天</p>
-<p>我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。</p>
-                    
-                        <a
-                            href="/2019/07/04/caffe-day14/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day14 Caffe实用工具"
                         >
                             Continue reading
                         </a>

@@ -6,21 +6,21 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>C++学习笔记之一——某培训课程的笔记 - 308实验室</title>
+    <title>JincResize代码的重构（二） - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"写在开头的话有人讲解，学习效率还是会高一些的吧。\n愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。\n\n\nDay1先说一下直观地感受，比起自学，视频更让我有了系统学习、或者说科班的感受。毕竟我自己是遇到什么问题才去学相应的内容。不过我之前的基础或者说经历，还是有些用的。老师讲到一些地方，我能和我之前的经验联系起来。\n原来C++ primer plus比C++ primer更基础\nC++的特点说到内存分配，前几天修改Jinc放大算法时还遇到过（给Data分配内存，C++中更推荐用new代替C的malloc()），联系之前用Python写作业的经历。确实是，定义一个变量，C++需要考虑内存分配和释放的问题，而Python完全不用管。所以这也是C++更高效的原因，开发者可以控制、优化内存的使用。\n命名空间（namespace）相关std标准命名空间，来自&lt;iostream&gt;，自定义命名空间则通过以下方式实现。\n1namespace space &#123; ... &#125; // 注意没有分号\n\nstruct类型struct类型是我自己接触较多的，但可能是视频里讲得不多，还是没听太明白。视频给我的感受，和定义了一个类差不都，但平时的经历让我觉得这只是给变量起了个新名字。\nOther其余就是比较基础的东西了，命名空间的调用、变量的定义、bool类型，以及在这些过程中学到的基础的代码和VS使用。\nDay2运行了一下基本的类的代码。\nDay3学习了多态、虚函数，从书中看了纯虚函数的概念。\n但回到avs版的JincResize脚本，也只是用纯虚函数把函数封装得更“严实”，我还无法理解这样做的意义。而且看上去也无关速度。（那我的dll为什么那么慢…我要掀桌子了orz…\n","dateCreated":"2019-11-22T23:30:31+08:00","dateModified":"2019-11-25T00:02:37+08:00","datePublished":"2019-11-22T23:30:31+08:00","description":"写在开头的话有人讲解，学习效率还是会高一些的吧。\n愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。","headline":"C++学习笔记之一——某培训课程的笔记","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/11/22/learn-cpp-note-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/11/22/learn-cpp-note-1/","keywords":"C++"}</script>
-    <meta name="description" content="写在开头的话有人讲解，学习效率还是会高一些的吧。 愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法\n\n\nType（来自インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細）\n__m256：容纳8个32位单精度浮点数值\n__m256d：容纳4个64位双精度浮点数值\n实际代码这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。\n对齐的问题1double* lut = (double *)_mm_malloc(sizeof(double) * d-&gt;sample, 64);\n\n_mm_malloc相比一般的malloc，增加了一个用于数据对齐的参数。具体在这里（数据对齐有助于实现向量化）有讲。\n虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的64写成32，和没有AVX优化的速度几乎一样。\n数据类型12__mm256_store_ps(lut + j * 8, rl);  // float__mm256_store_pd(lut + j * 4, rl);  // double\n\n看一下两个函数的声明\n12void _mm256_store_ps (float * mem_addr, __m256 a)void _mm256_store_pd (double * mem_addr, __m256d a)\n\n注意到第二个参数类型分别是__m256、__m256d，所以有了上述区别。\n","dateCreated":"2020-02-07T21:13:14+08:00","dateModified":"2020-02-07T21:20:30+08:00","datePublished":"2020-02-07T21:13:14+08:00","description":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法","headline":"JincResize代码的重构（二）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/","keywords":"C++"}</script>
+    <meta name="description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
 <meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="C++学习笔记之一——某培训课程的笔记">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;22&#x2F;learn-cpp-note-1&#x2F;index.html">
+<meta property="og:title" content="JincResize代码的重构（二）">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;07&#x2F;rebuild-JincResize-2&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="写在开头的话有人讲解，学习效率还是会高一些的吧。 愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。">
+<meta property="og:description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-24T16:02:37.077Z">
+<meta property="og:updated_time" content="2020-02-07T13:20:30.044Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,14 +211,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            C++学习笔记之一——某培训课程的笔记
+            JincResize代码的重构（二）
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2019-11-22T23:30:31+08:00">
+    <time datetime="2020-02-07T21:13:14+08:00">
 	
-		    Nov 22, 2019
+		    Feb 07, 2020
     	
     </time>
     
@@ -236,21 +236,30 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="写在开头的话"><a href="#写在开头的话" class="headerlink" title="写在开头的话"></a>写在开头的话</h3><p>有人讲解，学习效率还是会高一些的吧。</p>
-<p>愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。</p>
+            <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
+<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
+<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
+<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
+<p><code>_mm256_load_ps</code>：float类型输入</p>
+<p><code>_mm256_load_pd</code>：double类型输入</p>
+<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
 <a id="more"></a>
 
-<h3 id="Day1"><a href="#Day1" class="headerlink" title="Day1"></a>Day1</h3><p>先说一下直观地感受，比起自学，视频更让我有了系统学习、或者说科班的感受。毕竟我自己是遇到什么问题才去学相应的内容。不过我之前的基础或者说经历，还是有些用的。老师讲到一些地方，我能和我之前的经验联系起来。</p>
-<p><del>原来C++ primer plus比C++ primer更基础</del></p>
-<h4 id="C-的特点"><a href="#C-的特点" class="headerlink" title="C++的特点"></a>C++的特点</h4><p>说到内存分配，前几天修改Jinc放大算法时还遇到过（给Data分配内存，C++中更推荐用<code>new</code>代替C的<code>malloc()</code>），联系之前用Python写作业的经历。确实是，定义一个变量，C++需要考虑内存分配和释放的问题，而Python完全不用管。所以这也是C++更高效的原因，开发者可以控制、优化内存的使用。</p>
-<h4 id="命名空间（namespace）相关"><a href="#命名空间（namespace）相关" class="headerlink" title="命名空间（namespace）相关"></a>命名空间（namespace）相关</h4><p>std标准命名空间，来自<code>&lt;iostream&gt;</code>，自定义命名空间则通过以下方式实现。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> space &#123; ... &#125; <span class="comment">// 注意没有分号</span></span><br></pre></td></tr></table></figure>
+<h4 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h4><p>（来自<a href="https://www.xlsoft.com/jp/products/intel/compilers/manual/14/cpp/GUID-A9C3B12F-7A9A-4C8D-A6CD-9974ABC570E9.htm" target="_blank" rel="noopener">インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細</a>）</p>
+<p><code>__m256</code>：容纳8个32位单精度浮点数值</p>
+<p><code>__m256d</code>：容纳4个64位双精度浮点数值</p>
+<h4 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h4><p>这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。</p>
+<h5 id="对齐的问题"><a href="#对齐的问题" class="headerlink" title="对齐的问题"></a>对齐的问题</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span>* lut = (<span class="keyword">double</span> *)_mm_malloc(<span class="keyword">sizeof</span>(<span class="keyword">double</span>) * d-&gt;sample, <span class="number">64</span>);</span><br></pre></td></tr></table></figure>
 
-<h4 id="struct类型"><a href="#struct类型" class="headerlink" title="struct类型"></a>struct类型</h4><p>struct类型是我自己接触较多的，但可能是视频里讲得不多，还是没听太明白。视频给我的感受，和定义了一个类差不都，但平时的经历让我觉得这只是给变量起了个新名字。</p>
-<h4 id="Other"><a href="#Other" class="headerlink" title="Other"></a>Other</h4><p>其余就是比较基础的东西了，命名空间的调用、变量的定义、bool类型，以及在这些过程中学到的基础的代码和VS使用。</p>
-<h3 id="Day2"><a href="#Day2" class="headerlink" title="Day2"></a>Day2</h3><p>运行了一下基本的类的代码。</p>
-<h3 id="Day3"><a href="#Day3" class="headerlink" title="Day3"></a>Day3</h3><p>学习了多态、虚函数，从书中看了纯虚函数的概念。</p>
-<p>但回到avs版的JincResize脚本，也只是用纯虚函数把函数封装得更“严实”，我还无法理解这样做的意义。而且看上去也无关速度。（那我的dll为什么那么慢…我要掀桌子了orz…</p>
+<p><code>_mm_malloc</code>相比一般的<code>malloc</code>，增加了一个用于数据对齐的参数。具体在这里（<a href="https://software.intel.com/zh-cn/articles/data-alignment-to-assist-vectorization" target="_blank" rel="noopener">数据对齐有助于实现向量化</a>）有讲。</p>
+<p>虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的<code>64</code>写成<code>32</code>，和没有AVX优化的速度几乎一样。</p>
+<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__mm256_store_ps(lut + j * <span class="number">8</span>, rl);  <span class="comment">// float</span></span><br><span class="line">__mm256_store_pd(lut + j * <span class="number">4</span>, rl);  <span class="comment">// double</span></span><br></pre></td></tr></table></figure>
+
+<p>看一下两个函数的声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _mm256_store_ps (<span class="keyword">float</span> * mem_addr, __m256 a)</span><br><span class="line"><span class="keyword">void</span> _mm256_store_pd (<span class="keyword">double</span> * mem_addr, __m256d a)</span><br></pre></td></tr></table></figure>
+
+<p>注意到第二个参数类型分别是<code>__m256</code>、<code>__m256d</code>，所以有了上述区别。</p>
 
             
 
@@ -272,14 +281,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/24/rebuild-JincResize/"
-                    data-tooltip="JincResize代码的重构（一）"
-                    aria-label="PREVIOUS: JincResize代码的重构（一）"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -289,9 +295,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/19/trans-c-to-cpp/"
-                    data-tooltip="记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                    aria-label="NEXT: 记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                    href="/2020/02/07/arch-and-meson/"
+                    data-tooltip="ArchLinux和Meson构建工具的使用"
+                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -316,7 +322,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -329,7 +335,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -342,7 +348,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -388,14 +394,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/24/rebuild-JincResize/"
-                    data-tooltip="JincResize代码的重构（一）"
-                    aria-label="PREVIOUS: JincResize代码的重构（一）"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -405,9 +408,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2019/11/19/trans-c-to-cpp/"
-                    data-tooltip="记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                    aria-label="NEXT: 记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                    href="/2020/02/07/arch-and-meson/"
+                    data-tooltip="ArchLinux和Meson构建工具的使用"
+                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -432,7 +435,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -445,7 +448,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -458,7 +461,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -492,7 +495,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -505,7 +508,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -518,7 +521,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2019/11/22/learn-cpp-note-1/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

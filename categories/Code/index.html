@@ -210,6 +210,64 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            aria-label=": JincResize代码的重构（二）"
+                        >
+                            JincResize代码的重构（二）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-07T21:13:14+08:00">
+	
+		    Feb 07, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
+<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
+<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
+<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
+<p><code>_mm256_load_ps</code>：float类型输入</p>
+<p><code>_mm256_load_pd</code>：double类型输入</p>
+<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
+                    
+                        <a
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构（二）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/02/06/ported-to-vs-3/"
                             aria-label=": 记一次从AviSynth到VapourSynth的迁移（三）：找不到的Bug与代码优化"
                         >
@@ -437,9 +495,9 @@
                         <a
                             class="link-unstyled"
                             href="/2019/11/24/rebuild-JincResize/"
-                            aria-label=": JincResize代码的重构"
+                            aria-label=": JincResize代码的重构（一）"
                         >
-                            JincResize代码的重构
+                            JincResize代码的重构（一）
                         </a>
                     
                 </h1>
@@ -473,7 +531,7 @@
                         <a
                             href="/2019/11/24/rebuild-JincResize/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": JincResize代码的重构"
+                            aria-label=": JincResize代码的重构（一）"
                         >
                             Continue reading
                         </a>
