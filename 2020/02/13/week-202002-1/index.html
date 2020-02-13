@@ -6,21 +6,21 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>JincResize代码的重构（二） - 308实验室</title>
+    <title>周记 2020.02.03-02.09 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法\n\n\nType（来自インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細）\n__m256：容纳8个32位单精度浮点数值\n__m256d：容纳4个64位双精度浮点数值\n实际代码这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。\n对齐的问题1double* lut = (double *)_mm_malloc(sizeof(double) * d-&gt;sample, 64);\n\n_mm_malloc相比一般的malloc，增加了一个用于数据对齐的参数。具体在这里（数据对齐有助于实现向量化）有讲。\n虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的64写成32，和没有AVX优化的速度几乎一样。\n数据类型12__mm256_store_ps(lut + j * 8, rl);  // float__mm256_store_pd(lut + j * 4, rl);  // double\n\n看一下两个函数的声明\n12void _mm256_store_ps (float * mem_addr, __m256 a)void _mm256_store_pd (double * mem_addr, __m256d a)\n\n注意到第二个参数类型分别是__m256、__m256d，所以有了上述区别。\n","dateCreated":"2020-02-07T21:13:14+08:00","dateModified":"2020-02-07T21:20:30+08:00","datePublished":"2020-02-07T21:13:14+08:00","description":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法","headline":"JincResize代码的重构（二）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/","keywords":"C++"}</script>
-    <meta name="description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
-<meta name="keywords" content="C++">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"1.dequedeque的声明\n12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();\n\n2.C++调用函数用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。\n12345#include &lt;opencv2/opencv.hpp&gt;using namespace cv;Canny(edge, edge, 3, 9, 3);  // ✔Canny(edge, edge, threshold1=3, threshold2=9, apertureSize=3);  // ✖\n\n\n\n3. 关于vector不需额外声明头文件，但需要使用std命名空间，即std::vector。\n这天在做二叉树的题和敲OpenCV时，都遇到了vector\n4.cpp拆分1.static修饰的函数，只能在本文件中调用。\n2.#ifndef、#define、#endif配合使用，避免一个.h文件被重复include。\n5.使用Meson编译在win下，通过msi安装包安装Meson，再把现成的ninja.exe添加到环境变量中即可。\n编译时出现的问题如下。\n12345Did not find pkg-config by name &apos;pkg-config&apos;Found Pkg-config: NODid not find CMake &apos;cmake&apos;Found CMake: NORun-time dependency vapoursynth found: NO\n\n就是该装的依赖没有装。（虽然我不好说这里的vapoursynth指什么：.h文件，还是编译好的动态链接库？）\n顺带，下面这些信息，好像也不是我希望的。这应该是我的gcc存在32位和64位共存导致。\n1234C++ compiler for the host machine: c++ (gcc 8.2.0 &quot;c++ (MinGW.org GCC-8.2.0-5) 8.2.0&quot;)C++ linker for the host machine: c++ GNU ld.bfd 2.32Host machine cpu family: x86Host machine cpu: x86\n\n6.VapourSynth着手支持音频处理才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。\n先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了vnode。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的VSNodeRef，而不是现在cython/vapoursynth.pyx里Python api的VideoNode。但我继续看这个说明，提到了VSMap和其他context，这个C++ api里也有。\n音频源滤镜：BestAudioSource .dll\n函数：bas.Source、bas.BlankAudio 、bas.AudioSplice 、bas.AudioTrim`\n在脚本最后，输出音频要用audio.set_output(1)，要给set_output加标号了。\n输出结果可喂给VSPipe（VS pipeline，和ISP pipeline一个意思的其实吧）、AVFS、VFW。\n7.可以考虑学一学Cython或许有可能写面向进阶用户的东西的时候，会用上？\n8.脑洞侦测-&gt;抠像-&gt;用vs代替pr？\n9.指令集优化与编译原理既然修改JincResize代码涉及到了指令集优化，就要重新翻开编译原理了。\n","dateCreated":"2020-02-13T13:50:42+08:00","dateModified":"2020-02-13T13:52:30+08:00","datePublished":"2020-02-13T13:50:42+08:00","description":"1.dequedeque的声明\n12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();\n\n2.C++调用函数用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。\n12345#include &lt;opencv2/opencv.hpp&gt;using namespace cv;Canny(edge, edge, 3, 9, 3);  // ✔Canny(edge, edge, threshold1=3, threshold2=9, apertureSize=3);  // ✖","headline":"周记 2020.02.03-02.09","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/13/week-202002-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/13/week-202002-1/","keywords":"C++, VapourSynth"}</script>
+    <meta name="description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &amp;lt;deque&amp;gt;template &amp;lt; class T, class Alloc = allocator&amp;lt;T&amp;gt; &amp;gt; class deque;&#x2F;&#x2F; exampledeque &amp;lt;TreeNode*&amp;gt; tree_que;node = tree_que.front();">
+<meta name="keywords" content="C++,VapourSynth">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="JincResize代码的重构（二）">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;07&#x2F;rebuild-JincResize-2&#x2F;index.html">
+<meta property="og:title" content="周记 2020.02.03-02.09">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;13&#x2F;week-202002-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
+<meta property="og:description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &amp;lt;deque&amp;gt;template &amp;lt; class T, class Alloc = allocator&amp;lt;T&amp;gt; &amp;gt; class deque;&#x2F;&#x2F; exampledeque &amp;lt;TreeNode*&amp;gt; tree_que;node = tree_que.front();">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-07T13:20:30.044Z">
+<meta property="og:updated_time" content="2020-02-13T05:52:30.265Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,20 +211,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            JincResize代码的重构（二）
+            周记 2020.02.03-02.09
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-02-07T21:13:14+08:00">
+    <time datetime="2020-02-13T13:50:42+08:00">
 	
-		    Feb 07, 2020
+		    Feb 13, 2020
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Code/">Code</a>
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
 
 
     
@@ -236,30 +236,35 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
-<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
-<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
-<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
-<p><code>_mm256_load_ps</code>：float类型输入</p>
-<p><code>_mm256_load_pd</code>：double类型输入</p>
-<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
+            <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// std::deque</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">allocator</span>&lt;T&gt; &gt; <span class="title">class</span> <span class="title">deque</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// example</span></span><br><span class="line"><span class="built_in">deque</span> &lt;TreeNode*&gt; tree_que;</span><br><span class="line">node = tree_que.front();</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Canny(edge, edge, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>);  <span class="comment">// ✔</span></span><br><span class="line">Canny(edge, edge, threshold1=<span class="number">3</span>, threshold2=<span class="number">9</span>, apertureSize=<span class="number">3</span>);  <span class="comment">// ✖</span></span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 
-<h4 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h4><p>（来自<a href="https://www.xlsoft.com/jp/products/intel/compilers/manual/14/cpp/GUID-A9C3B12F-7A9A-4C8D-A6CD-9974ABC570E9.htm" target="_blank" rel="noopener">インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細</a>）</p>
-<p><code>__m256</code>：容纳8个32位单精度浮点数值</p>
-<p><code>__m256d</code>：容纳4个64位双精度浮点数值</p>
-<h4 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h4><p>这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。</p>
-<h5 id="对齐的问题"><a href="#对齐的问题" class="headerlink" title="对齐的问题"></a>对齐的问题</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span>* lut = (<span class="keyword">double</span> *)_mm_malloc(<span class="keyword">sizeof</span>(<span class="keyword">double</span>) * d-&gt;sample, <span class="number">64</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="3-关于vector"><a href="#3-关于vector" class="headerlink" title="3. 关于vector"></a>3. 关于<code>vector</code></h3><p>不需额外声明头文件，但需要使用<code>std</code>命名空间，即<code>std::vector</code>。</p>
+<p>这天在做二叉树的题和敲OpenCV时，都遇到了<code>vector</code></p>
+<h3 id="4-cpp拆分"><a href="#4-cpp拆分" class="headerlink" title="4.cpp拆分"></a>4.cpp拆分</h3><p>1.<code>static</code>修饰的函数，只能在本文件中调用。</p>
+<p>2.<code>#ifndef</code>、<code>#define</code>、<code>#endif</code>配合使用，避免一个.h文件被重复include。</p>
+<h3 id="5-使用Meson编译"><a href="#5-使用Meson编译" class="headerlink" title="5.使用Meson编译"></a>5.使用Meson编译</h3><p>在win下，通过msi安装包安装Meson，再把现成的<code>ninja.exe</code>添加到环境变量中即可。</p>
+<p>编译时出现的问题如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Did not find pkg-config by name &apos;pkg-config&apos;</span><br><span class="line">Found Pkg-config: NO</span><br><span class="line">Did not find CMake &apos;cmake&apos;</span><br><span class="line">Found CMake: NO</span><br><span class="line">Run-time dependency vapoursynth found: NO</span><br></pre></td></tr></table></figure>
 
-<p><code>_mm_malloc</code>相比一般的<code>malloc</code>，增加了一个用于数据对齐的参数。具体在这里（<a href="https://software.intel.com/zh-cn/articles/data-alignment-to-assist-vectorization" target="_blank" rel="noopener">数据对齐有助于实现向量化</a>）有讲。</p>
-<p>虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的<code>64</code>写成<code>32</code>，和没有AVX优化的速度几乎一样。</p>
-<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__mm256_store_ps(lut + j * <span class="number">8</span>, rl);  <span class="comment">// float</span></span><br><span class="line">__mm256_store_pd(lut + j * <span class="number">4</span>, rl);  <span class="comment">// double</span></span><br></pre></td></tr></table></figure>
+<p>就是该装的依赖没有装。（虽然我不好说这里的<code>vapoursynth</code>指什么：.h文件，还是编译好的动态链接库？）</p>
+<p>顺带，下面这些信息，好像也不是我希望的。这应该是我的gcc存在32位和64位共存导致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C++ compiler for the host machine: c++ (gcc 8.2.0 &quot;c++ (MinGW.org GCC-8.2.0-5) 8.2.0&quot;)</span><br><span class="line">C++ linker for the host machine: c++ GNU ld.bfd 2.32</span><br><span class="line">Host machine cpu family: x86</span><br><span class="line">Host machine cpu: x86</span><br></pre></td></tr></table></figure>
 
-<p>看一下两个函数的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _mm256_store_ps (<span class="keyword">float</span> * mem_addr, __m256 a)</span><br><span class="line"><span class="keyword">void</span> _mm256_store_pd (<span class="keyword">double</span> * mem_addr, __m256d a)</span><br></pre></td></tr></table></figure>
-
-<p>注意到第二个参数类型分别是<code>__m256</code>、<code>__m256d</code>，所以有了上述区别。</p>
+<h3 id="6-VapourSynth着手支持音频处理"><a href="#6-VapourSynth着手支持音频处理" class="headerlink" title="6.VapourSynth着手支持音频处理"></a>6.VapourSynth着手支持音频处理</h3><p>才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。</p>
+<p>先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了<code>vnode</code>。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的<code>VSNodeRef</code>，而不是现在<code>cython/vapoursynth.pyx</code>里Python api的<code>VideoNode</code>。但我继续看这个说明，提到了<code>VSMap</code>和其他context，这个C++ api里也有。</p>
+<p>音频源滤镜：<code>BestAudioSource .dll</code></p>
+<p>函数：<code>bas.Source</code>、<code>bas.BlankAudio 、</code>bas.AudioSplice <code>、</code>bas.AudioTrim`</p>
+<p>在脚本最后，输出音频要用<code>audio.set_output(1)</code>，要给<code>set_output</code>加标号了。</p>
+<p>输出结果可喂给VSPipe（VS pipeline，和ISP pipeline一个意思的其实吧）、AVFS、VFW。</p>
+<h3 id="7-可以考虑学一学Cython"><a href="#7-可以考虑学一学Cython" class="headerlink" title="7.可以考虑学一学Cython"></a>7.可以考虑学一学Cython</h3><p>或许有可能写面向进阶用户的东西的时候，会用上？</p>
+<h3 id="8-脑洞"><a href="#8-脑洞" class="headerlink" title="8.脑洞"></a>8.脑洞</h3><p>侦测-&gt;抠像-&gt;用vs代替pr？</p>
+<h3 id="9-指令集优化与编译原理"><a href="#9-指令集优化与编译原理" class="headerlink" title="9.指令集优化与编译原理"></a>9.指令集优化与编译原理</h3><p>既然修改JincResize代码涉及到了指令集优化，就要重新翻开编译原理了。</p>
 
             
 
@@ -271,7 +276,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
 
             </div>
         
@@ -281,14 +286,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/08/ISP-learn-1/"
-                    data-tooltip="ISP笔记（一）：ISP的流程"
-                    aria-label="PREVIOUS: ISP笔记（一）：ISP的流程"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -298,9 +300,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/07/arch-and-meson/"
-                    data-tooltip="ArchLinux和Meson构建工具的使用"
-                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
+                    href="/2020/02/08/ISP-learn-1/"
+                    data-tooltip="ISP笔记（一）：ISP的流程"
+                    aria-label="NEXT: ISP笔记（一）：ISP的流程"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -325,7 +327,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -338,7 +340,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -351,7 +353,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -397,14 +399,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/08/ISP-learn-1/"
-                    data-tooltip="ISP笔记（一）：ISP的流程"
-                    aria-label="PREVIOUS: ISP笔记（一）：ISP的流程"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -414,9 +413,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/07/arch-and-meson/"
-                    data-tooltip="ArchLinux和Meson构建工具的使用"
-                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
+                    href="/2020/02/08/ISP-learn-1/"
+                    data-tooltip="ISP笔记（一）：ISP的流程"
+                    aria-label="NEXT: ISP笔记（一）：ISP的流程"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -441,7 +440,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -454,7 +453,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -467,7 +466,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/13/week-202002-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -501,7 +500,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/13/week-202002-1/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -514,7 +513,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/13/week-202002-1/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -527,7 +526,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/13/week-202002-1/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

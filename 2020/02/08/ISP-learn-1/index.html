@@ -6,21 +6,21 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>JincResize代码的重构（二） - 308实验室</title>
+    <title>ISP笔记（一）：ISP的流程 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法\n\n\nType（来自インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細）\n__m256：容纳8个32位单精度浮点数值\n__m256d：容纳4个64位双精度浮点数值\n实际代码这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。\n对齐的问题1double* lut = (double *)_mm_malloc(sizeof(double) * d-&gt;sample, 64);\n\n_mm_malloc相比一般的malloc，增加了一个用于数据对齐的参数。具体在这里（数据对齐有助于实现向量化）有讲。\n虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的64写成32，和没有AVX优化的速度几乎一样。\n数据类型12__mm256_store_ps(lut + j * 8, rl);  // float__mm256_store_pd(lut + j * 4, rl);  // double\n\n看一下两个函数的声明\n12void _mm256_store_ps (float * mem_addr, __m256 a)void _mm256_store_pd (double * mem_addr, __m256d a)\n\n注意到第二个参数类型分别是__m256、__m256d，所以有了上述区别。\n","dateCreated":"2020-02-07T21:13:14+08:00","dateModified":"2020-02-07T21:20:30+08:00","datePublished":"2020-02-07T21:13:14+08:00","description":"指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）\n对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。\nFunctions（Doc在这里，直接搜索想查的函数即可）\n（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その2 -，但函数参数不如上面的Doc详细）\n_mm_malloc(size_t size, size_t align)：对齐的问题\n_mm256_load_ps：float类型输入\n_mm256_load_pd：double类型输入\n__m256d _mm256_mul_pd(__m256d, __m256d)：256位双精度乘法","headline":"JincResize代码的重构（二）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/07/rebuild-JincResize-2/","keywords":"C++"}</script>
-    <meta name="description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
-<meta name="keywords" content="C++">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"通过学习mushfiqulalam/isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。\n基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。\n最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。\n\n\n流程梳理123456789101112.raw文件   → black level correction   → lens shading correction   → bad pixel correction   → white balance   → demosaicing   → color correction   → brightening   → nonlinearity   → tone mapping   → noise reduction   → sharpening\n\n色调映射（tone mapping）","dateCreated":"2020-02-08T23:25:37+08:00","dateModified":"2020-02-08T23:52:07+08:00","datePublished":"2020-02-08T23:25:37+08:00","description":"通过学习mushfiqulalam/isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。\n基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。\n最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。","headline":"ISP笔记（一）：ISP的流程","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/08/ISP-learn-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/08/ISP-learn-1/","keywords":"C++, ISP"}</script>
+    <meta name="description" content="通过学习mushfiqulalam&#x2F;isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。 基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。 最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？">
+<meta name="keywords" content="C++,ISP">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="JincResize代码的重构（二）">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;07&#x2F;rebuild-JincResize-2&#x2F;index.html">
+<meta property="og:title" content="ISP笔记（一）：ISP的流程">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;08&#x2F;ISP-learn-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native） 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。 Functions（Doc在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
+<meta property="og:description" content="通过学习mushfiqulalam&#x2F;isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。 基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。 最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-07T13:20:30.044Z">
+<meta property="og:updated_time" content="2020-02-08T15:52:07.011Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,20 +211,20 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            JincResize代码的重构（二）
+            ISP笔记（一）：ISP的流程
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-02-07T21:13:14+08:00">
+    <time datetime="2020-02-08T23:25:37+08:00">
 	
-		    Feb 07, 2020
+		    Feb 08, 2020
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/Code/">Code</a>
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
 
 
     
@@ -236,31 +236,14 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
-<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
-<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
-<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
-<p><code>_mm256_load_ps</code>：float类型输入</p>
-<p><code>_mm256_load_pd</code>：double类型输入</p>
-<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
+            <p>通过学习<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">mushfiqulalam/isp</a>项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。</p>
+<h3 id="基本的印象"><a href="#基本的印象" class="headerlink" title="基本的印象"></a>基本的印象</h3><p>镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。</p>
+<p>最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。</p>
 <a id="more"></a>
 
-<h4 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h4><p>（来自<a href="https://www.xlsoft.com/jp/products/intel/compilers/manual/14/cpp/GUID-A9C3B12F-7A9A-4C8D-A6CD-9974ABC570E9.htm" target="_blank" rel="noopener">インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細</a>）</p>
-<p><code>__m256</code>：容纳8个32位单精度浮点数值</p>
-<p><code>__m256d</code>：容纳4个64位双精度浮点数值</p>
-<h4 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h4><p>这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。</p>
-<h5 id="对齐的问题"><a href="#对齐的问题" class="headerlink" title="对齐的问题"></a>对齐的问题</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span>* lut = (<span class="keyword">double</span> *)_mm_malloc(<span class="keyword">sizeof</span>(<span class="keyword">double</span>) * d-&gt;sample, <span class="number">64</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="流程梳理"><a href="#流程梳理" class="headerlink" title="流程梳理"></a>流程梳理</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.raw文件 </span><br><span class="line">  → black level correction </span><br><span class="line">  → lens shading correction </span><br><span class="line">  → bad pixel correction </span><br><span class="line">  → white balance </span><br><span class="line">  → demosaicing </span><br><span class="line">  → color correction </span><br><span class="line">  → brightening </span><br><span class="line">  → nonlinearity </span><br><span class="line">  → tone mapping </span><br><span class="line">  → noise reduction </span><br><span class="line">  → sharpening</span><br></pre></td></tr></table></figure>
 
-<p><code>_mm_malloc</code>相比一般的<code>malloc</code>，增加了一个用于数据对齐的参数。具体在这里（<a href="https://software.intel.com/zh-cn/articles/data-alignment-to-assist-vectorization" target="_blank" rel="noopener">数据对齐有助于实现向量化</a>）有讲。</p>
-<p>虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的<code>64</code>写成<code>32</code>，和没有AVX优化的速度几乎一样。</p>
-<h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__mm256_store_ps(lut + j * <span class="number">8</span>, rl);  <span class="comment">// float</span></span><br><span class="line">__mm256_store_pd(lut + j * <span class="number">4</span>, rl);  <span class="comment">// double</span></span><br></pre></td></tr></table></figure>
-
-<p>看一下两个函数的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _mm256_store_ps (<span class="keyword">float</span> * mem_addr, __m256 a)</span><br><span class="line"><span class="keyword">void</span> _mm256_store_pd (<span class="keyword">double</span> * mem_addr, __m256d a)</span><br></pre></td></tr></table></figure>
-
-<p>注意到第二个参数类型分别是<code>__m256</code>、<code>__m256d</code>，所以有了上述区别。</p>
-
+<h4 id="色调映射（tone-mapping）"><a href="#色调映射（tone-mapping）" class="headerlink" title="色调映射（tone mapping）"></a>色调映射（tone mapping）</h4>
             
 
 
@@ -271,7 +254,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/ISP/" rel="tag">ISP</a>
 
             </div>
         
@@ -284,9 +267,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/08/ISP-learn-1/"
-                    data-tooltip="ISP笔记（一）：ISP的流程"
-                    aria-label="PREVIOUS: ISP笔记（一）：ISP的流程"
+                    href="/2020/02/13/week-202002-1/"
+                    data-tooltip="周记 2020.02.03-02.09"
+                    aria-label="PREVIOUS: 周记 2020.02.03-02.09"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -298,9 +281,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/07/arch-and-meson/"
-                    data-tooltip="ArchLinux和Meson构建工具的使用"
-                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
+                    href="/2020/02/07/rebuild-JincResize-2/"
+                    data-tooltip="JincResize代码的重构（二）"
+                    aria-label="NEXT: JincResize代码的重构（二）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -325,7 +308,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -338,7 +321,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -351,7 +334,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -400,9 +383,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/08/ISP-learn-1/"
-                    data-tooltip="ISP笔记（一）：ISP的流程"
-                    aria-label="PREVIOUS: ISP笔记（一）：ISP的流程"
+                    href="/2020/02/13/week-202002-1/"
+                    data-tooltip="周记 2020.02.03-02.09"
+                    aria-label="PREVIOUS: 周记 2020.02.03-02.09"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -414,9 +397,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/02/07/arch-and-meson/"
-                    data-tooltip="ArchLinux和Meson构建工具的使用"
-                    aria-label="NEXT: ArchLinux和Meson构建工具的使用"
+                    href="/2020/02/07/rebuild-JincResize-2/"
+                    data-tooltip="JincResize代码的重构（二）"
+                    aria-label="NEXT: JincResize代码的重构（二）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -441,7 +424,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -454,7 +437,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -467,7 +450,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/02/08/ISP-learn-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -501,7 +484,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/02/08/ISP-learn-1/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -514,7 +497,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/02/08/ISP-learn-1/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -527,7 +510,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/07/rebuild-JincResize-2/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/02/08/ISP-learn-1/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
