@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。\n此文绝赞施工中…应该要等到我有更深入理解时，才能写完。\n\n\n列表\nA/D转换\n黑电平校正（Black Level Correction）\n坏点校正（Bad Pixel Correction）\n阴影校正（Shading Correction）：包括镜片阴影校正和色彩阴影校正（Color Shading Correction）。\n耀斑补偿（Flare Offset）：由于镜片等组件产生的反光，导致图像灰蒙蒙的。Flare Offset要在线性空间下进行，不能在RGB下进行。\n3A：\nAE（Auto Exposure）：自动曝光\nAF（Auto Focus）：自动对焦\nAWB（Auto White Balance）：自动白平衡\n\n\n去马赛克/色彩重建（de-mosaic）\n颜色校正（Color Correction）：然后非线性化\nGamma校正（Gamma Correction）\n色调映射（Tone Mapping）\n降噪（Noise Reduction）\n图像增强（Image Enhancement）：锐化（Sharpening）、边缘增强（Edge Enhancement）之类的\n输出编码\n\n重点应该还是放在降噪、图像增强以及去马赛克等方面（除了3A之外），因为其他的应该说比较成熟了。\n色调映射\n算法千差万别，但是目的是一样的，就是通过公式，把输入值HDR颜色或正常颜色映射到0-1范围内去显示。并且根据曝光系数调整曲线，使大部分颜色看起来更加接近该亮度。\n\n其实这个是和曲线相关的。Gamma校正也是属于色调映射。\n参考1.https://github.com/mushfiqulalam/isp2.https://zhuanlan.zhihu.com/p/363792673.https://zhuanlan.zhihu.com/p/98820927\n","dateCreated":"2020-02-14T17:38:05+08:00","dateModified":"2020-02-18T16:00:24+08:00","datePublished":"2020-02-14T17:38:05+08:00","description":"不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。\n此文绝赞施工中…应该要等到我有更深入理解时，才能写完。","headline":"ISP笔记（2）：ISP pipeline总结","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/14/ISP-learn-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/14/ISP-learn-2/","keywords":"ISP"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。\n此文绝赞施工中…应该要等到我有更深入理解时，才能写完。\n\n\n列表\nA/D转换\n黑电平校正（Black Level Correction）\n坏点校正（Bad Pixel Correction）\n阴影校正（Shading Correction）：包括镜片阴影校正和色彩阴影校正（Color Shading Correction）。\n耀斑补偿（Flare Offset）：由于镜片等组件产生的反光，导致图像灰蒙蒙的。Flare Offset要在线性空间下进行，不能在RGB下进行。\n3A：\nAE（Auto Exposure）：自动曝光\nAF（Auto Focus）：自动对焦\nAWB（Auto White Balance）：自动白平衡\n\n\n去马赛克/色彩重建（de-mosaic）\n颜色校正（Color Correction）：然后非线性化\nGamma校正（Gamma Correction）\n色调映射（Tone Mapping）\n降噪（Noise Reduction）\n图像增强（Image Enhancement）：锐化（Sharpening）、边缘增强（Edge Enhancement）之类的\n输出编码\n\n重点应该还是放在降噪、图像增强以及去马赛克等方面（除了3A之外），因为其他的应该说比较成熟了。\n色调映射\n算法千差万别，但是目的是一样的，就是通过公式，把输入值HDR颜色或正常颜色映射到0-1范围内去显示。并且根据曝光系数调整曲线，使大部分颜色看起来更加接近该亮度。\n\n其实这个是和曲线相关的。Gamma校正也是属于色调映射。\n参考1.https://github.com/mushfiqulalam/isp2.https://zhuanlan.zhihu.com/p/363792673.https://zhuanlan.zhihu.com/p/98820927\n","dateCreated":"2020-02-14T17:38:05+08:00","dateModified":"2020-02-18T16:00:24+08:00","datePublished":"2020-02-14T17:38:05+08:00","description":"不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。\n此文绝赞施工中…应该要等到我有更深入理解时，才能写完。","headline":"ISP笔记（2）：ISP pipeline总结","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/14/ISP-learn-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/14/ISP-learn-2/","keywords":"ISP"}</script>
     <meta name="description" content="不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。 此文绝赞施工中…应该要等到我有更深入理解时，才能写完。">
 <meta name="keywords" content="ISP">
 <meta property="og:type" content="blog">
@@ -187,10 +187,10 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                        <a  class="sidebar-button-link " href="https://www.kaggle.com/kiyamou" target="_blank" rel="noopener" title="Kaggle">
                     
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
+                        <i class="sidebar-button-icon fab fa-kaggle" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kaggle</span>
                     </a>
             </li>
             

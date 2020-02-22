@@ -11,7 +11,7 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp"},"articleBody":"《21天实战Caffe》学习笔记第10天\n在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。\n代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。\n这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。\n1$ ./build/tools/caffe train --solver=examples/mnist/lenet_lr_solver.prototxt\n\n\n\n练习题1：模型设计与代码实现Caffe将模型设计与代码实现分开有什么好处？\n1.便于模型修改，而不必在每次修改模型时都去改动代码；\n2.便于代码的复用。\n练习题2：权值文件与状态文件如果只有Caffe训练好的模型权值文件（.caffemodel）而没有求解器状态文件（.solverstate），能否让网络继续训练？能否对网络精调？\n（以下是我胡乱猜的）\n123应该是可以精调而不能继续训练。因为迭代次数等信息记录在求解器状态文件（.solverstate）中，没有这些信息不能继续训练；而网络的可学习参数记录在模型权值文件（.caffemodel），可以以此进行精调。\n\n","dateCreated":"2019-06-05T22:57:10+08:00","dateModified":"2020-01-15T23:42:29+08:00","datePublished":"2019-06-05T22:57:10+08:00","description":"《21天实战Caffe》学习笔记第10天\n在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。\n代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。\n这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。\n1$ ./build/tools/caffe train --solver=examples/mnist/lenet_lr_solver.prototxt","headline":"Day10 Caffe模型","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/05/caffe-day10/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","http://stackoverflow.com/users"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/05/caffe-day10/","keywords":"Caffe"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"《21天实战Caffe》学习笔记第10天\n在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。\n代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。\n这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。\n1$ ./build/tools/caffe train --solver=examples/mnist/lenet_lr_solver.prototxt\n\n\n\n练习题1：模型设计与代码实现Caffe将模型设计与代码实现分开有什么好处？\n1.便于模型修改，而不必在每次修改模型时都去改动代码；\n2.便于代码的复用。\n练习题2：权值文件与状态文件如果只有Caffe训练好的模型权值文件（.caffemodel）而没有求解器状态文件（.solverstate），能否让网络继续训练？能否对网络精调？\n（以下是我胡乱猜的）\n123应该是可以精调而不能继续训练。因为迭代次数等信息记录在求解器状态文件（.solverstate）中，没有这些信息不能继续训练；而网络的可学习参数记录在模型权值文件（.caffemodel），可以以此进行精调。\n\n","dateCreated":"2019-06-05T22:57:10+08:00","dateModified":"2020-01-15T23:42:29+08:00","datePublished":"2019-06-05T22:57:10+08:00","description":"《21天实战Caffe》学习笔记第10天\n在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。\n代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。\n这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。\n1$ ./build/tools/caffe train --solver=examples/mnist/lenet_lr_solver.prototxt","headline":"Day10 Caffe模型","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/05/caffe-day10/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/05/caffe-day10/","keywords":"Caffe"}</script>
     <meta name="description" content="《21天实战Caffe》学习笔记第10天 在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。 代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。 这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。 1$">
 <meta name="keywords" content="Caffe">
 <meta property="og:type" content="blog">
@@ -187,10 +187,10 @@
             
                 <li class="sidebar-button">
                     
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                        <a  class="sidebar-button-link " href="https://www.kaggle.com/kiyamou" target="_blank" rel="noopener" title="Kaggle">
                     
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
+                        <i class="sidebar-button-icon fab fa-kaggle" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kaggle</span>
                     </a>
             </li>
             
