@@ -210,6 +210,189 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/06/ported-to-vs-3/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-06T16:45:18+08:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
+<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
+<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
+                    
+                        <a
+                            href="/2020/02/06/ported-to-vs-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/2020-winter-holiday/"
+                            aria-label=": 2020寒假计划与回顾"
+                        >
+                            2020寒假计划与回顾
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T13:26:37+08:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>目前要做的东西真是太多了，而我还在顾着发朋友圈，没有完全进入状态。这个假期要做的事情，能想到的有这么多：</p>
+<ul>
+<li>BM3D算法介绍的后续工作</li>
+<li>基于BM3D算法的去模糊和神经网络（选一个，就前者？）</li>
+<li>JincResize的代码维护<ul>
+<li><del>增加dering</del></li>
+<li>结构整理（✔）</li>
+<li>修改算法介绍的博文</li>
+<li>（指令集优化）（✔）</li>
+</ul>
+</li>
+<li>剑指Offer和LeetCode刷题（进度：20%）</li>
+<li><del>准备三级考试（这个可以缓一下，但别忘了报名啊）</del>；不考了，才发现5月根本没有三级考试，安慰一下自己，考了恐怕也不能为简历增色</li>
+<li>OpenCV，争取把书上的我没在VS下接触过的东西，敲一遍代码（进度：40~50%）</li>
+<li>数据结构和算法，从学校背回来的这两本书总归要看一下（进度：5%）</li>
+<li>关于C++基础（和一些编程的思维），把最近一段时间在知乎的收藏和截屏整理一下</li>
+<li>直方图相关的内容，HDR、色彩增强等我不熟悉的，要趁着假期看一下（进度：20%）</li>
+<li>把这段时间看到ISP内容总结一下（进度：30%）</li>
+<li>AreaResize迁移和Debug过程的总结（✔）</li>
+<li>Waifu2x相关，这个在家真没办法了，先搁置吧</li>
+</ul>
+                    
+                        <a
+                            href="/2020/02/04/2020-winter-holiday/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 2020寒假计划与回顾"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/week-202001-4/"
+                            aria-label=": 周记 2020.01.27-02.02"
+                        >
+                            周记 2020.01.27-02.02
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T13:14:11+08:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
+<ul>
+<li>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</li>
+<li>头文件和库文件设置错误，64位和32位搞混</li>
+</ul>
+<h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
+<p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
+<p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
+                    
+                        <a
+                            href="/2020/02/04/week-202001-4/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.01.27-02.02"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/02/03/To-2020/"
                             aria-label=": To 2020"
                         >
