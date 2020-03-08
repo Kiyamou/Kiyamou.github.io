@@ -11,16 +11,16 @@
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n头文件和库文件设置错误，64位和32位搞混\n\n2.Debug的过程Q：Debug时，index值为-858993460\nA：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”\nQ：但我的问题是，start变量明明直接赋值为0，但在Debug过程却显示为-1。\n\n\n3.图像处理的warning 某张png图片\n1libpng warning: iCCP: cHRM chunk does not match sRGB\n\n另一张png图片报了两个warning，多了一个这个\n1libpng warning: iCPP: known incorrect sRGB profile\n\n4.__declspec(dllexport)关于__declspec(dllexport)\n一般的理解如下：\n\n__declspec(dllimport)和__declspec(dllexport)是一对的，在动态链接库中__declspec(dllexport)管导出，__declspec(dllimport)管导出，有出口也有进口\n\n","dateCreated":"2020-02-04T13:14:11+08:00","dateModified":"2020-02-04T13:17:09+08:00","datePublished":"2020-02-04T13:14:11+08:00","description":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n头文件和库文件设置错误，64位和32位搞混\n\n2.Debug的过程Q：Debug时，index值为-858993460\nA：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”\nQ：但我的问题是，start变量明明直接赋值为0，但在Debug过程却显示为-1。","headline":"周记 2020.01.27-02.02","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/04/week-202001-4/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/04/week-202001-4/","keywords":"C++"}</script>
-    <meta name="description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了… 头文件和库文件设置错误，64位和32位搞混  2.Debug的过程Q：Debug时，index值为-858993460 A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n\n头文件和库文件设置错误，64位和32位搞混\n\n\n\n\n\n面向对象时，少写了public函数的定义向下面这样，少写了func1()函数的定义，就有报错。\n123456789101112131415161718192021class className&#123;public:    className();    double func1(double parameter);private:    ...&#125;;className::className()&#123;    ...&#125;int main()&#123;    className one;    std::cout &lt;&lt; one.func1(1.0) &lt;&lt; std::endl;        return 0;&#125;\n\n\n\n2.Debug的过程Q：Debug时，index值为-858993460\nA：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”\nQ：但我的问题是，start变量明明直接赋值为0，但在Debug过程却显示为-1。\n3.图像处理的warning 某张png图片\n1libpng warning: iCCP: cHRM chunk does not match sRGB\n\n另一张png图片报了两个warning，多了一个这个\n1libpng warning: iCPP: known incorrect sRGB profile\n\n4.__declspec(dllexport)关于__declspec(dllexport)\n一般的理解如下：\n\n__declspec(dllimport)和__declspec(dllexport)是一对的，在动态链接库中__declspec(dllexport)管导出，__declspec(dllimport)管导出，有出口也有进口\n\n","dateCreated":"2020-02-04T13:14:11+08:00","dateModified":"2020-03-07T15:48:36+08:00","datePublished":"2020-02-04T13:14:11+08:00","description":"1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：\n\n没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…\n\n头文件和库文件设置错误，64位和32位搞混\n\n","headline":"周记 2020.01.27-02.02","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/04/week-202001-4/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/04/week-202001-4/","keywords":"C++"}</script>
+    <meta name="description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…  头文件和库文件设置错误，64位和32位搞混">
 <meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.01.27-02.02">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;04&#x2F;week-202001-4&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了… 头文件和库文件设置错误，64位和32位搞混  2.Debug的过程Q：Debug时，index值为-858993460 A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋">
+<meta property="og:description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…  头文件和库文件设置错误，64位和32位搞混">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-04T05:17:09.786Z">
+<meta property="og:updated_time" content="2020-03-07T07:48:36.443Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -238,14 +238,22 @@
         <div class="main-content-wrap">
             <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
 <ul>
-<li>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</li>
-<li>头文件和库文件设置错误，64位和32位搞混</li>
+<li><p>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</p>
+</li>
+<li><p>头文件和库文件设置错误，64位和32位搞混</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<ul>
+<li><p>面向对象时，少写了public函数的定义<br>向下面这样，少写了<code>func1()</code>函数的定义，就有报错。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">className</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    className();</span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">func1</span><span class="params">(<span class="keyword">double</span> parameter)</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">className::className()</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    className one;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; one.func1(<span class="number">1.0</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
 </ul>
 <h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
 <p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
 <p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
-<a id="more"></a>
-
 <h3 id="3-图像处理的warning"><a href="#3-图像处理的warning" class="headerlink" title="3.图像处理的warning"></a>3.图像处理的warning</h3><p> 某张png图片</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">libpng warning: iCCP: cHRM chunk does not match sRGB</span><br></pre></td></tr></table></figure>
 

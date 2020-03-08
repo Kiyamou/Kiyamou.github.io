@@ -210,10 +210,123 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/11/22/learn-cpp-note-1/"
-                            aria-label=": C++学习笔记之一——某培训课程的笔记"
+                            href="/2019/11/25/gcc-use-1/"
+                            aria-label=": Windows下使用gcc/g++编译器"
                         >
-                            C++学习笔记之一——某培训课程的笔记
+                            Windows下使用gcc/g++编译器
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-25T23:37:03+08:00">
+	
+		    Nov 25, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
+<p>不管怎么说，改用gcc/g++。</p>
+                    
+                        <a
+                            href="/2019/11/25/gcc-use-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Windows下使用gcc/g++编译器"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/24/rebuild-JincResize/"
+                            aria-label=": JincResize代码的重构（1）"
+                        >
+                            JincResize代码的重构（1）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-24T14:00:58+08:00">
+	
+		    Nov 24, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>前一篇Blog记录了将原作者代码（初步）从C语言迁移到C++上的过程，以及添加8bit输入支持的方法。下一步我想模仿HomeOfVapourSynthEvolution的代码风格，对上述代码进行重构。同时，也期待能发现，我先前修改的代码运行缓慢的原因。</p>
+<p>Blog写得详细一些，这也是我学习C++基础知识的过程。</p>
+<h3 id="未完成的C语言到C-迁移"><a href="#未完成的C语言到C-迁移" class="headerlink" title="未完成的C语言到C++迁移"></a>未完成的C语言到C++迁移</h3><p>其实C语言和C++的区别还有很多。</p>
+<h4 id="C-的类型转换"><a href="#C-的类型转换" class="headerlink" title="C++的类型转换"></a>C++的类型转换</h4><p>编写VapourSynth插件，在四个<code>VS__CC</code>函数的开头，都需要进行类型转换，原始代码使用C语言风格的类型转换，类似下面这样。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = (FilterData*)* instanceData;</span><br></pre></td></tr></table></figure>
+
+<p>如果让代码“更C++”一些，则使用类型转换运算符（Type Conversion Operator）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2019/11/24/rebuild-JincResize/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构（1）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2019/11/22/learn-cpp-note-1/"
+                            aria-label=": C++笔记：某培训课程与21天学通C++"
+                        >
+                            C++笔记：某培训课程与21天学通C++
                         </a>
                     
                 </h1>
@@ -237,11 +350,12 @@
                 <div class="postShorten-excerpt">
                     <h3 id="写在开头的话"><a href="#写在开头的话" class="headerlink" title="写在开头的话"></a>写在开头的话</h3><p>有人讲解，学习效率还是会高一些的吧。</p>
 <p>愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。</p>
+<p>后来在忙其他事情的时候，学到了更多的东西，于是把21天学通C++及网络上资料（主要是菜鸟教程）的学习笔记也记到这上面来。虽然和周记系列有点冲突，但同时进行吧，做下去就能变得清晰。</p>
                     
                         <a
                             href="/2019/11/22/learn-cpp-note-1/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": C++学习笔记之一——某培训课程的笔记"
+                            aria-label=": C++笔记：某培训课程与21天学通C++"
                         >
                             Continue reading
                         </a>
@@ -647,122 +761,6 @@
                             href="/2019/07/05/literature001/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 文献阅读 1811.12231"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/07/04/caffe-day14/"
-                            aria-label=": Day14 Caffe实用工具"
-                        >
-                            Day14 Caffe实用工具
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-07-04T23:25:52+08:00">
-	
-		    Jul 04, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第14天</p>
-<p>我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。</p>
-                    
-                        <a
-                            href="/2019/07/04/caffe-day14/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day14 Caffe实用工具"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/30/caffe-day19/"
-                            aria-label=": Day19 放之四海而皆准"
-                        >
-                            Day19 放之四海而皆准
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-30T22:51:07+08:00">
-	
-		    Jun 30, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第19天</p>
-<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a href="http://github.com/fzliu/style-transfer" target="_blank" rel="noopener">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
-<p>测试命令如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd style-transfer</span><br><span class="line">python style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1</span><br></pre></td></tr></table></figure>
-
-<p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
-<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: can not convert object to float64.</span><br></pre></td></tr></table></figure>
-
-<p>根据<a href="https://github.com/BVLC/caffe/issues/438" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
-<p>即在<code>style.py</code>开头添加如下语句。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io; io.use_plugin(<span class="string">'matplotlib'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>Error 1解决。</p>
-<p>（这个Error可能是我的python site-packages版本较旧的原因？）</p>
-                    
-                        <a
-                            href="/2019/06/30/caffe-day19/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day19 放之四海而皆准"
                         >
                             Continue reading
                         </a>

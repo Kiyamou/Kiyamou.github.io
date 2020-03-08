@@ -209,6 +209,105 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/03/08/week-202003-1/"
+                            aria-label=": 周记 2020.03.02-03.08"
+                        >
+                            周记 2020.03.02-03.08
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-08T16:47:39+08:00">
+	
+		    Mar 08, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-逐项完成ISP算法"><a href="#1-逐项完成ISP算法" class="headerlink" title="1.逐项完成ISP算法"></a>1.逐项完成ISP算法</h3><p>感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。</p>
+<p>重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。</p>
+                    
+                        <a
+                            href="/2020/03/08/week-202003-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.03.02-03.08"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/03/05/rebuild-JincResize-3/"
+                            aria-label=": rebuild-JincResize-3"
+                        >
+                            rebuild-JincResize-3
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-05T22:57:00+08:00">
+	
+		    Mar 05, 2020
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    
+                    
+                    
+                        <p>
+                            <a
+                                href="/2020/03/05/rebuild-JincResize-3/#post-footer"
+                                class="postShorten-excerpt_link link"
+                                aria-label=""
+                            >
+                                Comment and share
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/03/05/week-202002-4/"
                             aria-label=": 周记 2020.02.24-03.01"
                         >
@@ -622,116 +721,6 @@
                             href="/2020/02/08/ISP-learn-1/"
                             class="postShorten-excerpt_link link"
                             aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/07/rebuild-JincResize-2/"
-                            aria-label=": JincResize代码的重构（2）"
-                        >
-                            JincResize代码的重构（2）
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-07T21:13:14+08:00">
-	
-		    Feb 07, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
-<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
-<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
-<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
-<p><code>_mm256_load_ps</code>：float类型输入</p>
-<p><code>_mm256_load_pd</code>：double类型输入</p>
-<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
-                    
-                        <a
-                            href="/2020/02/07/rebuild-JincResize-2/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": JincResize代码的重构（2）"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/07/arch-and-meson/"
-                            aria-label=": ArchLinux和Meson构建工具的使用"
-                        >
-                            ArchLinux和Meson构建工具的使用
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-07T00:31:07+08:00">
-	
-		    Feb 07, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="爱恨交加的CentOS"><a href="#爱恨交加的CentOS" class="headerlink" title="爱恨交加的CentOS"></a>爱恨交加的CentOS</h3><p>我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。</p>
-<p>但这次编译VapourSynth着实让我感觉蛋疼。</p>
-                    
-                        <a
-                            href="/2020/02/07/arch-and-meson/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": ArchLinux和Meson构建工具的使用"
                         >
                             Continue reading
                         </a>

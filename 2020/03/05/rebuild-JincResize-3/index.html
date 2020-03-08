@@ -6,21 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>周记 2020.02.24-03.01 - 308实验室</title>
+    <title>rebuild-JincResize-3 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex\n\n\n\n2.解决VapourSynth版本问题？123#if VAPOURSYNTH_API_VERSION &lt; 0x30002\t#define FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR#endif\n\n（来自KNLmeansCL？）\n3.OpenCL看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。\n4.OpenCL设计思路的理解我能理解到的几点…\n\nOpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）\n类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）\nOpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）\nCPU 线程 = OpenCL 工作项（Work Item）\n\n5.OpenCL与C++在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。\n可以不写的.cl文件的说。\n6.C++ STL库C++标准模板库，（抛开string）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。\n例如容器vector、queue，方法at、emplace。\n感觉现在，我已经把21天学通C++这本书从总体上做了概览。\n7.Mkdocs：写自己的图书去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。\n8.交流在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。\n","dateCreated":"2020-03-05T22:44:28+08:00","dateModified":"2020-03-08T16:43:17+08:00","datePublished":"2020-03-05T22:44:28+08:00","description":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex","headline":"周记 2020.02.24-03.01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/05/week-202002-4/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/05/week-202002-4/","keywords":"C++, OpenCL"}</script>
-    <meta name="description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
-<meta name="keywords" content="C++,OpenCL">
-<meta property="og:type" content="blog">
-<meta property="og:title" content="周记 2020.02.24-03.01">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;05&#x2F;week-202002-4&#x2F;index.html">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"","dateCreated":"2020-03-05T22:57:00+08:00","dateModified":"2020-03-05T22:57:00+08:00","datePublished":"2020-03-05T22:57:00+08:00","description":"","headline":"rebuild-JincResize-3","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/05/rebuild-JincResize-3/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/05/rebuild-JincResize-3/"}</script>
+    <meta property="og:type" content="blog">
+<meta property="og:title" content="rebuild-JincResize-3">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;05&#x2F;rebuild-JincResize-3&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-08T08:43:17.049Z">
+<meta property="og:updated_time" content="2020-03-05T14:57:00.583Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,22 +208,16 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            周记 2020.02.24-03.01
+            rebuild-JincResize-3
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-03-05T22:44:28+08:00">
+    <time datetime="2020-03-05T22:57:00+08:00">
 	
 		    Mar 05, 2020
     	
     </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
     
 </div>
 
@@ -236,42 +227,13 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex</span><br></pre></td></tr></table></figure>
-
-<a id="more"></a>
-
-<h3 id="2-解决VapourSynth版本问题？"><a href="#2-解决VapourSynth版本问题？" class="headerlink" title="2.解决VapourSynth版本问题？"></a>2.解决VapourSynth版本问题？</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> VAPOURSYNTH_API_VERSION &lt; 0x30002</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<p>（来自KNLmeansCL？）</p>
-<h3 id="3-OpenCL"><a href="#3-OpenCL" class="headerlink" title="3.OpenCL"></a>3.OpenCL</h3><p>看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。</p>
-<h3 id="4-OpenCL设计思路的理解"><a href="#4-OpenCL设计思路的理解" class="headerlink" title="4.OpenCL设计思路的理解"></a>4.OpenCL设计思路的理解</h3><p>我能理解到的几点…</p>
-<ul>
-<li>OpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）</li>
-<li>类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）</li>
-<li>OpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）</li>
-<li>CPU 线程 = OpenCL 工作项（Work Item）</li>
-</ul>
-<h3 id="5-OpenCL与C"><a href="#5-OpenCL与C" class="headerlink" title="5.OpenCL与C++"></a>5.OpenCL与C++</h3><p>在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。</p>
-<p>可以不写的<code>.cl</code>文件的说。</p>
-<h3 id="6-C-STL库"><a href="#6-C-STL库" class="headerlink" title="6.C++ STL库"></a>6.C++ STL库</h3><p>C++标准模板库，（抛开<code>string</code>）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。</p>
-<p>例如容器<code>vector</code>、<code>queue</code>，方法<code>at</code>、<code>emplace</code>。</p>
-<p>感觉现在，我已经把21天学通C++这本书从总体上做了概览。</p>
-<h3 id="7-Mkdocs：写自己的图书"><a href="#7-Mkdocs：写自己的图书" class="headerlink" title="7.Mkdocs：写自己的图书"></a>7.Mkdocs：写自己的图书</h3><p>去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。</p>
-<h3 id="8-交流"><a href="#8-交流" class="headerlink" title="8.交流"></a>8.交流</h3><p>在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。</p>
-
+            
             
 
 
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
-        
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGED IN</span><br/>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/OpenCL/" rel="tag">OpenCL</a>
-
-            </div>
         
         
             <div class="post-actions-wrap">
@@ -282,9 +244,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/rebuild-JincResize-3/"
-                    data-tooltip="rebuild-JincResize-3"
-                    aria-label="PREVIOUS: rebuild-JincResize-3"
+                    href="/2020/03/08/week-202003-1/"
+                    data-tooltip="周记 2020.03.02-03.08"
+                    aria-label="PREVIOUS: 周记 2020.03.02-03.08"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -296,9 +258,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/week-202002-3/"
-                    data-tooltip="周记 2020.02.17-02.23"
-                    aria-label="NEXT: 周记 2020.02.17-02.23"
+                    href="/2020/03/05/week-202002-4/"
+                    data-tooltip="周记 2020.02.24-03.01"
+                    aria-label="NEXT: 周记 2020.02.24-03.01"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -323,7 +285,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -336,7 +298,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -349,7 +311,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -398,9 +360,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/rebuild-JincResize-3/"
-                    data-tooltip="rebuild-JincResize-3"
-                    aria-label="PREVIOUS: rebuild-JincResize-3"
+                    href="/2020/03/08/week-202003-1/"
+                    data-tooltip="周记 2020.03.02-03.08"
+                    aria-label="PREVIOUS: 周记 2020.03.02-03.08"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -412,9 +374,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/week-202002-3/"
-                    data-tooltip="周记 2020.02.17-02.23"
-                    aria-label="NEXT: 周记 2020.02.17-02.23"
+                    href="/2020/03/05/week-202002-4/"
+                    data-tooltip="周记 2020.02.24-03.01"
+                    aria-label="NEXT: 周记 2020.02.24-03.01"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -439,7 +401,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -452,7 +414,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -465,7 +427,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -499,7 +461,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -512,7 +474,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -525,7 +487,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/rebuild-JincResize-3/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

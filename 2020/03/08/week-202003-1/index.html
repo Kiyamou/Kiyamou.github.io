@@ -6,21 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>周记 2020.02.24-03.01 - 308实验室</title>
+    <title>周记 2020.03.02-03.08 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex\n\n\n\n2.解决VapourSynth版本问题？123#if VAPOURSYNTH_API_VERSION &lt; 0x30002\t#define FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR#endif\n\n（来自KNLmeansCL？）\n3.OpenCL看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。\n4.OpenCL设计思路的理解我能理解到的几点…\n\nOpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）\n类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）\nOpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）\nCPU 线程 = OpenCL 工作项（Work Item）\n\n5.OpenCL与C++在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。\n可以不写的.cl文件的说。\n6.C++ STL库C++标准模板库，（抛开string）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。\n例如容器vector、queue，方法at、emplace。\n感觉现在，我已经把21天学通C++这本书从总体上做了概览。\n7.Mkdocs：写自己的图书去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。\n8.交流在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。\n","dateCreated":"2020-03-05T22:44:28+08:00","dateModified":"2020-03-08T16:43:17+08:00","datePublished":"2020-03-05T22:44:28+08:00","description":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex","headline":"周记 2020.02.24-03.01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/05/week-202002-4/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/05/week-202002-4/","keywords":"C++, OpenCL"}</script>
-    <meta name="description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
-<meta name="keywords" content="C++,OpenCL">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。\n重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。\n\n\n2.C++科学计算Eigen库是一个C++科学计算库，主要是各种矩阵运算。\n3.为什么没好好学数学本不该倒垃圾，但这几年的学，从数学能力的角度，真是越上越回去了（所以这也是我的专业症结所在）。矩阵论稀里糊涂上完了…在看现在需要用的SVD、范数计算…数学跟不上了…\n4.VSGAN与升级VS版本（先吐槽一句，为什么我电脑上装了3.6、3.7、3.8三个版本的Python…而且更蛋疼的是Python 3.7装在了Visual Studio里面…）\n干脆把电脑有Python全卸了，重装上了Python 3.8，VapourSynth也升级到了最新的R49预览版。由于这次把Python装在C:\\Program Files里面，经常需要管理员权限，有点蛋疼…\n弄好环境后，尝试了VSGAN，想试一下waifuGAN和1xESRGAN两个模型，然而电脑没有显卡，用CPU实在太慢了，先放弃了…\n看了一下VSGAN的代码（还是Python看着简洁），基于Pytorch调用.pth模型，实现基于ESRGAN网络的超分辨率或其他操作。模型可以在这里找到。\n说起来两个星期前还在感叹技术太渣，连ESRGAN模型调用都调不了…现在也算是（借助别人的工具）弥补上了。\n5.原生分辨率这个东西也算是我的心结之一了。getnative.py搞定，测试了一下，感觉鲁棒性还挺好，而对于我自己缩到720p再升到1080p的例子，也能认出是720p（但是信号特征不如原始图片855p那么明显）。\n","dateCreated":"2020-03-08T16:47:39+08:00","dateModified":"2020-03-08T17:36:31+08:00","datePublished":"2020-03-08T16:47:39+08:00","description":"1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。\n重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。","headline":"周记 2020.03.02-03.08","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/08/week-202003-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/08/week-202003-1/","keywords":"C++, VapourSynth"}</script>
+    <meta name="description" content="1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。 重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。">
+<meta name="keywords" content="C++,VapourSynth">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="周记 2020.02.24-03.01">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;05&#x2F;week-202002-4&#x2F;index.html">
+<meta property="og:title" content="周记 2020.03.02-03.08">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;week-202003-1&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
+<meta property="og:description" content="1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。 重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-08T08:43:17.049Z">
+<meta property="og:updated_time" content="2020-03-08T09:36:31.019Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -211,14 +211,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            周记 2020.02.24-03.01
+            周记 2020.03.02-03.08
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-03-05T22:44:28+08:00">
+    <time datetime="2020-03-08T16:47:39+08:00">
 	
-		    Mar 05, 2020
+		    Mar 08, 2020
     	
     </time>
     
@@ -236,28 +236,18 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex</span><br></pre></td></tr></table></figure>
-
+            <h3 id="1-逐项完成ISP算法"><a href="#1-逐项完成ISP算法" class="headerlink" title="1.逐项完成ISP算法"></a>1.逐项完成ISP算法</h3><p>感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。</p>
+<p>重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。</p>
 <a id="more"></a>
 
-<h3 id="2-解决VapourSynth版本问题？"><a href="#2-解决VapourSynth版本问题？" class="headerlink" title="2.解决VapourSynth版本问题？"></a>2.解决VapourSynth版本问题？</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> VAPOURSYNTH_API_VERSION &lt; 0x30002</span></span><br><span class="line">	<span class="meta">#<span class="meta-keyword">define</span> FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<p>（来自KNLmeansCL？）</p>
-<h3 id="3-OpenCL"><a href="#3-OpenCL" class="headerlink" title="3.OpenCL"></a>3.OpenCL</h3><p>看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。</p>
-<h3 id="4-OpenCL设计思路的理解"><a href="#4-OpenCL设计思路的理解" class="headerlink" title="4.OpenCL设计思路的理解"></a>4.OpenCL设计思路的理解</h3><p>我能理解到的几点…</p>
-<ul>
-<li>OpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）</li>
-<li>类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）</li>
-<li>OpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）</li>
-<li>CPU 线程 = OpenCL 工作项（Work Item）</li>
-</ul>
-<h3 id="5-OpenCL与C"><a href="#5-OpenCL与C" class="headerlink" title="5.OpenCL与C++"></a>5.OpenCL与C++</h3><p>在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。</p>
-<p>可以不写的<code>.cl</code>文件的说。</p>
-<h3 id="6-C-STL库"><a href="#6-C-STL库" class="headerlink" title="6.C++ STL库"></a>6.C++ STL库</h3><p>C++标准模板库，（抛开<code>string</code>）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。</p>
-<p>例如容器<code>vector</code>、<code>queue</code>，方法<code>at</code>、<code>emplace</code>。</p>
-<p>感觉现在，我已经把21天学通C++这本书从总体上做了概览。</p>
-<h3 id="7-Mkdocs：写自己的图书"><a href="#7-Mkdocs：写自己的图书" class="headerlink" title="7.Mkdocs：写自己的图书"></a>7.Mkdocs：写自己的图书</h3><p>去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。</p>
-<h3 id="8-交流"><a href="#8-交流" class="headerlink" title="8.交流"></a>8.交流</h3><p>在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。</p>
+<h3 id="2-C-科学计算"><a href="#2-C-科学计算" class="headerlink" title="2.C++科学计算"></a>2.C++科学计算</h3><p>Eigen库是一个C++科学计算库，主要是各种矩阵运算。</p>
+<h3 id="3-为什么没好好学数学"><a href="#3-为什么没好好学数学" class="headerlink" title="3.为什么没好好学数学"></a>3.为什么没好好学数学</h3><p>本不该倒垃圾，但这几年的学，从数学能力的角度，真是越上越回去了（所以这也是我的专业症结所在）。矩阵论稀里糊涂上完了…在看现在需要用的SVD、范数计算…数学跟不上了…</p>
+<h3 id="4-VSGAN与升级VS版本"><a href="#4-VSGAN与升级VS版本" class="headerlink" title="4.VSGAN与升级VS版本"></a>4.VSGAN与升级VS版本</h3><p>（先吐槽一句，为什么我电脑上装了3.6、3.7、3.8三个版本的Python…而且更蛋疼的是Python 3.7装在了Visual Studio里面…）</p>
+<p>干脆把电脑有Python全卸了，重装上了Python 3.8，VapourSynth也升级到了最新的R49预览版。由于这次把Python装在<code>C:\Program Files</code>里面，经常需要管理员权限，有点蛋疼…</p>
+<p>弄好环境后，尝试了VSGAN，想试一下<code>waifuGAN</code>和<code>1xESRGAN</code>两个模型，然而电脑没有显卡，用CPU实在太慢了，先放弃了…</p>
+<p>看了一下VSGAN的代码（还是Python看着简洁），基于Pytorch调用.pth模型，实现基于ESRGAN网络的超分辨率或其他操作。模型可以在<a href="https://upscale.wiki/wiki/Model_Database" target="_blank" rel="noopener">这里</a>找到。</p>
+<p>说起来两个星期前还在感叹技术太渣，连ESRGAN模型调用都调不了…现在也算是（借助别人的工具）弥补上了。</p>
+<h3 id="5-原生分辨率"><a href="#5-原生分辨率" class="headerlink" title="5.原生分辨率"></a>5.原生分辨率</h3><p>这个东西也算是我的心结之一了。<code>getnative.py</code>搞定，测试了一下，感觉鲁棒性还挺好，而对于我自己缩到720p再升到1080p的例子，也能认出是720p（但是信号特征不如原始图片855p那么明显）。</p>
 
             
 
@@ -269,7 +259,7 @@
             <div class="post-footer-tags">
                 <span class="text-color-light text-small">TAGGED IN</span><br/>
                 
-    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/OpenCL/" rel="tag">OpenCL</a>
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
 
             </div>
         
@@ -279,14 +269,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/rebuild-JincResize-3/"
-                    data-tooltip="rebuild-JincResize-3"
-                    aria-label="PREVIOUS: rebuild-JincResize-3"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -296,9 +283,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/week-202002-3/"
-                    data-tooltip="周记 2020.02.17-02.23"
-                    aria-label="NEXT: 周记 2020.02.17-02.23"
+                    href="/2020/03/05/rebuild-JincResize-3/"
+                    data-tooltip="rebuild-JincResize-3"
+                    aria-label="NEXT: rebuild-JincResize-3"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -323,7 +310,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -336,7 +323,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -349,7 +336,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -395,14 +382,11 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                <a
-                    class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/rebuild-JincResize-3/"
-                    data-tooltip="rebuild-JincResize-3"
-                    aria-label="PREVIOUS: rebuild-JincResize-3"
-                >
-                    
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
                         <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
                     </a>
@@ -412,9 +396,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/03/05/week-202002-3/"
-                    data-tooltip="周记 2020.02.17-02.23"
-                    aria-label="NEXT: 周记 2020.02.17-02.23"
+                    href="/2020/03/05/rebuild-JincResize-3/"
+                    data-tooltip="rebuild-JincResize-3"
+                    aria-label="NEXT: rebuild-JincResize-3"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -439,7 +423,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -452,7 +436,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -465,7 +449,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/03/08/week-202003-1/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -499,7 +483,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/03/08/week-202003-1/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -512,7 +496,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/03/08/week-202003-1/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -525,7 +509,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/05/week-202002-4/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/03/08/week-202003-1/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
