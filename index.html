@@ -209,6 +209,59 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/03/12/CI-and-compiler/"
+                            aria-label=": Travis CI持续集成与各编译器对C++新特性的支持"
+                        >
+                            Travis CI持续集成与各编译器对C++新特性的支持
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-12T01:36:45+08:00">
+	
+		    Mar 12, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="Travis-CI的部署"><a href="#Travis-CI的部署" class="headerlink" title="Travis CI的部署"></a>Travis CI的部署</h3><p>很早就有体验Travis CI持续集成的想法，于是拿<a href="https://github.com/Kiyamou/VapourSynth-JincResize" target="_blank" rel="noopener">VapourSynth-JincResize</a>项目试一试。</p>
+<h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给JincResize项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的<code>.travis.yml</code>脚本。</p>
+<p>但等我上传了脚本、部署完成之后才想起，JincResize项目使用pkg-config解决依赖的问题，而配置pkg-config需要先编译VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用gcc编译，反正我的项目结构简单。</p>
+                    
+                        <a
+                            href="/2020/03/12/CI-and-compiler/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Travis CI持续集成与各编译器对C++新特性的支持"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/03/11/build-vapoursynth/"
                             aria-label=": ArchLinux下VapourSynth和VapourSynth-editor的编译与配置"
                         >
@@ -675,59 +728,6 @@
                             href="/2020/02/13/week-202002-1/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 周记 2020.02.03-02.09"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/08/ISP-learn-1/"
-                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
-                        >
-                            ISP笔记（1）：一个ISP项目的流程梳理
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-08T23:25:37+08:00">
-	
-		    Feb 08, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>通过学习<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">mushfiqulalam/isp</a>项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。</p>
-<h3 id="基本的印象"><a href="#基本的印象" class="headerlink" title="基本的印象"></a>基本的印象</h3><p>镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。</p>
-<p>最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。</p>
-                    
-                        <a
-                            href="/2020/02/08/ISP-learn-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
                         >
                             Continue reading
                         </a>
