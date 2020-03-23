@@ -209,6 +209,58 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/03/23/rebuild-JincResize-3/"
+                            aria-label=": JincResize代码的重构（3）"
+                        >
+                            JincResize代码的重构（3）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-23T13:08:38+08:00">
+	
+		    Mar 23, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>JincResize avs版迁移工作告一段落了，速度比之前快了5-6倍，在这个过程中学到了C/C++结构、C++类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。</p>
+<p>当修改好readme，发布了JincResize-r7-RC1，再来回看commit历史，有些感动。在这一周的时间中，有些印象很深的改动，都忘记了是早期的几天就完成的；而同时在最初的几天，以现在的视角看，更多的是四处尝试，像在黑暗中一样，但最终是看到了光亮。</p>
+                    
+                        <a
+                            href="/2020/03/23/rebuild-JincResize-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构（3）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/03/12/CI-and-compiler/"
                             aria-label=": Travis CI持续集成与各编译器对C++新特性的支持"
                         >
@@ -673,61 +725,6 @@
                             href="/2020/02/14/To-master/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 我想去看京都的樱花"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/13/week-202002-1/"
-                            aria-label=": 周记 2020.02.03-02.09"
-                        >
-                            周记 2020.02.03-02.09
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-13T13:50:42+08:00">
-	
-		    Feb 13, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// std::deque</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">allocator</span>&lt;T&gt; &gt; <span class="title">class</span> <span class="title">deque</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// example</span></span><br><span class="line"><span class="built_in">deque</span> &lt;TreeNode*&gt; tree_que;</span><br><span class="line">node = tree_que.front();</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Canny(edge, edge, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>);  <span class="comment">// ✔</span></span><br><span class="line">Canny(edge, edge, threshold1=<span class="number">3</span>, threshold2=<span class="number">9</span>, apertureSize=<span class="number">3</span>);  <span class="comment">// ✖</span></span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2020/02/13/week-202002-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 周记 2020.02.03-02.09"
                         >
                             Continue reading
                         </a>
