@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>gcc 10尝鲜 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"在zimg项目的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。\n看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。\n\n\n收集各种Linux发行版说起来我也是用过复数个Linux发行版的人了，不再像一年前那样懵懂，能够比较从容地折腾这些发行版了。\nFedora也是用yum管理依赖包，这才让我想起“我眼中的各Linux发行部用户”那张图。\n\n\nfedora：红帽子家养的小白鼠无误，有什么新想(nao)法(dong)都先往fedora上招呼Archlinux：战斗机，很厉害，B格很高ubuntu：吉祥物，用自己的种种行为卖傻卖萌，负责Linux桌面推广，人民群众喜闻乐见，实际上没有卵用redhat：我是负责服务器的工程师CentOS：我是楼上那个工程师的影分身gentoo linux：相比Arch这个战斗机，我已然冲出大气层openSUSE：YAST就是你的专职妹抖，用♂过都说好Slackware：祖宗之法大于天（任何用户都应该自己解决包依赖）debian：看过动画《轻音少女》的都知道，姐姐没有妹妹来照料起居，基本就活不下去……\n\n以上转自Kan Kikou@知乎\n我对Fedora的感觉\n\n用和ArchLinux一样的GNOME桌面\n用和CentOS/RedHat一样的yum包管理\n工具都是最新的\n\n不过这倒是挺符合我的胃口，毕竟我就是从CentOS转到ArchLinux的。\n回到Fedora本身，一开始用workstation版本，感觉对新手异常友好。但Fedora 31还没问题，Fedora 32一进入安装界面就出现诡异的花屏。然而Fedora 31也没有gcc 10啊，遂转用network install版本。\n倒是挺顺利，只是忘了装桌面…嘛，反正也用不上，而且Fedora的命令行界面比ArchLinux要好多了，有彩色文字，还能占满整个屏幕，不像ArchLinux无法自适应分辨率，只有屏幕中央800x600的一小块。\n基础设施一开始用的Fedora桌面版，很多东西都没装；之后用命令行版，倒是因为勾选齐全，可以开箱即用。\n重点记一下Fedora桌面版在使用gcc编译前的一些工作。\n编译zimg的流程如下，和编译VapourSynth一样。\n1234./autogen.sh./configuremakemake install\n\n在此之前，需要安装\n12345autoconfautomakemakelibtoolgcc-c++\n\n逐个说一下\n\n无autoconf，autogen.sh脚本无法运行\n无automake，运行autogen.sh报错缺少aclocal。\n无make，呃…这个你懂的\n无libtool，在执行make命令时，报错1error: Libtool library used but &apos;LIBTOOL&apos; is undefined\n无gcc-c++，在执行make命令时，报错1error: A compiler with support for C++11 language features is required.\n\n\n\n回到size_t这次的折腾缘起于上面Issue中gcc 10对size_t报错，但我尝试之后，没有报错…\n于是搜了一下类似的报错（自定义了类型size_t，却被编译器认为是std::size_t忘了写std），原来由来已久，我还以为的gcc 10支持了什么新特性，导致代码冲突呢…\n搜了下，也是一笔糊涂账，可能是编译环境中有什么问题导致的，先不管了…\n写完才发现跑题了…那我也溜了吧…Orz\n","dateCreated":"2020-04-08T17:30:49+08:00","dateModified":"2020-04-08T23:28:37+08:00","datePublished":"2020-04-08T17:30:49+08:00","description":"在zimg项目的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。\n看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。","headline":"gcc 10尝鲜","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/08/gcc-use-2/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/08/gcc-use-2/","keywords":"构建与编译, C++"}</script>
+    <meta name="description" content="在zimg项目的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。 看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。">
+<meta name="keywords" content="构建与编译,C++">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="gcc 10尝鲜">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;08&#x2F;gcc-use-2&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="在zimg项目的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。 看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2020&#x2F;04&#x2F;08&#x2F;wRYn7JoMeLNOsbq.jpg">
+<meta property="og:updated_time" content="2020-04-08T15:28:37.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2020&#x2F;04&#x2F;08&#x2F;wRYn7JoMeLNOsbq.jpg">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.kaggle.com/kiyamou" target="_blank" rel="noopener" title="Kaggle">
+                    
+                        <i class="sidebar-button-icon fab fa-kaggle" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kaggle</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            gcc 10尝鲜
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-04-08T17:30:49+08:00">
+	
+		    Apr 08, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>在<a href="https://github.com/sekrit-twc" target="_blank" rel="noopener">zimg项目</a>的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把<code>size_t</code>错认成<code>std::size_t</code>，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。</p>
+<p>看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。</p>
+<a id="more"></a>
+
+<h3 id="收集各种Linux发行版"><a href="#收集各种Linux发行版" class="headerlink" title="收集各种Linux发行版"></a>收集各种Linux发行版</h3><p>说起来我也是用过复数个Linux发行版的人了，不再像一年前那样懵懂，能够比较从容地折腾这些发行版了。</p>
+<p>Fedora也是用yum管理依赖包，这才让我想起“我眼中的各Linux发行部用户”那张图。</p>
+<p><img src="https://i.loli.net/2020/04/08/wRYn7JoMeLNOsbq.jpg" alt="e2dc2915a327ba1d6c5eb0d20535a288_b.jpg"></p>
+<blockquote>
+<p>fedora：红帽子家养的小白鼠无误，有什么新想(nao)法(dong)都先往fedora上招呼<br>Archlinux：战斗机，很厉害，B格很高<br>ubuntu：吉祥物，用自己的种种行为卖傻卖萌，负责Linux桌面推广，人民群众喜闻乐见，实际上没有卵用<br>redhat：我是负责服务器的工程师<br>CentOS：我是楼上那个工程师的影分身<br>gentoo linux：相比Arch这个战斗机，我已然冲出大气层<br>openSUSE：YAST就是你的专职妹抖，用♂过都说好<br>Slackware：祖宗之法大于天（任何用户都应该自己解决包依赖）<br>debian：看过动画《轻音少女》的都知道，姐姐没有妹妹来照料起居，基本就活不下去……</p>
+</blockquote>
+<p>以上转自<a href="https://www.zhihu.com/question/22605825/answer/76171890" target="_blank" rel="noopener">Kan Kikou@知乎</a></p>
+<p>我对Fedora的感觉</p>
+<ul>
+<li>用和ArchLinux一样的GNOME桌面</li>
+<li>用和CentOS/RedHat一样的yum包管理</li>
+<li>工具都是最新的</li>
+</ul>
+<p>不过这倒是挺符合我的胃口，毕竟我就是从CentOS转到ArchLinux的。</p>
+<p>回到Fedora本身，一开始用workstation版本，感觉对新手异常友好。但Fedora 31还没问题，Fedora 32一进入安装界面就出现诡异的花屏。然而Fedora 31也没有gcc 10啊，遂转用network install版本。</p>
+<p>倒是挺顺利，只是忘了装桌面…嘛，反正也用不上，而且Fedora的命令行界面比ArchLinux要好多了，有彩色文字，还能占满整个屏幕，不像ArchLinux无法自适应分辨率，只有屏幕中央800x600的一小块。</p>
+<h3 id="基础设施"><a href="#基础设施" class="headerlink" title="基础设施"></a>基础设施</h3><p>一开始用的Fedora桌面版，很多东西都没装；之后用命令行版，倒是因为勾选齐全，可以开箱即用。</p>
+<p>重点记一下Fedora桌面版在使用gcc编译前的一些工作。</p>
+<p>编译zimg的流程如下，和编译VapourSynth一样。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./autogen.sh</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p>在此之前，需要安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">autoconf</span><br><span class="line">automake</span><br><span class="line">make</span><br><span class="line">libtool</span><br><span class="line">gcc-c++</span><br></pre></td></tr></table></figure>
+
+<p>逐个说一下</p>
+<ul>
+<li>无autoconf，<code>autogen.sh</code>脚本无法运行</li>
+<li>无automake，运行<code>autogen.sh</code>报错缺少<code>aclocal</code>。</li>
+<li>无make，呃…这个你懂的</li>
+<li>无libtool，在执行<code>make</code>命令时，报错<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: Libtool library used but &apos;LIBTOOL&apos; is undefined</span><br></pre></td></tr></table></figure></li>
+<li>无gcc-c++，在执行<code>make</code>命令时，报错<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">error: A compiler with support for C++11 language features is required.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="回到size-t"><a href="#回到size-t" class="headerlink" title="回到size_t"></a>回到<code>size_t</code></h3><p>这次的折腾缘起于上面Issue中gcc 10对<code>size_t</code>报错，但我尝试之后，没有报错…</p>
+<p>于是搜了一下类似的报错（自定义了类型<code>size_t</code>，却被编译器认为是<code>std::size_t</code>忘了写<code>std</code>），原来由来已久，我还以为的gcc 10支持了什么新特性，导致代码冲突呢…</p>
+<p>搜了下，也是一笔糊涂账，可能是编译环境中有什么问题导致的，先不管了…</p>
+<p>写完才发现跑题了…那我也溜了吧…Orz</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/" rel="tag">构建与编译</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/23/rebuild-JincResize-3/"
+                    data-tooltip="JincResize代码的重构（3）"
+                    aria-label="NEXT: JincResize代码的重构（3）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/03/23/rebuild-JincResize-3/"
+                    data-tooltip="JincResize代码的重构（3）"
+                    aria-label="NEXT: JincResize代码的重构（3）"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/08/gcc-use-2/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/08/gcc-use-2/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/08/gcc-use-2/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/08/gcc-use-2/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>
