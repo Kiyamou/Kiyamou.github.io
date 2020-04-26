@@ -210,6 +210,63 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/10/24/python-Q-A/"
+                            aria-label=": Python Q&amp;A"
+                        >
+                            Python Q&amp;A
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-10-24T23:31:39+08:00">
+	
+		    Oct 24, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>记录一些基础简单的东西，随时更新。<del>我太笨了记不住东西，啦啦啦</del></p>
+<p><strong>Question</strong>：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了<code>Python\Python3x\Lib\site-packages</code>中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似<code>dll failed</code>的错误。</p>
+<p><strong>Answer</strong>：把<code>Python\Python3x\Lib\site-packages</code>写入系统环境变量，否则PyCharm依旧找不到。</p>
+<p><strong>Question</strong>：占位符（tap）与空格的问题</p>
+<p><strong>Answer</strong>：Notepad++和Atom均有显示占位符和空格的选项。</p>
+<p><strong>Question</strong>：为什么VapouSynth API的函数<code>propGetFloat()</code>名字写作float，却是double类型？</p>
+<p><strong>Answer</strong>：猜测是基于VapouSynth以C++为后端、以Python为前端的模式而故意为之，因为Python中浮点数只有float类型，其与C++的double类型相似。</p>
+                    
+                        <a
+                            href="/2019/10/24/python-Q-A/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Python Q&amp;A"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/20/mxnet-install-win/"
                             aria-label=": Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）"
                         >
@@ -703,64 +760,6 @@
                             href="/2019/06/27/caffe-day16/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Day16 Caffe可视化方法"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/15/av1-aom/"
-                            aria-label=": 编译AV1编码器libaom的记录"
-                        >
-                            编译AV1编码器libaom的记录
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-15T18:24:58+08:00">
-	
-		    Jun 15, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="起始编译过程"><a href="#起始编译过程" class="headerlink" title="起始编译过程"></a>起始编译过程</h3><h4 id="pthread-h文件"><a href="#pthread-h文件" class="headerlink" title="pthread.h文件"></a><code>pthread.h</code>文件</h4><p>提示缺失<code>pthread.h</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Looking for pthread.h - not found</span><br></pre></td></tr></table></figure>
-
-<p>根据教程<a href="https://blog.csdn.net/qianchenglenger/article/details/16907821" target="_blank" rel="noopener">https://blog.csdn.net/qianchenglenger/article/details/16907821</a>，在windows下配置pthread。</p>
-<p>下载<code>pthreads-w32-2-9-1-release.zip</code>，由于年久失修，需要在镜像站下载<br><a href="https://sourceware.org/mirrors.html" target="_blank" rel="noopener">https://sourceware.org/mirrors.html</a>-&gt;<a href="https://mirrors.kernel.org/sourceware/pthreads-win32/" target="_blank" rel="noopener">https://mirrors.kernel.org/sourceware/pthreads-win32/</a>。</p>
-<p>具体操作只涉及<code>/Pre-built.2</code>中的文件。</p>
-<p>1.将<code>/Pre-built.2/include</code>和<code>/Pre-built.2/lib</code>的文件分别放入VS 2019的对应文件夹下。</p>
-<p>2.将<code>/Pre-built.2/dll</code>中<code>/x64</code>和<code>/x86</code>的文件分别放入<code>system32</code>和<code>SysWOW64</code>中。</p>
-                    
-                        <a
-                            href="/2019/06/15/av1-aom/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 编译AV1编码器libaom的记录"
                         >
                             Continue reading
                         </a>
