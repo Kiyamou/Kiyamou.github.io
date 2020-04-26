@@ -1,0 +1,600 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>Grain 与 Noise - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"本文翻译自 Grain and Noise，原作者：kageru。\n引言在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。\nGrain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。\nGrain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。\n有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。\n\n\n不同类型的 grain 与 noise1.回忆特效（Flashbacks）2.静态胶片颗粒（Constant film grain）3.背景噪点（Background grain）4.TV 横纹（TV grain）5.其他特效噪点（Exceptional grain）不同的降噪方法1.基于傅里叶变换的频域降噪（如dfttest、FFT3D）dfftest 是一个较旧的滤镜，自 2007 年起开始开发，是一个很有效的滤镜，具有良好的细节保留能力，但会大幅降低速度，特别是在缺乏多线程支持的 AviSynth 下。VapourSynth 接口的 dfftest 速度更快，且有相同的效果。\nFFT3DGPU 具有硬件加速功能，同样使用了频域降噪算法，速度更快，但细节保留方面精度较低，同时可能更容易导致模糊，可以通过反差补偿锐化来修补。该滤镜提供了 AviSynth 和 VapourSynth 接口，二者没有太大区别。\n关键参数为sigma。\n2.非局部均值降噪（如KNLmeans、TNLmeans）非局部均值（non-local means）降噪由一系列 solid 降噪方法组成。KNLmeans 降噪滤镜基于 OpenCL 对 GPU 运算进行了高度优化，对整体图像处理速度无显著影响，这一点非常吸引人。在较旧的 AviSynth 视频处理框架下，与FFT3DGPU类似，使用GPU版 KNLmeans 还可以绕开 AviSynth 的单线程限制。因此除非无 GPU 设备，否则没有理由使用 CPU 版本（译者注：由于 KNLmeans 基于 OpenCL 进行 GPU 优化，所以在 NVIDIA、AMD、Intel 三家平台通用，很难遇上无 GPU 可用的情况，但在某些 GPU 设备上 KNLmeans 可能因 Bug 而无法使用，这时候才需要考虑 CPU 版本的 TNLmeans）。\nKNLmeans 可以消除相当一部分（a lot of） noise，同时保留很多（a lot of）细节（尽管少于 dft 或 BM3D）。对于历史较久远的动画，推荐使用这一滤镜，因为这些动画往往存在很多 grain（通常是在蓝光重制时添加），但细节并不丰富。这种情况下，适合使用具有硬件加速且降噪力度大的滤镜，比起 FFT3D，KNLmeans 更加合适 。\n需要注意这一滤镜的时-空混合模式（Spatio-Temporal mode），在默认设置下，AviSynth 和 VapourSynth 版本的 KNLmeans 均不使用时间参考帧，当参数d大于 0 时，在降噪中启用时间参考帧，开启时间参考帧可以改善质量。对于 YUV444 采样格式的视频，请将cmode参数设置为True，以开启色度平面降噪，因为在默认设置下仅对亮度平面进行处理。\n上述两个参数的设置均会降低速度，但除非使用古老的 GPU 或者同时使用多个 GPU 优化的滤镜，否则不会对编码速度产生明显影响，控速步仍为 CPU 的编码过程。KNLmeans 的文档在这里。\n3.三维块匹配算法（BM3D）BM3D 很有价值，也很慢，仅有 VapourSynth 接口。在 AviSynth 上运行可能会导致崩溃，除非大幅优化内存占用，否则很难实现 AviSynth 接口。\nBM3D可以并行化并在 GPU 上运行（可参考此处的[文献]([https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d%20GPU%20parallel&amp;f=false](https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d GPU parallel&amp;f=false))，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现（译者注：在这里提到了一份 VapourSynth 接口的 BM3D-GPU 实现，但原始代码库已无法获取）。\nBM3D 实现了模糊程度与体积的最佳平衡（因此也导致了细节损失），但在基于 CPU 的降噪滤镜中，BM3D 是速度最慢的。\n值得注意的是，BM3D 滤镜有一个ref参数，用以设定降噪时的参考视频，可以将ref设定为其他降噪滤镜的处理结果，从而实现 BM3D 与其他降噪滤镜的协同处理。在 BM3D 文档中有如下举例：\n\n使用自定义降噪滤镜作为基础降噪结果，并使用V-BM3D的最终降噪函数做精细化处理\n这样做可以在两种降噪滤镜间取长补短。在下面的例子中，SMDegrain滤镜在时空平滑上很有效，但可能导致鬼影（blending）和细节损失，V-BM3D可以很好地保留细节，但对于大的噪声pattern（例如粗颗粒）效果不好\n1234src = core.bm3d.RGB2OPP(src)ref = haf.SMDegrain(src)flt = core.bm3d.VFinal(src, ref, radius=1, matrix=100).bm3d.VAggregate(radius=1)flt = core.bm3d.OPP2RGB(flt)\n\n最关键的参数为sigam，可以为不同平面设定不同的数值。\n4.SMDegrainSMDegrain 似乎是很多人降噪的首选，因为它不会导致过多的模糊，而且降噪效果似乎弱到对图像没有明显影响，不会明显改变文件体积。\n较弱的降噪效果也能使（因降噪而暴露的）色带更少，这在希望保留细节而不太考虑比特率的情况下很有用。\n与此同时，即使不在降噪后进行反差补偿锐化，SMDegrain 似乎也可以对某些边缘起到收线/细化线条的效果。\n需要注意的是，SMDegrain 在处理色度平面时可能会带来副作用，AviSynth Wiki 描述如下：\n\n注意在plane=1-4时色度平面可能会产生色度鬼影，这种情况下建议在空域中处理色度平面。\n\n事实上，这可以通过将多个帧模糊为单个帧进行修补。\n5.基于卷积神经网络的 Waifu2xWaifu2x 使用深度卷积神经网络进行超分辨率与降噪，听上去很棒但需要大量算力。在图形处理器上使用 Waifu2x 对 720p 视频进行降噪，其速度可能低于 1fps（译者注：Waifu2x 进行了更新，见下文的Edit）。降噪有三种级别可供选择，2 级和 3 级降噪难以保留细节，无法使用，1 级降噪可以恰当地去除 grain，但细节的保留程度可能与输入源关系很大，且无法调节。因此在使用中，要么接受 Waifu2x 单一模式的降噪结果（而且这还可能是最慢的算法），要么换用其他降噪滤镜（译者注：Waifu2x 进行了更新，见下文的Edit）。\n基于深度神经网络的算法还有很多，但多数未公开算法。\n对于动画风格的图像使用 Waifu2x 进行降噪没有问题，但对于真实图像，其纹理可能被识别为噪点，进而被破坏。\nEdit：在写完本节后，Waifu2x 进行了重大升级，速度进一步提升，并且在降噪功能上提供了更多选项。\n6.去色带（Debanding）Grain 编码","dateCreated":"2020-04-26T20:16:10+08:00","dateModified":"2020-04-26T20:17:50+08:00","datePublished":"2020-04-26T20:16:10+08:00","description":"本文翻译自 Grain and Noise，原作者：kageru。\n引言在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。\nGrain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。\nGrain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。\n有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。","headline":"Grain 与 Noise","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/26/grain-and-noise/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/26/grain-and-noise/","keywords":"VapourSynth, Avisynth"}</script>
+    <meta name="description" content="本文翻译自 Grain and Noise，原作者：kageru。 引言在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。 Grai">
+<meta name="keywords" content="VapourSynth,Avisynth">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Grain 与 Noise">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;26&#x2F;grain-and-noise&#x2F;index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="本文翻译自 Grain and Noise，原作者：kageru。 引言在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。 Grai">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-04-26T12:17:50.543Z">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.kaggle.com/kiyamou" target="_blank" rel="noopener" title="Kaggle">
+                    
+                        <i class="sidebar-button-icon fab fa-kaggle" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kaggle</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            Grain 与 Noise
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-04-26T20:16:10+08:00">
+	
+		    Apr 26, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>本文翻译自 <a href="https://blog.kageru.moe/legacy/grain.html" target="_blank" rel="noopener">Grain and Noise</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。</p>
+<p>Grain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。</p>
+<p>Grain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。</p>
+<p>有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。</p>
+<a id="more"></a>
+
+<h3 id="不同类型的-grain-与-noise"><a href="#不同类型的-grain-与-noise" class="headerlink" title="不同类型的 grain 与 noise"></a>不同类型的 grain 与 noise</h3><h4 id="1-回忆特效（Flashbacks）"><a href="#1-回忆特效（Flashbacks）" class="headerlink" title="1.回忆特效（Flashbacks）"></a>1.回忆特效（Flashbacks）</h4><h4 id="2-静态胶片颗粒（Constant-film-grain）"><a href="#2-静态胶片颗粒（Constant-film-grain）" class="headerlink" title="2.静态胶片颗粒（Constant film grain）"></a>2.静态胶片颗粒（Constant film grain）</h4><h4 id="3-背景噪点（Background-grain）"><a href="#3-背景噪点（Background-grain）" class="headerlink" title="3.背景噪点（Background grain）"></a>3.背景噪点（Background grain）</h4><h4 id="4-TV-横纹（TV-grain）"><a href="#4-TV-横纹（TV-grain）" class="headerlink" title="4.TV 横纹（TV grain）"></a>4.TV 横纹（TV grain）</h4><h4 id="5-其他特效噪点（Exceptional-grain）"><a href="#5-其他特效噪点（Exceptional-grain）" class="headerlink" title="5.其他特效噪点（Exceptional grain）"></a>5.其他特效噪点（Exceptional grain）</h4><h3 id="不同的降噪方法"><a href="#不同的降噪方法" class="headerlink" title="不同的降噪方法"></a>不同的降噪方法</h3><h4 id="1-基于傅里叶变换的频域降噪（如dfttest、FFT3D）"><a href="#1-基于傅里叶变换的频域降噪（如dfttest、FFT3D）" class="headerlink" title="1.基于傅里叶变换的频域降噪（如dfttest、FFT3D）"></a>1.基于傅里叶变换的频域降噪（如dfttest、FFT3D）</h4><p>dfftest 是一个较旧的滤镜，自 2007 年起开始开发，是一个很有效的滤镜，具有良好的细节保留能力，但会大幅降低速度，特别是在缺乏多线程支持的 AviSynth 下。VapourSynth 接口的 dfftest 速度更快，且有相同的效果。</p>
+<p>FFT3DGPU 具有硬件加速功能，同样使用了频域降噪算法，速度更快，但细节保留方面精度较低，同时可能更容易导致模糊，可以通过反差补偿锐化来修补。该滤镜提供了 AviSynth 和 VapourSynth 接口，二者没有太大区别。</p>
+<p>关键参数为<code>sigma</code>。</p>
+<h4 id="2-非局部均值降噪（如KNLmeans、TNLmeans）"><a href="#2-非局部均值降噪（如KNLmeans、TNLmeans）" class="headerlink" title="2.非局部均值降噪（如KNLmeans、TNLmeans）"></a>2.非局部均值降噪（如KNLmeans、TNLmeans）</h4><p>非局部均值（non-local means）降噪由一系列 solid 降噪方法组成。KNLmeans 降噪滤镜基于 OpenCL 对 GPU 运算进行了高度优化，对整体图像处理速度无显著影响，这一点非常吸引人。在较旧的 AviSynth 视频处理框架下，与FFT3DGPU类似，使用GPU版 KNLmeans 还可以绕开 AviSynth 的单线程限制。因此除非无 GPU 设备，否则没有理由使用 CPU 版本（译者注：由于 KNLmeans 基于 OpenCL 进行 GPU 优化，所以在 NVIDIA、AMD、Intel 三家平台通用，很难遇上无 GPU 可用的情况，但在某些 GPU 设备上 KNLmeans 可能因 Bug 而无法使用，这时候才需要考虑 CPU 版本的 TNLmeans）。</p>
+<p>KNLmeans 可以消除相当一部分（a lot of） noise，同时保留很多（a lot of）细节（尽管少于 dft 或 BM3D）。对于历史较久远的动画，推荐使用这一滤镜，因为这些动画往往存在很多 grain（通常是在蓝光重制时添加），但细节并不丰富。这种情况下，适合使用具有硬件加速且降噪力度大的滤镜，比起 FFT3D，KNLmeans 更加合适 。</p>
+<p>需要注意这一滤镜的时-空混合模式（Spatio-Temporal mode），在默认设置下，AviSynth 和 VapourSynth 版本的 KNLmeans 均不使用时间参考帧，当参数<code>d</code>大于 0 时，在降噪中启用时间参考帧，开启时间参考帧可以改善质量。对于 YUV444 采样格式的视频，请将<code>cmode</code>参数设置为<code>True</code>，以开启色度平面降噪，因为在默认设置下仅对亮度平面进行处理。</p>
+<p>上述两个参数的设置均会降低速度，但除非使用古老的 GPU 或者同时使用多个 GPU 优化的滤镜，否则不会对编码速度产生明显影响，控速步仍为 CPU 的编码过程。KNLmeans 的文档在<a href="https://github.com/Khanattila/KNLMeansCL/wiki" target="_blank" rel="noopener">这里</a>。</p>
+<h4 id="3-三维块匹配算法（BM3D）"><a href="#3-三维块匹配算法（BM3D）" class="headerlink" title="3.三维块匹配算法（BM3D）"></a>3.三维块匹配算法（BM3D）</h4><p>BM3D 很有价值，也很慢，仅有 VapourSynth 接口。在 AviSynth 上运行可能会导致崩溃，除非大幅优化内存占用，否则很难实现 AviSynth 接口。</p>
+<p>BM3D可以并行化并在 GPU 上运行（可参考此处的[文献]([<a href="https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d%20GPU%20parallel&amp;f=false]" target="_blank" rel="noopener">https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d%20GPU%20parallel&amp;f=false]</a>(<a href="https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d" target="_blank" rel="noopener">https://books.google.com/books?id=xqfNBQAAQBAJ&amp;pg=PA380&amp;lpg=PA380&amp;dq=bm3d+GPU+parallel&amp;source=bl&amp;ots=MS9-Kzi-8u&amp;sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&amp;hl=en&amp;sa=X&amp;ei=wljeVI-LKcqAywPVyILgDQ&amp;ved=0CDQQ6AEwBA#v=onepage&amp;q=bm3d</a> GPU parallel&amp;f=false))，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现（译者注：在<a href="http://vsdb.top/plugins/bm3dgpu" target="_blank" rel="noopener">这里</a>提到了一份 VapourSynth 接口的 BM3D-GPU 实现，但原始代码库已无法获取）。</p>
+<p>BM3D 实现了模糊程度与体积的最佳平衡（因此也导致了细节损失），但在基于 CPU 的降噪滤镜中，BM3D 是速度最慢的。</p>
+<p>值得注意的是，BM3D 滤镜有一个<code>ref</code>参数，用以设定降噪时的参考视频，可以将<code>ref</code>设定为其他降噪滤镜的处理结果，从而实现 BM3D 与其他降噪滤镜的协同处理。在 BM3D <a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D" target="_blank" rel="noopener">文档</a>中有如下举例：</p>
+<blockquote>
+<p>使用自定义降噪滤镜作为基础降噪结果，并使用V-BM3D的最终降噪函数做精细化处理</p>
+<p>这样做可以在两种降噪滤镜间取长补短。在下面的例子中，SMDegrain滤镜在时空平滑上很有效，但可能导致鬼影（blending）和细节损失，V-BM3D可以很好地保留细节，但对于大的噪声pattern（例如粗颗粒）效果不好</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">src = core.bm3d.RGB2OPP(src)</span><br><span class="line">ref = haf.SMDegrain(src)</span><br><span class="line">flt = core.bm3d.VFinal(src, ref, radius=<span class="number">1</span>, matrix=<span class="number">100</span>).bm3d.VAggregate(radius=<span class="number">1</span>)</span><br><span class="line">flt = core.bm3d.OPP2RGB(flt)</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>最关键的参数为<code>sigam</code>，可以为不同平面设定不同的数值。</p>
+<h4 id="4-SMDegrain"><a href="#4-SMDegrain" class="headerlink" title="4.SMDegrain"></a>4.SMDegrain</h4><p>SMDegrain 似乎是很多人降噪的首选，因为它不会导致过多的模糊，而且降噪效果似乎弱到对图像没有明显影响，不会明显改变文件体积。</p>
+<p>较弱的降噪效果也能使（因降噪而暴露的）色带更少，这在希望保留细节而不太考虑比特率的情况下很有用。</p>
+<p>与此同时，即使不在降噪后进行反差补偿锐化，SMDegrain 似乎也可以对某些边缘起到收线/细化线条的效果。</p>
+<p>需要注意的是，SMDegrain 在处理色度平面时可能会带来副作用，AviSynth Wiki 描述如下：</p>
+<blockquote>
+<p>注意在<code>plane=1-4</code>时色度平面可能会产生色度鬼影，这种情况下建议在空域中处理色度平面。</p>
+</blockquote>
+<p>事实上，这可以通过将多个帧模糊为单个帧进行修补。</p>
+<h4 id="5-基于卷积神经网络的-Waifu2x"><a href="#5-基于卷积神经网络的-Waifu2x" class="headerlink" title="5.基于卷积神经网络的 Waifu2x"></a>5.基于卷积神经网络的 Waifu2x</h4><p>Waifu2x 使用深度卷积神经网络进行超分辨率与降噪，听上去很棒但需要大量算力。在图形处理器上使用 Waifu2x 对 720p 视频进行降噪，其速度可能低于 1fps（译者注：Waifu2x 进行了更新，见下文的<strong>Edit</strong>）。降噪有三种级别可供选择，2 级和 3 级降噪难以保留细节，无法使用，1 级降噪可以恰当地去除 grain，但细节的保留程度可能与输入源关系很大，且无法调节。因此在使用中，要么接受 Waifu2x 单一模式的降噪结果（而且这还可能是最慢的算法），要么换用其他降噪滤镜（译者注：Waifu2x 进行了更新，见下文的<strong>Edit</strong>）。</p>
+<p>基于深度神经网络的算法还有很多，但多数未公开算法。</p>
+<p>对于动画风格的图像使用 Waifu2x 进行降噪没有问题，但对于真实图像，其纹理可能被识别为噪点，进而被破坏。</p>
+<p><strong>Edit</strong>：在写完本节后，Waifu2x 进行了重大升级，速度进一步提升，并且在降噪功能上提供了更多选项。</p>
+<h4 id="6-去色带（Debanding）"><a href="#6-去色带（Debanding）" class="headerlink" title="6.去色带（Debanding）"></a>6.去色带（Debanding）</h4><h3 id="Grain-编码"><a href="#Grain-编码" class="headerlink" title="Grain 编码"></a>Grain 编码</h3>
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/Avisynth/" rel="tag">Avisynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/08/gcc-use-2/"
+                    data-tooltip="gcc 10尝鲜及后续"
+                    aria-label="NEXT: gcc 10尝鲜及后续"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Blog 托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.<br>
+        &copy; 2019~2020 Kiyamou. 由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动, Theme By <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">LouisBarranqueiro</a>.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/04/08/gcc-use-2/"
+                    data-tooltip="gcc 10尝鲜及后续"
+                    aria-label="NEXT: gcc 10尝鲜及后续"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/26/grain-and-noise/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/26/grain-and-noise/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/26/grain-and-noise/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/26/grain-and-noise/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+<!--SCRIPTS END-->
+
+
+    
+
+
+
+
+    </body>
+</html>

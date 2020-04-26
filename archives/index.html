@@ -210,6 +210,61 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/04/26/grain-and-noise/"
+                            aria-label=": Grain 与 Noise"
+                        >
+                            Grain 与 Noise
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-04-26T20:16:10+08:00">
+	
+		    Apr 26, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>本文翻译自 <a href="https://blog.kageru.moe/legacy/grain.html" target="_blank" rel="noopener">Grain and Noise</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。</p>
+<p>Grain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。</p>
+<p>Grain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。</p>
+<p>有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。</p>
+                    
+                        <a
+                            href="/2020/04/26/grain-and-noise/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Grain 与 Noise"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/04/08/gcc-use-2/"
                             aria-label=": gcc 10尝鲜及后续"
                         >
@@ -666,58 +721,6 @@
                             href="/2020/02/21/look-back-10-years/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 十年一序：我一直都没有离开，只是换了一种方式存在"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/14/ISP-learn-2/"
-                            aria-label=": ISP笔记（2）：ISP pipeline总结"
-                        >
-                            ISP笔记（2）：ISP pipeline总结
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-14T17:38:05+08:00">
-	
-		    Feb 14, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。</p>
-<p>此文绝赞施工中…应该要等到我有更深入理解时，才能写完。</p>
-                    
-                        <a
-                            href="/2020/02/14/ISP-learn-2/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": ISP笔记（2）：ISP pipeline总结"
                         >
                             Continue reading
                         </a>
