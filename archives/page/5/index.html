@@ -210,6 +210,71 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2019/11/03/git-use-1/"
+                            aria-label=": Git的使用：创建SSH key、多账号共存、提交代码及进阶使用"
+                        >
+                            Git的使用：创建SSH key、多账号共存、提交代码及进阶使用
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-11-03T12:33:32+08:00">
+	
+		    Nov 03, 2019
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h2 id="创建SSH-key"><a href="#创建SSH-key" class="headerlink" title="创建SSH key"></a>创建SSH key</h2><h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>在Windows下，使用Git bash，创建秘钥。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>在这一步可以使用<code>-C &#39;comment&#39;</code>对秘钥进行注释。一些教程中要求在<code>-C</code>后写邮箱，其实写什么都可以，不写也行，注释而已。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
+
+<p>默认的密钥为2048位，可以使用<code>-b</code>指定密钥位数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
+
+<p>之后会确认密钥文件的存放位置和文件名，如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file in which to save the key (/c/Users/UserName/.ssh/id_rsa):</span><br></pre></td></tr></table></figure>
+
+<p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
+<p>之后会要求设置密码，回车则密码留空。</p>
+<p>看到<code>The key&#39;s randomart image is:</code>和创建密钥时的随机图像，即为创建成功。</p>
+                    
+                        <a
+                            href="/2019/11/03/git-use-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Git的使用：创建SSH key、多账号共存、提交代码及进阶使用"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2019/10/24/python-Q-A/"
                             aria-label=": Python Q&amp;A"
                         >
@@ -700,66 +765,6 @@
                             href="/2019/06/28/caffe-day17/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Day17 Caffe迁移和部署"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/06/27/caffe-day16/"
-                            aria-label=": Day16 Caffe可视化方法"
-                        >
-                            Day16 Caffe可视化方法
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-06-27T18:27:29+08:00">
-	
-		    Jun 27, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>《21天实战Caffe》学习笔记第16天</p>
-<h3 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h3><p>把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。</p>
-<h3 id="模型可视化"><a href="#模型可视化" class="headerlink" title="模型可视化"></a>模型可视化</h3><h4 id="网络结构可视化"><a href="#网络结构可视化" class="headerlink" title="网络结构可视化"></a>网络结构可视化</h4><h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><p>用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-devel</span><br></pre></td></tr></table></figure>
-
-<p>numpy和<code>/caffe/python/requirements.txt</code>清单里的包，均用pip3安装的。</p>
-<p>安装时报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: matplotlib 3.1.0 has requirement python-dateutil&gt;=2.1, but you&apos;ll have python-dateutil 1.5 which is incompatible.</span><br><span class="line">ERROR: pandas 0.24.2 has requirement python-dateutil&gt;=2.5.0, but you&apos;ll have python-dateutil 1.5 which is incompatible.</span><br></pre></td></tr></table></figure>
-
-<p>因为清单里要求python-dateutil的版本不能大于2，所以出现上述问题。但只是不兼容，而上述三个包都装上了，所以先这样。</p>
-                    
-                        <a
-                            href="/2019/06/27/caffe-day16/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Day16 Caffe可视化方法"
                         >
                             Continue reading
                         </a>

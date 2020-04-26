@@ -209,6 +209,63 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/03/05/week-202002-2/"
+                            aria-label=": 周记 2020.02.10-02.16"
+                        >
+                            周记 2020.02.10-02.16
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-03-05T22:38:09+08:00">
+	
+		    Mar 05, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-异常处理"><a href="#1-异常处理" class="headerlink" title="1.异常处理"></a>1.异常处理</h3><p><del>敲OpenCV，阈值化，故意尝试一个异常。</del></p>
+<p><del>把两个回调函数的<code>imshow(&quot;Output&quot;, dst)</code>的<code>dst</code>写成同一个变量，引发如下异常。</del></p>
+<p>上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把<code>adaptiveThreshold()</code>的参数写错了…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x000007FEFD77B87D 处(位于 6.7_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 0x000000000029EC98 处。</span><br></pre></td></tr></table></figure>
+
+<p>抛出异常的函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_INLINE CV_NORETURN <span class="keyword">void</span> <span class="title">errorNoReturn</span><span class="params">()</span>  <span class="comment">// bash.hpp 308行</span></span></span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2020/03/05/week-202002-2/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.02.10-02.16"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/02/21/look-back-10-years/"
                             aria-label=": 十年一序：我一直都没有离开，只是换了一种方式存在"
                         >
@@ -697,63 +754,6 @@
                             href="/2020/02/04/2020-winter-holiday/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 2020寒假计划与回顾"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/04/week-202001-4/"
-                            aria-label=": 周记 2020.01.27-02.02"
-                        >
-                            周记 2020.01.27-02.02
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-04T13:14:11+08:00">
-	
-		    Feb 04, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
-<ul>
-<li><p>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</p>
-</li>
-<li><p>头文件和库文件设置错误，64位和32位搞混</p>
-</li>
-</ul>
-                    
-                        <a
-                            href="/2020/02/04/week-202001-4/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 周记 2020.01.27-02.02"
                         >
                             Continue reading
                         </a>
