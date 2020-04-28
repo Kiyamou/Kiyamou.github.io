@@ -209,6 +209,278 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/13/week-202002-1/"
+                            aria-label=": 周记 2020.02.03-02.09"
+                        >
+                            周记 2020.02.03-02.09
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-13T13:50:42+08:00">
+	
+		    Feb 13, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// std::deque</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">allocator</span>&lt;T&gt; &gt; <span class="title">class</span> <span class="title">deque</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// example</span></span><br><span class="line"><span class="built_in">deque</span> &lt;TreeNode*&gt; tree_que;</span><br><span class="line">node = tree_que.front();</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Canny(edge, edge, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>);  <span class="comment">// ✔</span></span><br><span class="line">Canny(edge, edge, threshold1=<span class="number">3</span>, threshold2=<span class="number">9</span>, apertureSize=<span class="number">3</span>);  <span class="comment">// ✖</span></span><br></pre></td></tr></table></figure>
+                    
+                        <a
+                            href="/2020/02/13/week-202002-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.02.03-02.09"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/08/ISP-learn-1/"
+                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
+                        >
+                            ISP笔记（1）：一个ISP项目的流程梳理
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-08T23:25:37+08:00">
+	
+		    Feb 08, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>通过学习<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">mushfiqulalam/isp</a>项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。</p>
+<h3 id="基本的印象"><a href="#基本的印象" class="headerlink" title="基本的印象"></a>基本的印象</h3><p>镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。</p>
+<p>最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。</p>
+                    
+                        <a
+                            href="/2020/02/08/ISP-learn-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            aria-label=": JincResize代码的重构（2）"
+                        >
+                            JincResize代码的重构（2）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-07T21:13:14+08:00">
+	
+		    Feb 07, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
+<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
+<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
+<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
+<p><code>_mm256_load_ps</code>：float类型输入</p>
+<p><code>_mm256_load_pd</code>：double类型输入</p>
+<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
+                    
+                        <a
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构（2）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/07/arch-and-meson/"
+                            aria-label=": ArchLinux和Meson构建工具的使用"
+                        >
+                            ArchLinux和Meson构建工具的使用
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-07T00:31:07+08:00">
+	
+		    Feb 07, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="爱恨交加的CentOS"><a href="#爱恨交加的CentOS" class="headerlink" title="爱恨交加的CentOS"></a>爱恨交加的CentOS</h3><p>我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。</p>
+<p>但这次编译VapourSynth着实让我感觉蛋疼。</p>
+                    
+                        <a
+                            href="/2020/02/07/arch-and-meson/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": ArchLinux和Meson构建工具的使用"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/06/ported-to-vs-3/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-06T16:45:18+08:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
+<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
+<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
+                    
+                        <a
+                            href="/2020/02/06/ported-to-vs-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/02/04/2020-winter-holiday/"
                             aria-label=": 2020寒假计划与回顾"
                         >
@@ -488,302 +760,6 @@
                             href="/2020/01/18/cuda-and-msvc/"
                             class="postShorten-excerpt_link link"
                             aria-label=": Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/01/15/week-202001-2/"
-                            aria-label=": 周记 2020.01.06-01.12"
-                        >
-                            周记 2020.01.06-01.12
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-01-15T23:01:37+08:00">
-	
-		    Jan 15, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>最近的生活也算是走上正轨，但却好像抽不出时间写周记。这是不好的，因为就算再忙，也要知道我在忙什么，不然可能会很危险的。</p>
-<p>姑且把上周写的一些C++笔记当作周记吧，毕竟也是涵盖了上周的大部分活动。</p>
-<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>预处理功能有三种：宏定义，文件包含和条件编译</p>
-<p><strong>条件编译</strong></p>
-<p><code>#ifndef</code>与<code>#endif</code>配套使用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__GNUC__) || defined(__clang__)</span></span><br></pre></td></tr></table></figure>
-
-<p>这是条件编译的意思</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_WIN32    <span class="comment">// Windows</span></span><br><span class="line">__linux   <span class="comment">// Linux</span></span><br><span class="line"></span><br><span class="line">__clang__ <span class="comment">// Clang</span></span><br><span class="line">__GNUC__  <span class="comment">// GCC（需要注意的是Clang也会定义这个宏）</span></span><br><span class="line">_MSC_VER  <span class="comment">// MSVC</span></span><br></pre></td></tr></table></figure>
-
-<p>所以我在vs代码中看到的，只是为了满足不同的编译器。</p>
-                    
-                        <a
-                            href="/2020/01/15/week-202001-2/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 周记 2020.01.06-01.12"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/01/15/Thanks-Letter-OpenSource/"
-                            aria-label=": 转 · 开源感谢信"
-                        >
-                            转 · 开源感谢信
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-01-15T22:49:11+08:00">
-	
-		    Jan 15, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>看到了贾扬清大神写的开源感谢信，读完很励志，转过来贴在自己的博客里。</p>
-                    
-                        <a
-                            href="/2020/01/15/Thanks-Letter-OpenSource/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 转 · 开源感谢信"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/01/01/ported-to-vs-2/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下"
-                        >
-                            记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-01-01T00:54:47+08:00">
-	
-		    Jan 01, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
-<p>为了加强理解、尽量全面，可能会有些重复的话。</p>
-<h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
-<p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
-<li>需要注意到，<code>srcp</code>和<code>dstp</code>已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于<code>srcp</code>和<code>dstp</code>，对单个平面做处理。</li>
-<li>注意<code>srcp</code>、<code>dstp</code>是指针，这个在稍后会继续说。</li>
-</ol>
-                    
-                        <a
-                            href="/2020/01/01/ported-to-vs-2/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/12/28/ported-to-vs/"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上"
-                        >
-                            记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-28T23:04:52+08:00">
-	
-		    Dec 28, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>（内容待整理…orz）</p>
-<h3 id="1-细碎的问题"><a href="#1-细碎的问题" class="headerlink" title="1.细碎的问题"></a>1.细碎的问题</h3><h4 id="变量命名习惯的变化"><a href="#变量命名习惯的变化" class="headerlink" title="变量命名习惯的变化"></a>变量命名习惯的变化</h4><p>avs的<code>pitch</code> = vs的<code>stride</code></p>
-<p>avs的<code>env</code> = vs的<code>vi</code>？那avs的<code>params</code>呢？</p>
-<p>vs中很少见<code>dst-&gt;width</code>之类的写法，而是<code>d-&gt;width</code></p>
-                    
-                        <a
-                            href="/2019/12/28/ported-to-vs/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/12/27/OpenCV-learn-1/"
-                            aria-label=": OpenCV学习笔记（1）：入门、傅里叶变换与亮度对比度调整"
-                        >
-                            OpenCV学习笔记（1）：入门、傅里叶变换与亮度对比度调整
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-27T23:25:16+08:00">
-	
-		    Dec 27, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-<p>记录一下学习《OpenCV3编程入门》的过程。由于有图像处理的基础，感觉很多内容都很亲切。</p>
-<h3 id="这几天学习的总结"><a href="#这几天学习的总结" class="headerlink" title="这几天学习的总结"></a>这几天学习的总结</h3><ul>
-<li>OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章）</li>
-<li>OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章）</li>
-<li>OpenCV的常用函数（第三章）</li>
-<li>Mat矩阵变量的初始化和输出（第四章）</li>
-<li>一些C++相关的基础知识（第二章）<ul>
-<li><code>printf()</code>格式输出函数</li>
-<li>一些变量的命名规范</li>
-<li>通过宏来定义的常量，通常所有字母集体大写</li>
-</ul>
-</li>
-<li>图像混合、亮度与对比度调整、傅里叶变换（第五章）（顺带复习了第四章的基础函数，<code>Rect()</code>、<code>Scalar()</code>、<code>Szie()</code>等）</li>
-<li>窗口程序相关：滑动条的创建（第三章与第五章）</li>
-</ul>
-                    
-                        <a
-                            href="/2019/12/27/OpenCV-learn-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": OpenCV学习笔记（1）：入门、傅里叶变换与亮度对比度调整"
                         >
                             Continue reading
                         </a>

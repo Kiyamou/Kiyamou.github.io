@@ -6,20 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Retinex 算法 - 308实验室</title>
+    <title>一些较新的去雾（dehazing）算法 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"\n\nRetinex系列算法如下。\nSSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。\nMSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。\nMSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。\nMSRCRMSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。\n","dateCreated":"2020-04-28T16:01:38+08:00","dateModified":"2020-04-28T16:04:40+08:00","datePublished":"2020-04-28T16:01:38+08:00","description":"","headline":"Retinex 算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/Retinex/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/Retinex/"}</script>
-    <meta name="description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。\n\n\n\n2013年基于对比度增强的去雾算法http://mcl.korea.ac.kr/projects/dehazing/#userconsent#\n\n2016年非局部均值去雾算法https://github.com/danaberman/non-local-dehazing\n\n\n","dateCreated":"2020-04-28T16:08:48+08:00","dateModified":"2020-04-28T16:32:40+08:00","datePublished":"2020-04-28T16:08:48+08:00","description":"提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。","headline":"一些较新的去雾（dehazing）算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/dehazing/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/dehazing/"}</script>
+    <meta name="description" content="提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Retinex 算法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;Retinex&#x2F;index.html">
+<meta property="og:title" content="一些较新的去雾（dehazing）算法">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;dehazing&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+<meta property="og:description" content="提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-28T08:04:40.377Z">
+<meta property="og:updated_time" content="2020-04-28T08:32:40.109Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,12 +210,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Retinex 算法
+            一些较新的去雾（dehazing）算法
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-04-28T16:01:38+08:00">
+    <time datetime="2020-04-28T16:08:48+08:00">
 	
 		    Apr 28, 2020
     	
@@ -235,13 +235,15 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <a id="more"></a>
+            <p>提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。</p>
+<a id="more"></a>
 
-<p>Retinex系列算法如下。</p>
-<h4 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h4><p>SSR（Single-Scale Retinex）：单尺度 Retinex 算法。</p>
-<h4 id="MSR"><a href="#MSR" class="headerlink" title="MSR"></a>MSR</h4><p>MSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。</p>
-<h4 id="MSRCP"><a href="#MSRCP" class="headerlink" title="MSRCP"></a>MSRCP</h4><p>MSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。</p>
-<h4 id="MSRCR"><a href="#MSRCR" class="headerlink" title="MSRCR"></a>MSRCR</h4><p>MSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。</p>
+<ul>
+<li><p>2013年基于对比度增强的去雾算法<br><a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">http://mcl.korea.ac.kr/projects/dehazing/#userconsent#</a></p>
+</li>
+<li><p>2016年非局部均值去雾算法<br><a href="https://github.com/danaberman/non-local-dehazing" target="_blank" rel="noopener">https://github.com/danaberman/non-local-dehazing</a></p>
+</li>
+</ul>
 
             
 
@@ -259,9 +261,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/from-vs-to-cpp/"
+                    data-tooltip="从 VapourSynth API 到 C++ 基础知识"
+                    aria-label="PREVIOUS: 从 VapourSynth API 到 C++ 基础知识"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -273,9 +275,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/Tonemapping/"
+                    data-tooltip="色调映射（Tone mapping）"
+                    aria-label="NEXT: 色调映射（Tone mapping）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -300,7 +302,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -313,7 +315,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -326,7 +328,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -375,9 +377,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/from-vs-to-cpp/"
+                    data-tooltip="从 VapourSynth API 到 C++ 基础知识"
+                    aria-label="PREVIOUS: 从 VapourSynth API 到 C++ 基础知识"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -389,9 +391,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/Tonemapping/"
+                    data-tooltip="色调映射（Tone mapping）"
+                    aria-label="NEXT: 色调映射（Tone mapping）"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -416,7 +418,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -429,7 +431,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -442,7 +444,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/dehazing/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -476,7 +478,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/dehazing/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -489,7 +491,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/dehazing/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -502,7 +504,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/dehazing/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

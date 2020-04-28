@@ -210,6 +210,175 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            aria-label=": JincResize代码的重构（2）"
+                        >
+                            JincResize代码的重构（2）
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-07T21:13:14+08:00">
+	
+		    Feb 07, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
+<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
+<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
+<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
+<p><code>_mm256_load_ps</code>：float类型输入</p>
+<p><code>_mm256_load_pd</code>：double类型输入</p>
+<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
+                    
+                        <a
+                            href="/2020/02/07/rebuild-JincResize-2/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": JincResize代码的重构（2）"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/06/ported-to-vs-3/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-06T16:45:18+08:00">
+	
+		    Feb 06, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/Code/">Code</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
+<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
+<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
+                    
+                        <a
+                            href="/2020/02/06/ported-to-vs-3/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/02/04/week-202001-4/"
+                            aria-label=": 周记 2020.01.27-02.02"
+                        >
+                            周记 2020.01.27-02.02
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-04T13:14:11+08:00">
+	
+		    Feb 04, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
+<ul>
+<li><p>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</p>
+</li>
+<li><p>头文件和库文件设置错误，64位和32位搞混</p>
+</li>
+</ul>
+                    
+                        <a
+                            href="/2020/02/04/week-202001-4/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 周记 2020.01.27-02.02"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/01/15/week-202001-2/"
                             aria-label=": 周记 2020.01.06-01.12"
                         >
@@ -616,172 +785,6 @@
         
     </article>
     
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/24/rebuild-JincResize/"
-                            aria-label=": JincResize代码的重构（1）"
-                        >
-                            JincResize代码的重构（1）
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-24T14:00:58+08:00">
-	
-		    Nov 24, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>前一篇Blog记录了将原作者代码（初步）从C语言迁移到C++上的过程，以及添加8bit输入支持的方法。下一步我想模仿HomeOfVapourSynthEvolution的代码风格，对上述代码进行重构。同时，也期待能发现，我先前修改的代码运行缓慢的原因。</p>
-<p>Blog写得详细一些，这也是我学习C++基础知识的过程。</p>
-<h3 id="未完成的C语言到C-迁移"><a href="#未完成的C语言到C-迁移" class="headerlink" title="未完成的C语言到C++迁移"></a>未完成的C语言到C++迁移</h3><p>其实C语言和C++的区别还有很多。</p>
-<h4 id="C-的类型转换"><a href="#C-的类型转换" class="headerlink" title="C++的类型转换"></a>C++的类型转换</h4><p>编写VapourSynth插件，在四个<code>VS__CC</code>函数的开头，都需要进行类型转换，原始代码使用C语言风格的类型转换，类似下面这样。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = (FilterData*)* instanceData;</span><br></pre></td></tr></table></figure>
-
-<p>如果让代码“更C++”一些，则使用类型转换运算符（Type Conversion Operator）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2019/11/24/rebuild-JincResize/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": JincResize代码的重构（1）"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/22/learn-cpp-note-1/"
-                            aria-label=": C++笔记：某培训课程与21天学通C++"
-                        >
-                            C++笔记：某培训课程与21天学通C++
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-22T23:30:31+08:00">
-	
-		    Nov 22, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="写在开头的话"><a href="#写在开头的话" class="headerlink" title="写在开头的话"></a>写在开头的话</h3><p>有人讲解，学习效率还是会高一些的吧。</p>
-<p>愿我能坚持。更愿我能在写完这个笔记后，继续写学习笔记之二。毕竟，培训班的课程只能算一个开始。</p>
-<p>后来在忙其他事情的时候，学到了更多的东西，于是把21天学通C++及网络上资料（主要是菜鸟教程）的学习笔记也记到这上面来。虽然和周记系列有点冲突，但同时进行吧，做下去就能变得清晰。</p>
-                    
-                        <a
-                            href="/2019/11/22/learn-cpp-note-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": C++笔记：某培训课程与21天学通C++"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            记一次从C语言到C++的迁移——初次接触VapourSynth API
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T19:18:52+08:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
-                    
-                        <a
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
     <div class="pagination-bar">
     <ul class="pagination">
         
@@ -797,7 +800,18 @@
           </li>
         
         
-        <li class="pagination-number">page 2 of 2</li>
+          <li class="pagination-next">
+            <a
+                class="btn btn--default btn--small"
+                href="/tags/C/page/3/"
+                aria-label="OLDER POSTS"
+            >
+              <span>OLDER POSTS</span>
+              <i class="fa fa-angle-right text-base icon-ml"></i>
+            </a>
+          </li>
+        
+        <li class="pagination-number">page 2 of 3</li>
     </ul>
 </div>
 

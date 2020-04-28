@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Tag: VapourSynth - 308实验室</title>
+    <title>Category: 图像处理 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
@@ -14,7 +14,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="308实验室">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;VapourSynth&#x2F;page&#x2F;2&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;categories&#x2F;%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86&#x2F;page&#x2F;2&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -268,61 +268,6 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            记一次从C语言到C++的迁移——初次接触VapourSynth API
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-19T19:18:52+08:00">
-	
-		    Nov 19, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/Code/">Code</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
-                    
-                        <a
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
                             href="/2019/10/20/from-avs-to-vs/"
                             aria-label=": 从Avisynth到VapourSynth：一些方法的迁移"
                         >
@@ -375,7 +320,7 @@
           <li class="pagination-prev">
             <a
                 class="btn btn--default btn--small"
-                href="/tags/VapourSynth/"
+                href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/"
                 aria-label="NEWER POSTS"
             >
               <i class="fa fa-angle-left text-base icon-mr"></i>
@@ -389,6 +334,7 @@
 </div>
 
 </section>
+
 
 
                 <footer id="footer" class="main-content-wrap">

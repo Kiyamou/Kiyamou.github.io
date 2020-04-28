@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Tag: VapourSynth - 308实验室</title>
+    <title>Archives: 2020 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
@@ -14,7 +14,7 @@
     <script type="application/ld+json">{}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="308实验室">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;VapourSynth&#x2F;page&#x2F;2&#x2F;index.html">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;archives&#x2F;2020&#x2F;page&#x2F;4&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary">
@@ -210,23 +210,23 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/12/18/image-process-code-1/"
-                            aria-label=": 图像处理中一些稍底层的东西：色彩空间与数据结构"
+                            href="/2020/01/15/week-202001-2/"
+                            aria-label=": 周记 2020.01.06-01.12"
                         >
-                            图像处理中一些稍底层的东西：色彩空间与数据结构
+                            周记 2020.01.06-01.12
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-12-18T12:57:06+08:00">
+    <time datetime="2020-01-15T23:01:37+08:00">
 	
-		    Dec 18, 2019
+		    Jan 15, 2020
     	
     </time>
     
         <span>in </span>
         
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
 
 
     
@@ -235,19 +235,22 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。</p>
-<p>色彩空间是最基础的概念，当然谈不上“底层”。但和色彩空间相关联的、图像的像素点是以和何种方式储存的，换句话说，数字图像的数据结构是怎样的，应当称得上是从表面到深入的一个转折点了。学数字图像处理，当然不能满足于<code>output = intput.filter()</code>这样的模式。</p>
-<p><em>引言写于2020.1.3</em></p>
-<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p><em>修改于2020.1.2</em></p>
-<h4 id="二维图像与一维数组"><a href="#二维图像与一维数组" class="headerlink" title="二维图像与一维数组"></a>二维图像与一维数组</h4><p>在AviSynth和VapourSynth中，单帧图像的像素按行储存，从图像的左上开始，一行一行地存储于一维数组中，像下面这样。</p>
-<p>——————————&gt;<br>——————————&gt;<br>……<br>——————————&gt;</p>
-<p>所以读取/写入下一个像素，依据行列的不同，分两种情况，大概是这样</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对于YUV格式图像</span></span><br><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane)); <span class="comment">// 创建指针</span></span><br><span class="line"><span class="keyword">int</span> src_stride = vsapi-&gt;getStride(src, plane) / <span class="keyword">sizeof</span>(T);                 <span class="comment">// 获取stride</span></span><br><span class="line">srcp++;              <span class="comment">// 读取同行下一个像素</span></span><br><span class="line">srcp += src_stride;  <span class="comment">// 读取同列下一个元素</span></span><br></pre></td></tr></table></figure>
+                    <p>最近的生活也算是走上正轨，但却好像抽不出时间写周记。这是不好的，因为就算再忙，也要知道我在忙什么，不然可能会很危险的。</p>
+<p>姑且把上周写的一些C++笔记当作周记吧，毕竟也是涵盖了上周的大部分活动。</p>
+<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>预处理功能有三种：宏定义，文件包含和条件编译</p>
+<p><strong>条件编译</strong></p>
+<p><code>#ifndef</code>与<code>#endif</code>配套使用</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(__GNUC__) || defined(__clang__)</span></span><br></pre></td></tr></table></figure>
+
+<p>这是条件编译的意思</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_WIN32    <span class="comment">// Windows</span></span><br><span class="line">__linux   <span class="comment">// Linux</span></span><br><span class="line"></span><br><span class="line">__clang__ <span class="comment">// Clang</span></span><br><span class="line">__GNUC__  <span class="comment">// GCC（需要注意的是Clang也会定义这个宏）</span></span><br><span class="line">_MSC_VER  <span class="comment">// MSVC</span></span><br></pre></td></tr></table></figure>
+
+<p>所以我在vs代码中看到的，只是为了满足不同的编译器。</p>
                     
                         <a
-                            href="/2019/12/18/image-process-code-1/"
+                            href="/2020/01/15/week-202001-2/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 图像处理中一些稍底层的东西：色彩空间与数据结构"
+                            aria-label=": 周记 2020.01.06-01.12"
                         >
                             Continue reading
                         </a>
@@ -268,17 +271,68 @@
                     
                         <a
                             class="link-unstyled"
-                            href="/2019/11/19/trans-c-to-cpp/"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
+                            href="/2020/01/15/Thanks-Letter-OpenSource/"
+                            aria-label=": 转 · 开源感谢信"
                         >
-                            记一次从C语言到C++的迁移——初次接触VapourSynth API
+                            转 · 开源感谢信
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2019-11-19T19:18:52+08:00">
+    <time datetime="2020-01-15T22:49:11+08:00">
 	
-		    Nov 19, 2019
+		    Jan 15, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>看到了贾扬清大神写的开源感谢信，读完很励志，转过来贴在自己的博客里。</p>
+                    
+                        <a
+                            href="/2020/01/15/Thanks-Letter-OpenSource/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": 转 · 开源感谢信"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
+                            href="/2020/01/01/ported-to-vs-2/"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下"
+                        >
+                            记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-01-01T00:54:47+08:00">
+	
+		    Jan 01, 2020
     	
     </time>
     
@@ -293,71 +347,22 @@
             </div>
             
                 <div class="postShorten-excerpt">
-                    <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p>
+                    <p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
+<p>为了加强理解、尽量全面，可能会有些重复的话。</p>
+<h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
+<p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
+<li>需要注意到，<code>srcp</code>和<code>dstp</code>已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于<code>srcp</code>和<code>dstp</code>，对单个平面做处理。</li>
+<li>注意<code>srcp</code>、<code>dstp</code>是指针，这个在稍后会继续说。</li>
+</ol>
                     
                         <a
-                            href="/2019/11/19/trans-c-to-cpp/"
+                            href="/2020/01/01/ported-to-vs-2/"
                             class="postShorten-excerpt_link link"
-                            aria-label=": 记一次从C语言到C++的迁移——初次接触VapourSynth API"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/10/20/from-avs-to-vs/"
-                            aria-label=": 从Avisynth到VapourSynth：一些方法的迁移"
-                        >
-                            从Avisynth到VapourSynth：一些方法的迁移
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-10-20T10:48:29+08:00">
-	
-		    Oct 20, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <p>VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。</p>
-<p>因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。</p>
-<p>有什么错误的地方还请大家指正~</p>
-<p>默认import如下内容。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> vapoursynth <span class="keyword">as</span> vs</span><br><span class="line">core = vs.get_core()</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mvsfunc <span class="keyword">as</span> mvf</span><br><span class="line"><span class="keyword">import</span> havsfunc <span class="keyword">as</span> haf</span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2019/10/20/from-avs-to-vs/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 从Avisynth到VapourSynth：一些方法的迁移"
+                            aria-label=": 记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下"
                         >
                             Continue reading
                         </a>
@@ -375,7 +380,7 @@
           <li class="pagination-prev">
             <a
                 class="btn btn--default btn--small"
-                href="/tags/VapourSynth/"
+                href="/archives/2020/page/3/"
                 aria-label="NEWER POSTS"
             >
               <i class="fa fa-angle-left text-base icon-mr"></i>
@@ -384,11 +389,12 @@
           </li>
         
         
-        <li class="pagination-number">page 2 of 2</li>
+        <li class="pagination-number">page 4 of 4</li>
     </ul>
 </div>
 
 </section>
+
 
 
                 <footer id="footer" class="main-content-wrap">

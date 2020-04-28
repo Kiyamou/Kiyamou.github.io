@@ -6,20 +6,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Retinex 算法 - 308实验室</title>
+    <title>色调映射（Tone mapping） - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"\n\nRetinex系列算法如下。\nSSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。\nMSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。\nMSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。\nMSRCRMSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。\n","dateCreated":"2020-04-28T16:01:38+08:00","dateModified":"2020-04-28T16:04:40+08:00","datePublished":"2020-04-28T16:01:38+08:00","description":"","headline":"Retinex 算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/Retinex/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/Retinex/"}</script>
-    <meta name="description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。\n\n\n在 VapourSynth 社区中，原生的色调映射滤镜/脚本有两个，一个滤镜、一个脚本，另外还有基于 placebo 库的vs-placebo滤镜，以及一个高级函数。\n这些工具中，除了基于 placebo 库的 vs-placebo，因为要用 vulkan 而我的老旧设备不支持外，其余都尝试过了。\n","dateCreated":"2020-04-28T16:07:48+08:00","dateModified":"2020-04-28T16:48:54+08:00","datePublished":"2020-04-28T16:07:48+08:00","description":"在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。","headline":"色调映射（Tone mapping）","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/Tonemapping/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/Tonemapping/"}</script>
+    <meta name="description" content="在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Retinex 算法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;Retinex&#x2F;index.html">
+<meta property="og:title" content="色调映射（Tone mapping）">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;Tonemapping&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+<meta property="og:description" content="在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-28T08:04:40.377Z">
+<meta property="og:updated_time" content="2020-04-28T08:48:54.019Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,12 +210,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Retinex 算法
+            色调映射（Tone mapping）
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-04-28T16:01:38+08:00">
+    <time datetime="2020-04-28T16:07:48+08:00">
 	
 		    Apr 28, 2020
     	
@@ -235,13 +235,11 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <a id="more"></a>
+            <p>在<a href="https://kiyamou.github.io/2020/02/08/ISP-learn-1/" target="_blank" rel="noopener">之前的博文</a>中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。</p>
+<a id="more"></a>
 
-<p>Retinex系列算法如下。</p>
-<h4 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h4><p>SSR（Single-Scale Retinex）：单尺度 Retinex 算法。</p>
-<h4 id="MSR"><a href="#MSR" class="headerlink" title="MSR"></a>MSR</h4><p>MSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。</p>
-<h4 id="MSRCP"><a href="#MSRCP" class="headerlink" title="MSRCP"></a>MSRCP</h4><p>MSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。</p>
-<h4 id="MSRCR"><a href="#MSRCR" class="headerlink" title="MSRCR"></a>MSRCR</h4><p>MSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。</p>
+<p>在 VapourSynth 社区中，原生的色调映射滤镜/脚本有两个，一个<a href="https://github.com/ifb/vapoursynth-tonemap" target="_blank" rel="noopener">滤镜</a>、一个<a href="https://github.com/age1988/vapoursynth-tonemapping" target="_blank" rel="noopener">脚本</a>，另外还有基于 placebo 库的<a href="https://github.com/Lypheo/vs-placebo" target="_blank" rel="noopener">vs-placebo滤镜</a>，以及一个<a href="https://github.com/xyx98/my-vapoursynth-script/blob/master/xvs.py#L1087" target="_blank" rel="noopener">高级函数</a>。</p>
+<p>这些工具中，除了基于 placebo 库的 vs-placebo，因为要用 vulkan 而我的老旧设备不支持外，其余都尝试过了。</p>
 
             
 
@@ -259,9 +257,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/dehazing/"
+                    data-tooltip="一些较新的去雾（dehazing）算法"
+                    aria-label="PREVIOUS: 一些较新的去雾（dehazing）算法"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -273,9 +271,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/Retinex/"
+                    data-tooltip="Retinex 算法"
+                    aria-label="NEXT: Retinex 算法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -300,7 +298,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -313,7 +311,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -326,7 +324,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -375,9 +373,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/dehazing/"
+                    data-tooltip="一些较新的去雾（dehazing）算法"
+                    aria-label="PREVIOUS: 一些较新的去雾（dehazing）算法"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -389,9 +387,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/Retinex/"
+                    data-tooltip="Retinex 算法"
+                    aria-label="NEXT: Retinex 算法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -416,7 +414,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -429,7 +427,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -442,7 +440,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Tonemapping/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -476,7 +474,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Tonemapping/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -489,7 +487,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Tonemapping/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -502,7 +500,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Tonemapping/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>

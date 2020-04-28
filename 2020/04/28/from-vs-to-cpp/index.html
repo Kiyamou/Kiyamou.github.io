@@ -6,20 +6,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="308实验室">
-    <title>Retinex 算法 - 308实验室</title>
+    <title>从 VapourSynth API 到 C++ 基础知识 - 308实验室</title>
     <meta name="author" content="Kiyamou">
     
     
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"\n\nRetinex系列算法如下。\nSSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。\nMSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。\nMSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。\nMSRCRMSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。\n","dateCreated":"2020-04-28T16:01:38+08:00","dateModified":"2020-04-28T16:04:40+08:00","datePublished":"2020-04-28T16:01:38+08:00","description":"","headline":"Retinex 算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/Retinex/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/Retinex/"}</script>
-    <meta name="description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"副标题：从 C + isotream 到 C++\n（这是1月底写一点随笔，然后就被丢到一边不管了）\n智能指针全面讲述智能指针的文章：https://juejin.im/post/5dcaa857e51d457f7675360b\n熟悉的unique_ptr，是“拥有独有对象所有权语义的智能指针”。\n\n\n智能指针的释放一个基本概念，要用.而非-&gt;。（https://blog.csdn.net/delphicui/article/details/4213811）\n12smartPointer.release();   // 正确smartPointer-&gt;release();  // 错误\n\n在 VapourSynth Plugin 的编写时，要在Free()函数里写delete d;，但又在Create()函数里写了d.release()。可不可以这么理解，智能指针d在Creat()函数里被声明，所以要在Create()函数内释放一次，但其他地方也用到了d，所以又要写一次delete d？我感觉我在胡说八道\n智能指针与数组用智能指针创建数组，类似下面这样。\n1std::unique_ptr&lt;float[]&gt; array[5];\n\n而且用后并没有释放，这是自然，毕竟智能指针的本意即是如此。\n但我不知道，对于查表用的大数组，有没有必要“升级”成智能指针，对于使用new创建的指针呢？\ncom组件（被淘汰的技术）\n（我不知道 VapourSynth API 里的 com 是不是这个 com）\nlamda表达式（额外延伸的，稍后再看）\n","dateCreated":"2020-04-28T16:16:44+08:00","dateModified":"2020-04-28T16:17:57+08:00","datePublished":"2020-04-28T16:16:44+08:00","description":"副标题：从 C + isotream 到 C++\n（这是1月底写一点随笔，然后就被丢到一边不管了）\n智能指针全面讲述智能指针的文章：https://juejin.im/post/5dcaa857e51d457f7675360b\n熟悉的unique_ptr，是“拥有独有对象所有权语义的智能指针”。","headline":"从 VapourSynth API 到 C++ 基础知识","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/from-vs-to-cpp/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/from-vs-to-cpp/","keywords":"C++, VapourSynth"}</script>
+    <meta name="description" content="副标题：从 C + isotream 到 C++ （这是1月底写一点随笔，然后就被丢到一边不管了） 智能指针全面讲述智能指针的文章：https:&#x2F;&#x2F;juejin.im&#x2F;post&#x2F;5dcaa857e51d457f7675360b 熟悉的unique_ptr，是“拥有独有对象所有权语义的智能指针”。">
+<meta name="keywords" content="C++,VapourSynth">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="Retinex 算法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;Retinex&#x2F;index.html">
+<meta property="og:title" content="从 VapourSynth API 到 C++ 基础知识">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;from-vs-to-cpp&#x2F;index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="Retinex系列算法如下。 SSRSSR（Single-Scale Retinex）：单尺度 Retinex 算法。 MSRMSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。 MSRCPMSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。 MSRCRMSRCR（Mul">
+<meta property="og:description" content="副标题：从 C + isotream 到 C++ （这是1月底写一点随笔，然后就被丢到一边不管了） 智能指针全面讲述智能指针的文章：https:&#x2F;&#x2F;juejin.im&#x2F;post&#x2F;5dcaa857e51d457f7675360b 熟悉的unique_ptr，是“拥有独有对象所有权语义的智能指针”。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-28T08:04:40.377Z">
+<meta property="og:updated_time" content="2020-04-28T08:17:57.426Z">
 <meta name="twitter:card" content="summary">
     
     
@@ -210,12 +211,12 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            Retinex 算法
+            从 VapourSynth API 到 C++ 基础知识
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2020-04-28T16:01:38+08:00">
+    <time datetime="2020-04-28T16:16:44+08:00">
 	
 		    Apr 28, 2020
     	
@@ -235,13 +236,24 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <a id="more"></a>
+            <p><del>副标题：从 C + isotream 到 C++</del></p>
+<p>（这是1月底写一点随笔，然后就被丢到一边不管了）</p>
+<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><p>全面讲述智能指针的文章：<a href="https://juejin.im/post/5dcaa857e51d457f7675360b" target="_blank" rel="noopener">https://juejin.im/post/5dcaa857e51d457f7675360b</a></p>
+<p>熟悉的<code>unique_ptr</code>，是“拥有独有对象所有权语义的智能指针”。</p>
+<a id="more"></a>
 
-<p>Retinex系列算法如下。</p>
-<h4 id="SSR"><a href="#SSR" class="headerlink" title="SSR"></a>SSR</h4><p>SSR（Single-Scale Retinex）：单尺度 Retinex 算法。</p>
-<h4 id="MSR"><a href="#MSR" class="headerlink" title="MSR"></a>MSR</h4><p>MSR（Multi-Scale Retinex）：多尺度 Retinex 算法，对多个单尺度 Retinex 的结果进行平均。</p>
-<h4 id="MSRCP"><a href="#MSRCP" class="headerlink" title="MSRCP"></a>MSRCP</h4><p>MSRCP：色彩恢复多尺度 Retinex 算法，相当于把亮的地方压缩（变黑），而把黑的地方升高变亮。</p>
-<h4 id="MSRCR"><a href="#MSRCR" class="headerlink" title="MSRCR"></a>MSRCR</h4><p>MSRCR（Multi-Scale Retinex with Color Restoration）：色彩恢复多尺度 Retinex 算法，在 MSRCP 的基础上会改变颜色，让颜色均衡，通常会导致画面变暗，但对于一些图像，可以避免 MSRCP 导致的色差（画面颜色过暖）问题。</p>
+<h4 id="智能指针的释放"><a href="#智能指针的释放" class="headerlink" title="智能指针的释放"></a>智能指针的释放</h4><p>一个基本概念，要用<code>.</code>而非<code>-&gt;</code>。（<a href="https://blog.csdn.net/delphicui/article/details/4213811）" target="_blank" rel="noopener">https://blog.csdn.net/delphicui/article/details/4213811）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">smartPointer.release();   <span class="comment">// 正确</span></span><br><span class="line">smartPointer-&gt;release();  <span class="comment">// 错误</span></span><br></pre></td></tr></table></figure>
+
+<p>在 VapourSynth Plugin 的编写时，要在<code>Free()</code>函数里写<code>delete d;</code>，但又在<code>Create()</code>函数里写了<code>d.release()</code>。可不可以这么理解，智能指针<code>d</code>在<code>Creat()</code>函数里被声明，所以要在<code>Create()</code>函数内释放一次，但其他地方也用到了<code>d</code>，所以又要写一次<code>delete d</code>？<del>我感觉我在胡说八道</del></p>
+<h4 id="智能指针与数组"><a href="#智能指针与数组" class="headerlink" title="智能指针与数组"></a>智能指针与数组</h4><p>用智能指针创建数组，类似下面这样。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">unique_ptr</span>&lt;<span class="keyword">float</span>[]&gt; <span class="built_in">array</span>[<span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<p>而且用后并没有释放，这是自然，毕竟智能指针的本意即是如此。</p>
+<p>但我不知道，对于查表用的大数组，有没有必要“升级”成智能指针，对于使用<code>new</code>创建的指针呢？</p>
+<h3 id="com组件"><a href="#com组件" class="headerlink" title="com组件"></a>com组件</h3><p>（被淘汰的技术）</p>
+<p>（我不知道 VapourSynth API 里的 com 是不是这个 com）</p>
+<h3 id="lamda表达式"><a href="#lamda表达式" class="headerlink" title="lamda表达式"></a>lamda表达式</h3><p>（额外延伸的，稍后再看）</p>
 
             
 
@@ -249,6 +261,13 @@
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a>
+
+            </div>
         
         
             <div class="post-actions-wrap">
@@ -259,9 +278,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/week-202003-2/"
+                    data-tooltip="周记 2020.03.09-03.15"
+                    aria-label="PREVIOUS: 周记 2020.03.09-03.15"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -273,9 +292,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/dehazing/"
+                    data-tooltip="一些较新的去雾（dehazing）算法"
+                    aria-label="NEXT: 一些较新的去雾（dehazing）算法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -300,7 +319,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -313,7 +332,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -326,7 +345,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -375,9 +394,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/28/Tonemapping/"
-                    data-tooltip="色调映射（Tone mapping）"
-                    aria-label="PREVIOUS: 色调映射（Tone mapping）"
+                    href="/2020/04/28/week-202003-2/"
+                    data-tooltip="周记 2020.03.09-03.15"
+                    aria-label="PREVIOUS: 周记 2020.03.09-03.15"
                 >
                     
                         <i class="fa fa-angle-left" aria-hidden="true"></i>
@@ -389,9 +408,9 @@
                     
                 <a
                     class="post-action-btn btn btn--default tooltip--top"
-                    href="/2020/04/27/edgemasks/"
-                    data-tooltip="边缘检测"
-                    aria-label="NEXT: 边缘检测"
+                    href="/2020/04/28/dehazing/"
+                    data-tooltip="一些较新的去雾（dehazing）算法"
+                    aria-label="NEXT: 一些较新的去雾（dehazing）算法"
                 >
                     
                         <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
@@ -416,7 +435,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Facebook"
                     aria-label="Share on Facebook"
                 >
@@ -429,7 +448,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Twitter"
                     aria-label="Share on Twitter"
                 >
@@ -442,7 +461,7 @@
             <li class="post-action hide-xs">
                 <a
                     class="post-action-btn btn btn--default"
-                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                     title="Share on Google+"
                     aria-label="Share on Google+"
                 >
@@ -476,7 +495,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                         aria-label="Share on Facebook"
                     >
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
@@ -489,7 +508,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                         aria-label="Share on Twitter"
                     >
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
@@ -502,7 +521,7 @@
                     <a
                         class="share-option-btn"
                         target="new"
-                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/Retinex/"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/04/28/from-vs-to-cpp/"
                         aria-label="Share on Google+"
                     >
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
