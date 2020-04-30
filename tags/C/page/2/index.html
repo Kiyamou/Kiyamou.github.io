@@ -210,6 +210,59 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/02/08/ISP-learn-1/"
+                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
+                        >
+                            ISP笔记（1）：一个ISP项目的流程梳理
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-02-08T23:25:37+08:00">
+	
+		    Feb 08, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>通过学习<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">mushfiqulalam/isp</a>项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。</p>
+<h3 id="基本的印象"><a href="#基本的印象" class="headerlink" title="基本的印象"></a>基本的印象</h3><p>镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。</p>
+<p>最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。</p>
+                    
+                        <a
+                            href="/2020/02/08/ISP-learn-1/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": ISP笔记（1）：一个ISP项目的流程梳理"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/02/07/rebuild-JincResize-2/"
                             aria-label=": JincResize代码的重构（2）"
                         >
@@ -719,61 +772,6 @@
                             href="/2019/12/18/image-process-code-1/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 图像处理中一些稍底层的东西：色彩空间与数据结构"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/11/25/gcc-use-1/"
-                            aria-label=": Windows下使用gcc/g++编译器"
-                        >
-                            Windows下使用gcc/g++编译器
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-11-25T23:37:03+08:00">
-	
-		    Nov 25, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
-<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s/帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
-<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
-<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
-<p>不管怎么说，改用gcc/g++。</p>
-                    
-                        <a
-                            href="/2019/11/25/gcc-use-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": Windows下使用gcc/g++编译器"
                         >
                             Continue reading
                         </a>

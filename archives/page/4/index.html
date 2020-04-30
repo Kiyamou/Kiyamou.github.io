@@ -210,6 +210,63 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/01/18/cuda-and-msvc/"
+                            aria-label=": Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                        >
+                            Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-01-18T14:43:40+08:00">
+	
+		    Jan 18, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。</p>
+<p>…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。</p>
+<p>今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，<a href="https://devtalk.nvidia.com/default/topic/1035794/cuda-setup-and-installation/cuda-9-2-quot-nvidia-installer-failed-quot-/2" target="_blank" rel="noopener">CUDA 9.2: “NVIDIA Installer Failed”</a>。</p>
+<p>在<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include\crt\host_config.h</code>的131行开始，有如下语句。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> _MSC_VER <span class="meta-string">&lt; 1600 || _MSC_VER &gt; 1913</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">error</span> -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!</span></span><br></pre></td></tr></table></figure>
+
+<p>而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。</p>
+                    
+                        <a
+                            href="/2020/01/18/cuda-and-msvc/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": Windows下CUDA兼容性的问题与LibTorch的使用——珍爱生命，远离MSVC"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/01/15/week-202001-2/"
                             aria-label=": 周记 2020.01.06-01.12"
                         >
@@ -718,61 +775,6 @@
                                 Comment and share
                             </a>
                         </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2019/12/14/day-191213/"
-                            aria-label=": 日记 2019.12.13"
-                        >
-                            日记 2019.12.13
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2019-12-14T23:03:08+08:00">
-	
-		    Dec 14, 2019
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="1-飞浆开始"><a href="#1-飞浆开始" class="headerlink" title="1 飞浆开始"></a>1 飞浆开始</h3><p>看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。</p>
-<p>感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的<code>.proto</code>储存格式。</p>
-<p>LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。</p>
-<p>而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写这种Python“前端”了。</p>
-<h3 id="2-Next"><a href="#2-Next" class="headerlink" title="2 Next"></a>2 Next</h3><p>既然是将算法复现，那我趁热把熟悉的手写数字识别和之前大作业的文章内容理解拿过来用一下。</p>
-                    
-                        <a
-                            href="/2019/12/14/day-191213/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 日记 2019.12.13"
-                        >
-                            Continue reading
-                        </a>
-                        
                     
                 </div>
             
