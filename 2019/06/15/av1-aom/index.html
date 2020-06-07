@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"起始编译过程pthread.h文件提示缺失pthread.h文件\n1Looking for pthread.h - not found\n\n根据教程https://blog.csdn.net/qianchenglenger/article/details/16907821，在windows下配置pthread。\n下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜像站下载https://sourceware.org/mirrors.html-&gt;https://mirrors.kernel.org/sourceware/pthreads-win32/。\n具体操作只涉及/Pre-built.2中的文件。\n1.将/Pre-built.2/include和/Pre-built.2/lib的文件分别放入VS 2019的对应文件夹下。\n2.将/Pre-built.2/dll中/x64和/x86的文件分别放入system32和SysWOW64中。\n\n\n再次pthread.h文件但完成上述操作后，仍找不到pthread.h文件\n虽然命令行终端中显示的报错内容与之前一致，但在Error.log中，增加了一行报错信息。\n1...\\pthread.h error C2011:  &apos;timespec&apos;: &apos;struct&apos; type redefinition ...\n\n通过这个报错信息可知，我们上一步向VS 2019中添加头文件等操作是起了作用的，虽然终端上仍说找不到pthread.h文件，但报错信息表明cmake已经找到了pthread.h文件。\n在pthread.h文件内添加\n12#define HAVE_STRUCT_TIMESPEC // add by https://blog.csdn.net/user11223344abc/article/details/80536809\n\n后，终于能找到pthread.h文件\n1Looking for pthread.h - found\n\n但又出现新的问题。\n终端下\n12345678-- Performing Test CMAKE_HAVE_LIBC_PTHREAD-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed-- Looking for pthread_create in pthreads-- Looking for pthread_create in pthreads - not found-- Looking for pthread_create in pthread-- Looking for pthread_create in pthread - not found-- Check if compiler accepts -pthread-- Check if compiler accepts -pthread - no\n\nError.log中\n1cannot open file &apos;pthreads.lib&apos;\n\n把放入系统内存的dll重新向tools下的bin文件夹放了一份，但不起作用，同样的报错。\n在https://github.com/tensorflow/tensorflow/issues/5576，有人说把Cmakelist.txt中的\n1find_package (Threads)\n\n注释掉，因为在Windows下根本不需要pthreads。\n但我试着单独注释掉上面那句话、注释掉整个if块，都不成功，仍得到同样的报错。\nLinux下的结果在CentOS 7.6 虚拟机下编译\n12cd &quot;aom的上级目录&quot;cmake aom\n\n同样报错\n123456-- Looking for pthread_create-- Looking for pthread_create - not found-- Looking for pthread_create in pthreads-- Looking for pthread_create in pthreads - not found-- Looking for pthread_create in pthread-- Looking for pthread_create in pthread - found\n\n日志文件中\n1cannot find -lpthreads\n\n（其实在完成上述操作后，编译环境的铺垫已经完成。）\nVS模式编译源码编译12cd &quot;aom上级目录&quot;cmake aom -DAOM_TARGET_CPU=generic\n\n使用以下两个命令编译，都不成功，而控制台输出不一致。\n12cd &quot;aom上级目录&quot;cmake aom\n\n12cd aomcmake ../aom\n\n正确而优雅的编译方式，在/aom所在目录下新建/aom_build，执行以下命令。\n1cmake ../aom -DAOM_TARGET_CPU=generic\n\n至此，cmake步骤完成，生成包含aom.sln解决方法在内的VS项目。\n由sln到exe在VS中（将语言调整为中文Orz…，）设置好release模式后，开始build，以生成可执行的exe文件。\n报错信息如下\n12aom_build\\aom_av1_common.vcxproj : error MSB4014: 生成已意外停止，因为发生内部故障。aom_build\\aom_av1_common.vcxproj : error MSB4014: System.Text.EncoderFallbackException: 无法将位于索引 1646 处的 Unicode 字符 \\uDD62 转换为指定的代码页。\n\n在将系统内部语言（非显示语言）更改为英语并重新编译源码后，仍是同样的报错。\n（检查了其他报错文件，一样的报错）\n好吧，专心去解决这个索引1646是什么鬼。\n安装VS的桌面版工程组件虽然这个听上去是必要的，但装上后仍没什么用，一样的报错。\n安装工具没有装perl和Doxygen，前者必须，后者可选。\n但装完后，除了在编译完成后能找到Doxygen，VS中多了一个要处理的文件和索引位置延后之外，本质上与之前无区别。\n关于GCC期间安装了GCC，并将MinGW-make.exe改名为make.exe（据说是防止cmake找不到）；而之前安装的GnuWin32，其bin也叫make.exe，为了防止冲突，又将GnuWin32从环境变量中删去。\n上述操作的一个结果是，在编译aom的doc时，提示缺少dot（但控制台只是提了一下，无waring和error，而且在后续用命令行成功编译exe后，同时编译出的doc也能正常打开（html的doc，而tex的还没看））。\n命令行编译参考https://blog.csdn.net/u014426939/article/details/80080635\n生成Cache12cd buildcmake ../aom -DAOM_TARGET_CPU=generic\n\n生成exe12cd buildcmake --build ./ --config Release\n\n相应exe文件在/build/Release中。\n","dateCreated":"2019-06-15T18:24:58+08:00","dateModified":"2020-03-11T00:53:54+08:00","datePublished":"2019-06-15T18:24:58+08:00","description":"起始编译过程pthread.h文件提示缺失pthread.h文件\n1Looking for pthread.h - not found\n\n根据教程https://blog.csdn.net/qianchenglenger/article/details/16907821，在windows下配置pthread。\n下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜像站下载https://sourceware.org/mirrors.html-&gt;https://mirrors.kernel.org/sourceware/pthreads-win32/。\n具体操作只涉及/Pre-built.2中的文件。\n1.将/Pre-built.2/include和/Pre-built.2/lib的文件分别放入VS 2019的对应文件夹下。\n2.将/Pre-built.2/dll中/x64和/x86的文件分别放入system32和SysWOW64中。","headline":"编译AV1编码器libaom的记录","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/15/av1-aom/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/15/av1-aom/","keywords":"构建与编译"}</script>
     <meta name="description" content="起始编译过程pthread.h文件提示缺失pthread.h文件 1Looking for pthread.h - not found  根据教程https:&#x2F;&#x2F;blog.csdn.net&#x2F;qianchenglenger&#x2F;article&#x2F;details&#x2F;16907821，在windows下配置pthread。 下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜">
-<meta name="keywords" content="构建与编译">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="编译AV1编码器libaom的记录">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;15&#x2F;av1-aom&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/15/av1-aom/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="起始编译过程pthread.h文件提示缺失pthread.h文件 1Looking for pthread.h - not found  根据教程https:&#x2F;&#x2F;blog.csdn.net&#x2F;qianchenglenger&#x2F;article&#x2F;details&#x2F;16907821，在windows下配置pthread。 下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-10T16:53:54.627Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-15T10:24:58.000Z">
+<meta property="article:modified_time" content="2020-03-10T16:53:54.627Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="构建与编译">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -410,6 +418,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -424,6 +442,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -525,6 +546,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -630,10 +661,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/06/15/av1-aom/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

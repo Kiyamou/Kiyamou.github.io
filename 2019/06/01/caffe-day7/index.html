@@ -12,15 +12,17 @@
     
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"\n\n\n《21天实战Caffe》学习笔记第7天\n练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; \"Not Implemented Yet\"\n\nINSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \\  char gInstantiationGuard##classname; \\  template class classname&lt;float&gt;; \\  template class classname&lt;double&gt;\n\n\n\n练习题3：推导BNLL layer的误差反向传播公式BNLL layer的激活函数为\n$$\\varphi\\left(x\\right)=x+\\ln\\left(1+e^{-x}\\right),x&gt;0$$\n$$\\varphi\\left(x\\right)=\\ln\\left(1+e^x\\right),x\\leqslant0$$\n对激活函数求导事实上，激活函数可以写成统一的形式\n$$\\varphi\\left(x\\right)=\\ln\\left(1+e^x\\right)$$\n求导\n$$\\varphi’\\left(x\\right)=\\displaystyle\\frac{e^x}{1+e^x}$$\n计算反向误差公式反向误差=后一层的反向误差*激活函数导数，即\n$$\\delta^{\\left(l\\right)}=\\displaystyle\\delta^{\\left(l+1\\right)}\\frac{e^x}{1+e^x}$$\n","dateCreated":"2019-06-01T21:11:07+08:00","dateModified":"2020-01-16T00:05:12+08:00","datePublished":"2019-06-01T21:11:07+08:00","description":"\n\n\n《21天实战Caffe》学习笔记第7天\n练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; \"Not Implemented Yet\"\n\nINSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \\  char gInstantiationGuard##classname; \\  template class classname&lt;float&gt;; \\  template class classname&lt;double&gt;","headline":"Day7 Caffe代码梳理","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/01/caffe-day7/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/01/caffe-day7/","keywords":"Caffe"}</script>
-    <meta name="description" content="《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &amp;lt;&amp;lt; &quot;Not Implemented Yet&quot;  INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
-<meta name="keywords" content="Caffe">
+    <meta name="description" content="《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; &quot;Not Implemented Yet&quot;  INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Day7 Caffe代码梳理">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;01&#x2F;caffe-day7&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/01/caffe-day7/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &amp;lt;&amp;lt; &quot;Not Implemented Yet&quot;  INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-15T16:05:12.993Z">
+<meta property="og:description" content="《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; &quot;Not Implemented Yet&quot;  INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-01T13:11:07.000Z">
+<meta property="article:modified_time" content="2020-01-15T16:05:12.993Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="Caffe">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -357,6 +365,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -371,6 +389,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -472,6 +493,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -577,10 +608,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/06/01/caffe-day7/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

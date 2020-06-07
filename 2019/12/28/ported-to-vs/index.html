@@ -12,15 +12,19 @@
     
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"（内容待整理…orz）\n1.细碎的问题变量命名习惯的变化avs的pitch = vs的stride\navs的env = vs的vi？那avs的params呢？\nvs中很少见dst-&gt;width之类的写法，而是d-&gt;width\n\n\n函数的迁移1.GetRowSize()到GetWidth()*sizeof()?\n2.BitBlt()到vs_bitblt\n3.获取子采样的字节数\nGetPlaneWidthSubsampling()、GetPlaneHeightSubsampling()到subSamplingW、subSamplingH\n4.在初始化gcd_h、gcd_v的时候写了一串，是因为avs没有提供类似vsapi-&gt;getFrameWidth(src, plane)的api，在vs中，不用这么费力。\n变量类型的重新定义1.为了兼容32bit，不能用unsigned修饰变量类型，因为32bit的取值是[-1.0, 1.0]，包含负值。\n2.为了避免我不知道的麻烦，把所有short类型全用int代替，之后有可能再改回来。\n2.函数调用逻辑的变化\n判断RGB or YUV空间 -&gt; 选择相应的函数\n\n就是这么简单的逻辑，写个if语句就好，为什么感到这么凌乱。\n我需要回答几个问题\n\n为什么把横向和纵向写成两个函数？在process()调用时，这两个函数的关系是什么，是先处理一个方向吗？\n在if判断条件中的运算结果，其生存期是多少？\n为什么在Hor和Ver两个方向，分别代入了源和输出的尺寸？\n\n3.从类到模版还是类和对象好啊，为什么使用了vs api后，就没有那种教科书一般经典的类和对象的用法了呢？\n调用VapourSynth API本身的一些问题使用函数（我想说啥来着…）\n我甚至忘了vsapi-&gt;getFrameWidth(src, plane)，把src换成dst就是输出的尺寸了啊..一个劲写d-&gt;target_width总感觉不对劲…\n4.C++基础相关this指针语法上的概念只有成员函数才有this指针，每个对象都能通过this指针访问自己的地址。\n这篇菜鸟教程确实很好，不仅说明了this指针，也更加清楚地理解了-&gt;运算符。\n这是类和对象中的概念，我在迁移后的VapouSynth中根本没有写class，所以不要this指针了吧。\n从语法上讲，this指针不能用于被static标记的（成员）函数。\n具体实现的功能1if (!(this-&gt;*(this-&gt;ResizeHorizontal))(buff, srcp, src_pitch, &amp;params[i]))\n\n从这个判断语句中能得到什么？让我终于明白了代码中四个核心处理函数为什么要写成bool型了。像这样\n1bool AreaResize::ResizeHorizontalPlanar(BYTE* dstp, const BYTE* srcp, const int src_pitch, const params_t* params)\n\nemmm…但是每个函数最后都写着return true，那false是怎么来的…\n数学函数gcd()，求最大公约数，实现如下\n12345int gcd(int x, int y)&#123;\tint m = x % y;\treturn m == 0 ? y : gcd(y, m);&#125;\n\nC++的多线程并发（Concurrency）和并行（Parallelism）\n1Concurrency::parallel_for();\n\nswitch语句在条件并列且写法整齐时，用switch比if…else更简洁一些。\n基础的基础第一次看到类似这样的写法\n1for (unsigned short index_value = target_width; index_value--; )\n\n最后的判断项省略了。\n","dateCreated":"2019-12-28T23:04:52+08:00","dateModified":"2020-02-18T16:00:14+08:00","datePublished":"2019-12-28T23:04:52+08:00","description":"（内容待整理…orz）\n1.细碎的问题变量命名习惯的变化avs的pitch = vs的stride\navs的env = vs的vi？那avs的params呢？\nvs中很少见dst-&gt;width之类的写法，而是d-&gt;width","headline":"记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/28/ported-to-vs/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/28/ported-to-vs/","keywords":"C++, VapourSynth, Avisynth"}</script>
-    <meta name="description" content="（内容待整理…orz） 1.细碎的问题变量命名习惯的变化avs的pitch = vs的stride avs的env = vs的vi？那avs的params呢？ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
-<meta name="keywords" content="C++,VapourSynth,Avisynth">
+    <meta name="description" content="（内容待整理…orz） 1.细碎的问题变量命名习惯的变化avs的pitch &#x3D; vs的stride avs的env &#x3D; vs的vi？那avs的params呢？ vs中很少见dst-&gt;width之类的写法，而是d-&gt;width">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;28&#x2F;ported-to-vs&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/12/28/ported-to-vs/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="（内容待整理…orz） 1.细碎的问题变量命名习惯的变化avs的pitch = vs的stride avs的env = vs的vi？那avs的params呢？ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-18T08:00:14.186Z">
+<meta property="og:description" content="（内容待整理…orz） 1.细碎的问题变量命名习惯的变化avs的pitch &#x3D; vs的stride avs的env &#x3D; vs的vi？那avs的params呢？ vs中很少见dst-&gt;width之类的写法，而是d-&gt;width">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-28T15:04:52.000Z">
+<meta property="article:modified_time" content="2020-02-18T08:00:14.186Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="VapourSynth">
+<meta property="article:tag" content="Avisynth">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +37,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -384,6 +394,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -398,6 +418,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -499,6 +522,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -604,10 +637,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/12/28/ported-to-vs/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

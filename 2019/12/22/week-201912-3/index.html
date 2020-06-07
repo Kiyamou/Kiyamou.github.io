@@ -15,11 +15,13 @@
     <meta name="description" content="引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前用Py">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2019.12.16-12.22">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;22&#x2F;week-201912-3&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/12/22/week-201912-3/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前用Py">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-04T05:17:02.277Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-22T14:59:56.000Z">
+<meta property="article:modified_time" content="2020-02-04T05:17:02.277Z">
+<meta property="article:author" content="Kiyamou">
 <meta name="twitter:card" content="summary">
     
     
@@ -32,13 +34,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -354,6 +362,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -368,6 +386,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -469,6 +490,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -574,10 +605,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/12/22/week-201912-3/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

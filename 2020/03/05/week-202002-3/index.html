@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。\n嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。\n\n\n2.utility3.自己写ISP我自己写，还是用C++吧\n4.回到vs之前一直没有用过lut调色板，只是用Expr工具。通过循环给数组赋值，做一个lut，然后用这个lut调节亮度。\n说起来，Python当中的try、append()我都没用过。\n5.并行与MPI与其他回想起一年前上的并行计算课，有些东西真的是在不经意间积累，然后又不经意的出现在你身边。\nOpenCL 2.0 异构计算\n\n消息传递接口（MPI）库经历了时间的磨砺，在当今环境下依旧是很受欢迎的消息传递中间件\n\n粒度，不同模型：\n\n单指令多数据（SIMD）\n单程序多数据（SPMD）\n\nOpenCL的内核类似于SPMD模型\n说起来fmtc有指令集优化，但没用OpenCL。（话说我见过的用OpenCL的滤镜也只有Canny和KNMeans了）\n6.Mat与IPlImageIPlIMage是OpenCV 1中概念，Mat则是OpenCV 2与OpenCV 3中的概念。Mat“更加C++”，引入了类的概念，同时不再需要像IPlIMage那执着于内存管理。\n现在读取raw格式还是用的IPlIMage，总感觉这样不太好，还是用Mat更好吧。我得再整理一下整个处理流程了…要不直接把14bit补成16bit？\n后续就是用cvConvertScale()函数把14bit扩张/收缩到了16bit/8bit。\n7.C++基础读到了《现代C++教程：高速上手 C++ 11/14/17/20》这本书，感慨万千啊，过多话不展开了，记录一下我读到的内容。\nauto关键字auto不能用于函数传参，也不能用于数组推导。\n区间for迭代让C++像Python那样简洁地写for循环。\ntypename与class在写模版时，typename与class大部分时候没有区别，但有嵌套依赖类型的变量时，需要使用typename。\n实例化与外部模版C++11引入了外部模版，可以控制编译器是否对模版进行实例化。通过template class与extern template class关键字实现。\n默认模版参数C++11可指定默认模版参数。\n1template &lt;typename T = int, typename U = int&gt;\n\n变长参数模版可以对类模板和函数模版使用变长参数（真的~好神奇的感觉~~）。\n面向对象部分的新特性这部分有点过于强大…我还得好好理解一下…我之前一直不知道override和final这两个关键字是C++11引入的新特性。\n8.去马赛克突发奇想，从某个角度想，raw格式照片的Bayer数据结构，和YUV420的色度半采样有点像。\n一些问题\n难得在运行出错后，在cmd里有了报错信息，如下。\n1OpenCV(3.4.9) Error: Assertion failed (size.width&gt;0 &amp;&amp; size.height&gt;0) in cv::imshow, file C:\\build\\3_4_winpack-build-win64-vc15\\opencv\\modules\\highgui\\src\\window.cpp, line382\n\n9.牛客网刷题突然想到今天（2.20）明明也认真的，但Github上却没有commit。想了一下，上午在牛客网做题。嗯，这样也挺好的。\n","dateCreated":"2020-03-05T22:41:24+08:00","dateModified":"2020-03-05T22:43:44+08:00","datePublished":"2020-03-05T22:41:24+08:00","description":"1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。\n嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。","headline":"周记 2020.02.17-02.23","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/05/week-202002-3/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/05/week-202002-3/","keywords":"C++"}</script>
     <meta name="description" content="1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡&#x2F;渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。 嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。">
-<meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.02.17-02.23">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;05&#x2F;week-202002-3&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/week-202002-3/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡&#x2F;渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。 嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-05T14:43:44.613Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-05T14:41:24.000Z">
+<meta property="article:modified_time" content="2020-03-05T14:43:44.613Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -375,6 +383,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -389,6 +407,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -490,6 +511,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -595,10 +626,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/03/05/week-202002-3/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

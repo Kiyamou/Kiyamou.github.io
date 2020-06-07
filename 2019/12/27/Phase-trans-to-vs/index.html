@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。\n讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。\n印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…\n限于教学条件，那个时候自然是基于VC++ 6.0把代码重新改了一遍，然后就交作业了。分数还不错。\nOK，回忆就到这里。昨天心血来潮，想在Visual Studio下重新跑一遍。于是…我就掉进了坑里…\n代码功能与现状代码实现的功能其实简陋，执行一下，跳出来一个NiO-MgO固溶体相图的窗口，就完了。所以虽然是窗口程序，用户完全没法做什么。\n代码方面，除了在现在看来中了毒一般的代码风格和陈旧的头文件，还隐藏着C++标准改变埋下的坑。\n\n\n改代码风格不用多说，坑的在后面…\n适应VS关于头文件graphics.h代码使用了一个古老而且非标准的头文件，graphics.h。既然如此，随便搜了一个头文件就include了。然而…我下的这个头文件本身就有bug…\n1int left=0, int right=0, int right=INT_MAX, int bottom=INT_MAX,\n\n把前面那个right改成top，倒也不是什么大问题（反正全世界的图像处理都是这么搞的，从左和上开始定义）。\n然后就是我下的这个graphics.h，和现有的代码八字不合…\n比如，原始代码是这样写的\n1outtextxy(225, 220, \"TWO PHASE DLAGRAM\\n\");\n\n按照我下的头文件，第三个参数应当是char *类型，而这里填的&quot;TWO PHASE DLAGRAM\\n&quot;是cosnt char *，用强制类型转换解决\n1outtextxy(225, 220, (char*)\"TWO PHASE DLAGRAM\\n\");\n\n其余的问题后续再说，总之把类似上面头文件与代码不匹配的问题解决之后，我发现一个严重的事情…我下的这个头文件…仅有函数声明…没有函数定义…（此处应插入一个“你跟这开玩笑呢”的图片）。所以，理论上应该还有个lib库之类的东西…\n（所以报了LINK2019错误）\n算了…不折腾了…搜到了EasyX库，想起来当时在VC++ 6.0上用的也是这个。\n配置好头文件和库文件，但略显蛋疼的是，一些绘图函数的参数类型又不一样了。重新改…\n还是拿上面那个举例，EasyX库下的graphics.h需要char类型\n1outtextxy(225, 220, (char)\"TWO PHASE DLAGRAM\\n\");\n\n（这样在指针间反复横跳…总感觉哪里不对劲…）\n又比如\n12char my[5], mx[5];outtextxy(X1 + 2 * i * xstep - 10, Y2 + 10, mx);\n\n而outtextxy()有两种重载形式\n12void outtextxy(int x, int y, LPCTSTR str);\t// 在指定位置输出字符串void outtextxy(int x, int y, TCHAR c);\t\t// 在指定位置输出字符\n\n所以把原代码中的char类型强制转换为LPCTSTR类型。\n1outtextxy(X1 + 2 * i * xstep - 10, Y2 + 10, (LPCTSTR));\n\nLPCTSTR类型先放一下，先说一下函数重载。\n函数重载度娘百科上说的还是挺清楚的。\n\nC++允许在同一范围中声明几个功能类似的同名函数， 形参需要不同。\n\n调用时会选择合适的函数进行调用。类似的还有运算符的重载，比如&lt;&lt;运算符，左移+输出。\n函数重载这个概念在C++课上肯定是学过的，只是被课本和习题蒙蔽了，不知道是干什么的。在读Waifu2x的代码时，才发掘这是怎么一回事。\n目的的话，为了方便吧，能想到的就是这个了。\n继续graphics.h有些函数变量的含义、个数都变了，照猫画虎地去改。\n参照\n1void setlinestyle(int style, int thickness = 1, const DWORD *puserstyle = NULL, DWORD userstylecount = 0);\t// 设置当前画线样式\n\n将\n1setlinestyle(0, 3, 1);  //坐标轴几何参数\n\n改成\n1setlinestyle(0, 3);  //坐标轴几何参数\n\n以上这些绘图函数都是用来美化修饰的，其实参数含义什么的囫囵吞枣就可以，我也不是UI，但initgrah()这个函数还是要关注一下的。\n12// 绘图模式相关函数HWND initgraph(int width, int height, int flag = NULL);\t// 初始化图形环境\n\n上面是头文件中的声明，但我的原始代码画风有点不一样\n12int gdriver = DETECT, graphmode;initgraph(&amp;gdriver, &amp;graphmode, \"E:\\\\TurboC3cn\\\\BGI\");\n\n恕我孤陋寡闻，这样声明和初始化两个变量，真的是…\n当初我改代码时，似乎也没有动这个地方…所以那个路径我当时是怎么编译通过的…orz…\n按照度娘百科给的函数原型，应该更符合原始代码（因为度娘的词条似乎就是针对（原始的）graphics.h写的，而相比我用的EasyX库，至少对于针对VS2019版本的头文件，是不一样的）。\n1void far initgraph(int far *gdriver, int far *gmode, char *path);\n\n嘛…不管了，反正就依照我现在用的头文件，把参数改一下，现在的参数含义还更好理解。\n关于_T(&quot;黑体&quot;)的问题，似乎是解决了，这个没细看。\nstdafx.h这个stdafx.h不用管…注释掉就行…\nC++标准的升级我用的VS2019是支持c++14和c++17（虽然我还没搞明白默认的是哪个），有些陈旧的函数会报C4996错误，照着改就行。\ngetch() -&gt; _getch()gcvt() -&gt; _gcvt() -&gt; _gcvt_s()\n结语好像也就这么多了。虽然画出来的图还不正常…但至少不报错了…\n上午改代码的时候，真有一种代码被下了毒的感觉…\n收获有三点吧。\n\n理解了头文件、库文件的依赖关系。目前来看，对于稍大型的代码，是在头文件中写函数声明，然后把函数实现放在库文件中。在VS中的配置也更加熟练了（头文件位于\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\xxxx\\include之类的地方）。\n明白了函数重载\n关于char和string等类型的关系和转换\n\n但代码中仍有一些地方值得我去看，比如extern。\n","dateCreated":"2019-12-27T19:21:11+08:00","dateModified":"2019-12-27T19:23:38+08:00","datePublished":"2019-12-27T19:21:11+08:00","description":"重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。\n讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。\n印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…\n限于教学条件，那个时候自然是基于VC++ 6.0把代码重新改了一遍，然后就交作业了。分数还不错。\nOK，回忆就到这里。昨天心血来潮，想在Visual Studio下重新跑一遍。于是…我就掉进了坑里…\n代码功能与现状代码实现的功能其实简陋，执行一下，跳出来一个NiO-MgO固溶体相图的窗口，就完了。所以虽然是窗口程序，用户完全没法做什么。\n代码方面，除了在现在看来中了毒一般的代码风格和陈旧的头文件，还隐藏着C++标准改变埋下的坑。","headline":"从VC++ 6.0到VS——记一个简单窗口程序的迁移","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/12/27/Phase-trans-to-vs/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/12/27/Phase-trans-to-vs/","keywords":"C++"}</script>
     <meta name="description" content="重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。 讲道理，从功能上看，用C&#x2F;C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。 印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了… 限于教学条件，那个时候自然是">
-<meta name="keywords" content="C++">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="从VC++ 6.0到VS——记一个简单窗口程序的迁移">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;27&#x2F;Phase-trans-to-vs&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/12/27/Phase-trans-to-vs/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。 讲道理，从功能上看，用C&#x2F;C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。 印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了… 限于教学条件，那个时候自然是">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-12-27T11:23:38.832Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-12-27T11:21:11.000Z">
+<meta property="article:modified_time" content="2019-12-27T11:23:38.832Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -418,6 +426,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -432,6 +450,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -533,6 +554,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -638,10 +669,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/12/27/Phase-trans-to-vs/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

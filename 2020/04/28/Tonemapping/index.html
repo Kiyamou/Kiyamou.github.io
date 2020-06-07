@@ -15,11 +15,13 @@
     <meta name="description" content="在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="色调映射（Tone mapping）">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;Tonemapping&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/04/28/Tonemapping/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-28T08:48:54.019Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-28T08:07:48.000Z">
+<meta property="article:modified_time" content="2020-04-28T08:48:54.019Z">
+<meta property="article:author" content="Kiyamou">
 <meta name="twitter:card" content="summary">
     
     
@@ -32,13 +34,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -334,6 +342,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -348,6 +366,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -449,6 +470,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -554,10 +585,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/04/28/Tonemapping/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

@@ -12,15 +12,18 @@
     
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.dequedeque的声明\n12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();\n\n2.C++调用函数用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。\n12345#include &lt;opencv2/opencv.hpp&gt;using namespace cv;Canny(edge, edge, 3, 9, 3);  // ✔Canny(edge, edge, threshold1=3, threshold2=9, apertureSize=3);  // ✖\n\n\n\n3. 关于vector不需额外声明头文件，但需要使用std命名空间，即std::vector。\n这天在做二叉树的题和敲OpenCV时，都遇到了vector\n4.cpp拆分1.static修饰的函数，只能在本文件中调用。\n2.#ifndef、#define、#endif配合使用，避免一个.h文件被重复include。\n5.使用Meson编译在win下，通过msi安装包安装Meson，再把现成的ninja.exe添加到环境变量中即可。\n编译时出现的问题如下。\n12345Did not find pkg-config by name &apos;pkg-config&apos;Found Pkg-config: NODid not find CMake &apos;cmake&apos;Found CMake: NORun-time dependency vapoursynth found: NO\n\n就是该装的依赖没有装。（虽然我不好说这里的vapoursynth指什么：.h文件，还是编译好的动态链接库？）\n顺带，下面这些信息，好像也不是我希望的。这应该是我的gcc存在32位和64位共存导致。\n1234C++ compiler for the host machine: c++ (gcc 8.2.0 &quot;c++ (MinGW.org GCC-8.2.0-5) 8.2.0&quot;)C++ linker for the host machine: c++ GNU ld.bfd 2.32Host machine cpu family: x86Host machine cpu: x86\n\n6.VapourSynth着手支持音频处理才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。\n先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了vnode。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的VSNodeRef，而不是现在cython/vapoursynth.pyx里Python api的VideoNode。但我继续看这个说明，提到了VSMap和其他context，这个C++ api里也有。\n音频源滤镜：BestAudioSource .dll\n函数：bas.Source、bas.BlankAudio 、bas.AudioSplice 、bas.AudioTrim`\n在脚本最后，输出音频要用audio.set_output(1)，要给set_output加标号了。\n输出结果可喂给VSPipe（VS pipeline，和ISP pipeline一个意思的其实吧）、AVFS、VFW。\n7.可以考虑学一学Cython或许有可能写面向进阶用户的东西的时候，会用上？\n8.脑洞侦测-&gt;抠像-&gt;用vs代替pr？\n9.指令集优化与编译原理既然修改JincResize代码涉及到了指令集优化，就要重新翻开编译原理了。\n","dateCreated":"2020-02-13T13:50:42+08:00","dateModified":"2020-02-13T13:52:30+08:00","datePublished":"2020-02-13T13:50:42+08:00","description":"1.dequedeque的声明\n12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();\n\n2.C++调用函数用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。\n12345#include &lt;opencv2/opencv.hpp&gt;using namespace cv;Canny(edge, edge, 3, 9, 3);  // ✔Canny(edge, edge, threshold1=3, threshold2=9, apertureSize=3);  // ✖","headline":"周记 2020.02.03-02.09","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/02/13/week-202002-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/02/13/week-202002-1/","keywords":"C++, VapourSynth"}</script>
-    <meta name="description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &amp;lt;deque&amp;gt;template &amp;lt; class T, class Alloc = allocator&amp;lt;T&amp;gt; &amp;gt; class deque;&#x2F;&#x2F; exampledeque &amp;lt;TreeNode*&amp;gt; tree_que;node = tree_que.front();">
-<meta name="keywords" content="C++,VapourSynth">
+    <meta name="description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.02.03-02.09">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;13&#x2F;week-202002-1&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/02/13/week-202002-1/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &amp;lt;deque&amp;gt;template &amp;lt; class T, class Alloc = allocator&amp;lt;T&amp;gt; &amp;gt; class deque;&#x2F;&#x2F; exampledeque &amp;lt;TreeNode*&amp;gt; tree_que;node = tree_que.front();">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-02-13T05:52:30.265Z">
+<meta property="og:description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-13T05:50:42.000Z">
+<meta property="article:modified_time" content="2020-02-13T05:52:30.265Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="VapourSynth">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +36,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -366,6 +375,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -380,6 +399,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -481,6 +503,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -586,10 +618,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/02/13/week-202002-1/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

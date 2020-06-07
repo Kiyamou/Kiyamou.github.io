@@ -12,15 +12,17 @@
     
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？\n学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力\n\n\n再拖着不接触核心算法真不是事，先用vs框架实现算法吧\n1tmp_array.resize(tmp_array.size() + coeff_per_pixel, 0.f); // 调整大小，填零","dateCreated":"2020-04-28T16:25:36+08:00","dateModified":"2020-04-28T16:26:57+08:00","datePublished":"2020-04-28T16:25:36+08:00","description":"strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？\n学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力","headline":"周记 2020.03.16-03.22","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/28/week-202003-3/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/28/week-202003-3/","keywords":"C++"}</script>
-    <meta name="description" content="strncpy() -&amp;gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？ 学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力">
-<meta name="keywords" content="C++">
+    <meta name="description" content="strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？ 学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.03.16-03.22">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;28&#x2F;week-202003-3&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/04/28/week-202003-3/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="strncpy() -&amp;gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？ 学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-28T08:26:57.811Z">
+<meta property="og:description" content="strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？ 学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-28T08:25:36.000Z">
+<meta property="article:modified_time" content="2020-04-28T08:26:57.811Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -342,6 +350,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -356,6 +374,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -457,6 +478,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -562,10 +593,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/04/28/week-202003-3/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

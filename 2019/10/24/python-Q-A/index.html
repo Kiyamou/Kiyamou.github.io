@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦\nQuestion：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\\Python3x\\Lib\\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。\nAnswer：把Python\\Python3x\\Lib\\site-packages写入系统环境变量，否则PyCharm依旧找不到。\nQuestion：占位符（tap）与空格的问题\nAnswer：Notepad++和Atom均有显示占位符和空格的选项。\nQuestion：为什么VapouSynth API的函数propGetFloat()名字写作float，却是double类型？\nAnswer：猜测是基于VapouSynth以C++为后端、以Python为前端的模式而故意为之，因为Python中浮点数只有float类型，其与C++的double类型相似。\n\n\nQuestion：报错module &#39;pickle&#39; has no attribute &#39;loads&#39;怎么解决\nAnswer：这是我见过的最蛋疼的报错…原因是我在同project文件夹里自己写一个名为pickle.py的文件，Python会优先加载自定义文件…详情看这里。具体我自己的故事，前一天晚上为了了解序列化和反序列号，写了这个文件。能踩到这个error…有种游戏里进了隐藏结局的感觉…\n","dateCreated":"2019-10-24T23:31:39+08:00","dateModified":"2020-01-18T17:57:03+08:00","datePublished":"2019-10-24T23:31:39+08:00","description":"记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦\nQuestion：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\\Python3x\\Lib\\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。\nAnswer：把Python\\Python3x\\Lib\\site-packages写入系统环境变量，否则PyCharm依旧找不到。\nQuestion：占位符（tap）与空格的问题\nAnswer：Notepad++和Atom均有显示占位符和空格的选项。\nQuestion：为什么VapouSynth API的函数propGetFloat()名字写作float，却是double类型？\nAnswer：猜测是基于VapouSynth以C++为后端、以Python为前端的模式而故意为之，因为Python中浮点数只有float类型，其与C++的double类型相似。","headline":"Python Q&A","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/10/24/python-Q-A/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/10/24/python-Q-A/","keywords":"Python"}</script>
     <meta name="description" content="记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦 Question：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\Python3x\Lib\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。 Answer：把Python\Python3x\">
-<meta name="keywords" content="Python">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Python Q&amp;A">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;24&#x2F;python-Q-A&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/10/24/python-Q-A/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦 Question：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\Python3x\Lib\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。 Answer：把Python\Python3x\">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-18T09:57:03.403Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-10-24T15:31:39.000Z">
+<meta property="article:modified_time" content="2020-01-18T09:57:03.403Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -348,6 +356,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -362,6 +380,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -463,6 +484,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -568,10 +599,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/10/24/python-Q-A/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。\n（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）\nHowever，上面几个模型好像有点复杂，所以先从LeNet-5开始。\n\n\nLeNet-5https://www.charleychai.com/blogs/2018/ai/NN/lenet.html\n1.卷积-&gt;局部感受野（同时卷积带来权值共享（？））1.2 同一层中，多个卷积核独立操作，获得针对不同特征的输出。2.为什么池化不采用全连接，（即采用子采样）：不对称连接获取更高级的特征2.0 池化-&gt;（子）采样：直接扔掉部分数据，以期待保留主要特征，同时提升鲁棒性（减少次要信息的干扰）。\n","dateCreated":"2019-07-05T23:12:10+08:00","dateModified":"2020-01-15T23:56:21+08:00","datePublished":"2019-07-05T23:12:10+08:00","description":"从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。\n（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）\nHowever，上面几个模型好像有点复杂，所以先从LeNet-5开始。","headline":"文献阅读 1811.12231","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/07/05/literature001/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/07/05/literature001/","keywords":"文献阅读"}</script>
     <meta name="description" content="从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。 （从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。） However，上面几个模型好像有点复杂，所以先从LeNet-5开始。">
-<meta name="keywords" content="文献阅读">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="文献阅读 1811.12231">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;07&#x2F;05&#x2F;literature001&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/07/05/literature001/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。 （从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。） However，上面几个模型好像有点复杂，所以先从LeNet-5开始。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-15T15:56:21.449Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-07-05T15:12:10.000Z">
+<meta property="article:modified_time" content="2020-01-15T15:56:21.449Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="文献阅读">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -344,6 +352,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -358,6 +376,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -459,6 +480,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -564,10 +595,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/07/05/literature001/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

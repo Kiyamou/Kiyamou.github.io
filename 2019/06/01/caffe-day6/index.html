@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"《21天实战Caffe》学习笔记第6天\n练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh\n\n数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。\n12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh\n\n修改训练参数由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。\n在~/caffe/examples/cifar10文件件下，打开cifar10_full_solver.prototxt，将最后的solve mode改为CPU模式。\n12# solver mode: CPU or GPUsolver_mode: CPU\n\n\n\n进行训练Cifar10示例提供了多种训练脚本，这里使用train_full.sh进行训练，上一步中修改的参数文件同样是该训练脚本所对应的参数文件。\n1$ ./train_full.sh\n\n训练过程在虚拟机中用CPU训练了6h 10min，仍未完成，放弃。\n虚拟机的CPU分配为2*8，但在训练中只有两个核心在工作：主力核心，一个线程占用20-40%，另一个线程占用约80%；另一个核心，两个线程占用均在20%上下波动。\n所以，是我在CPU分配上的理解不对，还是“在原有虚拟机文件上新建虚拟机”导致只能沿用原有虚拟机的CPU分配方式（原有虚拟机的CPU分配是2*2）？根据上述CPU占用情况，似乎是后者。\n结果分析（TODO）\n收尾工作完成训练和分析，删除数据文件，以节省硬盘空间。\n","dateCreated":"2019-06-01T19:28:24+08:00","dateModified":"2020-01-15T23:38:39+08:00","datePublished":"2019-06-01T19:28:24+08:00","description":"《21天实战Caffe》学习笔记第6天\n练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh\n\n数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。\n12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh\n\n修改训练参数由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。\n在~/caffe/examples/cifar10文件件下，打开cifar10_full_solver.prototxt，将最后的solve mode改为CPU模式。\n12# solver mode: CPU or GPUsolver_mode: CPU","headline":"Day6 手写数字识别","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/01/caffe-day6/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/01/caffe-day6/","keywords":"Caffe"}</script>
     <meta name="description" content="《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~&#x2F;caffe&#x2F;data&#x2F;cifar10$ .&#x2F;get_cifar10.sh  数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~&#x2F;caffe&#x2F;examples&#x2F;cifar10$ .&#x2F;create_cifar10.sh  修改训练参数由于在虚拟机下运行，无法使">
-<meta name="keywords" content="Caffe">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Day6 手写数字识别">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;01&#x2F;caffe-day6&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/01/caffe-day6/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~&#x2F;caffe&#x2F;data&#x2F;cifar10$ .&#x2F;get_cifar10.sh  数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~&#x2F;caffe&#x2F;examples&#x2F;cifar10$ .&#x2F;create_cifar10.sh  修改训练参数由于在虚拟机下运行，无法使">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-15T15:38:39.063Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-01T11:28:24.000Z">
+<meta property="article:modified_time" content="2020-01-15T15:38:39.063Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="Caffe">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -354,6 +362,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -368,6 +386,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -466,6 +487,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -571,10 +602,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/06/01/caffe-day6/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

@@ -13,14 +13,17 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。\n重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。\n\n\n2.C++科学计算Eigen库是一个C++科学计算库，主要是各种矩阵运算。\n3.为什么没好好学数学本不该倒垃圾，但这几年的学，从数学能力的角度，真是越上越回去了（所以这也是我的专业症结所在）。矩阵论稀里糊涂上完了…在看现在需要用的SVD、范数计算…数学跟不上了…\n4.VSGAN与升级VS版本（先吐槽一句，为什么我电脑上装了3.6、3.7、3.8三个版本的Python…而且更蛋疼的是Python 3.7装在了Visual Studio里面…）\n干脆把电脑有Python全卸了，重装上了Python 3.8，VapourSynth也升级到了最新的R49预览版。由于这次把Python装在C:\\Program Files里面，经常需要管理员权限，有点蛋疼…\n弄好环境后，尝试了VSGAN，想试一下waifuGAN和1xESRGAN两个模型，然而电脑没有显卡，用CPU实在太慢了，先放弃了…\n看了一下VSGAN的代码（还是Python看着简洁），基于Pytorch调用.pth模型，实现基于ESRGAN网络的超分辨率或其他操作。模型可以在这里找到。\n说起来两个星期前还在感叹技术太渣，连ESRGAN模型调用都调不了…现在也算是（借助别人的工具）弥补上了。\n5.原生分辨率这个东西也算是我的心结之一了。getnative.py搞定，测试了一下，感觉鲁棒性还挺好，而对于我自己缩到720p再升到1080p的例子，也能认出是720p（但是信号特征不如原始图片855p那么明显）。\n","dateCreated":"2020-03-08T16:47:39+08:00","dateModified":"2020-03-08T17:36:31+08:00","datePublished":"2020-03-08T16:47:39+08:00","description":"1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。\n重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。","headline":"周记 2020.03.02-03.08","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/08/week-202003-1/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/08/week-202003-1/","keywords":"C++, VapourSynth"}</script>
     <meta name="description" content="1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。 重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。">
-<meta name="keywords" content="C++,VapourSynth">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.03.02-03.08">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;08&#x2F;week-202003-1&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/03/08/week-202003-1/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。 重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-08T09:36:31.019Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-08T08:47:39.000Z">
+<meta property="article:modified_time" content="2020-03-08T09:36:31.019Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="VapourSynth">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +36,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -349,6 +358,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -363,6 +382,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -464,6 +486,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -569,10 +601,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/03/08/week-202003-1/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

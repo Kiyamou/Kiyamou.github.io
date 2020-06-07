@@ -13,14 +13,17 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）\n2.字面上，bias是偏差的意思。\n\nbias(tensor) - 卷积的偏置系数，大小是（out_channel）\n\n3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。\n现在的任务是明白网络内容，网络结构保存了什么信息。\n模型保存的内容\n网络的结构和模型参数\n只保存网络的模型参数\n\n在waifu2x的appendix/arch/cunet.txt中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。\n\n\n扫盲4.Waifu2x中vgg_7 -&gt; cunet?\n5.话说waifu-caffe中的cNet是代表什么啊，莫不就是cunet？\n6.一个灵魂发问，这些代码，抛开实用化的接口，不就是在搭网络吗？\n所以我现在学这些代码，除了我耽误之急要用的模型和前向传播相关，余下的核心，不就是怎么搭网络吗。\n7.Torch的函数\n\nSpatialZeroPadding()\n\nwaifu2x 项目结构分析\nappendix (附录 -&gt; 所以cunet.txt果然只是说明文件)\n\narch: descripte network for torch (only has two files for cunet)\n\ncaffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.\n\nGenerate prototxt of waifu2x’s cunet/upcunet arch. Training is not possible.\n\n\n其余是markdown说明和.sh文件\n\n\n\nassets\n看名字是和网站相关的，里面的文件也是html、css、js三剑客，不用管\n\ncache\n顾名思义，里面也没有内容\n\ndata\n同样没有内容，不知道这是什么套路\n\nimage_generators\n\ndots (字面上是点)\n\nOnly has a gen.lua file, which has this code. So it’s for generating images. However, I can’t understand the meanings of dots.\nBut ever, this is for cmd…So…I can ignore it now?\n12cmd:text(\"dot image generator\")image.save(path.join(opt.o, i .. \".png\"), img)\n\nimages\nUsing for description, although some images aren’t used in readme, yet they all seems to used to show the networks. \n\nlayer_outputs folder\n\nOther images and .sh file\n\n\n\nlib\nSeem to build the newtwork, such as srcnn.lua, which is decripted the SRCNN?\n看了一下w2nn.Lua，感觉Lua这门语言，有点…简单得过分了，调用其他文件，用类似这样的写法，还是在代码的结尾\n1require 'Print'\n\nmodels\nmodels\n\ntools\n在这里看到了export_model.Lua，这应该能解答我对模型内容的疑惑。\nemmm，export_model.Lua开篇第一句就是\n1-- adapted from https://github.com/marcan/cl-waifu2x\n\n这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实..在Lua里这是注释的意思）\n在代码结尾有好看的东西\n12cmd:option(\"-i\", \"input.t7\", 'Specify the input torch model')cmd:option(\"-o\", \"output.json\", 'Specify the output json file')\n\n这话说的是，进去t7，出来json。依此分析，文件名export的含义，并不是把Torch用的模型输出成t7，而是把导出的t7模型转换成json。也就是说，t7和json的内容，是一致的。\n（顺带一提，看这Lua写的命令行构建代码，真是简洁啊。之前看av1的rust命令行构建代码，虽然不能说比C++更复杂，但也挺长的。）\n\nwebgen\nFor web app, can ignore it.\n\nSingle Files\n\nconvert_data.lua -&gt; 似乎是图片预处理的过程\ninstall_lua_modules.sh -&gt; 安装依赖\ntrain.lua\nwaifu2x.lua\nweb.lua\nDockerfile\nOther Files\n\n\n\n综上分析，与核心处理相关的代码，位于lib文件夹（描述网络）和主文件（调用）下，核心代码并不是很多，甚至让我觉得，比Caffe版还要简洁一点。\n回到保存的模型由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的export_model.lua。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）\n1io.write(cjson.encode(jmodules))\n\n所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测/前向传播不限于Torch（+CUDA）的框架。\n当然，json模型下那一堆小数（与t7模型中整齐的模型参数形成了对比），应该是转换过程中近似计算导致的。这应该很好理解，在Torch下的函数别的地方没有，那只能把数值算出来，用类似查表的方式提供给其他框架。\n比如Waifu2x-convert，在modelHandler.hpp/.cpp就用下面的语句读取json模型的内容（借助picojson）\n1picojson::array &amp;wOutputPlane = jsonObj[\"weight\"].get&lt;picojson::array&gt;();\n\n所以可以推测，用json模型会比用t7模型（以及直接由t7转向其他框架模型，如由t7转向pt）精度低？\n所以延伸一下，我不能偷懒（或者说瞎折腾），把json模型喂给PyTorch，而还是要借助低版本PyTorch完成从t7到pt的模型转换。但忘了在哪看到了，说PyTorch的C++前端没有明显提速、甚至慢于Python前端，很大程度是因为读取pt模型拖慢了速度。那我能否使用json模型实现精度换速度？\n…有想法，但我目前还是按套路出牌吧…\n进一步说模型各版本模型情况\n\n\n版本\n主体文件\n辅助文件\nhash一致\n\n\n\nWaifu2x\njson/t7\n/\n√\n\n\nWaifu2x-caffe\njson\nprototxt\n√\n\n\nVapourSynth-Waifu2x-caffe\njson.caffemodel\nprotobin\n×\n\n\n关于t7转pt这个别想了，用目前查到的convert_torch.py，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，convert_torch.py不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。\n不过话说回来，json模型是怎么转成caffe的caffemodel的？（这样转是为了提高读入速度吗？）\n而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json/caffemodel），代码上总归得有点区别吧。\n下一步的模型转换计划所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？\n在Waifu2x-PyTorch版中，作者自定义了函数load_pre_train_weights()用以加载json模型，所以我可以直接拿来用了？\n但Waifu2x-PyTorch的Readme中有句话很让人在意。\n\nModel inference (32 fp only) can run in cpu only.\n\n像只做预测的VapourSynth-Waifu2x-caffe、ncnn版是在GPU中运行的。这里只能在CPU中运行，这是一个可改进的地方。\nWhatever，现在情况已经明了了，基于不重复造轮子的原则和我什么不会的实际情况，我完全可以在现有Waifu2x-PyTorch的基础上，去写libtorch的前向计算。至于是写出独立项目，还是基于VapourSynth，这个可以后续再考虑。\n","dateCreated":"2020-01-19T22:29:10+08:00","dateModified":"2020-01-19T22:33:38+08:00","datePublished":"2020-01-19T22:29:10+08:00","description":"开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）\n2.字面上，bias是偏差的意思。\n\nbias(tensor) - 卷积的偏置系数，大小是（out_channel）\n\n3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。\n现在的任务是明白网络内容，网络结构保存了什么信息。\n模型保存的内容\n网络的结构和模型参数\n只保存网络的模型参数\n\n在waifu2x的appendix/arch/cunet.txt中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。","headline":"PyTorch流水账与基于Torch的Waifu2x代码分析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/01/19/pytorch-model-waifu2x/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/01/19/pytorch-model-waifu2x/","keywords":"Torch, PyTorch"}</script>
     <meta name="description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
-<meta name="keywords" content="Torch,PyTorch">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="PyTorch流水账与基于Torch的Waifu2x代码分析">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;01&#x2F;19&#x2F;pytorch-model-waifu2x&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/01/19/pytorch-model-waifu2x/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-19T14:33:38.754Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-19T14:29:10.000Z">
+<meta property="article:modified_time" content="2020-01-19T14:33:38.754Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="Torch">
+<meta property="article:tag" content="PyTorch">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +36,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -485,6 +494,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -499,6 +518,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -600,6 +622,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -705,10 +737,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/01/19/pytorch-model-waifu2x/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

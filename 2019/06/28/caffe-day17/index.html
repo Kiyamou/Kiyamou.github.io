@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"《21天实战Caffe》学习笔记第17天\ndocker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。\n把运行docker时的log保存了下来，多少有些帮助。\n根据https://mirrors.tuna.tsinghua.edu.cn/help/centos/，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。\n\n\n一点感想Anaconda与Docker的区别。\n（我当然知道这两个不是同一层次上的东西，但作为项目和环境管理工具，多少还是有些像的）\n","dateCreated":"2019-06-28T23:40:41+08:00","dateModified":"2020-01-15T23:43:52+08:00","datePublished":"2019-06-28T23:40:41+08:00","description":"《21天实战Caffe》学习笔记第17天\ndocker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。\n把运行docker时的log保存了下来，多少有些帮助。\n根据https://mirrors.tuna.tsinghua.edu.cn/help/centos/，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。","headline":"Day17 Caffe迁移和部署","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2019/06/28/caffe-day17/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2019/06/28/caffe-day17/","keywords":"Caffe"}</script>
     <meta name="description" content="《21天实战Caffe》学习笔记第17天 docker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。 把运行docker时的log保存了下来，多少有些帮助。 根据https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;help&#x2F;centos&#x2F;，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。">
-<meta name="keywords" content="Caffe">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Day17 Caffe迁移和部署">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;06&#x2F;28&#x2F;caffe-day17&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2019/06/28/caffe-day17/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="《21天实战Caffe》学习笔记第17天 docker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。 把运行docker时的log保存了下来，多少有些帮助。 根据https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;help&#x2F;centos&#x2F;，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-01-15T15:43:52.952Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-06-28T15:40:41.000Z">
+<meta property="article:modified_time" content="2020-01-15T15:43:52.952Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="Caffe">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -345,6 +353,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -359,6 +377,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -460,6 +481,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -565,10 +596,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2019/06/28/caffe-day17/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

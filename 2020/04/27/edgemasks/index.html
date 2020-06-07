@@ -13,14 +13,16 @@
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"本文翻译自 Edge Masks，原作者：kageru。\n译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。\n\n\n理论、实例和解释译者：本节篇幅较长，译者添加了小标题。\n大多数流行的算法通过卷积来衡量像素邻域变化，以确定亮度变化。卷积计算的时间复杂度为 O(n^2)，其中 n 为卷积核半径，因此卷积核在保存适当精度的前提下越小越好。卷积核半径越低，越容易受到噪声（noise）和瑕疵（artifacts）的影响。\n多数算法采用 3x3 卷积核，在速度和准确性间提供了最佳平衡。例子便是 Prewitt、Sobel、Scharr 和 Kirsch 提出的算子。对于无噪声的干净信号源，也可使用 2x2 卷积（文献），但目前的硬件已经能够实时处理 3x3 卷积。\nSobel 算子以 Sobel 算子为例，x 方向和 y 方向分别进行卷积。\n12345---------------   --------------| -1 | 2 | -1 |   | -1 | 0 | 1 ||  0 | 0 |  0 |   |  2 | 0 | 2 | |  1 | 2 |  1 |   | -1 | 0 | 1 |---------------   --------------\n\n用 VapourSynth 简单实现如下。\n1234def Sobel(src):    sx = src.std.Convolution(matrix=[-1, 2, -1, 0, 0, 0,  1, 2, 1], saturate=False)    sy = src.std.Convolution(matrix=[-1, 0,  1, 2, 0, 2, -1, 0, 1], saturate=False)    return core.std.Expr([sx, sy], 'x y max')\n\n甚至，VapourSynth 内置了core.std.Sobel函数，我们不必自己写代码。\n对于边缘模糊的图像，Sobel 算子的效果并不是很好。提高检测精度的一种方法是使用 8 邻域而非 4 邻域，即在邻域的 8 个方向上，或者说在 3x3 卷积核的对角线上，都将被计算。\nKirsch 算子Russel A. Kirsch 在 1970 年提出了 Kirsch 算子（文献）。\n12345-----------------|  5 |  5  |  5 || -3 |  0  | -3 || -3 | -3  | -3 |-----------------\n\n该卷积核会旋转 45° 以回到其原始位置。\n在 VapourSynth 中并未内置 Kirsch 算子，尝试通过 VapourSynth 内置的卷积方法实现。\n1234567891011def kirsch(src):    kirsch1 = src.std.Convolution(matrix=[5,   5,  5, -3,  0, -3, -3, -3, -3])    kirsch2 = src.std.Convolution(matrix=[-3,  5,  5,  5,  0, -3, -3, -3, -3])    kirsch3 = src.std.Convolution(matrix=[-3, -3,  5,  5,  0,  5, -3, -3, -3])    kirsch4 = src.std.Convolution(matrix=[-3, -3, -3,  5,  0,  5,  5, -3, -3])    kirsch5 = src.std.Convolution(matrix=[-3, -3, -3, -3,  0,  5,  5,  5, -3])    kirsch6 = src.std.Convolution(matrix=[-3, -3, -3, -3,  0, -3,  5,  5,  5])    kirsch7 = src.std.Convolution(matrix=[ 5, -3, -3, -3,  0, -3, -3,  5,  5])    kirsch8 = src.std.Convolution(matrix=[ 5,  5, -3, -3,  0, -3, -3,  5, -3])    return core.std.Expr([kirsch1, kirsch2, kirsch3, kirsch4, kirsch5, kirsch6, kirsch7, kirsch8],                         'x y max z max a max b max c max d max e max')\n\n显然，简单的复制粘贴并不是一个好主意。当然，代码可以运行。但我不是数学家，而只有数学家才能去编写优雅的代码解决这一问题。换一种思路。\n12345def kirsch(src: vs.VideoNode) -&gt; vs.VideoNode:    w = [5]*3 + [-3]*5    weights = [w[-i:] + w[:-i] for i in range(4)]    c = [core.std.Convolution(src, (w[:4] + [0] + w[4:]), saturate=False) for w in weights]    return core.std.Expr(c, 'x y max z max a max')\n\n已经好多了，先不去管可读性更强的代码。\n将 Sobel mask 与 Kirsch mask 比较，后者的准确性有了明显提升。\n边缘检测的精度越高，就越容易将噪点识别为边缘，可以通过事先降噪来克服上述问题。\n提升精度对速度的影响可以忽略不计，对于 8bit 1080p 输入源，单纯 Sobel 算子（非 VapourSynth 内置的 Sobel 函数，因为它还包括了高通/低通滤波与缩放功能，速度更慢）速度约为 215fps，Kirsch 算子速度为 175fps。诚然，Sobel 算子也检出了许多边缘，但有些边缘不明显，需要使用std.Binarize增强才能达到 Kirsch 算子的效果。\nCanny 算法一种更复杂的边缘检测方法是 Canny 算法（译者注：tritical 在 AviSynth 框架下实现了 Canny 算法，被称为 TCanny 滤镜），这种算法使用类似的方法检测边缘，并将边缘的宽度缩小至 1 个像素。理想情况下，这些线条代表边缘的中部，且没有边缘被重复标记。此外，算法会进行高斯模糊，以降低噪声干扰（译者注：高斯模糊是前处理，在施加边缘检测算子之前）。一个例子如下。\n1core.tcanny.TCanny(op=1, mode=0)\n\n其中，op=1表示使用一种改进的算子，具有更好的信噪比。\n下面是使用 5x5 卷积核的例子。\n12345src.std.Convolution(matrix=[1,  2,  4,  2, 1,                            2, -3, -6, -3, 2,                            4, -6,  0, -6, 4,                            2, -3, -6, -3, 2,                            1,  2,  4,  2, 1], saturate=False)\n\n这是尝试通过边缘检测创建边缘 mask。进过一些后处理，可以用于去取 halo 或者清理线条（尽管可以使用其他方法配合常规 mask（或许更好），比如std.Maximum或者std.Expr）。\n边缘 mask 的使用我们已经了解了基础知识，来看一下实际应用。目前大多数视频仍为 8bit，几乎不可避免地会产生色带（banding）。正如我在之前提到的，恢复（restoration）滤镜会引入新的瑕疵。在去色带时，细节也随之损失。进一步地，加大去色带力度，则会导致图像模糊。边缘 mask 用于修补上述副作用，实际过程为先让去色带滤镜进行去色带操作，然后使用边缘 mask 识别边缘与细节，并通过std.MaskedMerge恢复。\nGradFun3 滤镜会在内部生成 mask，完成上述操作。另一个流行的去色带滤镜 f3kdb 则没有内置 mask 功能。\n举个例子，单纯地进行去色带会破坏纹理（details，在这一语境下译为纹理比细节更合适），特别是暗场纹理。在这种情况下使用 Sobel 算子进行边缘检测，效果不好。\n为了更好地识别暗场区域，使用 Retinex 算法进行局部对比度增强。\n借助 Retinex 算法降低对比度，低对比度下我们能在暗场看到更丰富的内容。也许有人认为这些原本看不到的暗场细节没有意义，但随着 HDR 显示器的推广，普通观众也能看到这些细节。同时暗场细节不会占用过多码率，所以我认为保留它们没有什么坏处。\n利用这些新知识，一些测试和一点点魔法，我们得到的 mask 准确性之高出乎意料。\n123def retinex_edgemask(luma, sigma=1):    ret = core.retinex.MSRCP(luma, sigma=[50, 200, 350], upper_thr=0.005)    return core.std.Expr([kirsch(luma), ret.tcanny.TCanny(mode=1, sigma=sigma).std.Minimum(coordinates=[1, 0, 1, 0, 0, 1, 0, 1])], 'x y +')\n\n进一步地，借助std.Binarize（或类似的高通/低通函数），以及std.Maximum、std.Inflate的单独/组合调用。我们可以把这一 mask 变成适用性更强的 mask，以应用于去色带或者其他需要精确 mask 的场合。\n性能绝大部分边缘检测算法均为简单的卷积运算，在 HD 源上使用也能达到 100fps 以上的速度，像 Retinex 这样复杂的算法当然不能与之相比。虽然使用 Sobel 算子进行简单的边缘检测，速度能超过 200fps，但组合 Retinex 算法后仅为 25 fps。速度瓶颈在 Retinex 算法上，单独使用 Retinex 算法速度约为 36.6fps。一种类似但低精度的暗场增强方法为调整亮度曲线，以暴露低对比度的边缘。\n1bright = core.std.Expr(src, 'x 65535 / sqrt 65535 *')\n\n理论上，可以通过调整亮度来改善暗场区域的边缘检测效果。\n结论数十年来，边缘检测一直是图像处理的强大工具，可以缩减图像处理的范围，助推图像分析。在视频处理中同样有重要作用，可以最大限度地降低的副作用与瑕疵。通过卷积可以快速而准确地建立边缘 mask，并且可以通过调整内核参数来自定义卷积，以用于不同目的。此外，还可以通过局部对比度增强来提高检测精度，虽然速度会慢得多。\n文中提到的代码可以在这里找到。\n","dateCreated":"2020-04-27T03:00:48+08:00","dateModified":"2020-04-30T22:34:01+08:00","datePublished":"2020-04-27T03:00:48+08:00","description":"本文翻译自 Edge Masks，原作者：kageru。\n译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。","headline":"边缘检测","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/04/27/edgemasks/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/04/27/edgemasks/","keywords":"VapourSynth"}</script>
     <meta name="description" content="本文翻译自 Edge Masks，原作者：kageru。 译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。">
-<meta name="keywords" content="VapourSynth">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="边缘检测">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;04&#x2F;27&#x2F;edgemasks&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/04/27/edgemasks/index.html">
 <meta property="og:site_name" content="308实验室">
 <meta property="og:description" content="本文翻译自 Edge Masks，原作者：kageru。 译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-04-30T14:34:01.413Z">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-26T19:00:48.000Z">
+<meta property="article:modified_time" content="2020-04-30T14:34:01.413Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="VapourSynth">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +35,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -389,6 +397,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -403,6 +421,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -504,6 +525,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -609,10 +640,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/04/27/edgemasks/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 

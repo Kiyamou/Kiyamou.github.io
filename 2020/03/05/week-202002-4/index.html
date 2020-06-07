@@ -12,15 +12,18 @@
     
     
     <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex\n\n\n\n2.解决VapourSynth版本问题？123#if VAPOURSYNTH_API_VERSION &lt; 0x30002\t#define FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR#endif\n\n（来自KNLmeansCL？）\n3.OpenCL看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。\n4.OpenCL设计思路的理解我能理解到的几点…\n\nOpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）\n类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）\nOpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）\nCPU 线程 = OpenCL 工作项（Work Item）\n\n5.OpenCL与C++在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。\n可以不写的.cl文件的说。\n6.C++ STL库C++标准模板库，（抛开string）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。\n例如容器vector、queue，方法at、emplace。\n感觉现在，我已经把21天学通C++这本书从总体上做了概览。\n7.Mkdocs：写自己的图书去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。\n8.交流在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。\n","dateCreated":"2020-03-05T22:44:28+08:00","dateModified":"2020-03-08T16:43:17+08:00","datePublished":"2020-03-05T22:44:28+08:00","description":"1.C++互斥锁123#include &lt;mutex&gt;std::mutex","headline":"周记 2020.02.24-03.01","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/03/05/week-202002-4/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/03/05/week-202002-4/","keywords":"C++, OpenCL"}</script>
-    <meta name="description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
-<meta name="keywords" content="C++,OpenCL">
+    <meta name="description" content="1.C++互斥锁123#include &lt;mutex&gt;std::mutex">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="周记 2020.02.24-03.01">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;03&#x2F;05&#x2F;week-202002-4&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/2020/03/05/week-202002-4/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.C++互斥锁123#include &amp;lt;mutex&amp;gt;std::mutex">
-<meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2020-03-08T08:43:17.049Z">
+<meta property="og:description" content="1.C++互斥锁123#include &lt;mutex&gt;std::mutex">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-03-05T14:44:28.000Z">
+<meta property="article:modified_time" content="2020-03-08T08:43:17.049Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="OpenCL">
 <meta name="twitter:card" content="summary">
     
     
@@ -33,13 +36,19 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
     <!--STYLES END-->
     
 
     
 
     
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
         
     
 </head>
@@ -359,6 +368,16 @@
         
         
             
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
         
         <li class="post-action">
             
@@ -373,6 +392,9 @@
 
         
         
+            
+                <div id="gitalk"></div>
+
             
         
     </div>
@@ -474,6 +496,16 @@
             </li>
         
         
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
             
         
         <li class="post-action">
@@ -579,10 +611,29 @@
         
 <div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
         <!--SCRIPTS-->
+
 <script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
 <!--SCRIPTS END-->
 
 
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '8e02469de2f0b70e287e',
+              clientSecret: '6bda9fffa0868486715975e8ef4f256bbd1bdbaa',
+              repo: 'kiyamou.github.io',
+              owner: 'Kiyamou',
+              admin: ['Kiyamou'],
+              id: '2020/03/05/week-202002-4/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
     
 
 
