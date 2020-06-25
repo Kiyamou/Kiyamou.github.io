@@ -213,6 +213,58 @@
                     
                         <a
                             class="link-unstyled"
+                            href="/2020/06/26/dehazingce-port/"
+                            aria-label=": DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移"
+                        >
+                            DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2020-06-26T00:42:53+08:00">
+	
+		    Jun 26, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt">
+                    <p>这一去雾算法在2013年提出，论文见 <a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">Optimized contrast enhancement for real-time image and video dehazing</a>，我们称其为 DehazingCE （CE = contrast enhancement）。</p>
+<h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。</p>
+                    
+                        <a
+                            href="/2020/06/26/dehazingce-port/"
+                            class="postShorten-excerpt_link link"
+                            aria-label=": DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移"
+                        >
+                            Continue reading
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a
+                            class="link-unstyled"
                             href="/2020/04/30/nnedi3/"
                             aria-label=": nnedi3 相关代码学习"
                         >
@@ -670,61 +722,6 @@
                             href="/2020/03/05/week-202002-3/"
                             class="postShorten-excerpt_link link"
                             aria-label=": 周记 2020.02.17-02.23"
-                        >
-                            Continue reading
-                        </a>
-                        
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-right">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a
-                            class="link-unstyled"
-                            href="/2020/02/13/week-202002-1/"
-                            aria-label=": 周记 2020.02.03-02.09"
-                        >
-                            周记 2020.02.03-02.09
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2020-02-13T13:50:42+08:00">
-	
-		    Feb 13, 2020
-    	
-    </time>
-    
-        <span>in </span>
-        
-    <a class="category-link" href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-
-
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-excerpt">
-                    <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// std::deque</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">allocator</span>&lt;T&gt; &gt; <span class="title">class</span> <span class="title">deque</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// example</span></span><br><span class="line"><span class="built_in">deque</span> &lt;TreeNode*&gt; tree_que;</span><br><span class="line">node = tree_que.front();</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Canny(edge, edge, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>);  <span class="comment">// ✔</span></span><br><span class="line">Canny(edge, edge, threshold1=<span class="number">3</span>, threshold2=<span class="number">9</span>, apertureSize=<span class="number">3</span>);  <span class="comment">// ✖</span></span><br></pre></td></tr></table></figure>
-                    
-                        <a
-                            href="/2020/02/13/week-202002-1/"
-                            class="postShorten-excerpt_link link"
-                            aria-label=": 周记 2020.02.03-02.09"
                         >
                             Continue reading
                         </a>

@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="308实验室">
+    <title>DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移 - 308实验室</title>
+    <meta name="author" content="Kiyamou">
+    
+    
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp"},"articleBody":"这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE = contrast enhancement）。\n算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。\n\n\n大气光估计通过图像分块、寻找像素差异最小的子块，以该子块最亮的点作为大气光的估计值。但这里存在一个问题，不知道是我理解有问题，还是我代码迁移有问题，或者算法本身就有问题。如果图像整体偏暗，那寻找到的子块就会很暗，最后以一个像素值很小的点作为大气光估计值，用这个值继续计算，最终结果就是全黑。我对迁移到 VapourSynth 的代码进行测试，确实发现了这一问题。\n透射率估计分为粗算和细化两步。粗算是基于大气散射模型进行次数不多的迭代，并自定义像素损失值（大气散射模型的直接计算结果可能会超过 [0, peak]，导致像素越界）以决定是否继续迭代。细化通过导向滤波实现。\n后处理包括 Gamma 亮度调整和类似均值滤波的均值化计算。前者是避免去雾后图像过暗，后者是避免透射率过低时导致的块效应。在我迁移的代码中，Gamma 亮度调整表现不错，但均值化计算可能是我的代码还有问题，测试结果是不如不做，做了反而凭空多了瑕疵。\n代码迁移代码迁移着实花了很久，满打满算从 4 月份开始读原始代码，到 6 月份完成初版的迁移，几乎花了两个月…原始代码风格很古典，着实有点费力。\n从 OpenCV 2 到 OpenCV 3在最开始，我觉得一下子迁移到 VapourSynth 有点费力，便想尝试着把原始代码先跑起来。原始代码基于 OpenCV 2，存储图像还是用的 IplImage 指针而非 Mat 类。这一部分工作在前面的博文有提到。但折腾好久，也没把原始代码跑起来，最后放弃了，直接迁移。\nYUV 还是 RGB在着手迁移之初，是先支持 YUV 还是先支持 RGB 纠结了好久。其中一部分原因是我还没完全搞懂原始代码的处理流程，从大气光估计部分看，原始代码用的是 RGB 格式，从透射率估计看，原始代码既有只算灰度的（这像是面向 YUV），又有 RGB 三个通道都计算的。最后决定先支持 RGB（因为我先读明白了原始代码的大气光估计部分，沿用了这一部分的 RGB 格式）。\n数据结构的转换与基础操作的迁移确定 RGB 后便开始转换图像数据结构，为减少工作量，尽量不去动原始代码的函数输入输出模式，把 VapourSynth 接口传递过来的图像指针转化为普通指针，送给核心计算函数。在这个过程中，我越来越感觉到 VapourSynth 接口的概念，或者什么叫接口。我渐渐懂得把核心处理剥离开，不再依赖 VapourSynth API 提供的数据类型，而是使用普通指针和数组完成核心计算，在把结果送给 VapourSynth API。\n在计算过程中需要进行图像分块、计算图像像素值均值和标准差。在原始代码中，这些操作都是使用的 OpenCV 函数。对于这些并不复杂的操作，我自然不能接受调用第三方库来实现。图像分块最开始是用两层 for 循环赋值，后来才想到用memcpy()函数直接拷贝。计算均值和标准差直接 copy 了一份代码。\n完成上述操作后，迁移过程就没什么困难的了，写个集成函数去调用各步计算即可。\nVapourSynth API 的一些事情虽说已经没有大的困难，但具体细节上还是要花时间的。我之前没有写过 ref 参考片段，之前也不知道 VapourSynth 接口没有提供 bool 类型。好在有前辈们写成的其他滤镜，有很多可以参考（copy）的代码。\nDebug指针读取冲突 读取位置 … 时发生访问冲突。\n12srcInterleaved[pos] = srcpB[x];srcInterleaved[pos + 1] = srcpG[x];\n\n这里就出问题是我没有想到的，因为这部分代码之前在AreaResize中已经用过了，没有问题。\n回到报错本身，“发生访问冲突”表明指针访问内存时出问题了，指针指向了不属于自己的内存地址，是一个基础的问题。\n发现在vs接口部分忘记释放ref，释放之后同样报访问冲突，但这次的报错位置是大气光估计函数的图像分块位置，这才是意料之中（这部分代码最开始写的时候就迷迷糊糊的）。\n构建与C++语法从这次开始我使用了 cmake 进行构建，一开始都是一些技术问题，直到部署 CI 的时候，才通过 cmake 意识到一些 C++ 语法的问题，一些我在很早的时候就看到过但没有读懂的问题。\n智能指针智能指针是 C++11 引入的，但std::make_unique被忘记写入标准了，直到 C++14 才被引入…\nnoexceptnoexcept在 C++11 引入。\n不搞清这些标准问题，在 travis-ci 的编译器上会报错…\n高位深支持高位深支持需要解决两个方面的问题，一是算法本身计算过程的修改，这一部分我改到现在还是有问题…图像暗场处理后会直接变黑…另一是C++语法的问题，带有模板的成员函数怎么写。\n我之前用模板，借用做饭的话说就是现用现做，而成员函数的声明和定义分开写在两个文件中，这时候再用模板就会出现链接器错误。但把声明和定义写在一起我不太愿意这么搞，于是折中的办法是在 main.cpp 同时 include 含有声明的 .h 和定义的 .cpp 文件。\n","dateCreated":"2020-06-26T00:42:53+08:00","dateModified":"2020-06-26T00:47:15+08:00","datePublished":"2020-06-26T00:42:53+08:00","description":"这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE = contrast enhancement）。\n算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。","headline":"DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2020/06/26/dehazingce-port/"},"publisher":{"@type":"Organization","name":"Kiyamou","sameAs":["https://github.com/Kiyamou","https://www.kaggle.com/kiyamou"],"image":"pic.webp","logo":{"@type":"ImageObject","url":"pic.webp"}},"url":"http://yoursite.com/2020/06/26/dehazingce-port/","keywords":"构建与编译, C++, VapourSynth"}</script>
+    <meta name="description" content="这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE &#x3D; contrast enhancement）。 算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移">
+<meta property="og:url" content="http://yoursite.com/2020/06/26/dehazingce-port/index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:description" content="这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE &#x3D; contrast enhancement）。 算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-25T16:42:53.000Z">
+<meta property="article:modified_time" content="2020-06-25T16:47:15.152Z">
+<meta property="article:author" content="Kiyamou">
+<meta property="article:tag" content="构建与编译">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="VapourSynth">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://yoursite.com/assets/images/pic.webp"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    
+<link rel="stylesheet" href="/assets/css/style-muscuy3evvxoway8bplbynzgxr6abprhavryu510e7xqtrmyf4pesaj5rt0s.min.css">
+
+    <!--STYLES END-->
+    
+
+    
+
+    
+        
+            
+<link rel="stylesheet" href="/assets/css/gitalk.css">
+
+        
+    
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="1">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a
+            class="header-title-link"
+            href="/"
+            aria-label=""
+        >
+            308实验室
+        </a>
+    </div>
+    
+        
+            <a
+                class="header-right-picture "
+                href="#about"
+                aria-label="Open the link: /#about"
+            >
+        
+        
+            <img class="header-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="1">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a
+                    href="/#about"
+                    aria-label="Read more about the author"
+                >
+                    <img class="sidebar-profile-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+                </a>
+                <h4 class="sidebar-profile-name">Kiyamou</h4>
+                
+                    <h5 class="sidebar-profile-bio"></h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/"
+                            
+                            title="Home"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Home</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                            title="Categories"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Categories</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                            title="Tags"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Tags</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                            title="Archives"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Archives</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/about"
+                            
+                            title="About"
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">About</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/Kiyamou" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://www.kaggle.com/kiyamou" target="_blank" rel="noopener" title="Kaggle">
+                    
+                        <i class="sidebar-button-icon fab fa-kaggle" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Kaggle</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="1"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2020-06-26T00:42:53+08:00">
+	
+		    Jun 26, 2020
+    	
+    </time>
+    
+        <span>in </span>
+        
+    <a class="category-link" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+
+
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <p>这一去雾算法在2013年提出，论文见 <a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">Optimized contrast enhancement for real-time image and video dehazing</a>，我们称其为 DehazingCE （CE = contrast enhancement）。</p>
+<h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。</p>
+<a id="more"></a>
+
+<p>大气光估计通过图像分块、寻找像素差异最小的子块，以该子块最亮的点作为大气光的估计值。但这里存在一个问题，不知道是我理解有问题，还是我代码迁移有问题，或者算法本身就有问题。如果图像整体偏暗，那寻找到的子块就会很暗，最后以一个像素值很小的点作为大气光估计值，用这个值继续计算，最终结果就是全黑。我对迁移到 VapourSynth 的代码进行测试，确实发现了这一问题。</p>
+<p>透射率估计分为粗算和细化两步。粗算是基于大气散射模型进行次数不多的迭代，并自定义像素损失值（大气散射模型的直接计算结果可能会超过 [0, peak]，导致像素越界）以决定是否继续迭代。细化通过导向滤波实现。</p>
+<p>后处理包括 Gamma 亮度调整和类似均值滤波的均值化计算。前者是避免去雾后图像过暗，后者是避免透射率过低时导致的块效应。在我迁移的代码中，Gamma 亮度调整表现不错，但均值化计算可能是我的代码还有问题，测试结果是不如不做，做了反而凭空多了瑕疵。</p>
+<h3 id="代码迁移"><a href="#代码迁移" class="headerlink" title="代码迁移"></a>代码迁移</h3><p>代码迁移着实花了很久，满打满算从 4 月份开始读原始代码，到 6 月份完成初版的迁移，几乎花了两个月…原始代码风格很古典，着实有点费力。</p>
+<h4 id="从-OpenCV-2-到-OpenCV-3"><a href="#从-OpenCV-2-到-OpenCV-3" class="headerlink" title="从 OpenCV 2 到 OpenCV 3"></a>从 OpenCV 2 到 OpenCV 3</h4><p>在最开始，我觉得一下子迁移到 VapourSynth 有点费力，便想尝试着把原始代码先跑起来。原始代码基于 OpenCV 2，存储图像还是用的 IplImage 指针而非 Mat 类。这一部分工作在<a href="https://kiyamou.github.io/2020/04/28/dehazing/" target="_blank" rel="noopener">前面的博文</a>有提到。但折腾好久，也没把原始代码跑起来，最后放弃了，直接迁移。</p>
+<h4 id="YUV-还是-RGB"><a href="#YUV-还是-RGB" class="headerlink" title="YUV 还是 RGB"></a>YUV 还是 RGB</h4><p>在着手迁移之初，是先支持 YUV 还是先支持 RGB 纠结了好久。其中一部分原因是我还没完全搞懂原始代码的处理流程，从大气光估计部分看，原始代码用的是 RGB 格式，从透射率估计看，原始代码既有只算灰度的（这像是面向 YUV），又有 RGB 三个通道都计算的。最后决定先支持 RGB（因为我先读明白了原始代码的大气光估计部分，沿用了这一部分的 RGB 格式）。</p>
+<h4 id="数据结构的转换与基础操作的迁移"><a href="#数据结构的转换与基础操作的迁移" class="headerlink" title="数据结构的转换与基础操作的迁移"></a>数据结构的转换与基础操作的迁移</h4><p>确定 RGB 后便开始转换图像数据结构，为减少工作量，尽量不去动原始代码的函数输入输出模式，把 VapourSynth 接口传递过来的图像指针转化为普通指针，送给核心计算函数。在这个过程中，我越来越感觉到 VapourSynth 接口的概念，或者什么叫接口。我渐渐懂得把核心处理剥离开，不再依赖 VapourSynth API 提供的数据类型，而是使用普通指针和数组完成核心计算，在把结果送给 VapourSynth API。</p>
+<p>在计算过程中需要进行图像分块、计算图像像素值均值和标准差。在原始代码中，这些操作都是使用的 OpenCV 函数。对于这些并不复杂的操作，我自然不能接受调用第三方库来实现。图像分块最开始是用两层 for 循环赋值，后来才想到用<code>memcpy()</code>函数直接拷贝。计算均值和标准差直接 copy 了一份代码。</p>
+<p>完成上述操作后，迁移过程就没什么困难的了，写个集成函数去调用各步计算即可。</p>
+<h4 id="VapourSynth-API-的一些事情"><a href="#VapourSynth-API-的一些事情" class="headerlink" title="VapourSynth API 的一些事情"></a>VapourSynth API 的一些事情</h4><p>虽说已经没有大的困难，但具体细节上还是要花时间的。我之前没有写过 ref 参考片段，之前也不知道 VapourSynth 接口没有提供 bool 类型。好在有前辈们写成的其他滤镜，有很多可以参考（copy）的代码。</p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><h4 id="指针读取冲突"><a href="#指针读取冲突" class="headerlink" title="指针读取冲突"></a>指针读取冲突</h4><p> 读取位置 … 时发生访问冲突。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">srcInterleaved[pos] = srcpB[x];</span><br><span class="line">srcInterleaved[pos + <span class="number">1</span>] = srcpG[x];</span><br></pre></td></tr></table></figure>
+
+<p>这里就出问题是我没有想到的，因为这部分代码之前在AreaResize中已经用过了，没有问题。</p>
+<p>回到报错本身，“发生访问冲突”表明指针访问内存时出问题了，指针指向了不属于自己的内存地址，是一个基础的问题。</p>
+<p>发现在vs接口部分忘记释放ref，释放之后同样报访问冲突，但这次的报错位置是大气光估计函数的图像分块位置，这才是意料之中（这部分代码最开始写的时候就迷迷糊糊的）。</p>
+<h3 id="构建与C-语法"><a href="#构建与C-语法" class="headerlink" title="构建与C++语法"></a>构建与C++语法</h3><p>从这次开始我使用了 cmake 进行构建，一开始都是一些技术问题，直到部署 CI 的时候，才通过 cmake 意识到一些 C++ 语法的问题，一些我在很早的时候就看到过但没有读懂的问题。</p>
+<h4 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h4><p>智能指针是 C++11 引入的，但<code>std::make_unique</code>被忘记写入标准了，直到 C++14 才被引入…</p>
+<h4 id="noexcept"><a href="#noexcept" class="headerlink" title="noexcept"></a>noexcept</h4><p><code>noexcept</code>在 C++11 引入。</p>
+<p>不搞清这些标准问题，在 travis-ci 的编译器上会报错…</p>
+<h3 id="高位深支持"><a href="#高位深支持" class="headerlink" title="高位深支持"></a>高位深支持</h3><p>高位深支持需要解决两个方面的问题，一是算法本身计算过程的修改，这一部分我改到现在还是有问题…图像暗场处理后会直接变黑…另一是C++语法的问题，带有模板的成员函数怎么写。</p>
+<p>我之前用模板，借用做饭的话说就是现用现做，而成员函数的声明和定义分开写在两个文件中，这时候再用模板就会出现链接器错误。但把声明和定义写在一起我不太愿意这么搞，于是折中的办法是在 main.cpp 同时 include 含有声明的 .h 和定义的 .cpp 文件。</p>
+
+            
+
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">TAGGED IN</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/C/" rel="tag">C++</a> <a class="tag tag--primary tag--small t-link" href="/tags/VapourSynth/" rel="tag">VapourSynth</a> <a class="tag tag--primary tag--small t-link" href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/" rel="tag">构建与编译</a>
+
+            </div>
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/05/30/Dont-starve/"
+                    data-tooltip="《饥荒》食谱个人点评"
+                    aria-label="NEXT: 《饥荒》食谱个人点评"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+                <div id="gitalk"></div>
+
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        博客托管于 <a href="https://pages.github.com/" target="_blank">GitHub Pages</a><br>
+        由 <a href="http://hexo.io/" target="_blank">Hexo</a> 强力驱动 | 主题 <a href="https://github.com/LouisBarranqueiro/hexo-theme-tranquilpeak" target="_blank">Tranquilpeak</a><br>
+        &copy; 2019~2020 Kiyamou
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a
+                        class="post-action-btn btn btn--disabled"
+                        aria-hidden="true"
+                    >
+                        
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <span class="hide-xs hide-sm text-small icon-ml">PREVIOUS</span>
+                    </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                <a
+                    class="post-action-btn btn btn--default tooltip--top"
+                    href="/2020/05/30/Dont-starve/"
+                    data-tooltip="《饥荒》食谱个人点评"
+                    aria-label="NEXT: 《饥荒》食谱个人点评"
+                >
+                    
+                        <span class="hide-xs hide-sm text-small icon-mr">NEXT</span>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a
+                class="post-action-btn btn btn--default btn-open-shareoptions"
+                href="#btn-open-shareoptions"
+                aria-label="Share this post"
+            >
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Facebook"
+                    aria-label="Share on Facebook"
+                >
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Twitter"
+                    aria-label="Share on Twitter"
+                >
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a
+                    class="post-action-btn btn btn--default"
+                    target="new" href="https://plus.google.com/share?url=http://yoursite.com/2020/06/26/dehazingce-port/"
+                    title="Share on Google+"
+                    aria-label="Share on Google+"
+                >
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+                <li class="post-action">
+                    <a
+                        class="post-action-btn btn btn--default"
+                        href="#gitalk"
+                        aria-label="Leave a comment"
+                    >
+                        <i class="fa fa-comment"></i>
+                    </a>
+                </li>
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2020/06/26/dehazingce-port/"
+                        aria-label="Share on Facebook"
+                    >
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Share on Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://twitter.com/intent/tweet?text=http://yoursite.com/2020/06/26/dehazingce-port/"
+                        aria-label="Share on Twitter"
+                    >
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Share on Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a
+                        class="share-option-btn"
+                        target="new"
+                        href="https://plus.google.com/share?url=http://yoursite.com/2020/06/26/dehazingce-port/"
+                        aria-label="Share on Google+"
+                    >
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Share on Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/pic.webp" alt="Author&#39;s picture"/>
+        
+            <h4 id="about-card-name">Kiyamou</h4>
+        
+            <div id="about-card-bio"></div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>Agent</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker-alt"></i>
+                <br/>
+                黑蜥蜴星
+            </div>
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/bg.webp');"></div>
+        <!--SCRIPTS-->
+
+<script src="/assets/js/script-vyqdzdel4dzahtbtecbwuohfgiuhob6mspzday4clcfd3tumk9sfuq6rjfgc.min.js"></script>
+
+<!--SCRIPTS END-->
+
+
+    
+        
+<script src="/assets/js/gitalk.js"></script>
+
+        <script type="text/javascript">
+          (function() {
+            new Gitalk({
+              clientID: '53cf7e33ca9dd93a05c8',
+              clientSecret: '2efb8852cc67d1937f64374a01ef7fada191d45c',
+              repo: 'Blog-comment',
+              owner: 'Kiyamoe',
+              admin: ['Kiyamoe'],
+              id: '2020/06/26/dehazingce-port/',
+              ...{"language":"en","perPage":10,"distractionFreeMode":false,"enableHotKey":true,"pagerDirection":"first"}
+            }).render('gitalk')
+          })()
+        </script>
+    
+
+
+
+
+    </body>
+</html>
