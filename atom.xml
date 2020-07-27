@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-07-24T15:37:16.531Z</updated>
+  <updated>2020-07-27T18:33:43.243Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2020 年中书单/影评：在终止彷徨，在结束动荡</title>
+    <link href="http://yoursite.com/2020/07/28/2020-mid-books/"/>
+    <id>http://yoursite.com/2020/07/28/2020-mid-books/</id>
+    <published>2020-07-27T18:32:18.000Z</published>
+    <updated>2020-07-27T18:33:43.243Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>你在终止彷徨  你在结束动荡</p><p>你成为垂衣驭八荒的王</p><p>你低下头与我相望  将金色徽章戴在我肩膀</p><p>你眼中分明蛰藏  锁死我危险却迷人的欲望</p><p>——《国境四方》</p></blockquote><p>开了一个新系列，记载 2019 年下半年至 2020 年上半年读过的书和看过的视频。</p><a id="more"></a><h3 id="技术类书籍"><a href="#技术类书籍" class="headerlink" title="技术类书籍"></a>技术类书籍</h3><h4 id="1-《深入理解-C-指针》"><a href="#1-《深入理解-C-指针》" class="headerlink" title="1.《深入理解 C 指针》"></a>1.《深入理解 C 指针》</h4><p>推荐指数：★ ★ ★ ★ ★</p><p>这段时间以来看的书，首推这本《深入理解 C 指针》。这是一本超越了字典/百科全书式的各类 C/C++ 教程的专项书籍，是进阶的开端书籍。看这本书大概是在 2019 年 12 月，当时正在写 JincResize 和 AreaResize，刚接触图像处理中双重 for 循环遍历元素与指针移动的过程，看这本书让我迅速理解了上述内容。</p><h4 id="2-《现代-C-教程：高速上手-C-11-14-17-20》"><a href="#2-《现代-C-教程：高速上手-C-11-14-17-20》" class="headerlink" title="2.《现代 C++ 教程：高速上手 C++11/14/17/20》"></a>2.《现代 C++ 教程：高速上手 C++11/14/17/20》</h4><p>推荐指数：★ ★ ★ ★ ★</p><p>龙崎哥写的开源书籍， Github 仓库在<a href="https://github.com/changkun/modern-cpp-tutorial" target="_blank" rel="noopener">这里</a>。</p><p>龙崎哥是真的厉害，我只记得当年在数吧里看到他提了一下，说在学 C++。没想到写出了这么棒的书。</p><p>我主要是 2020 年 2 月 ~ 3 月在看这本书，没有太注意 C++ 20 的内容（毕竟在不断更新中）。如龙崎哥所言，这本书由于各章节独立，适合零碎的阅读、查阅。我主要看了智能指针部分，其次是一些相对零碎的新特性，而多线程部分虽然看了…但没看太懂。</p><p>会感慨固然人生路远，但能遇见的人就这么多，当年仰慕的人并没有消失，只是换了一种方式存在。题记中引用了一首歌，《国境四方》，我想表达的便是这个含义。</p><h4 id="3-《OpenCV-3-编程入门》"><a href="#3-《OpenCV-3-编程入门》" class="headerlink" title="3.《OpenCV 3 编程入门》"></a>3.《OpenCV 3 编程入门》</h4><p>推荐指数：★ ★ ★ ★ ★（新手视角）| ★ ★ ★ ★ ☆（一般视角）</p><p>适合新手阅读的一本书，书的内容包括如下几个部分：1.编程扫盲部分，讲了变量命名规则与习惯、C/C++ 的一些常识；2. OpenCV 3 入门部分，讲了 OpenCV 3 的一些设计思路和数据结构；3.逐条讲解主要函数，同时讲了一些图像处理的基础理论。在 2019 年 11月 ~ 2020 年 2 月看了这本书，不得不说让懵懂的我学了很多，但站在一般向的视角上，内容略显简单（当然，对于封装这么成熟的 OpenCV，把书写复杂可能既不容易也没必要）。</p><h4 id="4-《21-天学通-C-》"><a href="#4-《21-天学通-C-》" class="headerlink" title="4.《21 天学通 C++》"></a>4.《21 天学通 C++》</h4><p>推荐指数：★ ★ ★ ★ ☆</p><p>没什么好说的，这是我用来当手册/字典的书籍，大概可以分为三部分：C/C++ 通用语法、C++ 特性语法、STL 库。这本书我好像没有在博文中看到过有人推荐，接触这本书因为《21 天实战 Caffe》，后者的作者说他就是在《21 天学通 C++》启发下写了《21 天实战 Caffe》。</p><p>但有一说一，《21 天实战 Caffe》真的是分了 21 个章节，而《21 天学通 C++》…除了书名之外，好像没看到和 21 相关的东西 Orz…</p><h4 id="5-《C-C-常用算法手册》"><a href="#5-《C-C-常用算法手册》" class="headerlink" title="5.《C/C++ 常用算法手册》"></a>5.《C/C++ 常用算法手册》</h4><p>推荐指数：★ ★ ★ ☆</p><p>很基础的书籍，讲了常见的数据结构和基础的算法，适合新手，也是我在浮躁状态下难得读得进去的书。但平心而论，书的内容本身并谈不上有多好，代码风格陈旧且不说，前后代码重复让人感觉有点冗杂。</p><h3 id="文学类书籍"><a href="#文学类书籍" class="headerlink" title="文学类书籍"></a>文学类书籍</h3><h4 id="1-《文在寅自传：命运》"><a href="#1-《文在寅自传：命运》" class="headerlink" title="1.《文在寅自传：命运》"></a>1.《文在寅自传：命运》</h4><p>本来不想提到这本书的，因为避免谈政治。只是书的一句话印象太深刻了，“愿为江水，与君同行”。</p><h4 id="2-《透过机器人与你相恋》"><a href="#2-《透过机器人与你相恋》" class="headerlink" title="2.《透过机器人与你相恋》"></a>2.《透过机器人与你相恋》</h4><p>轻小说。接触这本书是因为插画师 loundraw。早前在 P 站看到 loundraw 的一幅画，还用来当了一段时间的台式机壁纸。没想到这幅画同样是《透过机器人与你相恋》的封面图，于是就把小说买来看了。目前只看了开头，还没有看到故事的核心。</p><h3 id="网课"><a href="#网课" class="headerlink" title="网课"></a>网课</h3><p>点开看过的网课有以下几个。</p><p><strong>1.某培训班的通用 C++ 网课</strong></p><p><strong>2.国防科大《编译原理》</strong></p><p><strong>3.郝斌《数据结构》</strong></p><p><strong>4.北理工 2020 冬季 ACM 培训</strong></p><p><strong>5.某编程算法教程</strong></p><p>这几个网课收获都不小。应该说第一个 C++ 网课没什么特色，但对于新手还是友好的。第二个编译原理网课虽然只是浅看，但很受启发，确实有种“学了编译原理你就明白了的感觉”。重点看的是第三、四个，数据结构的入门和 STL 库的讲解（众所周知，ACM 用的 C++ = C + STL）。最后一个是付费购买的，面向面试的教程，物有所值。</p><h3 id="影视"><a href="#影视" class="headerlink" title="影视"></a>影视</h3><h4 id="1-《樱花庄的宠物女孩》"><a href="#1-《樱花庄的宠物女孩》" class="headerlink" title="1.《樱花庄的宠物女孩》"></a>1.《樱花庄的宠物女孩》</h4><p>2019 年下半年开了三部番，《冰菓》、《境界的彼方》、《樱花庄》，前两者没有弃但到现在都没看完，《樱花庄的宠物女孩》是日常向，所以看得进度快。这三部番陪着我走过了 2019 年 9 月到 12 月，从轻松到迷茫再到找到方向。</p><p>《樱花庄》里的生活确实让人羡慕，但或许因为我不是天才吧，若客观地分析人物塑造，还是有些贴标签的感觉。剧中的人物塑造方式，对于龙哥这样的配角而言，没什么问题，感觉不到贴标签，简略描写增加的神秘感反而更适合龙哥。三鹰学长学姐倒也没什么问题，一开始贴上两个人都能力超群的标签，但进一步的剧情展开则说明，看似无所不能的学长，专业技能反倒逊色于嘻嘻哈哈的学姐，这提供了戏剧冲突，也让人物形象丰满了一些，对于配角也可以了。但说到主角真白，仍把塑造配角的方式拿来用，就感觉有些僵硬。</p><p>不过嘛，《樱花庄》毕竟是在日常基础上深入的，看的时候让人开心和感动就足够了。</p><h4 id="2-《狼与香辛料》第一季"><a href="#2-《狼与香辛料》第一季" class="headerlink" title="2.《狼与香辛料》第一季"></a>2.《狼与香辛料》第一季</h4><p>同样是在 2019 年下半年看的，没和上面三部番写到一起，是觉得风格不太一样。这部番被调侃为“夫妻行骗记”，但我更喜欢另一个评价，这部番是把女性作为独立个体的番剧。且不和一众后宫番比较，就是和非后宫普通番剧乃至没什么男性的百合番相比，能把女性独立人格塑造出来，除了《狼与香辛料》，我看过的番中只有柯南剧场版《战栗的乐谱》。</p><h4 id="3-《非自然死亡》"><a href="#3-《非自然死亡》" class="headerlink" title="3.《非自然死亡》"></a>3.《非自然死亡》</h4><p>好剧，不需要多说。特别是在新冠疫情的背景下，第一集甚至有了代入感。每一集的片尾曲《Lemon》都是神插入。看《境界的彼方》时，弹幕经常说 OP 神插入，但我倒没有明显感觉。片中时不时出现的名台词，可以当壁纸的石原里美的名场景，更让人印象深刻。而六郎对人生的思考，也让当时迷茫的我有了共鸣。</p><p>在主要剧情之外，看这部剧时不时会跳戏，且不说作为所长的<del>五郎</del>（欸，所长名字是啥来着？），光是里面的名字就让人跳戏，美琴、想见美琴的白井同学、神经大条的毛利警官。</p><p>喜欢 B 站的一条评论，看这部剧还能因为 cp 掐起来，应该把脑子泡在福尔马林里。</p><h4 id="4-《理科生坠入情网，故尝试证明。》"><a href="#4-《理科生坠入情网，故尝试证明。》" class="headerlink" title="4.《理科生坠入情网，故尝试证明。》"></a>4.《理科生坠入情网，故尝试证明。》</h4><p>应该是这一年追的唯一一部新番，也不能叫追，因为不知道是网飞还是亚马逊加持，一次性更完 12 集。虽然还是让人感觉有些夸张，就是这类番剧中常见的过分夸张数理知识的感觉。但一些细节还是有意思的，真的很佩服在 Ubuntu 下玩 galgame 的师弟，不知是创作者是真在 Linux 下玩过 galgame，还是只是单纯营造人设。</p><h4 id="5-《无法成为野兽的我们》"><a href="#5-《无法成为野兽的我们》" class="headerlink" title="5.《无法成为野兽的我们》"></a>5.《无法成为野兽的我们》</h4><p>冲着新垣结衣去看的，但可能是我还没有步入职场吧，感触一般。</p><h4 id="6-《轻音少女》第一季"><a href="#6-《轻音少女》第一季" class="headerlink" title="6.《轻音少女》第一季"></a>6.《轻音少女》第一季</h4><p>治愈的日常番。</p><h4 id="7-《Fate-stay-night-Heaven’s-Feel-II-lost-butterfly》"><a href="#7-《Fate-stay-night-Heaven’s-Feel-II-lost-butterfly》" class="headerlink" title="7.《Fate/stay night [Heaven’s Feel] II.lost butterfly》"></a>7.《Fate/stay night [Heaven’s Feel] II.lost butterfly》</h4><p>在 2019 年 7 月还是 8 月，和 G 和 H 去电影院看的。因为在七八月份，就写了进来，其实从心境上看，应该归到上半年。电影院里的感受自然和十几寸二十几寸的屏幕不一样，特别是对于 Fate 这种大制作的番剧。樱真的惹人喜欢。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;你在终止彷徨  你在结束动荡&lt;/p&gt;
+&lt;p&gt;你成为垂衣驭八荒的王&lt;/p&gt;
+&lt;p&gt;你低下头与我相望  将金色徽章戴在我肩膀&lt;/p&gt;
+&lt;p&gt;你眼中分明蛰藏  锁死我危险却迷人的欲望&lt;/p&gt;
+&lt;p&gt;——《国境四方》&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;开了一个新系列，记载 2019 年下半年至 2020 年上半年读过的书和看过的视频。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="日记" scheme="http://yoursite.com/categories/%E6%97%A5%E8%AE%B0/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移</title>
@@ -499,33 +527,6 @@
     
     
       <category term="C++" scheme="http://yoursite.com/tags/C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>周记 2020.02.10-02.16</title>
-    <link href="http://yoursite.com/2020/03/05/week-202002-2/"/>
-    <id>http://yoursite.com/2020/03/05/week-202002-2/</id>
-    <published>2020-03-05T14:38:09.000Z</published>
-    <updated>2020-03-08T12:09:35.484Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-异常处理"><a href="#1-异常处理" class="headerlink" title="1.异常处理"></a>1.异常处理</h3><p><del>敲OpenCV，阈值化，故意尝试一个异常。</del></p><p><del>把两个回调函数的<code>imshow(&quot;Output&quot;, dst)</code>的<code>dst</code>写成同一个变量，引发如下异常。</del></p><p>上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把<code>adaptiveThreshold()</code>的参数写错了…</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x000007FEFD77B87D 处(位于 6.7_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 0x000000000029EC98 处。</span><br></pre></td></tr></table></figure><p>抛出异常的函数</p><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_INLINE CV_NORETURN <span class="keyword">void</span> <span class="title">errorNoReturn</span><span class="params">()</span>  <span class="comment">// bash.hpp 308行</span></span></span><br></pre></td></tr></table></figure><a id="more"></a><h3 id="2-自己实现ISP基本流程"><a href="#2-自己实现ISP基本流程" class="headerlink" title="2.自己实现ISP基本流程"></a>2.自己实现ISP基本流程</h3><p>这就是我的第三个项目。</p><p>核心部分，至少实现Retinex吧。</p><h3 id="3-做个学习项目？"><a href="#3-做个学习项目？" class="headerlink" title="3.做个学习项目？"></a>3.做个学习项目？</h3><p>把VapourSynth的经验用OpenCV实现一遍，放到Github上（C++实现，或许还能来个Python/Matlab多语言，或干脆Jupyter）。或许…能骗赞？</p><p>虽然对我学习本身的帮助可能不是很大。</p><h3 id="4-阅读OpenCV源码"><a href="#4-阅读OpenCV源码" class="headerlink" title="4.阅读OpenCV源码"></a>4.阅读OpenCV源码</h3><p>想看一下<code>guidedFilter()</code>的实现过程。<del>虽然官网就有，不用我折腾一圈去查OpenCV…</del></p><h3 id="5-VS-GuideFilter"><a href="#5-VS-GuideFilter" class="headerlink" title="5. VS GuideFilter"></a>5. VS GuideFilter</h3><p><del>话说vs有方块滤波（boxfilter）吗？</del> 不就是<code>RemoveGrain(20)</code>嘛。</p><p>涉及的概念：</p><ul><li><code>local patch</code></li></ul><h3 id="6-话说学一下Matlab"><a href="#6-话说学一下Matlab" class="headerlink" title="6.话说学一下Matlab"></a>6.话说学一下Matlab</h3><p>虽然从大二就接触了Matlab，但似乎没有把它视为一门语言。</p><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[hei, wid] = <span class="built_in">size</span>(I);</span><br></pre></td></tr></table></figure><p>上面这句话告诉我们，Matlab与C/C++不同，左值也是可以赋值的。</p><h3 id="7-准备面试"><a href="#7-准备面试" class="headerlink" title="7.准备面试"></a>7.准备面试</h3><p>话说除了算法题，智力题什么的，也要准备一下。</p><p>话说面试面向OpenCV且要求不使用<code>Mat</code>的那类题，要看一下。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-异常处理&quot;&gt;&lt;a href=&quot;#1-异常处理&quot; class=&quot;headerlink&quot; title=&quot;1.异常处理&quot;&gt;&lt;/a&gt;1.异常处理&lt;/h3&gt;&lt;p&gt;&lt;del&gt;敲OpenCV，阈值化，故意尝试一个异常。&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;&lt;del&gt;把两个回调函数的&lt;code&gt;imshow(&amp;quot;Output&amp;quot;, dst)&lt;/code&gt;的&lt;code&gt;dst&lt;/code&gt;写成同一个变量，引发如下异常。&lt;/del&gt;&lt;/p&gt;
-&lt;p&gt;上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把&lt;code&gt;adaptiveThreshold()&lt;/code&gt;的参数写错了…&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;0x000007FEFD77B87D 处(位于 6.7_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 0x000000000029EC98 处。&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-
-&lt;p&gt;抛出异常的函数&lt;/p&gt;
-&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;CV_INLINE CV_NORETURN &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;errorNoReturn&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;  &lt;span class=&quot;comment&quot;&gt;// bash.hpp 308行&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="笔记" scheme="http://yoursite.com/categories/%E7%AC%94%E8%AE%B0/"/>
-    
     
   </entry>
   
