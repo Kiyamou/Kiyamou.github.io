@@ -1,5 +1,238 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化 · 308实验室</title><meta name="description" content="记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化</h1><div class="post-info">Feb 6, 2020</div><div class="post-content"><h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。
+从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x9">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化">
+              
+                记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-02-06 16:45" pubdate>
+        2020年2月6日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      31
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化</h1>
+            
+            <div class="markdown-body">
+              <h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
 <p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
 <p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
 <p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p>
@@ -10,10 +243,10 @@
 <p>在1月2号晚上和1月3号一天，都在解决支持RGB的问题，其实也就是在学相关的概念和数据结构。如同我在某个commit下面的评论中所写：“让我开始阅读VapourSynth的源码和官方plugins示例（就是vscore.cpp中的那些函数）。让我对vs api与框架有了近乎全面的认识，至少知道从头到尾是怎么计算的。”其中，数据结构的相关内容写在了<a href="https://kiyamou.github.io/2019/12/18/image-process-code-1/" target="_blank" rel="noopener">这篇Blog中</a>。</p>
 <h3 id="支持RGB"><a href="#支持RGB" class="headerlink" title="支持RGB"></a>支持RGB</h3><p>写一写支持RGB的代码实现。</p>
 <p>对于YUV格式，写一个循环，依次处理三个平面/通道即可。但我这么套在RGB上，不行，崩溃（但其实奔溃还有数据类型的问题，一开始的代码有整型处理，遇到浮点数就崩了）。让后又试着按stack格式写了代码，不循环，一个像素点依次处理三个通道，再移动到下一个像素点。像下面这样</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ps = <span class="number">3</span>;  <span class="comment">// plane_size，用于下面乘3，三个通道一起处理</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ResizeVerticalRGB</span><span class="params">()</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> curPixel = <span class="number">0</span>; curPixel &lt; target_width * ps; curPixel++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpR = srcR + curPixel * ps;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpG = srcG + curPixel * ps + <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">const</span> T* curSrcpB = srcB + curPixel * ps + <span class="number">2</span>;</span><br><span class="line">        T* curDstpR = srcR + curPixel * ps;</span><br><span class="line">        T* curDstpG = srcG + curPixel * ps + <span class="number">1</span>;</span><br><span class="line">        T* curDstpB = srcB + curPixel * ps + <span class="number">2</span>;</span><br><span class="line">        </span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c++">ps = <span class="hljs-number">3</span>;  <span class="hljs-comment">// plane_size，用于下面乘3，三个通道一起处理</span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">ResizeVerticalRGB</span><span class="hljs-params">()</span> <span class="hljs-keyword">noexcept</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> curPixel = <span class="hljs-number">0</span>; curPixel &lt; target_width * ps; curPixel++)<br>    &#123;<br>        <span class="hljs-keyword">const</span> T* curSrcpR = srcR + curPixel * ps;<br>        <span class="hljs-keyword">const</span> T* curSrcpG = srcG + curPixel * ps + <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">const</span> T* curSrcpB = srcB + curPixel * ps + <span class="hljs-number">2</span>;<br>        T* curDstpR = srcR + curPixel * ps;<br>        T* curDstpG = srcG + curPixel * ps + <span class="hljs-number">1</span>;<br>        T* curDstpB = srcB + curPixel * ps + <span class="hljs-number">2</span>;<br>        <br>        ...<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>话说这改后，好像也是崩溃（或者是在关闭预览窗口后奔溃），所以放弃了，老老实实地（在<code>process()</code>函数中）先转换为Interleaved结构，在送到具体的<code>Ver()</code>中处理。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (d-&gt;vi-&gt;format-&gt;colorFamily == cmYUV)</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">const</span> T* srcpR = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">0</span>));</span><br><span class="line">    <span class="keyword">const</span> T* srcpG = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">1</span>));</span><br><span class="line">    <span class="keyword">const</span> T* srcpB = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="number">2</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> src_stride = vsapi-&gt;getStride(src, <span class="number">0</span>) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">    <span class="keyword">int</span> dst_stride = vsapi-&gt;getStirde(dst, <span class="number">0</span>) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">    </span><br><span class="line">    T* srcInterleaved = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) T[d-&gt;vi-&gt;width * d-&gt;vi-&gt;height * <span class="number">3</span>];</span><br><span class="line">    T* dstInterleaved = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) T[d-&gt;target    * d-&gt;target     * <span class="number">3</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将待处理的数据转换为Interleaved结构</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; src_height; y++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; src_width; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">unsigned</span> pos = (x + y * src_width) * <span class="number">3</span>; <span class="comment">// 这里要乘3，因为是转成Interleaved</span></span><br><span class="line">            <span class="comment">// 这里的RGB顺序其实无所谓，只要自洽即可，但为了显得专业，按BGR的顺序</span></span><br><span class="line">            srcInterleaved[pos] = srcpB[x];</span><br><span class="line">            srcInterleaved[pos + <span class="number">1</span>] = srcpG[x];</span><br><span class="line">            srcInterleaved[pos + <span class="number">2</span>] = srcpR[x];</span><br><span class="line">        &#125;</span><br><span class="line">        srcpB += src_stride; <span class="comment">// src_stride ≈ src_width，完成整个帧的遍历</span></span><br><span class="line">        srcpG += src_stride;</span><br><span class="line">        srcpR += src_stride;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 核心处理</span></span><br><span class="line">    Func(dst, src, (<span class="keyword">const</span> T*)srcInterleaved, dstInterleaved, src_stride, dst_stride, d, vsapi);</span><br><span class="line">    </span><br><span class="line">    T* VS_RESTRICT dstpR = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">0</span>));</span><br><span class="line">    T* VS_RESTRICT dstpG = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">1</span>));</span><br><span class="line">    T* VS_RESTRICT dstpB = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="number">2</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 将处理后的数据转换为Planar结构</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; target_height; y++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; target_width; x++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">unsigned</span> pos = (x + y * target_width) * <span class="number">3</span>;</span><br><span class="line">            dstpB[x] = dstInterleaved[pos];</span><br><span class="line">            dstpG[x] = dstInterleaved[pos + <span class="number">1</span>];</span><br><span class="line">            dstpR[x] = dstInterleaved[pos + <span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        dstpB += dst_stride;</span><br><span class="line">        dstpG += dst_stride;</span><br><span class="line">        dstpR += dst_stride;</span><br><span class="line">    &#125;  <span class="comment">// 此时，dst已经是Planar结构</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">delete</span>[] srcInterleaved;</span><br><span class="line">    <span class="keyword">delete</span>[] dstInterleaved;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (d-&gt;vi-&gt;format-&gt;colorFamily == cmYUV)<br>&#123;<br>    ...<br>&#125;<br><span class="hljs-keyword">else</span><br>&#123;<br>    <span class="hljs-keyword">const</span> T* srcpR = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="hljs-number">0</span>));<br>    <span class="hljs-keyword">const</span> T* srcpG = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="hljs-number">1</span>));<br>    <span class="hljs-keyword">const</span> T* srcpB = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, <span class="hljs-number">2</span>));<br>    <br>    <span class="hljs-keyword">int</span> src_stride = vsapi-&gt;getStride(src, <span class="hljs-number">0</span>) / <span class="hljs-keyword">sizeof</span>(T);<br>    <span class="hljs-keyword">int</span> dst_stride = vsapi-&gt;getStirde(dst, <span class="hljs-number">0</span>) / <span class="hljs-keyword">sizeof</span>(T);<br>    <br>    T* srcInterleaved = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">std</span>::nothrow) T[d-&gt;vi-&gt;width * d-&gt;vi-&gt;height * <span class="hljs-number">3</span>];<br>    T* dstInterleaved = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">std</span>::nothrow) T[d-&gt;target    * d-&gt;target     * <span class="hljs-number">3</span>];<br>    <br>    <span class="hljs-comment">// 将待处理的数据转换为Interleaved结构</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> y = <span class="hljs-number">0</span>; y &lt; src_height; y++)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>; x &lt; src_width; x++)<br>        &#123;<br>            <span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> pos = (x + y * src_width) * <span class="hljs-number">3</span>; <span class="hljs-comment">// 这里要乘3，因为是转成Interleaved</span><br>            <span class="hljs-comment">// 这里的RGB顺序其实无所谓，只要自洽即可，但为了显得专业，按BGR的顺序</span><br>            srcInterleaved[pos] = srcpB[x];<br>            srcInterleaved[pos + <span class="hljs-number">1</span>] = srcpG[x];<br>            srcInterleaved[pos + <span class="hljs-number">2</span>] = srcpR[x];<br>        &#125;<br>        srcpB += src_stride; <span class="hljs-comment">// src_stride ≈ src_width，完成整个帧的遍历</span><br>        srcpG += src_stride;<br>        srcpR += src_stride;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 核心处理</span><br>    Func(dst, src, (<span class="hljs-keyword">const</span> T*)srcInterleaved, dstInterleaved, src_stride, dst_stride, d, vsapi);<br>    <br>    T* VS_RESTRICT dstpR = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="hljs-number">0</span>));<br>    T* VS_RESTRICT dstpG = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="hljs-number">1</span>));<br>    T* VS_RESTRICT dstpB = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, <span class="hljs-number">2</span>));<br>    <br>    <span class="hljs-comment">// 将处理后的数据转换为Planar结构</span><br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> y = <span class="hljs-number">0</span>; y &lt; target_height; y++)<br>    &#123;<br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> x = <span class="hljs-number">0</span>; x &lt; target_width; x++)<br>        &#123;<br>            <span class="hljs-keyword">const</span> <span class="hljs-keyword">unsigned</span> pos = (x + y * target_width) * <span class="hljs-number">3</span>;<br>            dstpB[x] = dstInterleaved[pos];<br>            dstpG[x] = dstInterleaved[pos + <span class="hljs-number">1</span>];<br>            dstpR[x] = dstInterleaved[pos + <span class="hljs-number">2</span>];<br>        &#125;<br>        dstpB += dst_stride;<br>        dstpG += dst_stride;<br>        dstpR += dst_stride;<br>    &#125;  <span class="hljs-comment">// 此时，dst已经是Planar结构</span><br>    <br>    <span class="hljs-keyword">delete</span>[] srcInterleaved;<br>    <span class="hljs-keyword">delete</span>[] dstInterleaved;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>至此，数据结构的问题已经解决，但对于RGB输入仍不能正常处理。</p>
 <p>然后修正了一个蛋疼的Bug：我在写<code>peak</code>的时候，把<code>1 &lt;&lt; bitsPerSample</code>写成了<code>1 &lt;&lt; sampleType</code>，所以一直有问题、崩溃。改正之后，8bit RGB输入终于能看了。而16bit和32bit由于查表的范围问题，还会崩溃。</p>
@@ -21,7 +254,7 @@
 <p>顺带，说一个C++的基础知识，对于<code>auto</code>声明，应该是确定了后就不能改了，而不能在不同变量类型间反复横跳。</p>
 <h3 id="修正查表（LUT）的相关问题"><a href="#修正查表（LUT）的相关问题" class="headerlink" title="修正查表（LUT）的相关问题"></a>修正查表（LUT）的相关问题</h3><p>查表，即Look up table，在代码中一般缩写为LUT。</p>
 <h4 id="论数组与指针的区别"><a href="#论数组与指针的区别" class="headerlink" title="论数组与指针的区别"></a>论数组与指针的区别</h4><p>1月12号解决了上述（8bit）下图像带有红点绿点的问题。解决方法是<strong>把<code>gamma_LUT</code>的声明由数组变成指针</strong>。（开发版commit：<code>a5dc85d</code>）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> gamma_LUT[RGB_PIXEL_RANGE_EXTENDED];  <span class="comment">// old</span></span><br><span class="line"><span class="keyword">double</span> gamma_LUT = <span class="keyword">new</span> (<span class="built_in">std</span>::nothrow) duoble[RGB_PIXEL_RANGE_EXTENDED];  <span class="comment">// new</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span> gamma_LUT[RGB_PIXEL_RANGE_EXTENDED];  <span class="hljs-comment">// old</span><br><span class="hljs-keyword">double</span> gamma_LUT = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">std</span>::nothrow) duoble[RGB_PIXEL_RANGE_EXTENDED];  <span class="hljs-comment">// new</span><br></code></pre></td></tr></table></figure>
 
 <p>至于为什么从数组变到指针就没有问题了，这个…我猜是数组一些地方溢出了？但我尝试过加<code>[0, 255]</code>限制，也不能彻底解决啊。</p>
 <h4 id="增加16bit支持"><a href="#增加16bit支持" class="headerlink" title="增加16bit支持"></a>增加16bit支持</h4><p>这个更偏向于体力活，没有太多要写的。只是需要明白一个事情，在8bit处理中用到的宏常量<code>RGB_PIXEL_RANGE_EXTENDED</code>，是为了让8bit的计算不那么僵硬，增加中间数据的过渡，就和我们要把8bit的图像素材扩展到10bit或16bit处理是一个道理。这里定义的宏常量值为<code>25501</code>，相当于把8bit的计算范围扩大了100倍。</p>
@@ -39,9 +272,230 @@
 <p>特意进行了稍长一点的测试，发现8bit下优化之后的代码稍快，而16bit则是优化前的稍快。所以…好像没什么必要吧。</p>
 <h4 id="或许画蛇添足的Parallel"><a href="#或许画蛇添足的Parallel" class="headerlink" title="或许画蛇添足的Parallel"></a>或许画蛇添足的Parallel</h4><p>因为偶然看到《OpenCL 2.0 异构计算》这本书，读到了C++ AMP（已经成为C++11标准的一个扩展），明白了<code>parallel_for</code>的含义，可以简单理解为将for循环并行化。</p>
 <p>由于有不同的实现方式，所以多少让人感到凌乱。这里用了微软的<code>ppl.h</code>（已经整合到了msvc中），至于gcc…先放着吧…Orz</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">if</span> defined(_MSC_VER)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ppl.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">Concurrency::parallel_for(<span class="number">0</span>, (<span class="keyword">int</span>)range, [&amp;](<span class="keyword">int</span> i)</span><br><span class="line"><span class="comment">// for (int i = 0; i &lt; range; i++)</span></span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(_MSC_VER)</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;ppl.h&gt;</span></span><br><br>Concurrency::parallel_for(<span class="hljs-number">0</span>, (<span class="hljs-keyword">int</span>)range, [&amp;](<span class="hljs-keyword">int</span> i)<br><span class="hljs-comment">// for (int i = 0; i &lt; range; i++)</span><br>&#123;<br>    ...<br>&#125;);<br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
 
 <p>测试发现加了上述优化后，速度反而降了…Orz…然后我才注意到，VapourSynth本身已经有<code>fmParallel</code>参数，应该是已经包含了Parallel相关优化？所以我这样做是画蛇添足？</p>
 <p>目前Github上repo的情况，Parallel部分提交到了主分支，而AVX部分则是提交到了新建的dev分支。</p>
 <p>总之，这应该是我走出前人已有算法，做出属于我的微小贡献的第一步吧。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2020/02/07/arch-and-meson/" class="prev">PREV</a><a href="/2020/02/04/2020-winter-holiday/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Code/">Code</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/02/07/arch-and-meson/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ArchLinux和Meson构建工具的使用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/02/04/2020-winter-holiday/">
+                        <span class="hidden-mobile">2020寒假计划与回顾</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

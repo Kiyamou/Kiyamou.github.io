@@ -1,5 +1,238 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次从C语言到C++的迁移——初次接触VapourSynth API · 308实验室</title><meta name="description" content="记一次从C语言到C++的迁移——初次接触VapourSynth API - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">记一次从C语言到C++的迁移——初次接触VapourSynth API</h1><div class="post-info">Nov 19, 2019</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="引言想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，https://github.com/Lypheo/EWA-Resampling-VS 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。
+所以我想在原作者代码的">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>记一次从C语言到C++的迁移——初次接触VapourSynth API - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="记一次从C语言到C++的迁移——初次接触VapourSynth API">
+              
+                记一次从C语言到C++的迁移——初次接触VapourSynth API
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-11-19 19:18" pubdate>
+        2019年11月19日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      2.9k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      34
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记一次从C语言到C++的迁移——初次接触VapourSynth API</h1>
+            
+            <div class="markdown-body">
+              <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
 <p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
 <p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
 <p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
@@ -13,10 +246,10 @@
 <li><p>在C++使用圆周率<code>M_PI</code>的宏，要include相应的数学头文件，随后又带来了新的问题，所以直接定义一个宏吧。</p>
 </li>
 <li><p>内存控制方面，在C++中使用<code>malloc()</code>分配内存，需要进行强制类型转换。具体到这份代码，将</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = <span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(d));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">data = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(d));<br></code></pre></td></tr></table></figure>
 
 <p>修改为</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = (FilterData *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(d));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">data = (FilterData *)<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(d));<br></code></pre></td></tr></table></figure>
 
 <p>其中，<code>FilterData</code>是自定义类型。</p>
 </li>
@@ -31,28 +264,28 @@
 <li>顺带一提，读取用户端输入的函数变量通过类似<code>vsapi-&gt;propGetFloat</code>的方式完成。</li>
 </ol>
 <h4 id="VapourSynth的Hello-World"><a href="#VapourSynth的Hello-World" class="headerlink" title="VapourSynth的Hello World"></a>VapourSynth的Hello World</h4><p>写一个VapourSynth插件，或者说写一个基于VapourSynth框架的算法实现，要包含这么几个部分。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码主体</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> VS_CC <span class="title">filterInit</span><span class="params">(VSMap* in, VSMap* out, <span class="keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">const</span> VSFrameRef* VS_CC <span class="title">filterGetFrame</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> activationReason, <span class="keyword">void</span>** instanceData, <span class="keyword">void</span>** frameData, VSFrameContext* frameCtx, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> VS_CC <span class="title">filterFree</span><span class="params">(<span class="keyword">void</span>* instanceData, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> VS_CC <span class="title">filterCreate</span><span class="params">(<span class="keyword">const</span> VSMap* in, VSMap* out, <span class="keyword">void</span>* userData, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Python接口</span></span><br><span class="line">VS_EXTERNAL_API(<span class="keyword">void</span>) VapourSynthPluginInit(VSConfigPlugin configFunc, VSRegisterFunction registerFunc, VSPlugin* plugin) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 代码主体</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">filterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">const</span> VSFrameRef* VS_CC <span class="hljs-title">filterGetFrame</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> activationReason, <span class="hljs-keyword">void</span>** instanceData, <span class="hljs-keyword">void</span>** frameData, VSFrameContext* frameCtx, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">filterFree</span><span class="hljs-params">(<span class="hljs-keyword">void</span>* instanceData, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">filterCreate</span><span class="hljs-params">(<span class="hljs-keyword">const</span> VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>* userData, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> </span>&#123;&#125;<br><br><span class="hljs-comment">// Python接口</span><br>VS_EXTERNAL_API(<span class="hljs-keyword">void</span>) VapourSynthPluginInit(VSConfigPlugin configFunc, VSRegisterFunction registerFunc, VSPlugin* plugin) &#123;&#125;<br></code></pre></td></tr></table></figure>
 
 <p>代码主体的四个函数中，<code>filterInit()</code>和<code>filterFree()</code>是辅助性质的函数，主要代码在<code>filterGetFrame()</code>和<code>filterCreate()</code>中。其中<code>filterCreat()</code>多是用来获取用户端的输入参数，所以实现算法的核心代码一般位于<code>filterGetFrame()</code>中。</p>
 <h3 id="写模板"><a href="#写模板" class="headerlink" title="写模板"></a>写模板</h3><h4 id="Coding过程"><a href="#Coding过程" class="headerlink" title="Coding过程"></a>Coding过程</h4><p>语法和API调用都搞明白了，下面开始写模板。具体需求在引言部分已经写清楚了。现在回到原作者的代码上，寻找鲁棒性缺失的地方。</p>
 <p>容易发现，在<code>GetFrame</code>部分，直接使用<code>uint8_t</code>和<code>uint16_t</code>声明了储存视频的变量。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">uint8_t</span> *scrp = vsapi-&gt;getReadPtr(frame, plane);</span><br><span class="line"><span class="keyword">uint8_t</span> *targetp = vsapi-&gt;getWritePtr(dst, plane);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">const</span> <span class="hljs-keyword">uint8_t</span> *scrp = vsapi-&gt;getReadPtr(frame, plane);<br><span class="hljs-keyword">uint8_t</span> *targetp = vsapi-&gt;getWritePtr(dst, plane);<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">uint16_t</span> *framep = (<span class="keyword">uint16_t</span> *) scrp;</span><br><span class="line"><span class="keyword">uint16_t</span> *dstp = (<span class="keyword">uint16_t</span> *) targetp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">uint16_t</span> *framep = (<span class="hljs-keyword">uint16_t</span> *) scrp;<br><span class="hljs-keyword">uint16_t</span> *dstp = (<span class="hljs-keyword">uint16_t</span> *) targetp;<br></code></pre></td></tr></table></figure>
 
 <p>这就是原代码仅支持9~16bit的原因（之一），要用函数模板替代上述直接声明。</p>
 <p>当年上C++课的时候，老师说模板不考…所以在教材目录上画个叉，模板的学习到此为止…写模板倒容易写，像定义函数那样照猫画虎。但怎么调用模板，花了一段时间才弄明白。</p>
 <p>实现引言中的需求，逻辑很简单，伪代码如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义模板</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bitdepth</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据输入视频位深，使用不同的类型定义变量</span></span><br><span class="line"><span class="keyword">if</span> (depth &lt;= <span class="number">8</span>)</span><br><span class="line">    bitdepth&lt;<span class="keyword">uint8_t</span>&gt;();</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    bitdepth&lt;<span class="keyword">uint16_t</span>&gt;();</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 定义模板</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">bitdepth</span><span class="hljs-params">()</span> </span>&#123;&#125;<br><br><span class="hljs-comment">// 根据输入视频位深，使用不同的类型定义变量</span><br><span class="hljs-keyword">if</span> (depth &lt;= <span class="hljs-number">8</span>)<br>    bitdepth&lt;<span class="hljs-keyword">uint8_t</span>&gt;();<br><span class="hljs-keyword">else</span><br>    bitdepth&lt;<span class="hljs-keyword">uint16_t</span>&gt;();<br></code></pre></td></tr></table></figure>
 
 <p>我之所以不知道怎么调用函数模板，是因为我一开始不想改动太多的原始代码。原始代码用<code>uint16_t</code>直接声明变量，我也想借助函数模板直接做类似的事情。于是，我的代码写成了下面这个样子。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">const</span> T* <span class="title">process1</span><span class="params">( ... )</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> T* framep = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">    <span class="keyword">return</span> framep;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (d-&gt;vi-&gt;format-&gt;bytesPerSample == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">uint8_t</span> *scrp = process1&lt;<span class="keyword">uint8_t</span>&gt;( ... );</span><br><span class="line">    <span class="keyword">uint8_t</span> *framep = (<span class="keyword">uint8_t</span> *) scrp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> T* <span class="hljs-title">process1</span><span class="hljs-params">( ... )</span> </span>&#123;<br>    <span class="hljs-keyword">const</span> T* framep = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));<br>    <span class="hljs-keyword">return</span> framep;<br>&#125;<br><br><span class="hljs-keyword">if</span> (d-&gt;vi-&gt;format-&gt;bytesPerSample == <span class="hljs-number">1</span>) &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-keyword">uint8_t</span> *scrp = process1&lt;<span class="hljs-keyword">uint8_t</span>&gt;( ... );<br>    <span class="hljs-keyword">uint8_t</span> *framep = (<span class="hljs-keyword">uint8_t</span> *) scrp;<br>&#125;<br><span class="hljs-keyword">else</span> &#123;<br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>我想当然的以为通过if语句，就可以让代码根据视频输入格式选择变量类型，但我忘了一件事情…if语句内的变量是局部变量，作用域仅限if语句内…</p>
 <p>好吧…那我把后面的代码分别往if和else内复制一遍，直接在if语句内处理到底…<del>这也太蠢了</del>。</p>
 <p>坦白地讲，我心里很清楚，这就是半路出家自学和科班的差距。</p>
 <p>看了前辈的代码，将函数模板写成void函数，在<code>GetFrame</code>部分仅进行函数模板的调用，处理的代码均写在函数模板内。把该写的框架都写全，代码如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(<span class="keyword">const</span> VSFrameRef* frame, VSFrameRef* dst, <span class="keyword">const</span> FilterData* <span class="keyword">const</span> VS_RESTRICT d, <span class="keyword">const</span> VSAPI* vsapi)</span> <span class="keyword">noexcept</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> plane = <span class="number">0</span>; plane &lt; d-&gt;vi-format-&gt;numPlanes; plane++) &#123;</span><br><span class="line">        <span class="comment">// 储存读取写入视频的变量</span></span><br><span class="line">        <span class="keyword">const</span> T* framep = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(frame, plane));</span><br><span class="line">        T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 原始代码是除以2，若以8bit输入，应当是除以1，所以用sizeof(T)代替具体数字</span></span><br><span class="line">        <span class="keyword">int</span> frame_stride = vsapi-&gt;getStride(frame, plane) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">        <span class="keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="keyword">sizeof</span>(T);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// Jinc算法实现部分</span></span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">const</span> VSFrameRef* VS_CC <span class="title">filterGetFrame</span><span class="params">(<span class="keyword">int</span> n, <span class="keyword">int</span> activationReason, <span class="keyword">void</span>** instanceData, <span class="keyword">void</span>** frameData, VSFrameContext* frameCtx, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (activationReason == arInitial) &#123;</span><br><span class="line">        vsapi=&gt;requestFrameFilter(n, d-&gt;node, frameCtx);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (activationReason == arAllFramesReady) &#123;</span><br><span class="line">        <span class="keyword">const</span> VSFormat* fi = d-&gt;vi-&gt;format;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">const</span> VSFrameRef* frame = vsapi-&gt;getFrameFilter(n, d-&gt;node, frame, core);</span><br><span class="line">        VSFrameRef* dst = vsapi-&gt;newVideoFrame(fi, d-&gt;w, d-h, frame, core);</span><br><span class="line">        <span class="comment">// w和h是在filterCreat部分获取的用户端参数，指用户设定的放大后的视频尺寸。</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (fi-&gt;bytesPerSample == <span class="number">1</span>)</span><br><span class="line">            process&lt;<span class="keyword">uint8_t</span>&gt;(frame, dst, d, vsapi);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            prcess&lt;<span class="keyword">uint16_t</span>&gt;(frame, dst, d, vsapi);</span><br><span class="line">        <span class="comment">// 更鲁棒的写法，可以支持浮点数视频输入</span></span><br><span class="line">        <span class="comment">// 但我前面的函数模板还没有支持浮点数，且一般用户也很少使用到浮点数视频，所以上述代码堪用</span></span><br><span class="line">        <span class="comment">// else if (fi-&gt;bytesPerSample == 2)</span></span><br><span class="line">        <span class="comment">//     process&lt;uint16_t&gt;(frame, dst, d, vsapi);</span></span><br><span class="line">        <span class="comment">// else</span></span><br><span class="line">        <span class="comment">//     process&lt;float&gt;(frame, dst, d, vsapi);</span></span><br><span class="line">        </span><br><span class="line">        vsapi-&gt;freeFrame(frame); <span class="comment">// 释放内存</span></span><br><span class="line">        <span class="keyword">return</span> dst;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">process</span><span class="hljs-params">(<span class="hljs-keyword">const</span> VSFrameRef* frame, VSFrameRef* dst, <span class="hljs-keyword">const</span> FilterData* <span class="hljs-keyword">const</span> VS_RESTRICT d, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> <span class="hljs-keyword">noexcept</span> </span>&#123;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> plane = <span class="hljs-number">0</span>; plane &lt; d-&gt;vi-format-&gt;numPlanes; plane++) &#123;<br>        <span class="hljs-comment">// 储存读取写入视频的变量</span><br>        <span class="hljs-keyword">const</span> T* framep = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(frame, plane));<br>        T* VS_RESTRICT dstp = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));<br>        <br>        <span class="hljs-comment">// 原始代码是除以2，若以8bit输入，应当是除以1，所以用sizeof(T)代替具体数字</span><br>        <span class="hljs-keyword">int</span> frame_stride = vsapi-&gt;getStride(frame, plane) / <span class="hljs-keyword">sizeof</span>(T);<br>        <span class="hljs-keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="hljs-keyword">sizeof</span>(T);<br>        <br>        <span class="hljs-comment">// Jinc算法实现部分</span><br>        ...<br>    &#125;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">const</span> VSFrameRef* VS_CC <span class="hljs-title">filterGetFrame</span><span class="hljs-params">(<span class="hljs-keyword">int</span> n, <span class="hljs-keyword">int</span> activationReason, <span class="hljs-keyword">void</span>** instanceData, <span class="hljs-keyword">void</span>** frameData, VSFrameContext* frameCtx, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span> </span>&#123;<br>    <span class="hljs-keyword">if</span> (activationReason == arInitial) &#123;<br>        vsapi=&gt;requestFrameFilter(n, d-&gt;node, frameCtx);<br>    &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (activationReason == arAllFramesReady) &#123;<br>        <span class="hljs-keyword">const</span> VSFormat* fi = d-&gt;vi-&gt;format;<br>        <br>        <span class="hljs-keyword">const</span> VSFrameRef* frame = vsapi-&gt;getFrameFilter(n, d-&gt;node, frame, core);<br>        VSFrameRef* dst = vsapi-&gt;newVideoFrame(fi, d-&gt;w, d-h, frame, core);<br>        <span class="hljs-comment">// w和h是在filterCreat部分获取的用户端参数，指用户设定的放大后的视频尺寸。</span><br>        <br>        <span class="hljs-keyword">if</span> (fi-&gt;bytesPerSample == <span class="hljs-number">1</span>)<br>            process&lt;<span class="hljs-keyword">uint8_t</span>&gt;(frame, dst, d, vsapi);<br>        <span class="hljs-keyword">else</span><br>            prcess&lt;<span class="hljs-keyword">uint16_t</span>&gt;(frame, dst, d, vsapi);<br>        <span class="hljs-comment">// 更鲁棒的写法，可以支持浮点数视频输入</span><br>        <span class="hljs-comment">// 但我前面的函数模板还没有支持浮点数，且一般用户也很少使用到浮点数视频，所以上述代码堪用</span><br>        <span class="hljs-comment">// else if (fi-&gt;bytesPerSample == 2)</span><br>        <span class="hljs-comment">//     process&lt;uint16_t&gt;(frame, dst, d, vsapi);</span><br>        <span class="hljs-comment">// else</span><br>        <span class="hljs-comment">//     process&lt;float&gt;(frame, dst, d, vsapi);</span><br>        <br>        vsapi-&gt;freeFrame(frame); <span class="hljs-comment">// 释放内存</span><br>        <span class="hljs-keyword">return</span> dst;<br>    &#125;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>至此，完成了模板的撰写（及小小的代码重构）和调用，测试一下，8bit、10bit、16bit YUV格式输入都没有问题。</p>
 <h4 id="值得注意的基础知识（2019-12-18）"><a href="#值得注意的基础知识（2019-12-18）" class="headerlink" title="值得注意的基础知识（2019.12.18）"></a>值得注意的基础知识（2019.12.18）</h4><p>上面这个模板是从前辈的一处代码中照猫画猫得到的（当时，模板函数的声明应该是copy过来的，改了一下，没太动脑子）（照着模板写模板，<del>禁止套娃</del>），有些细节没注意，或者现在忘了，来记一下。</p>
@@ -76,4 +309,225 @@
 <li>我现在真的是无法理解，作者的<code>data = malloc(sizeof(d));</code>是怎么编译通过的，我目前查到的所有资料，都说在<code>malloc()</code>函数前需要声明变量类型。</li>
 <li>我现在还担心，等我代码重构了，还是慢怎么办…</li>
 </ul>
-</div></article></div></main><footer><div class="paginator"><a href="/2019/11/22/learn-cpp-note-1/" class="prev">PREV</a><a href="/2019/11/03/git-use-1/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Code/">Code</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/11/22/learn-cpp-note-1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">C++笔记：某培训课程与21天学通C++</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/11/03/git-use-1/">
+                        <span class="hidden-mobile">Git的使用：创建SSH key、多账号共存、提交代码及进阶使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

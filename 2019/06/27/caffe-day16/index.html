@@ -1,38 +1,275 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> Day16 Caffe可视化方法 · 308实验室</title><meta name="description" content="Day16 Caffe可视化方法 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">Day16 Caffe可视化方法</h1><div class="post-info">Jun 27, 2019</div><div class="post-content"><p>《21天实战Caffe》学习笔记第16天</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="《21天实战Caffe》学习笔记第16天
+数据可视化把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。
+模型可视化网络结构可视化安装依赖用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？）
+1yum install python-devel
+
+numpy和/caffe/python/requ">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>Day16 Caffe可视化方法 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="Day16 Caffe可视化方法">
+              
+                Day16 Caffe可视化方法
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-06-27 18:27" pubdate>
+        2019年6月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      17
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Day16 Caffe可视化方法</h1>
+            
+            <div class="markdown-body">
+              <p>《21天实战Caffe》学习笔记第16天</p>
 <h3 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h3><p>把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。</p>
 <h3 id="模型可视化"><a href="#模型可视化" class="headerlink" title="模型可视化"></a>模型可视化</h3><h4 id="网络结构可视化"><a href="#网络结构可视化" class="headerlink" title="网络结构可视化"></a>网络结构可视化</h4><h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><p>用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-devel</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> python-devel<br></code></pre></td></tr></table></figure>
 
 <p>numpy和<code>/caffe/python/requirements.txt</code>清单里的包，均用pip3安装的。</p>
 <p>安装时报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR: matplotlib 3.1.0 has requirement python-dateutil&gt;&#x3D;2.1, but you&#39;ll have python-dateutil 1.5 which is incompatible.</span><br><span class="line">ERROR: pandas 0.24.2 has requirement python-dateutil&gt;&#x3D;2.5.0, but you&#39;ll have python-dateutil 1.5 which is incompatible.</span><br></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">ERROR: </span>matplotlib 3.1.0 has requirement python-dateutil&gt;=2.1, but you'll have python-dateutil 1.5 which is incompatible.<br><span class="hljs-keyword">ERROR: </span>pandas 0.24.2 has requirement python-dateutil&gt;=2.5.0, but you'll have python-dateutil 1.5 which is incompatible.<br></code></pre></td></tr></table></figure>
 
 <p>因为清单里要求python-dateutil的版本不能大于2，所以出现上述问题。但只是不兼容，而上述三个包都装上了，所以先这样。</p>
 <a id="more"></a>
 
 <h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><p>不知道为什么，要重新编译一次caffe。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;caffe</span><br><span class="line">make clean</span><br><span class="line">make -j</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">cd</span> <span class="hljs-string">~/caffe</span><br><span class="hljs-attr">make</span> <span class="hljs-string">clean</span><br><span class="hljs-attr">make</span> <span class="hljs-string">-j</span><br></code></pre></td></tr></table></figure>
 
 <p>编译时报错。（我不记得之前编译有没有报错了）</p>
 <p>改用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">make</span><br></code></pre></td></tr></table></figure>
 
 <p>编译通过。</p>
 <p>编译pycaffe。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make pycaffe</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">make pycaffe</span><br></code></pre></td></tr></table></figure>
 
 <p>报错，找不到numpy名下的头文件。</p>
 <p>（通过pip安装numpy还是没法直接用）</p>
 <p>yum里<code>python-numpy</code>叫<code>numpy</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install numpy</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> numpy<br></code></pre></td></tr></table></figure>
 
 <p>之后pycaffe编译成功。</p>
-<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~&#x2F;caffe&#x2F;python</span><br><span class="line">python3 draw_net.py ..&#x2F;models&#x2F;bvlc_reference_caffenet&#x2F;train_val.prototxt caffenet.png</span><br></pre></td></tr></table></figure>
+<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">cd ~/caffe/python<br>python3 draw_net<span class="hljs-selector-class">.py</span> ../models/bvlc_reference_caffenet/train_val<span class="hljs-selector-class">.prototxt</span> caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>不行，用<code>python</code>执行也不行，但报错信息不一样。</p>
 <p>直接在命令行下调用python，测试</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> caffe</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> caffe<br></code></pre></td></tr></table></figure>
 
 <p>无论是<code>python3</code>还是<code>python</code>，都不行，同样报错信息不一样。</p>
 <p>（完蛋…）</p>
@@ -50,7 +287,7 @@
 <p>主要一点就是，默认路径指向<code>usr/lib</code>，而caffe编译所需的Pyhon相关文件，我这边是在<code>usr/lib64</code>里。</p>
 <p>另外就Python包——site packages和dist packages的问题。</p>
 <h5 id="重新安装依赖"><a href="#重新安装依赖" class="headerlink" title="重新安装依赖"></a>重新安装依赖</h5><p>解决了前述路径问题，自然要重新编译一次，然后也搞明白了目前的<code>pip</code>和<code>pip3</code>命令都指向Python3（这也回答了<a href="https://yimino.github.io/2019/06/27/g-cmake-python/" target="_blank" rel="noopener">https://yimino.github.io/2019/06/27/g-cmake-python/</a>的疑问），所以在安装了Python2的pip后</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install python-pip</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> python-pip<br></code></pre></td></tr></table></figure>
 
 <p>重新安装其他依赖包。</p>
 <p>在前面有不同包之间相互依赖，导致版本冲突的问题，所以这次按照<code>/caffe/python/requirements.txt</code>的内容，重写了<code>requirements.txt</code>，把里面的<code>&gt;=</code>改成<code>==</code>，能安装低版本就尽量安装低版本。</p>
@@ -58,46 +295,265 @@
 <p>至此，<code>import caffe</code>终于正常了。</p>
 <p>（虽然有个warning，但应该无伤大雅。）</p>
 <h5 id="再次画图"><a href="#再次画图" class="headerlink" title="再次画图"></a>再次画图</h5><p>执行，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python draw_net.py ..&#x2F;models&#x2F;bvlc_reference_caffenet&#x2F;train_val.prototxt caffenet.png</span><br></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python draw_net<span class="hljs-selector-class">.py</span> ../models/bvlc_reference_caffenet/train_val<span class="hljs-selector-class">.prototxt</span> caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>报错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">OSError: [Errno 2] &quot;dot&quot; not found in path.</span><br></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">OSError: [Errno <span class="hljs-number">2</span>] "dot" <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span> <span class="hljs-keyword">in</span> <span class="hljs-type">path</span>.<br></code></pre></td></tr></table></figure>
 
 <p>根据<a href="https://github.com/BVLC/caffe/issues/4911" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/4911</a>，需要安装graphviz包。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install graphviz</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> graphviz<br></code></pre></td></tr></table></figure>
 
 <p>至此，<code>draw_net.py</code>脚本得以正常运行，网络结构图get！</p>
 <h4 id="网络权值可视化"><a href="#网络权值可视化" class="headerlink" title="网络权值可视化"></a>网络权值可视化</h4><h5 id="安装Matlab"><a href="#安装Matlab" class="headerlink" title="安装Matlab"></a>安装Matlab</h5><p><strong>虚拟机复制文件的缓存</strong></p>
 <p>首先解决一下主机与虚拟机之间复制文件的缓存问题。</p>
 <p>从虚拟机向主机复制文件，缓存于Windows主机的<code>C:\Users\&quot;User Name&quot;\AppData\Local\Temp\vmware-&quot;User Name&quot;\VMwareDnD</code>中，直接删除即可。</p>
 <p>从主机向虚拟机复制文件，缓存于Linux虚拟机的<code>/root/.cache/vmware/drag_and_drop</code>中，查看日期信息，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;root&#x2F;.cache&#x2F;vmware&#x2F;drag_and_drop</span><br><span class="line">ls -lht</span><br></pre></td></tr></table></figure>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> <span class="hljs-string">/root/.cache/vmware/drag_and_drop</span><br><span class="hljs-keyword">ls</span> -lht<br></code></pre></td></tr></table></figure>
 
 <p>查看文件大小，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">du -h --max-depth&#x3D;0 &#x2F;root&#x2F;.cache&#x2F;vmware&#x2F;drag_and_drop&#x2F;*</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">du -h --max-depth=<span class="hljs-number">0</span> <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<span class="hljs-regexp">/*</span><br></code></pre></td></tr></table></figure>
 
 <p>删除缓存。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &#x2F;root&#x2F;.cache&#x2F;vmware&#x2F;drag_and_drop&#x2F;*</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">rm -rf <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<span class="hljs-regexp">/*</span><br></code></pre></td></tr></table></figure>
 
 <p>（但我由主机向虚拟机复制文件后，虚拟机所在磁盘的容量似乎减少了复制文件大小的两倍，在清除虚拟机缓存后也是如此…是我的错觉吗…）</p>
 <p><strong>安装过程</strong></p>
 <p>（看安装包里的教程即可）</p>
 <p>挂载iso。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount -t auto -o loop $PATH$&#x2F;R2018b_glnxa64_dvd1.iso &#x2F;mnt&#x2F;iso</span><br></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams">mount -t auto -o <span class="hljs-keyword">loop</span> <span class="hljs-symbol">$</span>PATH<span class="hljs-symbol">$</span>/R2018b_glnxa64_dvd1.iso /mnt/iso<br></code></pre></td></tr></table></figure>
 
 <p>若提示</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount: &#x2F;dev&#x2F;loop0 is write-protected, mounting read-only</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">moun<span class="hljs-variable">t:</span> /dev/loop0 <span class="hljs-keyword">is</span> <span class="hljs-keyword">write</span>-protected, mounting <span class="hljs-keyword">read</span>-<span class="hljs-keyword">only</span><br></code></pre></td></tr></table></figure>
 
 <p>则</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;</span><br><span class="line">chmod 755 mnt</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">cd</span> <span class="hljs-string">/</span><br><span class="hljs-attr">chmod</span> <span class="hljs-string">755 mnt</span><br></code></pre></td></tr></table></figure>
 
 <p>挂载成功后，不要进入挂载目录，而是在随便的另外一个目录下执行安装命令。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;mnt&#x2F;iso&#x2F;install</span><br></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/mnt/i</span>so<span class="hljs-regexp">/install</span><br></code></pre></td></tr></table></figure>
 
 <p>我这里提示了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp: cannot stat ‘&#x2F;mnt&#x2F;iso&#x2F;sys&#x2F;java&#x2F;jre&#x2F;glnxa64&#x2F;jre&#x2F;man&#x2F;ja_JP.UTF-8’: Input&#x2F;output error</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs groovy"><span class="hljs-string">cp:</span> cannot stat ‘<span class="hljs-regexp">/mnt/</span>iso<span class="hljs-regexp">/sys/</span>java<span class="hljs-regexp">/jre/</span>glnxa64<span class="hljs-regexp">/jre/</span>man<span class="hljs-regexp">/ja_JP.UTF-8’: Input/</span>output error<br></code></pre></td></tr></table></figure>
 
 <p>但似乎没发现什么问题。</p>
 <p>然后即可进入图像安装界面，按提示操作即可。</p>
 <h3 id="学习曲线"><a href="#学习曲线" class="headerlink" title="学习曲线"></a>学习曲线</h3><p>这个先放一放，之前用matlab神经网络工具箱时看过类似的曲线，而且又没有进一步理解曲线的经验和知识。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2019/06/28/caffe-day17/" class="prev">PREV</a><a href="/2019/06/15/av1-aom/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/Caffe/">Caffe</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/06/28/caffe-day17/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Day17 Caffe迁移和部署</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/06/15/av1-aom/">
+                        <span class="hidden-mobile">编译AV1编码器libaom的记录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

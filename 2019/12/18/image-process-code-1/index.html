@@ -1,12 +1,246 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 图像处理中一些稍底层的东西：色彩空间与数据结构 · 308实验室</title><meta name="description" content="图像处理中一些稍底层的东西：色彩空间与数据结构 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">图像处理中一些稍底层的东西：色彩空间与数据结构</h1><div class="post-info">Dec 18, 2019</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="引言接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。
+色彩空间是最基础的概念，当然谈不上“底层”。但和色彩空间相关联的、图像的像素点是以和何种方式储存的，换句话说，数字图像的数据结构是怎样的，应当称得上是从表面到深入的一个转折点了。学数字图像处理，当然不能满足于output = intput.filter()这样的模式。
+引言写">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>图像处理中一些稍底层的东西：色彩空间与数据结构 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="图像处理中一些稍底层的东西：色彩空间与数据结构">
+              
+                图像处理中一些稍底层的东西：色彩空间与数据结构
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-12-18 12:57" pubdate>
+        2019年12月18日 下午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.7k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      19
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">图像处理中一些稍底层的东西：色彩空间与数据结构</h1>
+            
+            <div class="markdown-body">
+              <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。</p>
 <p>色彩空间是最基础的概念，当然谈不上“底层”。但和色彩空间相关联的、图像的像素点是以和何种方式储存的，换句话说，数字图像的数据结构是怎样的，应当称得上是从表面到深入的一个转折点了。学数字图像处理，当然不能满足于<code>output = intput.filter()</code>这样的模式。</p>
 <p><em>引言写于2020.1.3</em></p>
 <h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p><em>修改于2020.1.2</em></p>
 <h4 id="二维图像与一维数组"><a href="#二维图像与一维数组" class="headerlink" title="二维图像与一维数组"></a>二维图像与一维数组</h4><p>在AviSynth和VapourSynth中，单帧图像的像素按行储存，从图像的左上开始，一行一行地存储于一维数组中，像下面这样。</p>
 <p>——————————&gt;<br>——————————&gt;<br>……<br>——————————&gt;</p>
 <p>所以读取/写入下一个像素，依据行列的不同，分两种情况，大概是这样</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对于YUV格式图像</span></span><br><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane)); <span class="comment">// 创建指针</span></span><br><span class="line"><span class="keyword">int</span> src_stride = vsapi-&gt;getStride(src, plane) / <span class="keyword">sizeof</span>(T);                 <span class="comment">// 获取stride</span></span><br><span class="line">srcp++;              <span class="comment">// 读取同行下一个像素</span></span><br><span class="line">srcp += src_stride;  <span class="comment">// 读取同列下一个元素</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 对于YUV格式图像</span><br><span class="hljs-keyword">const</span> T* srcp = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane)); <span class="hljs-comment">// 创建指针</span><br><span class="hljs-keyword">int</span> src_stride = vsapi-&gt;getStride(src, plane) / <span class="hljs-keyword">sizeof</span>(T);                 <span class="hljs-comment">// 获取stride</span><br>srcp++;              <span class="hljs-comment">// 读取同行下一个像素</span><br>srcp += src_stride;  <span class="hljs-comment">// 读取同列下一个元素</span><br></code></pre></td></tr></table></figure>
 
 <a id="more"></a>
 
@@ -18,7 +252,7 @@
 <p>回到正题，不仅是在vs和avs框架下，在更一般的图像处理中，经常能够看到带有<code>pitch</code>的变量。</p>
 <p>之前就查过，说是在处理图像时，会以4为单位存储，以提高硬件效率（若以3等比4更小的方式存储，反而会降低效率），所以会用<code>pitch</code>变量实现上述存储方式。</p>
 <p>云里雾里地，不知道在说什么。这次看<code>Deblock()</code>的代码，因为涉及了判断块是否要被处理，类似下面的语句。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T * VS_RESTRICT sq0 = dstp1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">std</span>::<span class="built_in">abs</span>(sq0[i] - sq[i]) &lt; alpha) &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">srcp += src_pitch</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++">T * VS_RESTRICT sq0 = dstp1;<br><br><span class="hljs-keyword">if</span> (<span class="hljs-built_in">std</span>::<span class="hljs-built_in">abs</span>(sq0[i] - sq[i]) &lt; alpha) &#123;<br>    ...<br>&#125;<br><br>srcp += src_pitch<br></code></pre></td></tr></table></figure>
 
 <p>看了上面这样的代码，似乎明白很多了，带有<code>pitch</code>的变量就是和内存/储存相关的（“单位内存”），<code>srcp</code>（或<code>dstp</code>）加上一个“单位内存”（并放到for循环中），就是这里已经处理过了，到下一个单位去。</p>
 <blockquote>
@@ -34,13 +268,13 @@
 <p>但我当时没明白一点，其实<code>width</code>和除过<code>sizeof(T)</code>的<code>stride</code>（包括<code>pitch</code>），在数值上是近似相等的。<code>stride</code>直译过来是跨度，而基于“二维图像按行储存于一维数组”的数据结构，所谓跨度，就是宽度，所谓内存上的跨度，就是乘上变量类型所占字节的宽度。</p>
 <p>一开始在读avs版AreaResize源码时，看到<code>dstp += target_width</code>惊呆了，心想还能直接加上宽度。其实，我更早之前遇见的<code>dstp += dst_stride</code>和<code>dstp[y + x * dst_stride]</code>，和直接加宽度都是差不多的，都是为了将指针移动到同列的下一个元素。</p>
 <p>顺带，补充一下C++的基础知识。指针的加法，如</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">double</span> point[<span class="number">5</span>];</span><br><span class="line"><span class="keyword">double</span>* p = point;</span><br><span class="line">p += <span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span> point[<span class="hljs-number">5</span>];<br><span class="hljs-keyword">double</span>* p = point;<br>p += <span class="hljs-number">2</span>;<br></code></pre></td></tr></table></figure>
 
 <p>等于指针移动<code>sizeof(double)*2</code>个单位。</p>
 <p>同时，这个例子还说明了，可以将数组名赋值给指针，其指向数组的第一个元素。</p>
 <p><em>2020.1.3补充：其实这只是YUV格式的一种储存方式，是我在VapourSynth与AviSynth中常见的方式。但其实还有其他的方式，顺带整理RGB的储存方式。在这之前，需要先补充一些基础概念，恰好最初写这篇Blog时，就写了这些概念。</em></p>
 <h3 id="一些基础概念"><a href="#一些基础概念" class="headerlink" title="一些基础概念"></a>一些基础概念</h3><p>本以为我摸爬滚打这么长时间，就算不太懂代码，一些基础知识总该没问题吧…但是…关于色彩空间，有些别名还是记不住。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">YV24  &#x3D; YUV444</span><br><span class="line">YV16  &#x3D; YUV422</span><br><span class="line">YV12  &#x3D; YUV420</span><br><span class="line">YV411 &#x3D; YUV411</span><br><span class="line">RGB24 &#x3D; 8bit</span><br><span class="line">RGB32 &#x3D; 8bit（含透明通道）</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">YV24</span>  = YUV444<br><span class="hljs-attr">YV16</span>  = YUV422<br><span class="hljs-attr">YV12</span>  = YUV420<br><span class="hljs-attr">YV411</span> = YUV411<br><span class="hljs-attr">RGB24</span> = <span class="hljs-number">8</span>bit<br><span class="hljs-attr">RGB32</span> = <span class="hljs-number">8</span>bit（含透明通道）<br></code></pre></td></tr></table></figure>
 
 <p>顺带一提，在vs中，由一般的10bit，会得到RGB30，一般的16bit，则得到RGB48。</p>
 <h3 id="继续数据结构"><a href="#继续数据结构" class="headerlink" title="继续数据结构"></a>继续数据结构</h3><h4 id="概述与补充"><a href="#概述与补充" class="headerlink" title="概述与补充"></a>概述与补充</h4><p>无论是YUV还是RGB格式，都有两类存储方式，planar和packed，后者在我目前所接触到的代码中，更习惯写作interleave。</p>
@@ -55,4 +289,227 @@
 <blockquote>
 <p>无论是放大还是缩小，正在进行的“插值”实际上都是在重新采样。</p>
 </blockquote>
-</div></article></div></main><footer><div class="paginator"><a href="/2019/12/22/week-201912-3/" class="prev">PREV</a><a href="/2019/12/14/day-191214/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Avisynth/">Avisynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/22/week-201912-3/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">周记 2019.12.16-12.22</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/14/day-191214/">
+                        <span class="hidden-mobile">日记 2019.12.14</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

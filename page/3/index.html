@@ -1,38 +1,828 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 308实验室</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/05/week-202002-3/" class="post-title-link">周记 2020.02.17-02.23</a></h2><div class="post-info">Mar 5, 2020</div><div class="post-content"><h3 id="1-边缘检测"><a href="#1-边缘检测" class="headerlink" title="1.边缘检测"></a>1.边缘检测</h3><p>突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。</p>
-<p>嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。</p></div><a href="/2020/03/05/week-202002-3/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/05/week-202002-2/" class="post-title-link">周记 2020.02.10-02.16</a></h2><div class="post-info">Mar 5, 2020</div><div class="post-content"><h3 id="1-异常处理"><a href="#1-异常处理" class="headerlink" title="1.异常处理"></a>1.异常处理</h3><p><del>敲OpenCV，阈值化，故意尝试一个异常。</del></p>
-<p><del>把两个回调函数的<code>imshow(&quot;Output&quot;, dst)</code>的<code>dst</code>写成同一个变量，引发如下异常。</del></p>
-<p>上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把<code>adaptiveThreshold()</code>的参数写错了…</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x000007FEFD77B87D 处(位于 6.7_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 0x000000000029EC98 处。</span><br></pre></td></tr></table></figure>
 
-<p>抛出异常的函数</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">CV_INLINE CV_NORETURN <span class="keyword">void</span> <span class="title">errorNoReturn</span><span class="params">()</span>  <span class="comment">// bash.hpp 308行</span></span></span><br></pre></td></tr></table></figure></div><a href="/2020/03/05/week-202002-2/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/21/look-back-10-years/" class="post-title-link">十年一序：我一直都没有离开，只是换了一种方式存在</a></h2><div class="post-info">Feb 21, 2020</div><div class="post-content"><h3 id="2009"><a href="#2009" class="headerlink" title="2009"></a>2009</h3><p>第一次看到了正弦曲线。做几何题。</p>
-<h3 id="2010"><a href="#2010" class="headerlink" title="2010"></a>2010</h3><p>看微积分。去书店买书时，初二的我说我在读高二，长得高也有优势嘛。刷数学吧。初三跑1000米，也没有怎么练，成绩比初二一下提高了至少15秒。</p>
-<p>嫦娥二号发射。</p></div><a href="/2020/02/21/look-back-10-years/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/14/ISP-learn-2/" class="post-title-link">ISP笔记（2）：ISP pipeline总结</a></h2><div class="post-info">Feb 14, 2020</div><div class="post-content"><p>不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。</p>
-<p>此文绝赞施工中…应该要等到我有更深入理解时，才能写完。</p></div><a href="/2020/02/14/ISP-learn-2/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/14/To-master/" class="post-title-link">我想去看京都的樱花</a></h2><div class="post-info">Feb 14, 2020</div><div class="post-content"><p>转载一篇知乎回答</p>
-<p>其实，我的导师也和我们说过，保本校并不是一个最优的选择。</p>
-<p>有些不太和谐的内容，原作者的解释如下。我也是和原作者一样的态度，“我嘲笑的是我们自己”，希望不要被同学和老师误会。</p>
-<blockquote>
-<p>触到一部分考研的同学了，在此说声对不起。我想原原本本描述保本校这个群体的真实心理状态，但是真相总会伤人。至于文中那段，懂的人会懂，我嘲笑的是我们自己，不是你们。</p>
-</blockquote>
-<hr>
 
-<p>你要是保的本校，没有往上走。一开始你可能比较高兴，觉得自己很厉害。也觉得很幸运，因为不用考研。</p>
-<p>但是等到你的同学考研完了，出国结果出了，你就会感觉不舒服了。你就会想，我也一样努力，甚至更努力，为什么同样的努力，别人就考研的就去了上交复旦北大清华，出国的去了MIT CIT大S 伯克利 ETH。这时候你可能会调整调整心态，嗯我也不错，我虽然学校就那样，可我专业不错，导师也还行，努力一定有好结果的。</p></div><a href="/2020/02/14/To-master/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/13/week-202002-1/" class="post-title-link">周记 2020.02.03-02.09</a></h2><div class="post-info">Feb 13, 2020</div><div class="post-content"><h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// std::deque</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;deque&gt;</span></span></span><br><span class="line"><span class="keyword">template</span> &lt; <span class="class"><span class="keyword">class</span> <span class="title">T</span>, <span class="title">class</span> <span class="title">Alloc</span> = <span class="title">allocator</span>&lt;T&gt; &gt; <span class="title">class</span> <span class="title">deque</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// example</span></span><br><span class="line"><span class="built_in">deque</span> &lt;TreeNode*&gt; tree_que;</span><br><span class="line">node = tree_que.front();</span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
-<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line">Canny(edge, edge, <span class="number">3</span>, <span class="number">9</span>, <span class="number">3</span>);  <span class="comment">// ✔</span></span><br><span class="line">Canny(edge, edge, threshold1=<span class="number">3</span>, threshold2=<span class="number">9</span>, apertureSize=<span class="number">3</span>);  <span class="comment">// ✖</span></span><br></pre></td></tr></table></figure></div><a href="/2020/02/13/week-202002-1/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/08/ISP-learn-1/" class="post-title-link">ISP笔记（1）：一个ISP项目的流程梳理</a></h2><div class="post-info">Feb 8, 2020</div><div class="post-content"><p>通过学习<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">mushfiqulalam/isp</a>项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。</p>
-<h3 id="基本的印象"><a href="#基本的印象" class="headerlink" title="基本的印象"></a>基本的印象</h3><p>镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。</p>
-<p>最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？锐化用了USM锐化，或许我可以，用一些我熟悉的效果更明显的降噪方法。</p></div><a href="/2020/02/08/ISP-learn-1/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/07/rebuild-JincResize-2/" class="post-title-link">JincResize 代码重构（2）</a></h2><div class="post-info">Feb 7, 2020</div><div class="post-content"><h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
-<p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
-<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
-<p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
-<p><code>_mm256_load_ps</code>：float类型输入</p>
-<p><code>_mm256_load_pd</code>：double类型输入</p>
-<p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p></div><a href="/2020/02/07/rebuild-JincResize-2/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/07/arch-and-meson/" class="post-title-link">ArchLinux和Meson构建工具的使用</a></h2><div class="post-info">Feb 7, 2020</div><div class="post-content"><h3 id="爱恨交加的CentOS"><a href="#爱恨交加的CentOS" class="headerlink" title="爱恨交加的CentOS"></a>爱恨交加的CentOS</h3><p>我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。</p>
-<p>但这次编译VapourSynth着实让我感觉蛋疼。</p></div><a href="/2020/02/07/arch-and-meson/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/02/06/ported-to-vs-3/" class="post-title-link">记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化</a></h2><div class="post-info">Feb 6, 2020</div><div class="post-content"><h3 id="回忆重连"><a href="#回忆重连" class="headerlink" title="回忆重连"></a>回忆重连</h3><p>离写这个系列的<a href="https://kiyamou.github.io/2020/01/01/ported-to-vs-2/" target="_blank" rel="noopener">上一篇Blog</a>已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。</p>
-<p>从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x900），8bit会分屏，32bit会奔溃。</p>
-<p>总之问题集中在尺寸上，尝试好久，包括调换垂直方向与水平方向的处理顺序，以及其他一些细节的尝试，都没有帮助。当时为了找这个bug，盯着屏幕盯了好像有两三天，也没有结果。</p>
-<p>最后没办法， 因为AreaResize除了原始的avs版，还有一个优化过的avs版。优化版作者的本意的加快处理速度，但我把代码迁移到vs后，发现上面的Bug居然解决了——虽然我真的看不出，两份代码除了速度优化外，其他方面的区别。</p></div><a href="/2020/02/06/ported-to-vs-3/" class="read-more">...more</a></article></li></ul></main><footer><div class="paginator"><a href="/page/2/" class="prev">PREV</a><a href="/page/4/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="An elegant Material-Design theme for Hexo">
+              
+                An elegant Material-Design theme for Hexo
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/05/week-202002-3/">周记 2020.02.17-02.23</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/05/week-202002-3/">
+          
+          
+            
+          
+          1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。
+嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-05 22:41" pubdate>
+              2020-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/05/week-202002-2/">周记 2020.02.10-02.16</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/05/week-202002-2/">
+          
+          
+            
+          
+          1.异常处理敲OpenCV，阈值化，故意尝试一个异常。
+把两个回调函数的imshow(&quot;Output&quot;, dst)的dst写成同一个变量，引发如下异常。
+上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把adaptiveThreshold()的参数写错了…
+10x000007FEFD77B87D 处(位于 6.7_Threshold.exe 中
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-05 22:38" pubdate>
+              2020-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/21/look-back-10-years/">十年一序：我一直都没有离开，只是换了一种方式存在</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/21/look-back-10-years/">
+          
+          
+            
+          
+          2009第一次看到了正弦曲线。做几何题。
+2010看微积分。去书店买书时，初二的我说我在读高二，长得高也有优势嘛。刷数学吧。初三跑1000米，也没有怎么练，成绩比初二一下提高了至少15秒。
+嫦娥二号发射。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-21 14:02" pubdate>
+              2020-02-21
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/14/ISP-learn-2/">ISP笔记（2）：ISP pipeline总结</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/14/ISP-learn-2/">
+          
+          
+            
+          
+          不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。
+此文绝赞施工中…应该要等到我有更深入理解时，才能写完。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-14 17:38" pubdate>
+              2020-02-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/ISP/">ISP</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/14/To-master/">我想去看京都的樱花</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/14/To-master/">
+          
+          
+            
+          
+          转载一篇知乎回答
+其实，我的导师也和我们说过，保本校并不是一个最优的选择。
+有些不太和谐的内容，原作者的解释如下。我也是和原作者一样的态度，“我嘲笑的是我们自己”，希望不要被同学和老师误会。
+
+触到一部分考研的同学了，在此说声对不起。我想原原本本描述保本校这个群体的真实心理状态，但是真相总会伤人。至于文中那段，懂的人会懂，我嘲笑的是我们自己，不是你们。
+
+
+
+你要是保的本校，没有往上走。一开始你可
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-14 01:15" pubdate>
+              2020-02-14
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/13/week-202002-1/">周记 2020.02.03-02.09</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/13/week-202002-1/">
+          
+          
+            
+          
+          1.dequedeque的声明
+12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-13 13:50" pubdate>
+              2020-02-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/08/ISP-learn-1/">ISP笔记（1）：一个ISP项目的流程梳理</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/08/ISP-learn-1/">
+          
+          
+            
+          
+          通过学习mushfiqulalam/isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。
+基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。
+最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-08 23:25" pubdate>
+              2020-02-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/ISP/">ISP</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/07/rebuild-JincResize-2/">JincResize 代码重构（2）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/07/rebuild-JincResize-2/">
+          
+          
+            
+          
+          指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）
+对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。
+Functions（Doc在这里，直接搜索想查的函数即可）
+（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-07 21:13" pubdate>
+              2020-02-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/07/arch-and-meson/">ArchLinux和Meson构建工具的使用</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/07/arch-and-meson/">
+          
+          
+            
+          
+          爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。
+但这次编译VapourSynth着实让我感觉蛋疼。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-07 00:31" pubdate>
+              2020-02-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/02/06/ported-to-vs-3/">记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/06/ported-to-vs-3/">
+          
+          
+            
+          
+          回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。
+从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x9
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-06 16:45" pubdate>
+              2020-02-06
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/2/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/#board">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/4/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

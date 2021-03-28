@@ -1,5 +1,240 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 从VC++ 6.0到VS——记一个简单窗口程序的迁移 · 308实验室</title><meta name="description" content="从VC++ 6.0到VS——记一个简单窗口程序的迁移 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">从VC++ 6.0到VS——记一个简单窗口程序的迁移</h1><div class="post-info">Dec 27, 2019</div><div class="post-content"><p>重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。
+讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。
+印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…
+限于教学条件，那个时候自然是">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>从VC++ 6.0到VS——记一个简单窗口程序的迁移 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="从VC++ 6.0到VS——记一个简单窗口程序的迁移">
+              
+                从VC++ 6.0到VS——记一个简单窗口程序的迁移
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-12-27 19:21" pubdate>
+        2019年12月27日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.6k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      18
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从VC++ 6.0到VS——记一个简单窗口程序的迁移</h1>
+            
+            <div class="markdown-body">
+              <p>重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。</p>
 <p>讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。</p>
 <p>印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…</p>
 <p>限于教学条件，那个时候自然是基于VC++ 6.0把代码重新改了一遍，然后就交作业了。分数还不错。</p>
@@ -10,32 +245,32 @@
 
 <p>改代码风格不用多说，坑的在后面…</p>
 <h3 id="适应VS"><a href="#适应VS" class="headerlink" title="适应VS"></a>适应VS</h3><h4 id="关于头文件"><a href="#关于头文件" class="headerlink" title="关于头文件"></a>关于头文件</h4><h5 id="graphics-h"><a href="#graphics-h" class="headerlink" title="graphics.h"></a><code>graphics.h</code></h5><p>代码使用了一个古老而且非标准的头文件，<code>graphics.h</code>。既然如此，随便搜了一个头文件就include了。然而…我下的这个头文件本身就有bug…</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> left=<span class="number">0</span>, <span class="keyword">int</span> right=<span class="number">0</span>, <span class="keyword">int</span> right=INT_MAX, <span class="keyword">int</span> bottom=INT_MAX,</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> left=<span class="hljs-number">0</span>, <span class="hljs-keyword">int</span> right=<span class="hljs-number">0</span>, <span class="hljs-keyword">int</span> right=INT_MAX, <span class="hljs-keyword">int</span> bottom=INT_MAX,<br></code></pre></td></tr></table></figure>
 
 <p>把前面那个<code>right</code>改成<code>top</code>，倒也不是什么大问题（反正全世界的图像处理都是这么搞的，从左和上开始定义）。</p>
 <p>然后就是我下的这个<code>graphics.h</code>，和现有的代码八字不合…</p>
 <p>比如，原始代码是这样写的</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outtextxy(<span class="number">225</span>, <span class="number">220</span>, <span class="string">"TWO PHASE DLAGRAM\n"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">outtextxy(<span class="hljs-number">225</span>, <span class="hljs-number">220</span>, <span class="hljs-string">"TWO PHASE DLAGRAM\n"</span>);<br></code></pre></td></tr></table></figure>
 
 <p>按照我下的头文件，第三个参数应当是<code>char *</code>类型，而这里填的<code>&quot;TWO PHASE DLAGRAM\n&quot;</code>是<code>cosnt char *</code>，用强制类型转换解决</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outtextxy(<span class="number">225</span>, <span class="number">220</span>, (<span class="keyword">char</span>*)<span class="string">"TWO PHASE DLAGRAM\n"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">outtextxy(<span class="hljs-number">225</span>, <span class="hljs-number">220</span>, (<span class="hljs-keyword">char</span>*)<span class="hljs-string">"TWO PHASE DLAGRAM\n"</span>);<br></code></pre></td></tr></table></figure>
 
 <p>其余的问题后续再说，总之把类似上面头文件与代码不匹配的问题解决之后，我发现一个严重的事情…我下的这个头文件…仅有函数声明…没有函数定义…（此处应插入一个“你跟这开玩笑呢”的图片）。所以，理论上应该还有个lib库之类的东西…</p>
 <p>（所以报了<code>LINK2019</code>错误）</p>
 <p>算了…不折腾了…搜到了EasyX库，想起来当时在VC++ 6.0上用的也是这个。</p>
 <p>配置好头文件和库文件，但略显蛋疼的是，一些绘图函数的参数类型又不一样了。重新改…</p>
 <p>还是拿上面那个举例，EasyX库下的<code>graphics.h</code>需要<code>char</code>类型</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outtextxy(<span class="number">225</span>, <span class="number">220</span>, (<span class="keyword">char</span>)<span class="string">"TWO PHASE DLAGRAM\n"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">outtextxy(<span class="hljs-number">225</span>, <span class="hljs-number">220</span>, (<span class="hljs-keyword">char</span>)<span class="hljs-string">"TWO PHASE DLAGRAM\n"</span>);<br></code></pre></td></tr></table></figure>
 
 <p>（这样在指针间反复横跳…总感觉哪里不对劲…）</p>
 <p>又比如</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> my[<span class="number">5</span>], mx[<span class="number">5</span>];</span><br><span class="line">outtextxy(X1 + <span class="number">2</span> * i * xstep - <span class="number">10</span>, Y2 + <span class="number">10</span>, mx);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">char</span> my[<span class="hljs-number">5</span>], mx[<span class="hljs-number">5</span>];<br>outtextxy(X1 + <span class="hljs-number">2</span> * i * xstep - <span class="hljs-number">10</span>, Y2 + <span class="hljs-number">10</span>, mx);<br></code></pre></td></tr></table></figure>
 
 <p>而<code>outtextxy()</code>有两种重载形式</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">outtextxy</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, LPCTSTR str)</span></span>;	<span class="comment">// 在指定位置输出字符串</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">outtextxy</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, TCHAR c)</span></span>;		<span class="comment">// 在指定位置输出字符</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">outtextxy</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y, LPCTSTR str)</span></span>;	<span class="hljs-comment">// 在指定位置输出字符串</span><br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">outtextxy</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y, TCHAR c)</span></span>;		<span class="hljs-comment">// 在指定位置输出字符</span><br></code></pre></td></tr></table></figure>
 
 <p>所以把原代码中的<code>char</code>类型强制转换为<code>LPCTSTR</code>类型。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outtextxy(X1 + <span class="number">2</span> * i * xstep - <span class="number">10</span>, Y2 + <span class="number">10</span>, (LPCTSTR));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">outtextxy(X1 + <span class="hljs-number">2</span> * i * xstep - <span class="hljs-number">10</span>, Y2 + <span class="hljs-number">10</span>, (LPCTSTR));<br></code></pre></td></tr></table></figure>
 
 <p><code>LPCTSTR</code>类型先放一下，先说一下函数重载。</p>
 <h5 id="函数重载"><a href="#函数重载" class="headerlink" title="函数重载"></a>函数重载</h5><p>度娘百科上说的还是挺清楚的。</p>
@@ -47,24 +282,24 @@
 <p>目的的话，为了方便吧，能想到的就是这个了。</p>
 <h5 id="继续graphics-h"><a href="#继续graphics-h" class="headerlink" title="继续graphics.h"></a>继续<code>graphics.h</code></h5><p>有些函数变量的含义、个数都变了，照猫画虎地去改。</p>
 <p>参照</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setlinestyle</span><span class="params">(<span class="keyword">int</span> style, <span class="keyword">int</span> thickness = <span class="number">1</span>, <span class="keyword">const</span> DWORD *puserstyle = <span class="literal">NULL</span>, DWORD userstylecount = <span class="number">0</span>)</span></span>;	<span class="comment">// 设置当前画线样式</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setlinestyle</span><span class="hljs-params">(<span class="hljs-keyword">int</span> style, <span class="hljs-keyword">int</span> thickness = <span class="hljs-number">1</span>, <span class="hljs-keyword">const</span> DWORD *puserstyle = <span class="hljs-literal">NULL</span>, DWORD userstylecount = <span class="hljs-number">0</span>)</span></span>;	<span class="hljs-comment">// 设置当前画线样式</span><br></code></pre></td></tr></table></figure>
 
 <p>将</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setlinestyle(<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>);  <span class="comment">//坐标轴几何参数</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">setlinestyle(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">1</span>);  <span class="hljs-comment">//坐标轴几何参数</span><br></code></pre></td></tr></table></figure>
 
 <p>改成</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setlinestyle(<span class="number">0</span>, <span class="number">3</span>);  <span class="comment">//坐标轴几何参数</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">setlinestyle(<span class="hljs-number">0</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">//坐标轴几何参数</span><br></code></pre></td></tr></table></figure>
 
 <p>以上这些绘图函数都是用来美化修饰的，其实参数含义什么的囫囵吞枣就可以，我也不是UI，但<code>initgrah()</code>这个函数还是要关注一下的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 绘图模式相关函数</span></span><br><span class="line"><span class="function">HWND <span class="title">initgraph</span><span class="params">(<span class="keyword">int</span> width, <span class="keyword">int</span> height, <span class="keyword">int</span> flag = <span class="literal">NULL</span>)</span></span>;	<span class="comment">// 初始化图形环境</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 绘图模式相关函数</span><br><span class="hljs-function">HWND <span class="hljs-title">initgraph</span><span class="hljs-params">(<span class="hljs-keyword">int</span> width, <span class="hljs-keyword">int</span> height, <span class="hljs-keyword">int</span> flag = <span class="hljs-literal">NULL</span>)</span></span>;	<span class="hljs-comment">// 初始化图形环境</span><br></code></pre></td></tr></table></figure>
 
 <p>上面是头文件中的声明，但我的原始代码画风有点不一样</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> gdriver = DETECT, graphmode;</span><br><span class="line">initgraph(&amp;gdriver, &amp;graphmode, <span class="string">"E:\\TurboC3cn\\BGI"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> gdriver = DETECT, graphmode;<br>initgraph(&amp;gdriver, &amp;graphmode, <span class="hljs-string">"E:\\TurboC3cn\\BGI"</span>);<br></code></pre></td></tr></table></figure>
 
 <p>恕我孤陋寡闻，这样声明和初始化两个变量，真的是…</p>
 <p>当初我改代码时，似乎也没有动这个地方…所以那个路径我当时是怎么编译通过的…orz…</p>
 <p>按照度娘百科给的函数原型，应该更符合原始代码（因为度娘的词条似乎就是针对（原始的）<code>graphics.h</code>写的，而相比我用的EasyX库，至少对于针对VS2019版本的头文件，是不一样的）。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> far <span class="title">initgraph</span><span class="params">(<span class="keyword">int</span> far *gdriver, <span class="keyword">int</span> far *gmode, <span class="keyword">char</span> *path)</span></span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">void</span> far <span class="hljs-title">initgraph</span><span class="hljs-params">(<span class="hljs-keyword">int</span> far *gdriver, <span class="hljs-keyword">int</span> far *gmode, <span class="hljs-keyword">char</span> *path)</span></span>;<br></code></pre></td></tr></table></figure>
 
 <p>嘛…不管了，反正就依照我现在用的头文件，把参数改一下，现在的参数含义还更好理解。</p>
 <p>关于<code>_T(&quot;黑体&quot;)</code>的问题，似乎是解决了，这个没细看。</p>
@@ -80,4 +315,223 @@
 <li>关于<code>char</code>和<code>string</code>等类型的关系和转换</li>
 </ul>
 <p>但代码中仍有一些地方值得我去看，比如<code>extern</code>。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2019/12/27/OpenCV-learn-1/" class="prev">PREV</a><a href="/2019/12/22/week-201912-3/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Code/">Code</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/12/27/OpenCV-learn-1/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OpenCV学习笔记（1）：入门、傅里叶变换与亮度对比度调整</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/22/week-201912-3/">
+                        <span class="hidden-mobile">周记 2019.12.16-12.22</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

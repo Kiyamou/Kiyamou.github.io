@@ -1,30 +1,817 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 308实验室</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link active">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2021/01/12/2020-summary/" class="post-title-link">2020年终总结：只一眼，梵音也渐远</a></h2><div class="post-info">Jan 12, 2021</div><div class="post-content"><blockquote>
-<p>若非那年 总角放纸鸢</p>
-<p>风中断线 恣意翩跹</p>
-<p>空旷禅院 独落你脚边</p>
-<p>只一眼 梵音也渐远</p>
-</blockquote>
-<p>因为疫情，回望2020年，显得尤为短暂。仿佛前两天还是2020年寒假前坐在屏幕前敲代码的时光，现在却是另一番光景。</p></div><a href="/2021/01/12/2020-summary/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/07/28/2020-mid-books/" class="post-title-link">2020 年中书单/影评：在终止彷徨，在结束动荡</a></h2><div class="post-info">Jul 28, 2020</div><div class="post-content"><blockquote>
-<p>你在终止彷徨  你在结束动荡</p>
-<p>你成为垂衣驭八荒的王</p>
-<p>你低下头与我相望  将金色徽章戴在我肩膀</p>
-<p>你眼中分明蛰藏  锁死我危险却迷人的欲望</p>
-<p>——《国境四方》</p>
-</blockquote>
-<p>开了一个新系列，记载 2019 年下半年至 2020 年上半年读过的书和看过的视频。</p></div><a href="/2020/07/28/2020-mid-books/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/06/26/dehazingce-port/" class="post-title-link">DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移</a></h2><div class="post-info">Jun 26, 2020</div><div class="post-content"><p>这一去雾算法在2013年提出，论文见 <a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">Optimized contrast enhancement for real-time image and video dehazing</a>，我们称其为 DehazingCE （CE = contrast enhancement）。</p>
-<h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。</p></div><a href="/2020/06/26/dehazingce-port/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/05/30/Dont-starve/" class="post-title-link">《饥荒》食谱个人点评</a></h2><div class="post-info">May 30, 2020</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>这几天一直在玩《饥荒》，起因是想起大一和几个室友联机打游戏的场景；而且虽然我已经在 Steam 补票，但一直没怎么玩，于是重新开始，沉迷了几天。写一写这几天打游戏的感受，主要是点评食谱以及围绕食谱展开的生存模式。</p></div><a href="/2020/05/30/Dont-starve/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/30/nnedi3/" class="post-title-link">nnedi3 相关代码学习</a></h2><div class="post-info">Apr 30, 2020</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>其实不知道有没有必要像这样，为并不是很复杂的源码煞有介事地写一份包含个人感想的阅读笔记。但不得不说，<a href="https://forum.doom9.org/showthread.php?t=147695" target="_blank" rel="noopener">nnedi3</a> 相关的内容，从我最开始接触图像处理，就一直萦绕在心头。一直觉得 nnedi3 很神奇，抗锯齿用它，重采样放大也用它，因为用了神经网络更显得高大上。另一方面，随着 Deep Learning 浪潮涌起，有些人开始质疑对 Deep Learning 的跟风。于是有种错觉，用传统神经网络的 nnedi3，既套上了光环，又躲过了质疑。</p>
-<p>起初接触 nnedi3 是通过 <a href="https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&t=1117" target="_blank" rel="noopener">nnedi3_resize16</a> 这个流传甚广的缩放脚本。之后在我学会 deband 与边缘检测后，很长时间没有继续学新东西，几乎过了一年，我才接触到 nnedi3 的抗锯齿用途。又跨过大半年，在我熟悉 Github 之后，到第二年的秋天，我又看到了优化版的 <a href="https://github.com/sekrit-twc/znedi3" target="_blank" rel="noopener">znedi3</a> 和 <a href="(https://github.com/HomeOfVapourSynthEvolution/VapourSynth-NNEDI3CL)">nnedi3cl</a>。某种角度上，nnedi3 贯穿了我到目前为止的图像处理学习过程。</p></div><a href="/2020/04/30/nnedi3/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/dehazing/" class="post-title-link">一些较新的去雾（dehazing）算法</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"><p>提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。</p></div><a href="/2020/04/28/dehazing/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/week-202003-3/" class="post-title-link">周记 2020.03.16-03.22</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"><p>strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？</p>
-<p>学习编程的三个方向<br>1.整体结构设计，特别以类和对象为基础的面向对象的构成<br>2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情<br>3.Debug，找bug并更正的能力</p></div><a href="/2020/04/28/week-202003-3/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/week-202003-2/" class="post-title-link">周记 2020.03.09-03.15</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"><h3 id="C-语法"><a href="#C-语法" class="headerlink" title="C++语法"></a>C++语法</h3><h4 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a><code>explicit</code></h4><p><code>explicit</code>用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：<a href="https://zh.cppreference.com/w/cpp/language/explicit）。" target="_blank" rel="noopener">https://zh.cppreference.com/w/cpp/language/explicit）。</a></p>
-<p><strong>功能</strong></p>
-<ul>
-<li>被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换</li>
-<li>不能用于复制初始化</li>
-</ul>
-<p><strong>注意</strong></p>
-<ul>
-<li><code>explicit</code>只能用于构造函数的声明</li>
-</ul></div><a href="/2020/04/28/week-202003-2/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/from-vs-to-cpp/" class="post-title-link">从 VapourSynth API 到 C++ 基础知识</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"><p><del>副标题：从 C + isotream 到 C++</del></p>
-<p>（这是1月底写一点随笔，然后就被丢到一边不管了）</p>
-<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><p>全面讲述智能指针的文章：<a href="https://juejin.im/post/5dcaa857e51d457f7675360b" target="_blank" rel="noopener">https://juejin.im/post/5dcaa857e51d457f7675360b</a></p>
-<p>熟悉的<code>unique_ptr</code>，是“拥有独有对象所有权语义的智能指针”。</p></div><a href="/2020/04/28/from-vs-to-cpp/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/Tonemapping/" class="post-title-link">色调映射（Tone mapping）</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"><p>在<a href="https://kiyamou.github.io/2020/02/08/ISP-learn-1/" target="_blank" rel="noopener">之前的博文</a>中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。</p></div><a href="/2020/04/28/Tonemapping/" class="read-more">...more</a></article></li></ul></main><footer><div class="paginator"><a href="/page/2/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="An elegant Material-Design theme for Hexo">
+              
+                An elegant Material-Design theme for Hexo
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2021/01/12/2020-summary/">2020 年终总结：只一眼，梵音也渐远</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2021/01/12/2020-summary/">
+          
+          
+            
+          
+          
+若非那年 总角放纸鸢
+风中断线 恣意翩跹
+空旷禅院 独落你脚边
+只一眼 梵音也渐远
+
+因为疫情，回望2020年，显得尤为短暂。仿佛前两天还是2020年寒假前坐在屏幕前敲代码的时光，现在却是另一番光景。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2021-01-12 11:37" pubdate>
+              2021-01-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/07/28/2020-mid-books/">2020 年中书单/影评：在终止彷徨，在结束动荡</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/07/28/2020-mid-books/">
+          
+          
+            
+          
+          
+你在终止彷徨  你在结束动荡
+你成为垂衣驭八荒的王
+你低下头与我相望  将金色徽章戴在我肩膀
+你眼中分明蛰藏  锁死我危险却迷人的欲望
+——《国境四方》
+
+开了一个新系列，记载 2019 年下半年至 2020 年上半年读过的书和看过的视频。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-07-28 02:32" pubdate>
+              2020-07-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/06/26/dehazingce-port/">DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/06/26/dehazingce-port/">
+          
+          
+            
+          
+          这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE = contrast enhancement）。
+算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-06-26 00:42" pubdate>
+              2020-06-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/05/30/Dont-starve/">《饥荒》食谱个人点评</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/05/30/Dont-starve/">
+          
+          
+            
+          
+          引言这几天一直在玩《饥荒》，起因是想起大一和几个室友联机打游戏的场景；而且虽然我已经在 Steam 补票，但一直没怎么玩，于是重新开始，沉迷了几天。写一写这几天打游戏的感受，主要是点评食谱以及围绕食谱展开的生存模式。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-05-30 01:56" pubdate>
+              2020-05-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E4%BA%8C%E6%AC%A1%E5%85%83%E4%B8%8E%E6%B8%B8%E6%88%8F/">二次元与游戏</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/30/nnedi3/">nnedi3 相关代码学习</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/30/nnedi3/">
+          
+          
+            
+          
+          引言其实不知道有没有必要像这样，为并不是很复杂的源码煞有介事地写一份包含个人感想的阅读笔记。但不得不说，nnedi3 相关的内容，从我最开始接触图像处理，就一直萦绕在心头。一直觉得 nnedi3 很神奇，抗锯齿用它，重采样放大也用它，因为用了神经网络更显得高大上。另一方面，随着 Deep Learning 浪潮涌起，有些人开始质疑对 Deep Learning 的跟风。于是有种错觉，用传统神经网络
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-30 21:17" pubdate>
+              2020-04-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/dehazing/">一些较新的去雾（dehazing）算法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/dehazing/">
+          
+          
+            
+          
+          提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 21:12" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/week-202003-3/">周记 2020.03.16-03.22</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/week-202003-3/">
+          
+          
+            
+          
+          strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？
+学习编程的三个方向1.整体结构设计，特别以类和对象为基础的面向对象的构成2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情3.Debug，找bug并更正的能力
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 16:25" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/week-202003-2/">周记 2020.03.09-03.15</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/week-202003-2/">
+          
+          
+            
+          
+          C++语法explicitexplicit用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：https://zh.cppreference.com/w/cpp/language/explicit）。
+功能
+
+被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换
+不能用于复制初始化
+
+注意
+
+explicit只能用于构造函数的声明
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 16:23" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/from-vs-to-cpp/">从 VapourSynth API 到 C++ 基础知识</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/from-vs-to-cpp/">
+          
+          
+            
+          
+          副标题：从 C + isotream 到 C++
+（这是1月底写一点随笔，然后就被丢到一边不管了）
+智能指针全面讲述智能指针的文章：https://juejin.im/post/5dcaa857e51d457f7675360b
+熟悉的unique_ptr，是“拥有独有对象所有权语义的智能指针”。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 16:16" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/Tonemapping/">色调映射（Tone mapping）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/Tonemapping/">
+          
+          
+            
+          
+          在之前的博文中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 16:07" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="page-number" href="/page/3/#board">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

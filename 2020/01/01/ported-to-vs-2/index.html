@@ -1,9 +1,245 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下 · 308实验室</title><meta name="description" content="记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下</h1><div class="post-info">Jan 1, 2020</div><div class="post-content"><p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。
+为了加强理解、尽量全面，可能会有些重复的话。
+srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。
+关于srcp和dstp，通常这样定义
+12const T* srcp =">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下">
+              
+                记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-01-01 00:54" pubdate>
+        2020年1月1日 凌晨
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.4k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      15
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">记一次从AviSynth到VapourSynth的迁移（2）：感受不同的API 下</h1>
+            
+            <div class="markdown-body">
+              <p>距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。</p>
 <p>为了加强理解、尽量全面，可能会有些重复的话。</p>
 <h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
 <p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> T* srcp = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));</span><br><span class="line">T* VS_RESTRICT dstp = <span class="keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">const</span> T* srcp = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));<br>T* VS_RESTRICT dstp = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));<br></code></pre></td></tr></table></figure>
 
 <ol>
 <li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
@@ -14,12 +250,12 @@
 
 <h3 id="stride的理解"><a href="#stride的理解" class="headerlink" title="stride的理解"></a><code>stride</code>的理解</h3><p>avs api和vs api的一大区别，就是隐藏在习惯变量名不同（<code>pitch</code>与<code>stride</code>）之下的单位问题。</p>
 <p>从Doc上看，avs api获取的<code>pitch</code>和vs api获取的<code>stride</code>都是以字节为单位。在使用中，vs框架下要除以变量所占的字节，即</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="keyword">sizeof</span>(T);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="hljs-keyword">sizeof</span>(T);<br></code></pre></td></tr></table></figure>
 
 <p>但我读过的几份avs滤镜代码，都是直接用的，没有除<code>sizeof</code>。</p>
 <p>突然明白，我忘了一个事情，<strong><code>sizeof(uint8_t)</code> = 1啊</strong>，所以不需要除<code>sizeof</code>，是不是以字节为单位，都是一样的啊。</p>
 <h5 id="疑问的解释"><a href="#疑问的解释" class="headerlink" title="疑问的解释"></a>疑问的解释</h5><p>我一直在纠结下面的avs与vs代码会不会有区别。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// avs</span></span><br><span class="line">srcp += src_pitch;</span><br><span class="line">dstp += target_width;</span><br><span class="line"><span class="comment">// vs</span></span><br><span class="line">srcp += src_stride;</span><br><span class="line">dstp += target_width; <span class="comment">// dstp += dst_stride;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// avs</span><br>srcp += src_pitch;<br>dstp += target_width;<br><span class="hljs-comment">// vs</span><br>srcp += src_stride;<br>dstp += target_width; <span class="hljs-comment">// dstp += dst_stride;</span><br></code></pre></td></tr></table></figure>
 
 <p>但其实这个问题是不存在的。对于avs，基于全程8bit的假设，<code>sizeof</code> = 1，虽然<code>src_pitch</code>是以字节为单位，但数值上与<code>target_width</code>是同级的；对于vs，<code>src_stride</code>是除过<code>sizof</code>的，与<code>target_width</code>单位一致。</p>
 <p>所以无论vs怎么写，与avs都是一致的，且<code>srcp</code>与<code>dstp</code>数值都是同级的。</p>
@@ -33,10 +269,10 @@
 <p>经过了一个<code>void</code>函数，函数内的全局变量（或者是生存期大过该函数的变量）已经被改变。简单地说，就是“酒肉穿肠过，该变的都变了”的意思。</p>
 <h3 id="vsapi的理解"><a href="#vsapi的理解" class="headerlink" title="vsapi的理解"></a><code>vsapi</code>的理解</h3><p>可以将滤镜分为两类：一类是resize型滤镜，输入输出的尺寸不一致；一类是非resize型滤镜，输入输出的尺寸一致。</p>
 <p>对于后者，在初始化函数<code>FilterInit()</code>中，只需原样写下<code>vi</code>即可</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> VS_CC <span class="title">FilterInit</span><span class="params">(VSMap* in, VSMap* out, <span class="keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);</span><br><span class="line">    vsapi-&gt;setVideoInfo(d-&gt;vi, <span class="number">1</span>, node);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);<br>    vsapi-&gt;setVideoInfo(d-&gt;vi, <span class="hljs-number">1</span>, node);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>对于前者，要在初始化中将尺寸改写为输出尺寸</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> VS_CC <span class="title">FilterInit</span><span class="params">(VSMap* in, VSMap* out, <span class="keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="keyword">const</span> VSAPI* vsapi)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FilterData* d = <span class="keyword">static_cast</span>&lt;FilterData*&gt;(*intanceData);</span><br><span class="line">    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;</span><br><span class="line">    dst_vi.width = d-&gt;output_width;</span><br><span class="line">    dst_vi.height = d-&gt;output_height;</span><br><span class="line">    vsapi-&gt;setVideoInfo(&amp;dst_vi, <span class="number">1</span>, node); <span class="comment">// 注意d-&gt;vi是指针，这里要取地址</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-keyword">static_cast</span>&lt;FilterData*&gt;(*intanceData);<br>    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;<br>    dst_vi.width = d-&gt;output_width;<br>    dst_vi.height = d-&gt;output_height;<br>    vsapi-&gt;setVideoInfo(&amp;dst_vi, <span class="hljs-number">1</span>, node); <span class="hljs-comment">// 注意d-&gt;vi是指针，这里要取地址</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这样就保证了输出的<code>dst</code>是resize后的尺寸，否则照上面那样写，（与输入源不一样的尺寸）会报错。</p>
 <p>写法不是唯一的，也可以在<code>FilterCreate()</code>函数里写，只是我还不太会…</p>
@@ -47,4 +283,227 @@
 <h3 id="C-的基础"><a href="#C-的基础" class="headerlink" title="C++的基础"></a>C++的基础</h3><h4 id="进一步理解C-的类型转换"><a href="#进一步理解C-的类型转换" class="headerlink" title="进一步理解C++的类型转换"></a>进一步理解C++的类型转换</h4><h4 id="编译相关"><a href="#编译相关" class="headerlink" title="编译相关"></a>编译相关</h4><p>两次编译的结果，hash不会一样的，但二进制文件大小一样。</p>
 <h4 id="零散的知识点"><a href="#零散的知识点" class="headerlink" title="零散的知识点"></a>零散的知识点</h4><p>递归函数（调用了自身的函数）没法内联。</p>
 <p>静态函数（用<code>static</code>关键字声明）不可在文件外被调用。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2020/01/15/Thanks-Letter-OpenSource/" class="prev">PREV</a><a href="/2019/12/28/ported-to-vs/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/Code/">Code</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Avisynth/">Avisynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/01/15/Thanks-Letter-OpenSource/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">转 · 开源感谢信</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/12/28/ported-to-vs/">
+                        <span class="hidden-mobile">记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

@@ -1,62 +1,844 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 308实验室</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/11/19/trans-c-to-cpp/" class="post-title-link">记一次从C语言到C++的迁移——初次接触VapourSynth API</a></h2><div class="post-info">Nov 19, 2019</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，<a href="https://github.com/Lypheo/EWA-Resampling-VS" target="_blank" rel="noopener">https://github.com/Lypheo/EWA-Resampling-VS</a> 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。</p>
-<p>所以我想在原作者代码的基础上，先完善上述输入问题。至少要支持整型8bit YUV输入，后续再考虑支持32bit浮点数输入。</p>
-<p>阅读了原作者代码和其他一些较为成熟的基于VapourSynth实现的代码，大致明白了VapourSynth API调用的过程和基础的代码结构。至少对于Jinc算法，在整型8-16bit的范围内，支持的输入类型仅取决于关键变量的类型定义（这话看起来是一句正确的废话，要怪就怪C++是一门强类型语言Orz）。</p>
-<p>再具体一点，支持8bit需要使用<code>uint8_t</code>来定义关键变量，支持9~16bit需要使用<code>unit16_t</code>来定义关键变量。所以要在代码中，根据输入视频的位深进行类型转换。</p>
-<p>在C语言中，我能想到的就是使用宏来完成上述过程。但是复杂一点宏我就不会写…而且宏也不安全…我还是用C++的模板来写吧。看了一下不同前辈们的代码，也都是用模板来写的，<del>方便Copy</del>。</p></div><a href="/2019/11/19/trans-c-to-cpp/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/11/03/git-use-1/" class="post-title-link">Git的使用：创建SSH key、多账号共存、提交代码及进阶使用</a></h2><div class="post-info">Nov 3, 2019</div><div class="post-content"><h2 id="创建SSH-key"><a href="#创建SSH-key" class="headerlink" title="创建SSH key"></a>创建SSH key</h2><h3 id="创建密钥"><a href="#创建密钥" class="headerlink" title="创建密钥"></a>创建密钥</h3><p>在Windows下，使用Git bash，创建秘钥。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
 
-<p>在这一步可以使用<code>-C &#39;comment&#39;</code>对秘钥进行注释。一些教程中要求在<code>-C</code>后写邮箱，其实写什么都可以，不写也行，注释而已。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
 
-<p>默认的密钥为2048位，可以使用<code>-b</code>指定密钥位数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -b 4096 -C <span class="string">'comment'</span></span><br></pre></td></tr></table></figure>
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
 
-<p>之后会确认密钥文件的存放位置和文件名，如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Enter file in which to save the key (&#x2F;c&#x2F;Users&#x2F;UserName&#x2F;.ssh&#x2F;id_rsa):</span><br></pre></td></tr></table></figure>
 
-<p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
-<p>之后会要求设置密码，回车则密码留空。</p>
-<p>看到<code>The key&#39;s randomart image is:</code>和创建密钥时的随机图像，即为创建成功。</p></div><a href="/2019/11/03/git-use-1/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/10/24/python-Q-A/" class="post-title-link">Python Q&A</a></h2><div class="post-info">Oct 24, 2019</div><div class="post-content"><p>记录一些基础简单的东西，随时更新。<del>我太笨了记不住东西，啦啦啦</del></p>
-<p><strong>Question</strong>：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了<code>Python\Python3x\Lib\site-packages</code>中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似<code>dll failed</code>的错误。</p>
-<p><strong>Answer</strong>：把<code>Python\Python3x\Lib\site-packages</code>写入系统环境变量，否则PyCharm依旧找不到。</p>
-<p><strong>Question</strong>：占位符（tap）与空格的问题</p>
-<p><strong>Answer</strong>：Notepad++和Atom均有显示占位符和空格的选项。</p>
-<p><strong>Question</strong>：为什么VapouSynth API的函数<code>propGetFloat()</code>名字写作float，却是double类型？</p>
-<p><strong>Answer</strong>：猜测是基于VapouSynth以C++为后端、以Python为前端的模式而故意为之，因为Python中浮点数只有float类型，其与C++的double类型相似。</p></div><a href="/2019/10/24/python-Q-A/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/10/20/mxnet-install-win/" class="post-title-link">Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）</a></h2><div class="post-info">Oct 20, 2019</div><div class="post-content"><p>记录一下在Windows下安装GPU版MXNet时踩到的坑。</p>
-<p>MXNet安装引导：<a href="http://mxnet.incubator.apache.org/get_started" target="_blank" rel="noopener">http://mxnet.incubator.apache.org/get_started</a></p>
-<p>MXNet版本选择master，其余根据实际情况选择。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install mxnet-cu91 --pre</span><br></pre></td></tr></table></figure>
 
-<p>安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">"import mxnet; print(mxnet.__version__)"</span></span><br></pre></td></tr></table></figure>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>308实验室</title>
 
-<p>我在检测安装是否成功时，出现以下报错。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File &quot;&lt;string&gt;&quot;, line 1, in &lt;module&gt;</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\__init__.py&quot;, line 24, in &lt;module&gt;</span><br><span class="line">    from .context import Context, current_context, cpu, gpu, cpu_pinned</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\context.py&quot;, line 24, in &lt;module&gt;</span><br><span class="line">    from .base import classproperty, with_metaclass, _MXClassPropertyMetaClass</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;, line 214, in &lt;module&gt;</span><br><span class="line">    _LIB &#x3D; _load_lib()</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;, line 205, in _load_lib</span><br><span class="line">    lib &#x3D; ctypes.CDLL(lib_path[0], ctypes.RTLD_LOCAL)</span><br><span class="line">  File &quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\ctypes\__init__.py&quot;, line 348, in __init__</span><br><span class="line">    self._handle &#x3D; _dlopen(self._name, mode)</span><br><span class="line">OSError: [WinError 126] The specified module could not be found</span><br></pre></td></tr></table></figure>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
-<p><code>OSError: [WinError 126]</code>应该是一个很通用的报错，可以理解为没有找到所需的dll。</p>
-<p>正如一位Github网友所说，这个报错只告诉你缺少dll，却不会告诉你缺少了什么dll。没办法，自力更生。</p></div><a href="/2019/10/20/mxnet-install-win/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/10/20/from-avs-to-vs/" class="post-title-link">从Avisynth到VapourSynth：一些方法的迁移</a></h2><div class="post-info">Oct 20, 2019</div><div class="post-content"><p>VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。</p>
-<p>因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。</p>
-<p>有什么错误的地方还请大家指正~</p>
-<p>默认import如下内容。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> vapoursynth <span class="keyword">as</span> vs</span><br><span class="line">core = vs.get_core()</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mvsfunc <span class="keyword">as</span> mvf</span><br><span class="line"><span class="keyword">import</span> havsfunc <span class="keyword">as</span> haf</span><br></pre></td></tr></table></figure></div><a href="/2019/10/20/from-avs-to-vs/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/10/17/hello-world/" class="post-title-link">Hello World</a></h2><div class="post-info">Oct 17, 2019</div><div class="post-content"></div><a href="/2019/10/17/hello-world/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/07/05/literature001/" class="post-title-link">文献阅读 1811.12231</a></h2><div class="post-info">Jul 5, 2019</div><div class="post-content"><p>从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。</p>
-<p>（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）</p>
-<p>However，上面几个模型好像有点复杂，所以先从LeNet-5开始。</p></div><a href="/2019/07/05/literature001/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/07/04/caffe-day14/" class="post-title-link">Day14 Caffe实用工具</a></h2><div class="post-info">Jul 4, 2019</div><div class="post-content"><p>《21天实战Caffe》学习笔记第14天</p>
-<p>我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。</p></div><a href="/2019/07/04/caffe-day14/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/06/30/caffe-day19/" class="post-title-link">Day19 放之四海而皆准</a></h2><div class="post-info">Jun 30, 2019</div><div class="post-content"><p>《21天实战Caffe》学习笔记第19天</p>
-<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a href="http://github.com/fzliu/style-transfer" target="_blank" rel="noopener">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
-<p>测试命令如下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd style-transfer</span><br><span class="line">python style.py -s images&#x2F;style&#x2F;starry_night.jpg -c images&#x2F;content&#x2F;johannesburg.jpg -g -1</span><br></pre></td></tr></table></figure>
 
-<p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
-<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ValueError: can not convert object to float64.</span><br></pre></td></tr></table></figure>
 
-<p>根据<a href="https://github.com/BVLC/caffe/issues/438" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
-<p>即在<code>style.py</code>开头添加如下语句。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> skimage <span class="keyword">import</span> io; io.use_plugin(<span class="string">'matplotlib'</span>)</span><br></pre></td></tr></table></figure>
+<!-- 主题依赖的图标库，不要自行修改 -->
 
-<p>Error 1解决。</p>
-<p>（这个Error可能是我的python site-packages版本较旧的原因？）</p></div><a href="/2019/06/30/caffe-day19/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2019/06/28/caffe-day18/" class="post-title-link">Day18 关于ILSVRC不得不说的一些事儿</a></h2><div class="post-info">Jun 28, 2019</div><div class="post-content"><p>《21天实战Caffe》学习笔记第18天</p>
-<p>因为ILSVRC数据集过于庞大，没有操作。</p>
-<p>因为涉及到去均值，回去读了一下Day14中提到的计算均值代码。</p>
-<p>这一代码相对于前面求解器的实现、传播的实现等代码，看上去简单了。</p>
-<p>又看了一下一个caffe应用实例的代码，代码更是简单了。</p></div><a href="/2019/06/28/caffe-day18/" class="read-more">...more</a></article></li></ul></main><footer><div class="paginator"><a href="/page/5/" class="prev">PREV</a><a href="/page/7/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="An elegant Material-Design theme for Hexo">
+              
+                An elegant Material-Design theme for Hexo
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/11/19/trans-c-to-cpp/">记一次从C语言到C++的迁移——初次接触VapourSynth API</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/11/19/trans-c-to-cpp/">
+          
+          
+            
+          
+          引言想在VapourSynth中实现Jinc（EWA Lanczos）放大算法，已经有一份实现，https://github.com/Lypheo/EWA-Resampling-VS 。但这份代码仅支持整型16bit输入（严格来说是仅支持整型9~16bit输入，作者说仅支持16bit RGB输入，但无论看代码还是实际测试，16bit YUV和10bit YUV都是支持的）。
+所以我想在原作者代码的
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-11-19 19:18" pubdate>
+              2019-11-19
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/11/03/git-use-1/">Git的使用：创建SSH key、多账号共存、提交代码及进阶使用</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/11/03/git-use-1/">
+          
+          
+            
+          
+          创建SSH key创建密钥在Windows下，使用Git bash，创建秘钥。
+1ssh-keygen -t rsa
+
+在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。
+1ssh-keygen -t rsa -C 'comment'
+
+默认的密钥为2048位，可以使用-b指定密钥位数。
+1ssh-keyge
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-11-03 12:33" pubdate>
+              2019-11-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Git/">Git</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/10/24/python-Q-A/">Python Q&amp;A</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/10/24/python-Q-A/">
+          
+          
+            
+          
+          记录一些基础简单的东西，随时更新。我太笨了记不住东西，啦啦啦
+Question：PyCharm报错，但cmd不报错。具体情况为把想调用的dll或.py文件放到了Python\Python3x\Lib\site-packages中，并且已经设置好了本地的python.exe解释器，但PyCharm就是无法正常运行，出现类似dll failed的错误。
+Answer：把Python\Python3x\
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-10-24 23:31" pubdate>
+              2019-10-24
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Python/">Python</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/10/20/mxnet-install-win/">Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/10/20/mxnet-install-win/">
+          
+          
+            
+          
+          记录一下在Windows下安装GPU版MXNet时踩到的坑。
+MXNet安装引导：http://mxnet.incubator.apache.org/get_started
+MXNet版本选择master，其余根据实际情况选择。
+1pip install mxnet-cu91 --pre
+
+安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。
+1python -c "import m
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-10-20 17:44" pubdate>
+              2019-10-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/MXNet/">MXNet</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/10/20/from-avs-to-vs/">从Avisynth到VapourSynth：一些方法的迁移</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/10/20/from-avs-to-vs/">
+          
+          
+            
+          
+          VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。
+因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。
+有什么错误的地方还请大家指正~
+默认import如下内容。
+12345import vapoursynth as vscore = vs.get_core()impor
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-10-20 10:48" pubdate>
+              2019-10-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+              <a href="/tags/Avisynth/">Avisynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/10/17/hello-world/">Hello World</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/10/17/hello-world/">
+          
+          
+          
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-10-17 19:17" pubdate>
+              2019-10-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/05/literature001/">文献阅读 1811.12231</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/05/literature001/">
+          
+          
+            
+          
+          从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。
+（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）
+However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-05 23:12" pubdate>
+              2019-07-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/07/04/caffe-day14/">Day14 Caffe实用工具</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/07/04/caffe-day14/">
+          
+          
+            
+          
+          《21天实战Caffe》学习笔记第14天
+我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-07-04 23:25" pubdate>
+              2019-07-04
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Caffe/">Caffe</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/30/caffe-day19/">Day19 放之四海而皆准</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/30/caffe-day19/">
+          
+          
+            
+          
+          《21天实战Caffe》学习笔记第19天
+艺术风格迁移运行http://github.com/fzliu/style-transfer的脚本，运行中有几个小问题。
+测试命令如下。
+12cd style-transferpython style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1
+
+
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-30 22:51" pubdate>
+              2019-06-30
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Caffe/">Caffe</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2019/06/28/caffe-day18/">Day18 关于ILSVRC不得不说的一些事儿</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2019/06/28/caffe-day18/">
+          
+          
+            
+          
+          《21天实战Caffe》学习笔记第18天
+因为ILSVRC数据集过于庞大，没有操作。
+因为涉及到去均值，回去读了一下Day14中提到的计算均值代码。
+这一代码相对于前面求解器的实现、传播的实现等代码，看上去简单了。
+又看了一下一个caffe应用实例的代码，代码更是简单了。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2019-06-28 23:43" pubdate>
+              2019-06-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Caffe/">Caffe</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/5/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/#board">4</a><a class="page-number" href="/page/5/#board">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/#board">7</a><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/7/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

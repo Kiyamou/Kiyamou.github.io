@@ -1,5 +1,237 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> nnedi3 相关代码学习 · 308实验室</title><meta name="description" content="nnedi3 相关代码学习 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">nnedi3 相关代码学习</h1><div class="post-info">Apr 30, 2020</div><div class="post-content"><h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>其实不知道有没有必要像这样，为并不是很复杂的源码煞有介事地写一份包含个人感想的阅读笔记。但不得不说，<a href="https://forum.doom9.org/showthread.php?t=147695" target="_blank" rel="noopener">nnedi3</a> 相关的内容，从我最开始接触图像处理，就一直萦绕在心头。一直觉得 nnedi3 很神奇，抗锯齿用它，重采样放大也用它，因为用了神经网络更显得高大上。另一方面，随着 Deep Learning 浪潮涌起，有些人开始质疑对 Deep Learning 的跟风。于是有种错觉，用传统神经网络的 nnedi3，既套上了光环，又躲过了质疑。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="引言其实不知道有没有必要像这样，为并不是很复杂的源码煞有介事地写一份包含个人感想的阅读笔记。但不得不说，nnedi3 相关的内容，从我最开始接触图像处理，就一直萦绕在心头。一直觉得 nnedi3 很神奇，抗锯齿用它，重采样放大也用它，因为用了神经网络更显得高大上。另一方面，随着 Deep Learning 浪潮涌起，有些人开始质疑对 Deep Learning 的跟风。于是有种错觉，用传统神经网络">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>nnedi3 相关代码学习 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="nnedi3 相关代码学习">
+              
+                nnedi3 相关代码学习
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2020-04-30 21:17" pubdate>
+        2020年4月30日 晚上
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.8k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      23
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">nnedi3 相关代码学习</h1>
+            
+            <div class="markdown-body">
+              <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>其实不知道有没有必要像这样，为并不是很复杂的源码煞有介事地写一份包含个人感想的阅读笔记。但不得不说，<a href="https://forum.doom9.org/showthread.php?t=147695" target="_blank" rel="noopener">nnedi3</a> 相关的内容，从我最开始接触图像处理，就一直萦绕在心头。一直觉得 nnedi3 很神奇，抗锯齿用它，重采样放大也用它，因为用了神经网络更显得高大上。另一方面，随着 Deep Learning 浪潮涌起，有些人开始质疑对 Deep Learning 的跟风。于是有种错觉，用传统神经网络的 nnedi3，既套上了光环，又躲过了质疑。</p>
 <p>起初接触 nnedi3 是通过 <a href="https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&t=1117" target="_blank" rel="noopener">nnedi3_resize16</a> 这个流传甚广的缩放脚本。之后在我学会 deband 与边缘检测后，很长时间没有继续学新东西，几乎过了一年，我才接触到 nnedi3 的抗锯齿用途。又跨过大半年，在我熟悉 Github 之后，到第二年的秋天，我又看到了优化版的 <a href="https://github.com/sekrit-twc/znedi3" target="_blank" rel="noopener">znedi3</a> 和 <a href="(https://github.com/HomeOfVapourSynthEvolution/VapourSynth-NNEDI3CL)">nnedi3cl</a>。某种角度上，nnedi3 贯穿了我到目前为止的图像处理学习过程。</p>
 <a id="more"></a>
 
@@ -9,7 +241,7 @@
 <p>重新审视一下 VapourSynth Plugin 框架的四个函数，初始化函数 Init() 和 释放内存函数 Free() 不必多说，从计算内容的角度看，GetFrame() 函数是与图像内容相关的计算，会用到像素点的数据，而 Create() 函数（除获取参数外）则是无关像素点数值的计算，至多会用到视频格式的信息。从两个函数的名字上看也能看出这一点。</p>
 <p>NNEDI3CL 因为涉及 OpenCL，且参数较多，Create() 函数中报错信息占了较长的篇幅。nnedi3 最原始的用途是隔行插值反交错，所以在 GetFrame() 函数中，比只处理逐行的滤镜，多了 field / 场信息的判断。</p>
 <p>大致浏览完这些信息，核心处理从<code>nnedi3_weights.bin</code>文件入手。</p>
-<h4 id="主要数据"><a href="#主要数据" class="headerlink" title="主要数据"></a>主要数据</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">compute::command_queue <span class="built_in">queue</span>;</span><br><span class="line">compute::kernel kernel;</span><br><span class="line">compute::image2d src, dst, tmp;</span><br><span class="line">compute::buffer weights0, weights1Buffer;</span><br><span class="line">cl_mem weights1;</span><br></pre></td></tr></table></figure>
+<h4 id="主要数据"><a href="#主要数据" class="headerlink" title="主要数据"></a>主要数据</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++">compute::command_queue <span class="hljs-built_in">queue</span>;<br>compute::kernel kernel;<br>compute::image2d src, dst, tmp;<br>compute::buffer weights0, weights1Buffer;<br>cl_mem weights1;<br></code></pre></td></tr></table></figure>
 
 <p>其中<code>queue</code>、<code>kernel</code>用于 OpenCL 框架，三个<code>image2D</code>类型的变量<code>src</code>、<code>dst</code>、<code>tmp</code>用于储存图像，余下三个变量则是与神经网络权值相关。</p>
 <p>在 Create() 函数内，<code>weights0</code>、<code>weights1</code>都是<code>float</code>指针。</p>
@@ -20,47 +252,268 @@
 <p><code>std::rewind</code>-<code>void rewind(std::FILE* stream)</code>：移动文件位置指示器到给定文件流的起始。</p>
 <p><code>std::ftell</code>-<code>long ftell(std::FILE* stream)</code>：返回文件流文件位置指示器的当前值。</p>
 <p>读入的<strong>权值数据保存在<code>bdata</code>中</strong>。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constexpr</span> <span class="keyword">long</span> correctSize = <span class="number">13574928</span>; <span class="comment">// Version 0.9.4 of the Avisynth plugin</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> * bdata = <span class="keyword">reinterpret_cast</span>&lt;<span class="keyword">float</span> *&gt;(<span class="built_in">malloc</span>(correctSize));</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">size_t</span> bytesRead = <span class="built_in">std</span>::fread(bdata, <span class="number">1</span>, correctSize, weightsFile);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">constexpr</span> <span class="hljs-keyword">long</span> correctSize = <span class="hljs-number">13574928</span>; <span class="hljs-comment">// Version 0.9.4 of the Avisynth plugin</span><br><br><span class="hljs-keyword">float</span> * bdata = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">float</span> *&gt;(<span class="hljs-built_in">malloc</span>(correctSize));<br><span class="hljs-keyword">const</span> <span class="hljs-keyword">size_t</span> bytesRead = <span class="hljs-built_in">std</span>::fread(bdata, <span class="hljs-number">1</span>, correctSize, weightsFile);<br></code></pre></td></tr></table></figure>
 
 <h4 id="权值计算的后续"><a href="#权值计算的后续" class="headerlink" title="权值计算的后续"></a>权值计算的后续</h4><p>Create() 部分的权值有点复杂，先看看 Create() 权值计算结果是怎么用到 GetFrame() 上的吧。</p>
 <p>如后文的”OpenCL 变量“部分所说，三个权值变量被 GetFrame() 调用的只有两个，<code>weights0</code>和<code>weights1</code>，被调用的位置和次数一样，只是<code>weights1</code>在 Free() 函数中多了一步释放。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clReleaseMemObject(d-&gt;weights1);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">clReleaseMemObject(d-&gt;weights1);<br></code></pre></td></tr></table></figure>
 
 <p>两个变量在三个分支的<code>if-else</code>中同时出现了四次，伪代码如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># bool d-&gt;dw, d-&gt;dh;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (d-&gt;dw &amp;&amp; d-&gt;dh)</span><br><span class="line">&#123;</span><br><span class="line">    kernel.set_args(src, tmp, d-&gt;weights0, d-&gt;weights1, size_h_w, field, <span class="number">-1</span>);</span><br><span class="line">    kernel.set_args(tmp, dst, d-&gt;weights0, d-&gt;weights1, size_w_h, field,  <span class="number">0</span>);</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (d-&gt;dw)</span><br><span class="line">&#123;</span><br><span class="line">    kernel.set_args(src, dst, d-&gt;weights0, d-&gt;weights1, size_h_w, field, <span class="number">-1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    kernel.set_args(src, dst, d-&gt;weights0, d-&gt;weights1, size_w_h, field,  <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta"># bool d-&gt;dw, d-&gt;dh;</span><br><br><span class="hljs-keyword">if</span> (d-&gt;dw &amp;&amp; d-&gt;dh)<br>&#123;<br>    kernel.set_args(src, tmp, d-&gt;weights0, d-&gt;weights1, size_h_w, field, <span class="hljs-number">-1</span>);<br>    kernel.set_args(tmp, dst, d-&gt;weights0, d-&gt;weights1, size_w_h, field,  <span class="hljs-number">0</span>);<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (d-&gt;dw)<br>&#123;<br>    kernel.set_args(src, dst, d-&gt;weights0, d-&gt;weights1, size_h_w, field, <span class="hljs-number">-1</span>);<br>&#125;<br><span class="hljs-keyword">else</span><br>&#123;<br>    kernel.set_args(src, dst, d-&gt;weights0, d-&gt;weights1, size_w_h, field,  <span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>很明显，是从 x，y 两个方向分别处理。在这四次调用中，<code>weights0</code>和<code>weights1</code>发挥的作用是等价。</p>
 <p>进而来整体看下 GetFrame() 函数及 process() 函数（在 NNEDI3CL 里写作 <code>filter()</code>），常规而且仅有骨架，上面的伪代码便是核心而唯一的操作，除此之前唯一陌生的地方就是增加了 field 信息的判断。</p>
 <p>于是，可以转向 .cl 文件看核心计算了。</p>
 <h3 id="OpenCL-核心计算"><a href="#OpenCL-核心计算" class="headerlink" title="OpenCL 核心计算"></a>OpenCL 核心计算</h3><p>这部分是 .cl 文件中的代码学习笔记。</p>
 <p>命名空间（好像说法不太对..）<code>kernel</code>下的函数有两个重载，分别对应<code>float</code>类型和 uint 类型，看看其中一个。（删去了<code>&quot;\n&quot;</code>）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__kernel __attribute__((reqd_work_group_size(<span class="number">4</span>, <span class="number">16</span>, <span class="number">1</span>)))</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">filter_uint</span><span class="params">(__read_only <span class="keyword">image2d_t</span> src, __write_only <span class="keyword">image2d_t</span> dst,</span></span></span><br><span class="line"><span class="function"><span class="params">                 __constant <span class="keyword">float</span> * weights0, __read_only <span class="keyword">image1d_buffer_t</span> weights1,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">const</span> <span class="keyword">int</span> srcWidth, <span class="keyword">const</span> <span class="keyword">int</span> srcHeight, <span class="keyword">const</span> <span class="keyword">int</span> dstWidth,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">const</span> <span class="keyword">int</span> dstHeight, <span class="keyword">const</span> <span class="keyword">int</span> field_n, <span class="keyword">const</span> <span class="keyword">int</span> off, <span class="keyword">const</span> <span class="keyword">int</span> swap)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++">__kernel __attribute__((reqd_work_group_size(<span class="hljs-number">4</span>, <span class="hljs-number">16</span>, <span class="hljs-number">1</span>)))<br><span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">filter_uint</span><span class="hljs-params">(__read_only <span class="hljs-keyword">image2d_t</span> src, __write_only <span class="hljs-keyword">image2d_t</span> dst,</span></span><br><span class="hljs-function"><span class="hljs-params">                 __constant <span class="hljs-keyword">float</span> * weights0, __read_only <span class="hljs-keyword">image1d_buffer_t</span> weights1,</span></span><br><span class="hljs-function"><span class="hljs-params">                 <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> srcWidth, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> srcHeight, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> dstWidth,</span></span><br><span class="hljs-function"><span class="hljs-params">                 <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> dstHeight, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> field_n, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> off, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> swap)</span></span><br></code></pre></td></tr></table></figure>
 
 <p>和前面<code>filter()</code>函数中的核心处理相对应。</p>
 <p>追踪一下<code>weights0</code>的传递过程。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">float8 output = PRESCREEN((<span class="keyword">const</span> __local <span class="keyword">float</span> (*)[INPUT_WIDTH])&amp;input[YDIAD2M1 - <span class="number">1</span> + localY][XDIAD2M1 - PSCRN_OFFSET + <span class="number">8</span> * localX],</span><br><span class="line">                          &amp;flag, weights0);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">float8 output = PRESCREEN((<span class="hljs-keyword">const</span> __local <span class="hljs-keyword">float</span> (*)[INPUT_WIDTH])&amp;input[YDIAD2M1 - <span class="hljs-number">1</span> + localY][XDIAD2M1 - PSCRN_OFFSET + <span class="hljs-number">8</span> * localX],<br>                          &amp;flag, weights0);<br></code></pre></td></tr></table></figure>
 
 <p>（这个<code>PRESCREEN()</code>是啥…）</p>
 <h3 id="OpenCL-接口部分"><a href="#OpenCL-接口部分" class="headerlink" title="OpenCL 接口部分"></a>OpenCL 接口部分</h3><p>这部分是 Create() 函数中出现的 OpenCL 相关内容。</p>
-<h4 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h4><h5 id="clCreateImage"><a href="#clCreateImage" class="headerlink" title="clCreateImage"></a><code>clCreateImage</code></h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">cl_mem <span class="title">clCreateImage</span><span class="params">(cl_context              context,</span></span></span><br><span class="line"><span class="function"><span class="params">                     cl_mem_flags            flags,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">const</span> cl_image_format  *image_format,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">const</span> cl_image_desc    *image_desc,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">void</span>                   *host_ptr,</span></span></span><br><span class="line"><span class="function"><span class="params">                     cl_int                 *errcode_ret)</span></span></span><br></pre></td></tr></table></figure>
+<h4 id="相关函数"><a href="#相关函数" class="headerlink" title="相关函数"></a>相关函数</h4><h5 id="clCreateImage"><a href="#clCreateImage" class="headerlink" title="clCreateImage"></a><code>clCreateImage</code></h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">cl_mem <span class="hljs-title">clCreateImage</span><span class="hljs-params">(cl_context              context,</span></span><br><span class="hljs-function"><span class="hljs-params">                     cl_mem_flags            flags,</span></span><br><span class="hljs-function"><span class="hljs-params">                     <span class="hljs-keyword">const</span> cl_image_format  *image_format,</span></span><br><span class="hljs-function"><span class="hljs-params">                     <span class="hljs-keyword">const</span> cl_image_desc    *image_desc,</span></span><br><span class="hljs-function"><span class="hljs-params">                     <span class="hljs-keyword">void</span>                   *host_ptr,</span></span><br><span class="hljs-function"><span class="hljs-params">                     cl_int                 *errcode_ret)</span></span><br></code></pre></td></tr></table></figure>
 
 <p>Creates a 1D image, 1D image buffer, 1D image array, 2D image, 2D image array or 3D image object.</p>
 <p>创建一维图像、一维图像 buffer、一维图像数组、二维图像、二维图像数组或者三维图像对象。</p>
 <h4 id="OpenCL-变量"><a href="#OpenCL-变量" class="headerlink" title="OpenCL 变量"></a>OpenCL 变量</h4><h5 id="d-gt-weights1"><a href="#d-gt-weights1" class="headerlink" title="d-&gt;weights1"></a><code>d-&gt;weights1</code></h5><p>结构体内的<code>weights1</code>定义如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cl_mem mem = clCreateImage(context, <span class="number">0</span>, &amp;format, &amp;desc, <span class="literal">nullptr</span>, &amp;error);</span><br><span class="line">d-&gt;weights1 = mem;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">cl_mem mem = clCreateImage(context, <span class="hljs-number">0</span>, &amp;format, &amp;desc, <span class="hljs-literal">nullptr</span>, &amp;error);<br>d-&gt;weights1 = mem;<br></code></pre></td></tr></table></figure>
 
 <p>其中，<code>mem</code>的主要数据来自<code>desc</code>。</p>
 <p><code>desc</code>的数据，除了一些格式上的常数，一是来自<code>dims1</code>，一是来自权值<code>weights1Buffer</code>，也就是三个结构体内的数据之一。</p>
 <p><code>dims1</code>的定义如下，都是常数计算，没有额外的东西。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> dims1 = nnsTable[nns] * <span class="number">2</span> * (xdiaTable[nsize] * ydiaTable[nsize] + <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> dims1 = nnsTable[nns] * <span class="hljs-number">2</span> * (xdiaTable[nsize] * ydiaTable[nsize] + <span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
 
 <p>所以综上所述，<code>weights1</code>与<code>weights1Buffer</code>有种套娃之感，核心数据是一样的。（看一下名字啊，<code>weights1Buffer</code>=<code>weights1</code>+<code>buffer</code>）</p>
 <h5 id="d-gt-weights0与d-gt-weights1Buffer"><a href="#d-gt-weights0与d-gt-weights1Buffer" class="headerlink" title="d-&gt;weights0与d-&gt;weights1Buffer"></a><code>d-&gt;weights0</code>与<code>d-&gt;weights1Buffer</code></h5><p>结构体内的<code>weights0</code>与<code>weights1Buffer</code>定义如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d-&gt;weights0 = compute::buffer&#123; context, <span class="built_in">std</span>::max(dims0, dims0new) * <span class="keyword">sizeof</span>(cl_float),</span><br><span class="line">    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR | CL_MEM_HOST_NO_ACCESS, weights0 &#125;;</span><br><span class="line"></span><br><span class="line">d-&gt;weights1Buffer = compute::buffer&#123; context, dims1 * <span class="number">2</span> * <span class="keyword">sizeof</span>(cl_float),</span><br><span class="line">    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR | CL_MEM_HOST_NO_ACCESS, weights1 &#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++">d-&gt;weights0 = compute::buffer&#123; context, <span class="hljs-built_in">std</span>::max(dims0, dims0new) * <span class="hljs-keyword">sizeof</span>(cl_float),<br>    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR | CL_MEM_HOST_NO_ACCESS, weights0 &#125;;<br><br>d-&gt;weights1Buffer = compute::buffer&#123; context, dims1 * <span class="hljs-number">2</span> * <span class="hljs-keyword">sizeof</span>(cl_float),<br>    CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR | CL_MEM_HOST_NO_ACCESS, weights1 &#125;;<br></code></pre></td></tr></table></figure>
 
 <p>事实上，<code>weights1Buffer</code>的调用范围仅限于 Create()，并没有在 GetFrame() 中调用。</p>
 <h5 id="Create-内的同名变量"><a href="#Create-内的同名变量" class="headerlink" title="Create() 内的同名变量"></a>Create() 内的同名变量</h5><p>在 Create() 函数内，有两个临时变量性质的同名变量，定义如下。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span>* weights0 = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="built_in">std</span>::max(dims0, dims0new)];</span><br><span class="line"><span class="keyword">float</span>* weights1 = <span class="keyword">new</span> <span class="keyword">float</span>[dims1 * <span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">float</span>* weights0 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">float</span>[<span class="hljs-built_in">std</span>::max(dims0, dims0new)];<br><span class="hljs-keyword">float</span>* weights1 = <span class="hljs-keyword">new</span> <span class="hljs-keyword">float</span>[dims1 * <span class="hljs-number">2</span>];<br></code></pre></td></tr></table></figure>
 
 <p>它们在定义了<code>d-&gt;weights0</code>与<code>d-&gt;weights1Buffer</code>后被释放。</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2020/05/30/Dont-starve/" class="prev">PREV</a><a href="/2020/04/28/dehazing/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/C/">C++</a>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2020/05/30/Dont-starve/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《饥荒》食谱个人点评</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/04/28/dehazing/">
+                        <span class="hidden-mobile">一些较新的去雾（dehazing）算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

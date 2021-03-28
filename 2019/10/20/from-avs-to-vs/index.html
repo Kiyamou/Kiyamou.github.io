@@ -1,9 +1,245 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 从Avisynth到VapourSynth：一些方法的迁移 · 308实验室</title><meta name="description" content="从Avisynth到VapourSynth：一些方法的迁移 - Kiyamou"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><div class="post"><article class="post-block"><h1 class="post-title">从Avisynth到VapourSynth：一些方法的迁移</h1><div class="post-info">Oct 20, 2019</div><div class="post-content"><p>VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。</p>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。
+因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。
+有什么错误的地方还请大家指正~
+默认import如下内容。
+12345import vapoursynth as vscore = vs.get_core()impor">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>从Avisynth到VapourSynth：一些方法的迁移 - 308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
+  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+  
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="从Avisynth到VapourSynth：一些方法的迁移">
+              
+                从Avisynth到VapourSynth：一些方法的迁移
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2019-10-20 10:48" pubdate>
+        2019年10月20日 上午
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      1.5k 字
+    </span>
+  
+
+  
+    
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      21
+       分钟
+    </span>
+  
+
+  
+  
+</div>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从Avisynth到VapourSynth：一些方法的迁移</h1>
+            
+            <div class="markdown-body">
+              <p>VapourSynth经过四十多个版本的更新，滤镜已经丰富。但Avisynth时代留下了诸多的教程，似乎仍是VapourSynth无法比拟的。</p>
 <p>因此，我试着将前辈们一些用avs写的教程迁移到vs上，希望能够给大家做一点微小的贡献。</p>
 <p>有什么错误的地方还请大家指正~</p>
 <p>默认import如下内容。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> vapoursynth <span class="keyword">as</span> vs</span><br><span class="line">core = vs.get_core()</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> mvsfunc <span class="keyword">as</span> mvf</span><br><span class="line"><span class="keyword">import</span> havsfunc <span class="keyword">as</span> haf</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> vapoursynth <span class="hljs-keyword">as</span> vs<br>core = vs.get_core()<br><br><span class="hljs-keyword">import</span> mvsfunc <span class="hljs-keyword">as</span> mvf<br><span class="hljs-keyword">import</span> havsfunc <span class="hljs-keyword">as</span> haf<br></code></pre></td></tr></table></figure>
 
 <a id="more"></a>
 
@@ -12,9 +248,9 @@
 </blockquote>
 <p>NR de-banding（去色带）思路，可以降低去色带的力度、提升效果。基本的思路是先扫去噪点层，再做去色带，做完后再把噪点层加回来。</p>
 <p>其中NR指noise reduction，降噪的意思，很多处理都可以使用降噪做预处理，以提升效果。</p>
-<h4 id="avs脚本"><a href="#avs脚本" class="headerlink" title="avs脚本"></a>avs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># stacked-16bit input</span></span><br><span class="line">last = last <span class="comment"># this line can be ignored, just in case someone who doesn't understand it</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pre-filter</span></span><br><span class="line">nr16 = last.Dither_removegrain16(<span class="number">11</span>, <span class="number">11</span>).Dither_removegrain16(<span class="number">20</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment"># get noise diff clip</span></span><br><span class="line">noise = last.Dither_sub16(nr16, y=<span class="number">3</span>, u=<span class="number">3</span>, v=<span class="number">3</span>, dif=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># refine pre-filtered clip due to limited range of diff clip: [-32768, 32767], avoiding potential issue that the noise can not be fully added back</span></span><br><span class="line">nr16 = last.Dither_sub16(noise, y=<span class="number">3</span>, u=<span class="number">3</span>, v=<span class="number">3</span>, dif=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># de-banding on pre-filtered clip</span></span><br><span class="line">last = nr16</span><br><span class="line">last = last.f3kdb(<span class="number">16</span>, <span class="number">40</span>, <span class="number">40</span>, <span class="number">40</span>, <span class="number">0</span>, <span class="number">0</span>, input_mode=<span class="number">1</span>, output_mode=<span class="number">1</span>).Dither_limit_dif16(last, ref=nr16, thr=<span class="number">0.30</span>, elast=<span class="number">2.5</span>, y=<span class="number">3</span>, u=<span class="number">3</span>, v=<span class="number">3</span>)</span><br><span class="line"><span class="comment"># add back noise</span></span><br><span class="line">last = last.Dither_add16(noise, y=<span class="number">3</span>, u=<span class="number">3</span>, v=<span class="number">3</span>, dif=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># stacked-16bit output</span></span><br><span class="line">last</span><br></pre></td></tr></table></figure>
+<h4 id="avs脚本"><a href="#avs脚本" class="headerlink" title="avs脚本"></a>avs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># stacked-16bit input</span><br>last = last <span class="hljs-comment"># this line can be ignored, just in case someone who doesn't understand it</span><br><br><span class="hljs-comment"># pre-filter</span><br>nr16 = last.Dither_removegrain16(<span class="hljs-number">11</span>, <span class="hljs-number">11</span>).Dither_removegrain16(<span class="hljs-number">20</span>, <span class="hljs-number">0</span>)<br><span class="hljs-comment"># get noise diff clip</span><br>noise = last.Dither_sub16(nr16, y=<span class="hljs-number">3</span>, u=<span class="hljs-number">3</span>, v=<span class="hljs-number">3</span>, dif=<span class="hljs-literal">True</span>)<br><span class="hljs-comment"># refine pre-filtered clip due to limited range of diff clip: [-32768, 32767], avoiding potential issue that the noise can not be fully added back</span><br>nr16 = last.Dither_sub16(noise, y=<span class="hljs-number">3</span>, u=<span class="hljs-number">3</span>, v=<span class="hljs-number">3</span>, dif=<span class="hljs-literal">True</span>)<br><span class="hljs-comment"># de-banding on pre-filtered clip</span><br>last = nr16<br>last = last.f3kdb(<span class="hljs-number">16</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">40</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, input_mode=<span class="hljs-number">1</span>, output_mode=<span class="hljs-number">1</span>).Dither_limit_dif16(last, ref=nr16, thr=<span class="hljs-number">0.30</span>, elast=<span class="hljs-number">2.5</span>, y=<span class="hljs-number">3</span>, u=<span class="hljs-number">3</span>, v=<span class="hljs-number">3</span>)<br><span class="hljs-comment"># add back noise</span><br>last = last.Dither_add16(noise, y=<span class="hljs-number">3</span>, u=<span class="hljs-number">3</span>, v=<span class="hljs-number">3</span>, dif=<span class="hljs-literal">True</span>)<br><br><span class="hljs-comment"># stacked-16bit output</span><br>last<br></code></pre></td></tr></table></figure>
 
-<h4 id="vs脚本"><a href="#vs脚本" class="headerlink" title="vs脚本"></a>vs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 16bit input: src16</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pre-filter</span></span><br><span class="line">nr16   = core.rgvs.RemoveGrain(src16, [<span class="number">11</span>,<span class="number">11</span>]).rgvs.RemoveGrain([<span class="number">20</span>,<span class="number">0</span>])</span><br><span class="line"><span class="comment"># get noise diff clip</span></span><br><span class="line">noise  = core.std.MakeDiff(src16, nr16, planes=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>]) <span class="comment"># By default all planes are processed. So the parameter for planes can be ignored.</span></span><br><span class="line">nr16   = core.std.MakeDiff(src16, noise, planes=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment"># de-banding on pre-filtered clip</span></span><br><span class="line">deband = core.f3kdb.Deband(nr16, <span class="number">16</span>,<span class="number">40</span>,<span class="number">40</span>,<span class="number">40</span>,<span class="number">0</span>,<span class="number">0</span>, output_depth=<span class="number">16</span>)</span><br><span class="line">deband = mvf.LimitFilter(deband, nr16, thr=<span class="number">0.30</span>, elast=<span class="number">2.5</span>, planes=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment"># add back noise</span></span><br><span class="line">deband = core.std.MergeDiff(deband, noise, planes=[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="vs脚本"><a href="#vs脚本" class="headerlink" title="vs脚本"></a>vs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 16bit input: src16</span><br><br><span class="hljs-comment"># pre-filter</span><br>nr16   = core.rgvs.RemoveGrain(src16, [<span class="hljs-number">11</span>,<span class="hljs-number">11</span>]).rgvs.RemoveGrain([<span class="hljs-number">20</span>,<span class="hljs-number">0</span>])<br><span class="hljs-comment"># get noise diff clip</span><br>noise  = core.std.MakeDiff(src16, nr16, planes=[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]) <span class="hljs-comment"># By default all planes are processed. So the parameter for planes can be ignored.</span><br>nr16   = core.std.MakeDiff(src16, noise, planes=[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])<br><span class="hljs-comment"># de-banding on pre-filtered clip</span><br>deband = core.f3kdb.Deband(nr16, <span class="hljs-number">16</span>,<span class="hljs-number">40</span>,<span class="hljs-number">40</span>,<span class="hljs-number">40</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, output_depth=<span class="hljs-number">16</span>)<br>deband = mvf.LimitFilter(deband, nr16, thr=<span class="hljs-number">0.30</span>, elast=<span class="hljs-number">2.5</span>, planes=[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])<br><span class="hljs-comment"># add back noise</span><br>deband = core.std.MergeDiff(deband, noise, planes=[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])<br></code></pre></td></tr></table></figure>
 
 <p>在此基础上更复杂一点的用法。做完de-banding后，不把噪点全部加回来，而是对噪点层降噪。这就是SBR降噪的思路。</p>
 <p>当然，如果是用KNLMeansCL这类降噪滤镜扫噪点层，在参数不太高的情况下，本身对画面的破坏就已经很小。如果想做降噪，可以不把噪点层加回来。</p>
@@ -22,9 +258,9 @@
 <p>avs脚本出处：<a href="https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&amp;t=1483&amp;p=12144#p12144" target="_blank" rel="noopener">https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&amp;t=1483&amp;p=12144#p12144</a> 作者：mawen1250</p>
 </blockquote>
 <p>Chroma Shift（色度偏移）的处理。关于色度偏移，可以看一下mawen1250前辈的<a href="https://www.nmm-hd.org/newbbs/viewtopic.php?f=5&t=1208" target="_blank" rel="noopener">这个帖子</a>和EleonoreMizo前辈为fmtconv写的<a href="https://github.com/EleonoreMizo/fmtconv/blob/master/doc/fmtconv.html" target="_blank" rel="noopener">Doc</a>中<code>resample</code>函数的部分。</p>
-<h4 id="avs脚本-1"><a href="#avs脚本-1" class="headerlink" title="avs脚本"></a>avs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Parameters for chroma shift, example for converting MPEG-1 chroma placement to MPEG-2 chroma placement</span></span><br><span class="line">U_Horizontal_Shift = <span class="number">-0.25</span></span><br><span class="line">U_Vertical_Shift = <span class="number">0</span></span><br><span class="line">V_Horizontal_Shift = <span class="number">-0.25</span></span><br><span class="line">V_Vertical_Shift = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 8bit YUV input</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Separate planes</span></span><br><span class="line">Y = last</span><br><span class="line">U = UToY8()</span><br><span class="line">V = VToY8()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Use resizer to achieve sub-pixel precision shift for each plane</span></span><br><span class="line">U = U.Spline16Resize(U.Width(), U.Height(), U_Horizontal_Shift, U_Vertical_Shift)</span><br><span class="line">V = V.Spline16Resize(V.Width(), V.Height(), V_Horizontal_Shift, V_Vertical_Shift)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Merge planes back to YUV format</span></span><br><span class="line">YToUV(U, V, Y)</span><br></pre></td></tr></table></figure>
+<h4 id="avs脚本-1"><a href="#avs脚本-1" class="headerlink" title="avs脚本"></a>avs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Parameters for chroma shift, example for converting MPEG-1 chroma placement to MPEG-2 chroma placement</span><br>U_Horizontal_Shift = <span class="hljs-number">-0.25</span><br>U_Vertical_Shift = <span class="hljs-number">0</span><br>V_Horizontal_Shift = <span class="hljs-number">-0.25</span><br>V_Vertical_Shift = <span class="hljs-number">0</span><br><br><span class="hljs-comment"># 8bit YUV input</span><br><br><span class="hljs-comment"># Separate planes</span><br>Y = last<br>U = UToY8()<br>V = VToY8()<br><br><span class="hljs-comment"># Use resizer to achieve sub-pixel precision shift for each plane</span><br>U = U.Spline16Resize(U.Width(), U.Height(), U_Horizontal_Shift, U_Vertical_Shift)<br>V = V.Spline16Resize(V.Width(), V.Height(), V_Horizontal_Shift, V_Vertical_Shift)<br><br><span class="hljs-comment"># Merge planes back to YUV format</span><br>YToUV(U, V, Y)<br></code></pre></td></tr></table></figure>
 
-<h4 id="vs脚本-1"><a href="#vs脚本-1" class="headerlink" title="vs脚本"></a>vs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Parameters for chroma shift, example for converting MPEG-1 chroma placement to MPEG-2 chroma placement</span></span><br><span class="line">U_Horizontal_Shift = <span class="number">-0.25</span></span><br><span class="line">U_Vertical_Shift   = <span class="number">0</span></span><br><span class="line">V_Horizontal_Shift = <span class="number">-0.25</span></span><br><span class="line">V_Vertical_Shift   = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># YUV input: src</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Use resizer to achieve sub-pixel precision shift for each plane</span></span><br><span class="line">result = core.fmtc.resample(src, src.width, src.height, sx=[<span class="number">0</span>, U_Horizontal_Shift, V_Horizontal_Shift], sy=[<span class="number">0</span>, U_Vertical_Shift, V_Vertical_Shift], planes=[<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+<h4 id="vs脚本-1"><a href="#vs脚本-1" class="headerlink" title="vs脚本"></a>vs脚本</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Parameters for chroma shift, example for converting MPEG-1 chroma placement to MPEG-2 chroma placement</span><br>U_Horizontal_Shift = <span class="hljs-number">-0.25</span><br>U_Vertical_Shift   = <span class="hljs-number">0</span><br>V_Horizontal_Shift = <span class="hljs-number">-0.25</span><br>V_Vertical_Shift   = <span class="hljs-number">0</span><br><br><span class="hljs-comment"># YUV input: src</span><br><br><span class="hljs-comment"># Use resizer to achieve sub-pixel precision shift for each plane</span><br>result = core.fmtc.resample(src, src.width, src.height, sx=[<span class="hljs-number">0</span>, U_Horizontal_Shift, V_Horizontal_Shift], sy=[<span class="hljs-number">0</span>, U_Vertical_Shift, V_Vertical_Shift], planes=[<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">3</span>])<br></code></pre></td></tr></table></figure>
 
 <h3 id="Chroma-Bleeding的处理"><a href="#Chroma-Bleeding的处理" class="headerlink" title="Chroma Bleeding的处理"></a>Chroma Bleeding的处理</h3><blockquote>
 <p>avs脚本出处：<a href="https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&amp;t=1587&amp;p=12668#p12651" target="_blank" rel="noopener">https://www.nmm-hd.org/newbbs/viewtopic.php?f=7&amp;t=1587&amp;p=12668#p12651</a> 作者：mawen1250</p>
@@ -33,18 +269,239 @@
 <p>顺带一提，收线也可用这个滤镜。道理类似，“收”就是砍的嘛~</p>
 <h4 id="avs脚本-2"><a href="#avs脚本-2" class="headerlink" title="avs脚本"></a>avs脚本</h4><p>脚本是8bit YUV420输入，先升至16bit YUV444，再降至8bit YUV444处理色度溢出，继而升至16bit YUV444与未修正色度溢出的16bit YUV444源比较，最后保持16bit YUV444输出。</p>
 <p>（mawen1250前辈的教程写于2015年2月，avs版AWarpSharp2在2018年3月更新的v2.0.0版中添加了16bit支持，上述反复升降位深的做法已不必要）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># YUV420P8 input</span></span><br><span class="line">nnedi3_resize16(lsb_in=<span class="literal">False</span>, lsb=<span class="literal">True</span>, output=<span class="string">"YV24"</span>, ratiothr=<span class="number">2.25</span>, kernel_u=<span class="string">"Bicubic"</span>, a1=<span class="number">0.6</span>, a2=<span class="number">0.4</span>)</span><br><span class="line"></span><br><span class="line">src16 = last</span><br><span class="line">DitherPost(mode=<span class="number">-1</span>)</span><br><span class="line"></span><br><span class="line">warpe = ConvertToYV12().aSobel(<span class="number">128</span>, <span class="number">1</span>).aBlur(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">epp = YToUV(UToY().awarp(warpe, <span class="number">6</span>, <span class="number">1</span>), VToY().awarp(warpe, <span class="number">6</span>, <span class="number">1</span>), last)</span><br><span class="line"></span><br><span class="line">Dither_limit_dif16(src16, epp.U16(), thr=<span class="number">1.0</span>, elast=<span class="number">2</span>, y=<span class="number">2</span>, u=<span class="number">3</span>, v=<span class="number">3</span>)</span><br><span class="line"><span class="comment"># YUV444P16 output</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># YUV420P8 input</span><br>nnedi3_resize16(lsb_in=<span class="hljs-literal">False</span>, lsb=<span class="hljs-literal">True</span>, output=<span class="hljs-string">"YV24"</span>, ratiothr=<span class="hljs-number">2.25</span>, kernel_u=<span class="hljs-string">"Bicubic"</span>, a1=<span class="hljs-number">0.6</span>, a2=<span class="hljs-number">0.4</span>)<br><br>src16 = last<br>DitherPost(mode=<span class="hljs-number">-1</span>)<br><br>warpe = ConvertToYV12().aSobel(<span class="hljs-number">128</span>, <span class="hljs-number">1</span>).aBlur(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>)<br>epp = YToUV(UToY().awarp(warpe, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>), VToY().awarp(warpe, <span class="hljs-number">6</span>, <span class="hljs-number">1</span>), last)<br><br>Dither_limit_dif16(src16, epp.U16(), thr=<span class="hljs-number">1.0</span>, elast=<span class="hljs-number">2</span>, y=<span class="hljs-number">2</span>, u=<span class="hljs-number">3</span>, v=<span class="hljs-number">3</span>)<br><span class="hljs-comment"># YUV444P16 output</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="vs脚本-2"><a href="#vs脚本-2" class="headerlink" title="vs脚本"></a>vs脚本</h4><p>这里使用了dubhater前辈的<a href="https://github.com/dubhater/vapoursynth-awarpsharp2" target="_blank" rel="noopener">AWarpSharp2</a>移植，由于支持高位深，所以全程在16bit下处理。</p>
 <p>在脚本的最后用<code>mvf.LimitFilter</code>做了限制，这是照抄mawen1250前辈的avs脚本。但avs脚本做限制是为了保留未处理部分的16bit精度（如前面所说，在avs版AWarpSharp2支持16bit前，不得不反复升降位深，这会带来精度的损失），在全程16bit处理的情况下，这个限制是否有必要，值得思考。<del>唔..我太笨了，就是这样</del></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># YUV420P8 input: src</span></span><br><span class="line">src16 = mvf.Depth(src, <span class="number">16</span>)</span><br><span class="line">src16 = core.fmtc.resample(src16, src.width, src.height, kernel=<span class="string">'bicubic'</span>, a1=<span class="number">0.6</span>, a2=<span class="number">0.4</span>, css=<span class="string">'444'</span>) <span class="comment"># Y plane isn't processed</span></span><br><span class="line"></span><br><span class="line">warpe = mvf.GetPlane(core.warp.ASobel(src16, <span class="number">128</span>, <span class="number">1</span>).warp.ABlur(<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>), plane=<span class="number">0</span>)</span><br><span class="line">fixU  = core.warp.AWarp(mvf.GetPlane(src16, plane=<span class="number">1</span>), warpe, depth=<span class="number">6</span>, chroma=<span class="number">0</span>)</span><br><span class="line">fixV  = core.warp.AWarp(mvf.GetPlane(src16, plane=<span class="number">2</span>), warpe, depth=<span class="number">6</span>, chroma=<span class="number">0</span>)</span><br><span class="line">epp   = core.std.ShufflePlanes([src16, fixU, fixV], planes=[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>], colorfamily=vs.YUV)</span><br><span class="line"></span><br><span class="line">result = mvf.LimitFilter(src16, epp, thr=<span class="number">1.0</span>, elast=<span class="number">2.0</span>, planes=[<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment"># YUV444P16 output</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># YUV420P8 input: src</span><br>src16 = mvf.Depth(src, <span class="hljs-number">16</span>)<br>src16 = core.fmtc.resample(src16, src.width, src.height, kernel=<span class="hljs-string">'bicubic'</span>, a1=<span class="hljs-number">0.6</span>, a2=<span class="hljs-number">0.4</span>, css=<span class="hljs-string">'444'</span>) <span class="hljs-comment"># Y plane isn't processed</span><br><br>warpe = mvf.GetPlane(core.warp.ASobel(src16, <span class="hljs-number">128</span>, <span class="hljs-number">1</span>).warp.ABlur(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>), plane=<span class="hljs-number">0</span>)<br>fixU  = core.warp.AWarp(mvf.GetPlane(src16, plane=<span class="hljs-number">1</span>), warpe, depth=<span class="hljs-number">6</span>, chroma=<span class="hljs-number">0</span>)<br>fixV  = core.warp.AWarp(mvf.GetPlane(src16, plane=<span class="hljs-number">2</span>), warpe, depth=<span class="hljs-number">6</span>, chroma=<span class="hljs-number">0</span>)<br>epp   = core.std.ShufflePlanes([src16, fixU, fixV], planes=[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], colorfamily=vs.YUV)<br><br>result = mvf.LimitFilter(src16, epp, thr=<span class="hljs-number">1.0</span>, elast=<span class="hljs-number">2.0</span>, planes=[<span class="hljs-number">1</span>,<span class="hljs-number">2</span>])<br><span class="hljs-comment"># YUV444P16 output</span><br></code></pre></td></tr></table></figure>
 
 <p>如果不想保持16bit YUV444输出，而是输出一般的16bit YUV420，则在进行上述处理后，再用<code>fmtc.resample</code>缩放即可。降低分辨率通常推荐用Spline（样条采样）系列中的<code>spline36</code>，<code>fmtc.resample</code>的默认参数就是它。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">result = core.fmtc.resample(result, src.width, src.height, kernel=<span class="string">'spline36'</span>, css=<span class="string">'420'</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">result = core.fmtc.resample(result, src.width, src.height, kernel=<span class="hljs-string">'spline36'</span>, css=<span class="hljs-string">'420'</span>)<br></code></pre></td></tr></table></figure>
 
 <p>当然，如果是以16bit YUV420输出，将<code>mvf.LimitFilter</code>的限制放到缩放后，将未拉伸色度平面的输入源与降回16bit YUV420的处理结果比较，可能会更好。因为这样多少限制了色度平面拉伸与缩小过程的损失。（我口胡的，不要打我呀~</p>
 <h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>本来想打两个波浪线买一下萌，忘了markdown语法，结果变成了下面那个样子，太真实了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">（未完待续~~我才不会鸽的~）</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs plain">（未完待续~~我才不会鸽的~）<br></code></pre></td></tr></table></figure>
 
 <p>（未完待续<del>我才不会鸽的</del>）</p>
-</div></article></div></main><footer><div class="paginator"><a href="/2019/10/20/mxnet-install-win/" class="prev">PREV</a><a href="/2019/10/17/hello-world/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                  <div class="post-meta mr-3">
+                    <i class="iconfont icon-category"></i>
+                    
+                      <a class="hover-with-bg" href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+                    
+                  </div>
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/tags/VapourSynth/">VapourSynth</a>
+                    
+                      <a class="hover-with-bg" href="/tags/Avisynth/">Avisynth</a>
+                    
+                  </div>
+                
+              </div>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/10/20/mxnet-install-win/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/10/17/hello-world/">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>

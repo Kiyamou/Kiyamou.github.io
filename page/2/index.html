@@ -1,15 +1,833 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><title> 308实验室</title><meta name="description" content="A Blog Powered By Hexo"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.png"><link rel="stylesheet" href="/css/apollo.css"><link rel="search" type="application/opensearchdescription+xml" href="http://yoursite.com/atom.xml" title="308实验室"><meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
-</head><body><div class="wrap"><header><a href="/" class="logo-link"><img src="/circle.png" alt="logo"></a><ul class="nav nav-list"><li class="nav-list-item"><a href="/" target="_self" class="nav-list-link">BLOG</a></li><li class="nav-list-item"><a href="/archives/" target="_self" class="nav-list-link">ARCHIVE</a></li><li class="nav-list-item"><a href="https://github.com/Kiyamou" target="_blank" class="nav-list-link">GITHUB</a></li><li class="nav-list-item"><a href="/about" target="_self" class="nav-list-link">ABOUT</a></li></ul></header><main class="container"><ul class="home post-list"><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/28/Retinex/" class="post-title-link">Retinex 算法</a></h2><div class="post-info">Apr 28, 2020</div><div class="post-content"></div><a href="/2020/04/28/Retinex/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/27/edgemasks/" class="post-title-link">边缘检测</a></h2><div class="post-info">Apr 27, 2020</div><div class="post-content"><p>本文翻译自 <a href="https://blog.kageru.moe/legacy/edgemasks.html" target="_blank" rel="noopener">Edge Masks</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
-<p><em>译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。</em></p></div><a href="/2020/04/27/edgemasks/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/27/explaining-removegrain/" class="post-title-link">解释 RemoveGrain</a></h2><div class="post-info">Apr 27, 2020</div><div class="post-content"><p>本文翻译自 <a href="https://blog.kageru.moe/legacy/removegrain.html" target="_blank" rel="noopener">Actually Explaining RemoveGrain</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p></div><a href="/2020/04/27/explaining-removegrain/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/26/grain-and-noise/" class="post-title-link">Grain 与 Noise</a></h2><div class="post-info">Apr 26, 2020</div><div class="post-content"><p>本文翻译自 <a href="https://blog.kageru.moe/legacy/grain.html" target="_blank" rel="noopener">Grain and Noise</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
-<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。</p>
-<p>Grain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。</p>
-<p>Grain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。</p>
-<p>有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。</p></div><a href="/2020/04/26/grain-and-noise/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/04/08/gcc-use-2/" class="post-title-link">gcc 10尝鲜及后续</a></h2><div class="post-info">Apr 8, 2020</div><div class="post-content"><p>在<a href="https://github.com/sekrit-twc/zimg" target="_blank" rel="noopener">zimg项目</a>的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把<code>size_t</code>错认成<code>std::size_t</code>，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。</p>
-<p>看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。</p></div><a href="/2020/04/08/gcc-use-2/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/23/rebuild-JincResize-3/" class="post-title-link">JincResize 代码重构（3）</a></h2><div class="post-info">Mar 23, 2020</div><div class="post-content"><p>JincResize avs版迁移工作告一段落了，速度比之前快了5-6倍，在这个过程中学到了C/C++结构、C++类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。</p>
-<p>当修改好readme，发布了JincResize-r7-RC1，再来回看commit历史，有些感动。在这一周的时间中，有些印象很深的改动，都忘记了是早期的几天就完成的；而同时在最初的几天，以现在的视角看，更多的是四处尝试，像在黑暗中一样，但最终是看到了光亮。</p></div><a href="/2020/03/23/rebuild-JincResize-3/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/12/CI-and-compiler/" class="post-title-link">Travis CI持续集成与各编译器对C++新特性的支持</a></h2><div class="post-info">Mar 12, 2020</div><div class="post-content"><h3 id="Travis-CI的部署"><a href="#Travis-CI的部署" class="headerlink" title="Travis CI的部署"></a>Travis CI的部署</h3><p>很早就有体验Travis CI持续集成的想法，于是拿<a href="https://github.com/Kiyamou/VapourSynth-JincResize" target="_blank" rel="noopener">VapourSynth-JincResize</a>项目试一试。</p>
-<h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给JincResize项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的<code>.travis.yml</code>脚本。</p>
-<p>但等我上传了脚本、部署完成之后才想起，JincResize项目使用pkg-config解决依赖的问题，而配置pkg-config需要先编译VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用gcc编译，反正我的项目结构简单。</p></div><a href="/2020/03/12/CI-and-compiler/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/11/build-vapoursynth/" class="post-title-link">ArchLinux下VapourSynth和VapourSynth-editor的编译与配置</a></h2><div class="post-info">Mar 11, 2020</div><div class="post-content"><h3 id="ArchLinux安装桌面"><a href="#ArchLinux安装桌面" class="headerlink" title="ArchLinux安装桌面"></a>ArchLinux安装桌面</h3><p>参考<a href="https://www.viseator.com/2017/05/17/arch_install/" target="_blank" rel="noopener">以官方Wiki的方式安装ArchLinux</a>安装ArchLinux的基本系统。</p>
-<p>参考<a href="https://starrycat.me/archlinux-install-gnome-desktop.html" target="_blank" rel="noopener">ArchLinux安装GNOME图形桌面环境</a>和<a href="https://www.viseator.com/2017/05/19/arch_setup/" target="_blank" rel="noopener">ArchLinux安装后的必须配置与图形界面安装教程</a>安装图形界面。</p>
-<p>顺带提一下我的经验，若是在VMware虚拟机中安装，不要在VM下拉伸桌面，不然重启系统后黑屏…</p>
-<h3 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h3><p>在之前的<a href="https://kiyamou.github.io/2020/02/07/arch-and-meson/" target="_blank" rel="noopener">一篇博文</a>中，提到了编译VapourSynth。但我不知道为什么，可能是升级了ArchLinux系统（<code>pacman -Syu</code>），导致之前编译好的用不了，只能重新编译一次。</p></div><a href="/2020/03/11/build-vapoursynth/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/08/week-202003-1/" class="post-title-link">周记 2020.03.02-03.08</a></h2><div class="post-info">Mar 8, 2020</div><div class="post-content"><h3 id="1-逐项完成ISP算法"><a href="#1-逐项完成ISP算法" class="headerlink" title="1.逐项完成ISP算法"></a>1.逐项完成ISP算法</h3><p>感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。</p>
-<p>重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。</p></div><a href="/2020/03/08/week-202003-1/" class="read-more">...more</a></article></li><li class="post-list-item"><article class="post-block"><h2 class="post-title"><a href="/2020/03/05/week-202002-4/" class="post-title-link">周记 2020.02.24-03.01</a></h2><div class="post-info">Mar 5, 2020</div><div class="post-content"><h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::mutex</span><br></pre></td></tr></table></figure></div><a href="/2020/03/05/week-202002-4/" class="read-more">...more</a></article></li></ul></main><footer><div class="paginator"><a href="/" class="prev">PREV</a><a href="/page/3/" class="next">NEXT</a></div><div class="copyright"><p>© 2019 - 2021 <a href="http://yoursite.com">Kiyamou</a>, powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/pinggod/hexo-theme-apollo" target="_blank">hexo-theme-apollo</a>.</p></div></footer></div><script async src="//cdn.bootcss.com/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML" integrity="sha384-crwIf/BuaWM9rM65iM+dWFldgQ1Un8jWZMuh3puxb8TOY9+linwLoI7ZHZT+aekW" crossorigin="anonymous"></script></body></html>
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+
+
+
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
+  <link rel="icon" href="/img/favicon.png">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="description" content="">
+  <meta name="author" content="Kiyamou">
+  <meta name="keywords" content="">
+  
+  <title>308实验室</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+
+
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand"
+       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
+                class="iconfont icon-search"></i>&nbsp;</a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" href="javascript:">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/img/default.png') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="An elegant Material-Design theme for Hexo">
+              
+                An elegant Material-Design theme for Hexo
+              
+            </span>
+
+            
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div class="py-5" id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/28/Retinex/">Retinex 算法</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/28/Retinex/">
+          
+          
+          
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-28 16:01" pubdate>
+              2020-04-28
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/27/edgemasks/">边缘检测</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/27/edgemasks/">
+          
+          
+            
+          
+          本文翻译自 Edge Masks，原作者：kageru。
+译者：“mask”的中文译名应该是“蒙版”，不太习惯这个词，于是把标题写成了边缘检测，文内还是直接用英文“mask”。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-27 03:00" pubdate>
+              2020-04-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/27/explaining-removegrain/">解释 RemoveGrain</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/27/explaining-removegrain/">
+          
+          
+            
+          
+          本文翻译自 Actually Explaining RemoveGrain，原作者：kageru。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-27 01:22" pubdate>
+              2020-04-27
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+              <a href="/tags/Avisynth/">Avisynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/26/grain-and-noise/">Grain 与 Noise</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/26/grain-and-noise/">
+          
+          
+            
+          
+          本文翻译自 Grain and Noise，原作者：kageru。
+引言在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。
+Grai
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-26 20:16" pubdate>
+              2020-04-26
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">图像处理</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+              <a href="/tags/Avisynth/">Avisynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/04/08/gcc-use-2/">gcc 10尝鲜及后续</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/08/gcc-use-2/">
+          
+          
+            
+          
+          在zimg项目的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。
+看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-08 17:30" pubdate>
+              2020-04-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/23/rebuild-JincResize-3/">JincResize 代码重构（3）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/23/rebuild-JincResize-3/">
+          
+          
+            
+          
+          JincResize avs版迁移工作告一段落了，速度比之前快了5-6倍，在这个过程中学到了C/C++结构、C++类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。
+当修改好readme，发布了JincResize-r7-RC1，再来回看commit历史，有些感动。在这一周的时间中，有些印象很深的改动，都忘记了
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-23 13:08" pubdate>
+              2020-03-23
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/12/CI-and-compiler/">Travis CI持续集成与各编译器对C++新特性的支持</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/12/CI-and-compiler/">
+          
+          
+            
+          
+          Travis CI的部署很早就有体验Travis CI持续集成的想法，于是拿VapourSynth-JincResize项目试一试。
+依赖问题昨天给JincResize项目照猫画虎写了.travis.yml脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的.travis.yml脚本。
+但
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-12 01:36" pubdate>
+              2020-03-12
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/11/build-vapoursynth/">ArchLinux下VapourSynth和VapourSynth-editor的编译与配置</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/11/build-vapoursynth/">
+          
+          
+            
+          
+          ArchLinux安装桌面参考以官方Wiki的方式安装ArchLinux安装ArchLinux的基本系统。
+参考ArchLinux安装GNOME图形桌面环境和ArchLinux安装后的必须配置与图形界面安装教程安装图形界面。
+顺带提一下我的经验，若是在VMware虚拟机中安装，不要在VM下拉伸桌面，不然重启系统后黑屏…
+编译VapourSynth在之前的一篇博文中，提到了编译VapourSynth
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-11 00:49" pubdate>
+              2020-03-11
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+              <a href="/tags/Linux/">Linux</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/08/week-202003-1/">周记 2020.03.02-03.08</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/08/week-202003-1/">
+          
+          
+            
+          
+          1.逐项完成ISP算法感慨到还是Python方便啊，在涉及矩阵运算的时候。另外，还是觉得先要解决一下数据结构的问题，不然现在写起来太蛋疼了。
+重新梳理了一遍ISP的流程，重点看了Tone Mapping和Gamma校正。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-08 16:47" pubdate>
+              2020-03-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/VapourSynth/">VapourSynth</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2020/03/05/week-202002-4/">周记 2020.02.24-03.01</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/03/05/week-202002-4/">
+          
+          
+            
+          
+          1.C++互斥锁123#include &lt;mutex&gt;std::mutex
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-03-05 22:44" pubdate>
+              2020-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+              <a href="/tags/OpenCL/">OpenCL</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/#board">3</a><a class="page-number" href="/page/4/#board">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/#board">8</a><a class="extend next" rel="next" href="/page/3/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+  </div>
+  
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
+<script  src="/js/debouncer.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
+
+
+
+
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+  <script>
+    (function () {
+      var path = "/local-search.xml";
+      $('#local-search-input').on('click', function() {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      });
+      $('#modalSearch').on('shown.bs.modal', function() {
+        $('#local-search-input').focus();
+      });
+    })()
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+</body>
+</html>
