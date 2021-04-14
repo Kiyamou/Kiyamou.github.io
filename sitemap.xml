@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/02/14/To-master/</loc>
+    
+    <lastmod>2021-04-14T06:51:11.247Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2021/04/14/trans-computer/</loc>
+    
+    <lastmod>2021-04-14T06:48:54.264Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2021-03-28T05:08:55.699Z</lastmod>
@@ -275,13 +289,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2020/02/14/To-master/</loc>
-    
-    <lastmod>2020-02-14T09:15:50.484Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/2020/02/13/week-202002-1/</loc>
     
     <lastmod>2020-02-13T05:52:30.265Z</lastmod>
@@ -474,13 +481,6 @@
     <loc>http://yoursite.com/2019/06/01/caffe-day6/</loc>
     
     <lastmod>2020-01-15T15:38:39.063Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/01/15/Thanks-Letter-OpenSource/</loc>
-    
-    <lastmod>2020-01-15T15:13:06.890Z</lastmod>
     
   </url>
   

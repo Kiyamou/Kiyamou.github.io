@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2021-03-28T03:44:25.773Z</updated>
+  <updated>2021-04-14T06:48:54.264Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>一篇小木虫里的旧帖</title>
+    <link href="http://yoursite.com/2021/04/14/trans-computer/"/>
+    <id>http://yoursite.com/2021/04/14/trans-computer/</id>
+    <published>2021-04-14T06:27:33.000Z</published>
+    <updated>2021-04-14T06:48:54.264Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>这是 @yuerongzho 2012年12月发在小木虫的帖子，现在小木虫网站上已经看不到了，但我还存着，时隔几年再看依然感动，所以冒昧转到了个人博客上。</p></blockquote><blockquote><p>这篇帖子发布于2012年，距离现在已经9年。这9年间时过境迁，彼时移动互联网还没有爆发，深度学习还在打比赛，而现在转计算机已经成了各路专业大热的趋势。转这篇帖子，我个人的想法并不是进一步渲染转计算机的氛围，而是感受如何找到一个人想要的东西、如何去实现一个人的想法。</p></blockquote><a id="more"></a><p><strong>小硕毕业一年 从材料转做计算机</strong></p><p>硕士毕业就快一年了，昨天写年终总结，看着1、2.的一长串完成项目，就好像马拉松的中途，回头看看已经走下的这一路，原来我已不再紧张。从材料物理与化学到计算机，到现在敲着代码，看着方程式，弄着神经网络，回想起刚出来时的坎坷、迷茫，更多的是紧张和不安，现在却并没如释重负的感觉，一切显得那么平静。有时候同事会问你以前做什么的，我说做材料的，她们总会惊讶，那你怎么搞计算机了。呵呵，工作有时候就像女孩，遇到了才会惊讶。我想会有很多很多的小硕或博士有同样的梦想，将此生献给学术，这个圣神的事业，梦想着能有爱因斯坦般光辉的成就，就像《美丽心灵》中有一天别人将尊敬的钢笔放在你的面前，梦想着能在这一领域举足轻重，能够在学术上游刃有余。直到实验一天重复着一天，日子看不到尽头，然后开始怀疑，开始迷茫，开始一遍一遍的为文章的格式耗尽心力。我想可能大多数硕博士都会遇到。</p><p>工作之后，依然有许多和我做同样课题的人来问我，有硕士，也有博士，有哈工大、西北大、江南大学、兰州大学、山东大学等等，每次我都知无不言，因为我会想着那时候一个人做着课题时候的迷茫和不知所措，一个人的无助和苦闷，所以我总是尽我最大的努力告诉他们，这个理论在哪有，现在国内谁做这一块的比较多，哪些英文著作可以先了解，理论部分看哪一本教材，因为是做材料模拟，所以大部分时间会给他们说软件怎么设置，模型怎么建立。我知道我并不是个什么厉害的人物，只是进课题早点而已，所以希望可以帮帮他们，就像我那时候非常希望有个人可以帮我一样。</p><p>刚进公司，老板给我一篇英文博士论文，让我把这个算法弄出来。初出茅庐，半点不敢懈怠，每天晚上十点而归。由于刚出学校，还不习惯中午不午休，所以下午特别困，困了也不敢睡，有时候只能在厕所小眯一会。终于半个多月后给领导讲解了博士论文的大致理论，一个月后调通了MATLAB代码。虽然累，可是我比较喜欢。不用再去弄那些抄菜一般的材料，我可以一心的弄理论。我可以去用理论解开疑惑，我喜欢这种感觉。</p><p>做课题那会我想好好疏通《固体物理》和《量子力学》，那样就不用做什么都像炒菜，增加一点看怎么样，不行再减少一点看怎么样。可是不行，导师总会催文章，美其名曰只要结果不问过程，我看着周围所有的导师都这样，所以没有半点兴趣读博，我也不相信我会找到一个和我有一致想法的导师。从考研起，我就知道为什么要读这个硕士，所以当不再像我希望那样时，我走了出来，我相信一个人的天空依然可以灿烂。</p><p>后来公司领导让我弄小波去噪，替换现有软件中的ＦＦＴ（快速傅里叶变换）算法（因为ＦＦＴ会有边际效应和滤波后的正弦波效应），我从不知道什么是小波，更别提写小波程序。两个月后完成了MATLAB和Ｃ＋＋的小波去噪程序，随便用小波做了个压缩程序，压缩比可以达到只有原来数据的２５％，甚至更高，这对于单片机向计算机发数据是很有用的。期间学会了Ｃ＋＋的入门，ＶＳ、ＱＴ的基本使用。从最开始的老大说你Ｃ＋＋基础太差了，确实差，因为我没学过，到后来自己完成Ｃ＋＋ＧＵＩ界面调试程序和类的编写，还有理论的理解。总共应该差不多三个月的时间，看过的ｐｄｆ专业书籍能列出来的应该不少于十本。每天差不多晚上十点下班，不过我周末很少加班，我不喜欢工作狂。努力只是一种姿态，不能成为全部。</p><p>空闲的时候会来逛逛小木虫，会看到各种各样的苦闷，有和自己相同的，有些不同的，但我想生活方式多种多样，也不定说哪种一定好，但我始终坚信，应该有一条属于自己最佳的，就像费曼的最小作用原理一样。我很怕自己写的东西最后像那种说教式的，本科的时候我不断的要求自己去看书，各种各样的，没有别的目的，只是想着我可以多看看别人的路，然后去想、去选择一条我最合适，或者说自己最喜欢的路。也出于这种目的，我想给那些和我有相同经历的人看看我这样的一条路，路不一定是最好的，有点启发就好。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;这是 @yuerongzho 2012年12月发在小木虫的帖子，现在小木虫网站上已经看不到了，但我还存着，时隔几年再看依然感动，所以冒昧转到了个人博客上。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这篇帖子发布于2012年，距离现在已经9年。这9年间时过境迁，彼时移动互联网还没有爆发，深度学习还在打比赛，而现在转计算机已经成了各路专业大热的趋势。转这篇帖子，我个人的想法并不是进一步渲染转计算机的氛围，而是感受如何找到一个人想要的东西、如何去实现一个人的想法。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+      <category term="梦里的棉花糖" scheme="http://yoursite.com/categories/%E6%A2%A6%E9%87%8C%E7%9A%84%E6%A3%89%E8%8A%B1%E7%B3%96/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>2020 年终总结：只一眼，梵音也渐远</title>
@@ -476,9 +502,9 @@
     
       <category term="构建与编译" scheme="http://yoursite.com/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/"/>
     
-      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
-    
       <category term="VapourSynth" scheme="http://yoursite.com/tags/VapourSynth/"/>
+    
+      <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
     
   </entry>
   
@@ -505,31 +531,6 @@
       <category term="C++" scheme="http://yoursite.com/tags/C/"/>
     
       <category term="VapourSynth" scheme="http://yoursite.com/tags/VapourSynth/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>周记 2020.02.24-03.01</title>
-    <link href="http://yoursite.com/2020/03/05/week-202002-4/"/>
-    <id>http://yoursite.com/2020/03/05/week-202002-4/</id>
-    <published>2020-03-05T14:44:28.000Z</published>
-    <updated>2020-03-08T08:43:17.049Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;mutex&gt;</span></span><br><br><span class="hljs-built_in">std</span>::mutex<br></code></pre></td></tr></table></figure><a id="more"></a><h3 id="2-解决VapourSynth版本问题？"><a href="#2-解决VapourSynth版本问题？" class="headerlink" title="2.解决VapourSynth版本问题？"></a>2.解决VapourSynth版本问题？</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> VAPOURSYNTH_API_VERSION &lt; 0x30002</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br></code></pre></td></tr></table></figure><p>（来自KNLmeansCL？）</p><h3 id="3-OpenCL"><a href="#3-OpenCL" class="headerlink" title="3.OpenCL"></a>3.OpenCL</h3><p>看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。</p><h3 id="4-OpenCL设计思路的理解"><a href="#4-OpenCL设计思路的理解" class="headerlink" title="4.OpenCL设计思路的理解"></a>4.OpenCL设计思路的理解</h3><p>我能理解到的几点…</p><ul><li>OpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）</li><li>类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）</li><li>OpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）</li><li>CPU 线程 = OpenCL 工作项（Work Item）</li></ul><h3 id="5-OpenCL与C"><a href="#5-OpenCL与C" class="headerlink" title="5.OpenCL与C++"></a>5.OpenCL与C++</h3><p>在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。</p><p>可以不写的<code>.cl</code>文件的说。</p><h3 id="6-C-STL库"><a href="#6-C-STL库" class="headerlink" title="6.C++ STL库"></a>6.C++ STL库</h3><p>C++标准模板库，（抛开<code>string</code>）可以分为两条线路，容器与方法。元素的插入、删除和访问方法不同，构成了不同容器的差别，而方法可以理解成一个函数，或者说一种操作。</p><p>例如容器<code>vector</code>、<code>queue</code>，方法<code>at</code>、<code>emplace</code>。</p><p>感觉现在，我已经把21天学通C++这本书从总体上做了概览。</p><h3 id="7-Mkdocs：写自己的图书"><a href="#7-Mkdocs：写自己的图书" class="headerlink" title="7.Mkdocs：写自己的图书"></a>7.Mkdocs：写自己的图书</h3><p>去搜算法导论的课后题，偶然发现了Mkdocs，感觉比gitbooks自由度更高。也知道了原来github pages不仅可以用来搭博客，还可以做一般项目的展示页。github展示页配合Mkdocs就可以实现自己的图书。</p><h3 id="8-交流"><a href="#8-交流" class="headerlink" title="8.交流"></a>8.交流</h3><p>在D9上帖出了AreaResize，通过交流我才意识到，之前我修改的JincResize，以及其他常用的Resize方法，都可以视为卷积操作（所以这也带来了OpenCL加速或指令集优化的可能）。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-C-互斥锁&quot;&gt;&lt;a href=&quot;#1-C-互斥锁&quot; class=&quot;headerlink&quot; title=&quot;1.C++互斥锁&quot;&gt;&lt;/a&gt;1.C++互斥锁&lt;/h3&gt;&lt;figure class=&quot;highlight c++&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;code class=&quot;hljs c++&quot;&gt;&lt;span class=&quot;hljs-meta&quot;&gt;#&lt;span class=&quot;hljs-meta-keyword&quot;&gt;include&lt;/span&gt; &lt;span class=&quot;hljs-meta-string&quot;&gt;&amp;lt;mutex&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span class=&quot;hljs-built_in&quot;&gt;std&lt;/span&gt;::mutex&lt;br&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-    
-    </summary>
-    
-    
-      <category term="笔记" scheme="http://yoursite.com/categories/%E7%AC%94%E8%AE%B0/"/>
-    
-    
-      <category term="C++" scheme="http://yoursite.com/tags/C/"/>
-    
-      <category term="OpenCL" scheme="http://yoursite.com/tags/OpenCL/"/>
     
   </entry>
   
