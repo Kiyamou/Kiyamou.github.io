@@ -502,9 +502,9 @@
     
       <category term="构建与编译" scheme="http://yoursite.com/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/"/>
     
-      <category term="VapourSynth" scheme="http://yoursite.com/tags/VapourSynth/"/>
-    
       <category term="Linux" scheme="http://yoursite.com/tags/Linux/"/>
+    
+      <category term="VapourSynth" scheme="http://yoursite.com/tags/VapourSynth/"/>
     
   </entry>
   
