@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2020/04/08/gcc-use-2/</loc>
+    
+    <lastmod>2022-02-25</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2020/02/08/ISP-learn-1/</loc>
     
     <lastmod>2022-02-25</lastmod>
@@ -239,15 +248,6 @@
     <loc>http://yoursite.com/2020/04/26/grain-and-noise/</loc>
     
     <lastmod>2020-04-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2020/04/08/gcc-use-2/</loc>
-    
-    <lastmod>2020-04-09</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -702,6 +702,13 @@
   </url>
   
   <url>
+    <loc>http://yoursite.com/tags/ISP/</loc>
+    <lastmod>2022-02-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/tags/C/</loc>
     <lastmod>2022-02-25</lastmod>
     <changefreq>weekly</changefreq>
@@ -710,13 +717,6 @@
   
   <url>
     <loc>http://yoursite.com/tags/OpenCV/</loc>
-    <lastmod>2022-02-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/tags/ISP/</loc>
     <lastmod>2022-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -823,14 +823,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E4%BA%8C%E6%AC%A1%E5%85%83%E4%B8%8E%E6%B8%B8%E6%88%8F/</loc>
+    <loc>http://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2022-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</loc>
+    <loc>http://yoursite.com/categories/%E4%BA%8C%E6%AC%A1%E5%85%83%E4%B8%8E%E6%B8%B8%E6%88%8F/</loc>
     <lastmod>2022-02-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
