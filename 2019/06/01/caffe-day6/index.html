@@ -66,7 +66,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -238,19 +240,19 @@
             
             <div class="markdown-body">
               <p>《21天实战Caffe》学习笔记第6天</p>
-<h3 id="练习题3：完成Caffe-Cifar10示例"><a href="#练习题3：完成Caffe-Cifar10示例" class="headerlink" title="练习题3：完成Caffe Cifar10示例"></a>练习题3：完成Caffe Cifar10示例</h3><h4 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">$ <span class="hljs-keyword">cd</span> ~<span class="hljs-string">/caffe/data/cifar10</span><br>$ <span class="hljs-string">./get_cifar10.sh</span><br></code></pre></td></tr></table></figure>
+<h3 id="练习题3：完成Caffe-Cifar10示例"><a href="#练习题3：完成Caffe-Cifar10示例" class="headerlink" title="练习题3：完成Caffe Cifar10示例"></a>练习题3：完成Caffe Cifar10示例</h3><h4 id="下载数据集"><a href="#下载数据集" class="headerlink" title="下载数据集"></a>下载数据集</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~/caffe/data/cifar10</span><br><span class="hljs-meta">$ </span><span class="language-bash">./get_cifar10.sh</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="数据的格式转换"><a href="#数据的格式转换" class="headerlink" title="数据的格式转换"></a>数据的格式转换</h4><p>将下载的数据集转换为caffe支持的lmdb格式。</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">$ <span class="hljs-keyword">cd</span> ~<span class="hljs-string">/caffe/examples/cifar10</span><br>$ <span class="hljs-string">./create_cifar10.sh</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$ </span><span class="language-bash"><span class="hljs-built_in">cd</span> ~/caffe/examples/cifar10</span><br><span class="hljs-meta">$ </span><span class="language-bash">./create_cifar10.sh</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="修改训练参数"><a href="#修改训练参数" class="headerlink" title="修改训练参数"></a>修改训练参数</h4><p>由于在虚拟机下运行，无法使用GPU进行训练，故需将训练参数中的训练模式设置为CPU模式。</p>
 <p>在<code>~/caffe/examples/cifar10</code>文件件下，打开<code>cifar10_full_solver.prototxt</code>，将最后的<code>solve mode</code>改为CPU模式。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># solver mode: CPU or GPU</span><br>solver_mode: CPU<br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h4 id="进行训练"><a href="#进行训练" class="headerlink" title="进行训练"></a>进行训练</h4><p>Cifar10示例提供了多种训练脚本，这里使用<code>train_full.sh</code>进行训练，上一步中修改的参数文件同样是该训练脚本所对应的参数文件。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>./train_full.sh<br></code></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta">$ </span><span class="language-bash">./train_full.sh</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h4><p>在虚拟机中用CPU训练了6h 10min，仍未完成，放弃。</p>
 <p>虚拟机的CPU分配为2*8，但在训练中只有两个核心在工作：主力核心，一个线程占用20-40%，另一个线程占用约80%；另一个核心，两个线程占用均在20%上下波动。</p>
@@ -449,24 +451,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

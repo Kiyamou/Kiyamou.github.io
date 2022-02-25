@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,7 +236,7 @@
             <div class="markdown-body">
               <h3 id="爱恨交加的CentOS"><a href="#爱恨交加的CentOS" class="headerlink" title="爱恨交加的CentOS"></a>爱恨交加的CentOS</h3><p>我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。</p>
 <p>但这次编译VapourSynth着实让我感觉蛋疼。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h4 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h4><p>用了这么长时间的Linux，基本的编译套路也该熟悉了。一般开发者都会提供<code>autogen.sh</code>或者<code>configure</code>文件，运行一下。然后<code>make</code>和<code>make install</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> vapoursynth<br>./autogen.sh<br>./configure<br>make<br>make install<br></code></pre></td></tr></table></figure>
@@ -249,12 +251,12 @@
 <p>安装依赖使用<code>pacman -S package</code>，但是不能指定版本，只提供最新版。</p>
 <p>说起来，我的转变也是很大的：之前用最小安装的CentOS，只是好玩；现在用没有桌面的ArchLinux，也能完成实际工作了。</p>
 <p>因为没有装桌面，只说一下<code>pacman</code>给我的感受。感觉很方便，既不需要想Ubuntu那样没事敲sudo，又不需要担心CentOS提供的包没有更新，也不需要担心CentOS下的包有不一样的名字。</p>
-<p>顺便学了/复习了Linux下的常用命令。</p>
+<p>顺便学了&#x2F;复习了Linux下的常用命令。</p>
 <h3 id="Meson与pkg-config的使用"><a href="#Meson与pkg-config的使用" class="headerlink" title="Meson与pkg-config的使用"></a>Meson与pkg-config的使用</h3><h4 id="Meson"><a href="#Meson" class="headerlink" title="Meson"></a>Meson</h4><p>Meson和ninja在ArchLinux下一键安装，基础的cmake、VapourSynth需要的pkg-config，都是一样。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">pacman -S cmake<br>pacman -S meson<br>pacman -S pkg-config<br></code></pre></td></tr></table></figure>
 
 <p>只是VapourSynth需要版本限定的zimg v2.9，而<code>pacman</code>又只提供最新版。但我试了一下，目前最新版的zimg v2.9.2和VapourSynth R49（这个时候R49还没有发布，但我之后编译好，发现版本号已经改成R49了），至少在编译阶段没有冲突。</p>
-<p>目前Meson没什么好说的，因为我现在的项目，还是结构很简单的项目，而且Meson的语法简单明了。只是Meson的教程藏得有点深，推荐去Github上看，<a href="https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md" target="_blank" rel="noopener">https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md</a> 。</p>
+<p>目前Meson没什么好说的，因为我现在的项目，还是结构很简单的项目，而且Meson的语法简单明了。只是Meson的教程藏得有点深，推荐去Github上看，<a target="_blank" rel="noopener" href="https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md">https://github.com/mesonbuild/meson/blob/master/docs/markdown/Reference-manual.md</a> 。</p>
 <h4 id="pkg-config"><a href="#pkg-config" class="headerlink" title="pkg-config"></a>pkg-config</h4><p>关于pkg-config，我搜了一下，应该和Meson一样，也是一款跨平台的工具…但我觉得，还是只在Linux下用吧…</p>
 <p>使用pkg-config的项目要写一个.pc后缀的配置文件，具体到VapourSynth，就是说明了头文件的位置。这个.pc文件会在项目中提供，要自己放到<code>usr/lib/pkgconf</code>下面，然后使用pkg-config时就会到这里搜索。</p>
 <p>在我看来，这样避免了每新面对一个项目就重新配环境。</p>
@@ -468,24 +470,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

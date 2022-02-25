@@ -62,7 +62,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -233,10 +235,10 @@
             <h1 style="display: none">Travis CI持续集成与各编译器对C++新特性的支持</h1>
             
             <div class="markdown-body">
-              <h3 id="Travis-CI的部署"><a href="#Travis-CI的部署" class="headerlink" title="Travis CI的部署"></a>Travis CI的部署</h3><p>很早就有体验Travis CI持续集成的想法，于是拿<a href="https://github.com/Kiyamou/VapourSynth-JincResize" target="_blank" rel="noopener">VapourSynth-JincResize</a>项目试一试。</p>
+              <h3 id="Travis-CI的部署"><a href="#Travis-CI的部署" class="headerlink" title="Travis CI的部署"></a>Travis CI的部署</h3><p>很早就有体验Travis CI持续集成的想法，于是拿<a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize">VapourSynth-JincResize</a>项目试一试。</p>
 <h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给JincResize项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的<code>.travis.yml</code>脚本。</p>
 <p>但等我上传了脚本、部署完成之后才想起，JincResize项目使用pkg-config解决依赖的问题，而配置pkg-config需要先编译VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用gcc编译，反正我的项目结构简单。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>直接用gcc编译也需要解决VapourSynth头文件的依赖，绞尽脑汁想了个略显蛋疼的办法，从VapourSynth的官方仓库中下载头文件到服务器，再移到相应位置。之所以这么折腾，而不是把需要的头文件传到JincResize项目的仓库中，是因为<del>很多其他VapourSynth的Plugin项目都不传这类通用头文件</del>不同版本VapourSynth头文件对应不同版本的VapourSynth API，API版本不同，编译出来的动态链接库没法被VapourSynth主程序调用。如果我自己向仓库传了某一版本的头文件，反而可能误导其他人。</p>
 <p>然而VapourSynth毕竟不是一个小项目，起初想试一下git 2.25.0新增的部分克隆功能，只克隆我需要的两个头文件，但我太笨了…不会用。遂用wget下载Release中打包好的源码（体积毕竟比整个仓库小），然后再解压我想要的文件、移动。</p>
@@ -441,24 +443,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

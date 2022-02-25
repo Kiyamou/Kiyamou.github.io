@@ -62,7 +62,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -237,7 +239,7 @@
 <h3 id="代码阅读"><a href="#代码阅读" class="headerlink" title="代码阅读"></a>代码阅读</h3><p>本以为是继续阅读昨天<code>/src/caffe/net.cpp</code>代码中余下关于反向传播的部分，但先讲了关于损失层与损失函数的代码。</p>
 <p>这也是符合直观想法的，因为反向传播的关键，就是反向传递误差（即损失）。                                                                                                                                                                                                                                                                                                                                                                                                                                                  </p>
 <p>今天主要是讲了损失层、损失函数的实现，在买了《21天学通C++》后，代码也逐渐看得进去了。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>代码的主观印象就是各种模版类。</p>
 <p>讲完损失层、损失函数，才继续昨天的<code>net.cpp</code>代码。</p>
@@ -440,24 +442,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

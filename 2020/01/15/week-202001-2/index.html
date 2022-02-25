@@ -67,7 +67,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -243,13 +245,13 @@
 <h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>预处理功能有三种：宏定义，文件包含和条件编译</p>
 <p><strong>条件编译</strong></p>
 <p><code>#ifndef</code>与<code>#endif</code>配套使用</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> defined(__GNUC__) || defined(__clang__)</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">if</span> defined(__GNUC__) || defined(__clang__)</span><br></code></pre></td></tr></table></figure>
 
 <p>这是条件编译的意思</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++">_WIN32    <span class="hljs-comment">// Windows</span><br>__linux   <span class="hljs-comment">// Linux</span><br><br>__clang__ <span class="hljs-comment">// Clang</span><br>__GNUC__  <span class="hljs-comment">// GCC（需要注意的是Clang也会定义这个宏）</span><br>_MSC_VER  <span class="hljs-comment">// MSVC</span><br></code></pre></td></tr></table></figure>
 
 <p>所以我在vs代码中看到的，只是为了满足不同的编译器。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h3><p>Q：.hpp与.h的区别<br>A：.h只有声明没有实现，.hpp既有声明又有实现</p>
 <p>Q：用VS编译（GCC编译没有这个事），为什么会找不到标识符，明明IDE说的变量在错误行根本没有，而且变量已经定义了</p>
@@ -268,13 +270,13 @@
 <p>所以老老实实地配环境，配目录吧。（话说MSVC还有<code>x64.props</code>和<code>Win32.props</code>，读取用户器件上的依赖，避免了版本不匹配的问题）</p>
 <h4 id="4-从GCC到指令集优化"><a href="#4-从GCC到指令集优化" class="headerlink" title="4.从GCC到指令集优化"></a>4.从GCC到指令集优化</h4><p><em>话说我很喜欢写“从…到…”的句式。因为要补的东西太多，往往遇见一个新东西就能启发到另一个东西。</em></p>
 <p>在64位的GCC目录下，藏着这么个东西，<code>immintrin.h</code>。</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal">mingw64\<span class="hljs-class"><span class="hljs-keyword">lib</span>\<span class="hljs-title">gcc</span>\<span class="hljs-title">x86_64</span>-<span class="hljs-title">w64</span>-<span class="hljs-title">mingw32</span>\8.1.0\<span class="hljs-title">include</span></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">mingw64</span>\lib\gcc\x86_64-w64-mingw32\<span class="hljs-number">8</span>.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>\include<br></code></pre></td></tr></table></figure>
 
 <p><code>immintrin.h</code>集成了AVX指令集优化的相关头文件，是打开指令集优化大门的撬棍。我心念念的指令集优化终于有了着落。</p>
 <h3 id="人生相谈"><a href="#人生相谈" class="headerlink" title="人生相谈"></a>人生相谈</h3><p>在NGA论坛看到的，值得好好读一下。</p>
 <blockquote>
 <p>gcc和msvc等编译工具要熟悉，make file要会写。</p>
-<p>From: <a href="https://bbs.nga.cn/read.php?tid=19639952&amp;page=2" target="_blank" rel="noopener">https://bbs.nga.cn/read.php?tid=19639952&amp;page=2</a></p>
+<p>From: <a target="_blank" rel="noopener" href="https://bbs.nga.cn/read.php?tid=19639952&amp;page=2">https://bbs.nga.cn/read.php?tid=19639952&amp;page=2</a></p>
 </blockquote>
 
             </div>
@@ -474,24 +476,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

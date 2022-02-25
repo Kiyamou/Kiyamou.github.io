@@ -18,10 +18,10 @@
 1ssh-keygen -t rsa
 
 在这一步可以使用-C &amp;#39;comment&amp;#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。
-1ssh-keygen -t rsa -C &#39;comment&#39;
+1ssh-keygen -t rsa -C &amp;#x27;comment&amp;#x27;
 
 默认的密钥为2048位，可以使用-b指定密钥位数。
-1ssh-keyge">
+">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -67,7 +67,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -242,18 +244,18 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa<br></code></pre></td></tr></table></figure>
 
 <p>在这一步可以使用<code>-C &#39;comment&#39;</code>对秘钥进行注释。一些教程中要求在<code>-C</code>后写邮箱，其实写什么都可以，不写也行，注释而已。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">'comment'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">&#x27;comment&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>默认的密钥为2048位，可以使用<code>-b</code>指定密钥位数。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">'comment'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&#x27;comment&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>之后会确认密钥文件的存放位置和文件名，如下。</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">Enter <span class="hljs-built_in">file</span> <span class="hljs-keyword">in</span> which <span class="hljs-built_in">to</span> save <span class="hljs-keyword">the</span> key (/c/Users/UserName/.ssh/id_rsa):<br></code></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">Enter <span class="hljs-keyword">file</span> in which to save the key (<span class="hljs-regexp">/c/U</span>sers<span class="hljs-regexp">/UserName/</span>.ssh/id_rsa):<br></code></pre></td></tr></table></figure>
 
 <p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
 <p>之后会要求设置密码，回车则密码留空。</p>
 <p>看到<code>The key&#39;s randomart image is:</code>和创建密钥时的随机图像，即为创建成功。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="添加密钥"><a href="#添加密钥" class="headerlink" title="添加密钥"></a>添加密钥</h3><p>添加私钥至ssh-agent，Windows下私钥的路径为<code>C:\Users\UserName\.ssh\id_rsa</code>。当然在Git Bash里要加上引号，或这么写<code>/c/Users/UserName/.ssh/id_rsa</code>，或者直接<code>~/.ssh/id_rsa</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-add ~/.ssh/id_rsa<br></code></pre></td></tr></table></figure>
@@ -264,21 +266,21 @@
 <p>然后在Github或Gitlab的网页端添加公钥（公钥文件为<code>C:\Users\UserName\.ssh\id_rsa.pub</code>）。</p>
 <p>顺带一提，如果在创建时添加了注释，则公钥会以“空格+注释内容”结尾。</p>
 <h2 id="多个Git账号共存"><a href="#多个Git账号共存" class="headerlink" title="多个Git账号共存"></a>多个Git账号共存</h2><h3 id="创建多个ssh-key"><a href="#创建多个ssh-key" class="headerlink" title="创建多个ssh-key"></a>创建多个ssh-key</h3><p>如果需要同时使用Github和Gitlab，并同时使用ssh连接，则需创建两个密钥，如</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">'github'</span><br>ssh-keygen -t rsa -C <span class="hljs-string">'gitlab'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">&#x27;github&#x27;</span><br>ssh-keygen -t rsa -C <span class="hljs-string">&#x27;gitlab&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>重复上一节的内容，添加私钥至ssh-agent，分别添加公钥至Github和Gitlab。</p>
 <h3 id="为不同网站配置ssh-key"><a href="#为不同网站配置ssh-key" class="headerlink" title="为不同网站配置ssh-key"></a>为不同网站配置ssh-key</h3><p>进入密钥所在的<code>.ssh</code>文件夹，创建配置文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/.ssh<br>touch config<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/.ssh<br><span class="hljs-built_in">touch</span> config<br></code></pre></td></tr></table></figure>
 
 <p>在<code>config</code>文件中写入如下内容，注意将Github部分的<code>User UserName</code>修改为实际用户名。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-comment"># gitlab</span><br>Host gitlab.com<br>HostName gitlab.com<br>PreferredAuthentications publickey<br>IdentityFile ~/.ssh/id_rsa_gitlab<br><br><span class="hljs-comment"># github</span><br>Host github.com<br>User UserName<br>Hostname ssh.github.com<br>PreferredAuthentications publickey<br>IdentityFile ~/.ssh/id_rsa_github<br>Port 443<br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># gitlab</span><br>Host gitlab.com<br>HostName gitlab.com<br>PreferredAuthentications publickey<br>IdentityFile ~<span class="hljs-regexp">/.ssh/i</span>d_rsa_gitlab<br><br><span class="hljs-comment"># github</span><br>Host github.com<br>User UserName<br>Hostname ssh.github.com<br>PreferredAuthentications publickey<br>IdentityFile ~<span class="hljs-regexp">/.ssh/i</span>d_rsa_github<br>Port <span class="hljs-number">443</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="测试ssh-key的配置情况"><a href="#测试ssh-key的配置情况" class="headerlink" title="测试ssh-key的配置情况"></a>测试ssh-key的配置情况</h3><p>使用<code>ssh -T</code>命令测试密钥配置情况。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -T git@github.com<br>ssh -T git@gitlab.com<br></code></pre></td></tr></table></figure>
 
 <p>如果是使用该密钥，会询问是否与远程服务器建立连接，输入<code>yes</code>确认即可。之后会在<code>~/.ssh</code>文件夹下生成<code>known_hosts</code>文件，用以记录相应信息。</p>
 <p>对于Github，测试成功的信息为</p>
-<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">Hi UserName! You<span class="hljs-symbol">'ve</span> successfully authenticated, but GitHub does <span class="hljs-keyword">not</span> provide shell <span class="hljs-keyword">access</span>.<br></code></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">Hi UserName! You<span class="hljs-symbol">&#x27;ve</span> successfully authenticated, but GitHub does <span class="hljs-keyword">not</span> provide shell <span class="hljs-keyword">access</span>.<br></code></pre></td></tr></table></figure>
 
 <p>对于Gitlab，测试成功的信息为</p>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autoit">Welcome <span class="hljs-keyword">to</span> GitLab, <span class="hljs-symbol">@UserName</span>!<br></code></pre></td></tr></table></figure>
@@ -286,10 +288,10 @@
 <p>至此，密钥的创建与配置工作完成。</p>
 <h3 id="设置Git账户信息"><a href="#设置Git账户信息" class="headerlink" title="设置Git账户信息"></a>设置Git账户信息</h3><p>一般将常用的Git账户设置为全局（global）账户，为需要使用其他账户的仓库设置局域（local）账户。</p>
 <p>设置全局账户。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">git config --global user.name <span class="hljs-string">'name'</span><br>git config --global user.email <span class="hljs-string">'email'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">git config --global user.name <span class="hljs-string">&#x27;name&#x27;</span><br>git config --global user.email <span class="hljs-string">&#x27;email&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>为特定仓库设置局域账户。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /Path/To/Repository<br>git config --<span class="hljs-built_in">local</span> user.name <span class="hljs-string">'name'</span><br>git config --<span class="hljs-built_in">local</span> user.email <span class="hljs-string">'email'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /Path/To/Repository<br>git config --<span class="hljs-built_in">local</span> user.name <span class="hljs-string">&#x27;name&#x27;</span><br>git config --<span class="hljs-built_in">local</span> user.email <span class="hljs-string">&#x27;email&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>检查账户配置情况。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git config -l<br></code></pre></td></tr></table></figure>
@@ -313,13 +315,13 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git add .<br></code></pre></td></tr></table></figure>
 
 <p>写commit message。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit -m <span class="hljs-string">"commit message"</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit -m <span class="hljs-string">&quot;commit message&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>提交至master分支。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git push origin master<br></code></pre></td></tr></table></figure>
 
-<h4 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h4><h5 id="给commit写注释"><a href="#给commit写注释" class="headerlink" title="给commit写注释"></a>给commit写注释</h5><p>在Github/Gitlab网页版或者Github桌面版，每次提交，除了给commit写标题，还可以写比较详尽的注释；在命令行中，写两次<code>-m</code>，分别写标题和注释即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit -m <span class="hljs-string">"Title"</span> -m <span class="hljs-string">"Description"</span><br></code></pre></td></tr></table></figure>
+<h4 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h4><h5 id="给commit写注释"><a href="#给commit写注释" class="headerlink" title="给commit写注释"></a>给commit写注释</h5><p>在Github&#x2F;Gitlab网页版或者Github桌面版，每次提交，除了给commit写标题，还可以写比较详尽的注释；在命令行中，写两次<code>-m</code>，分别写标题和注释即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">git commit -m <span class="hljs-string">&quot;Title&quot;</span> -m <span class="hljs-string">&quot;Description&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h5 id="撤回本地提交"><a href="#撤回本地提交" class="headerlink" title="撤回本地提交"></a>撤回本地提交</h5><p>当commit已在本地提交，但尚未push至远程仓库时，若想撤回本地提交，则需使用<code>git reset</code>。</p>
 <h6 id="进一步地"><a href="#进一步地" class="headerlink" title="进一步地"></a>进一步地</h6><p>撤回本地提交但不撤回已修改的代码，使用<code>git reset</code>；</p>
@@ -535,24 +537,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

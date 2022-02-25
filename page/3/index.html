@@ -44,7 +44,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -291,7 +293,7 @@
           
             
           
-          1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。
+          1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡&#x2F;渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。
 嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。
         </a>
       </p>
@@ -528,9 +530,9 @@
           
             
           
-          通过学习mushfiqulalam/isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。
+          通过学习mushfiqulalam&#x2F;isp项目整理一下ISP的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。
 基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍Jinc函数的pdf里。
-最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaussian？
+最后的降噪和锐化，是我很熟悉的。降噪用了sigma filter，代码还没有读，盲猜是Gaus
         </a>
       </p>
 
@@ -580,10 +582,10 @@
           
             
           
-          指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）
+          指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march&#x3D;native）
 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。
 Functions（Doc在这里，直接搜索想查的函数即可）
-（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その
+（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる
         </a>
       </p>
 
@@ -805,24 +807,7 @@ Functions（Doc在这里，直接搜索想查的函数即可）
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

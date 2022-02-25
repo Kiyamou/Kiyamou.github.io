@@ -65,7 +65,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -237,22 +239,22 @@
             
             <div class="markdown-body">
               <p>《21天实战Caffe》学习笔记第19天</p>
-<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a href="http://github.com/fzliu/style-transfer" target="_blank" rel="noopener">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
+<h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a target="_blank" rel="noopener" href="http://github.com/fzliu/style-transfer">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
 <p>测试命令如下。</p>
-<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">cd <span class="hljs-built_in">style</span>-transfer<br>python <span class="hljs-built_in">style</span>.py -s images/<span class="hljs-built_in">style</span>/starry_night.jpg -c images/<span class="hljs-built_in">content</span>/johannesburg.jpg -g -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd style-transfer<br>python style.py -s images<span class="hljs-regexp">/style/</span>starry_night.jpg -c images<span class="hljs-regexp">/content/</span>johannesburg.jpg -g -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
 <p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
-<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi">ValueError: can <span class="hljs-keyword">not</span> convert <span class="hljs-keyword">object</span> <span class="hljs-keyword">to</span> float64.<br></code></pre></td></tr></table></figure>
+<h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-symbol">ValueError:</span> can <span class="hljs-built_in">not</span> convert <span class="hljs-type">object</span> <span class="hljs-keyword">to</span> float64.<br></code></pre></td></tr></table></figure>
 
-<p>根据<a href="https://github.com/BVLC/caffe/issues/438" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/BVLC/caffe/issues/438">https://github.com/BVLC/caffe/issues/438</a>中@RawanMG的说法，可以使用matplotlib解决这个问题。</p>
 <p>即在<code>style.py</code>开头添加如下语句。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> skimage <span class="hljs-keyword">import</span> io; io.use_plugin(<span class="hljs-string">'matplotlib'</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> skimage <span class="hljs-keyword">import</span> io; io.use_plugin(<span class="hljs-string">&#x27;matplotlib&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
 <p>Error 1解决。</p>
 <p>（这个Error可能是我的python site-packages版本较旧的原因？）</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h4 id="Error-2"><a href="#Error-2" class="headerlink" title="Error 2"></a>Error 2</h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">ImportError:</span> <span class="hljs-literal">No</span> <span class="hljs-string">module</span> <span class="hljs-string">named</span> <span class="hljs-string">Tkinter</span><br></code></pre></td></tr></table></figure>
+<h4 id="Error-2"><a href="#Error-2" class="headerlink" title="Error 2"></a>Error 2</h4><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs fortran">ImportError: No <span class="hljs-keyword">module</span> <span class="hljs-keyword">named</span> Tkinter<br></code></pre></td></tr></table></figure>
 
 <p>缺少Tkinter包，安装即可。</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> tkinter<br></code></pre></td></tr></table></figure>
@@ -261,18 +263,18 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> Tkinter<br></code></pre></td></tr></table></figure>
 
 <p>Error 2解决。</p>
-<h4 id="Error-3"><a href="#Error-3" class="headerlink" title="Error 3"></a>Error 3</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">IOError: decoder jpeg <span class="hljs-keyword">not</span> <span class="hljs-built_in">available</span><br></code></pre></td></tr></table></figure>
+<h4 id="Error-3"><a href="#Error-3" class="headerlink" title="Error 3"></a>Error 3</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">IOError: decoder jpeg <span class="hljs-keyword">not</span> available<br></code></pre></td></tr></table></figure>
 
 <p>没有jpeg解码器，安装即可。</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> libjpeg-devel<br></code></pre></td></tr></table></figure>
 
-<p>根据<a href="https://stackoverflow.com/questions/8915296/python-image-library-fails-with-message-decoder-jpeg-not-available-pil" target="_blank" rel="noopener">https://stackoverflow.com/questions/8915296/python-image-library-fails-with-message-decoder-jpeg-not-available-pil</a>的说法，需要重装相应的pyhon site-packages，涉及PIL和Pillow。</p>
-<p>根据<a href="https://blog.csdn.net/qq562029186/article/details/52972152" target="_blank" rel="noopener">https://blog.csdn.net/qq562029186/article/details/52972152</a>，得知Pillow是PIL的替代品，且我目前的Python2安装的就是Pillow，所以重装Pillow。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">pip2 uninstall Pillow<br>pip2 install Pillow==<span class="hljs-number">2.3</span><span class="hljs-number">.0</span><br></code></pre></td></tr></table></figure>
+<p>根据<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/8915296/python-image-library-fails-with-message-decoder-jpeg-not-available-pil">https://stackoverflow.com/questions/8915296/python-image-library-fails-with-message-decoder-jpeg-not-available-pil</a>的说法，需要重装相应的pyhon site-packages，涉及PIL和Pillow。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq562029186/article/details/52972152">https://blog.csdn.net/qq562029186/article/details/52972152</a>，得知Pillow是PIL的替代品，且我目前的Python2安装的就是Pillow，所以重装Pillow。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">pip2</span> uninstall Pillow<br><span class="hljs-attribute">pip2</span> install Pillow==<span class="hljs-number">2</span>.<span class="hljs-number">3</span>.<span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
 
 <p>（限制版本是防止pyhon site-packages间相互依赖、引发冲突，或不支持Python2。）</p>
 <p>Error 3解决。</p>
-<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs less"><span class="hljs-selector-tag">style</span><span class="hljs-selector-class">.py</span><span class="hljs-selector-pseudo">:main</span><span class="hljs-selector-pseudo">:21</span><span class="hljs-selector-pseudo">:22</span><span class="hljs-selector-pseudo">:07.489</span> <span class="hljs-selector-tag">--</span> <span class="hljs-selector-tag">Starting</span> <span class="hljs-selector-tag">style</span> <span class="hljs-selector-tag">transfer</span>.<br><span class="hljs-selector-tag">style</span><span class="hljs-selector-class">.py</span><span class="hljs-selector-pseudo">:main</span><span class="hljs-selector-pseudo">:21</span><span class="hljs-selector-pseudo">:22</span><span class="hljs-selector-pseudo">:07.489</span> <span class="hljs-selector-tag">--</span> <span class="hljs-selector-tag">Running</span> <span class="hljs-selector-tag">net</span> <span class="hljs-selector-tag">on</span> <span class="hljs-selector-tag">CPU</span>.<br><span class="hljs-selector-tag">style</span><span class="hljs-selector-class">.py</span><span class="hljs-selector-pseudo">:main</span><span class="hljs-selector-pseudo">:21</span><span class="hljs-selector-pseudo">:22</span><span class="hljs-selector-pseudo">:07.683</span> <span class="hljs-selector-tag">--</span> <span class="hljs-selector-tag">Successfully</span> <span class="hljs-selector-tag">loaded</span> <span class="hljs-selector-tag">images</span>.<br><span class="hljs-selector-tag">style</span><span class="hljs-selector-class">.py</span><span class="hljs-selector-pseudo">:main</span><span class="hljs-selector-pseudo">:21</span><span class="hljs-selector-pseudo">:22</span><span class="hljs-selector-pseudo">:35.974</span> <span class="hljs-selector-tag">--</span> <span class="hljs-selector-tag">Successfully</span> <span class="hljs-selector-tag">loaded</span> <span class="hljs-selector-tag">model</span> <span class="hljs-selector-tag">vgg16</span>.<br><span class="hljs-selector-tag">Optimizing</span>:   <span class="hljs-selector-tag">1%</span> |<span class="hljs-selector-tag">-</span>                                                                                                                           | <span class="hljs-selector-tag">ETA</span>:  <span class="hljs-selector-tag">20</span><span class="hljs-selector-pseudo">:25</span><span class="hljs-selector-pseudo">:50</span><br></code></pre></td></tr></table></figure>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">style</span>.py:main:<span class="hljs-number">21</span>:<span class="hljs-number">22</span>:<span class="hljs-number">07</span>.<span class="hljs-number">489</span> -- Starting style transfer.<br><span class="hljs-attribute">style</span>.py:main:<span class="hljs-number">21</span>:<span class="hljs-number">22</span>:<span class="hljs-number">07</span>.<span class="hljs-number">489</span> -- Running net <span class="hljs-literal">on</span> CPU.<br><span class="hljs-attribute">style</span>.py:main:<span class="hljs-number">21</span>:<span class="hljs-number">22</span>:<span class="hljs-number">07</span>.<span class="hljs-number">683</span> -- Successfully loaded images.<br><span class="hljs-attribute">style</span>.py:main:<span class="hljs-number">21</span>:<span class="hljs-number">22</span>:<span class="hljs-number">35</span>.<span class="hljs-number">974</span> -- Successfully loaded model vgg16.<br><span class="hljs-attribute">Optimizing</span>:   <span class="hljs-number">1</span>% |-                                                                                                                           | ETA:  <span class="hljs-number">20</span>:<span class="hljs-number">25</span>:<span class="hljs-number">50</span><br></code></pre></td></tr></table></figure>
 
 <p>由于只用了CPU，运行速度过慢，放弃了，至少代码是能正常运行的。</p>
 <h4 id="一点感想"><a href="#一点感想" class="headerlink" title="一点感想"></a>一点感想</h4><p>艺术风格迁移的核心思路是图像的“内容”和“风格”看似为一个整体，但却是可以分开表达的。基于此，有两个输入——想要的内容和想要的风格，进而获得艺术迁移的结果。</p>
@@ -282,7 +284,7 @@
 <h3 id="自然语言处理（nlp-caffe）"><a href="#自然语言处理（nlp-caffe）" class="headerlink" title="自然语言处理（nlp-caffe）"></a>自然语言处理（nlp-caffe）</h3><h4 id="编译过程"><a href="#编译过程" class="headerlink" title="编译过程"></a>编译过程</h4><p>（编译环境：CentOS 7.6 ）</p>
 <p>用nlpcaffe自带的<code>makefile.config</code>，在改成仅CPU模式（<code>CPU := 1</code>）并检查了python路径后，开始编译。</p>
 <p>但报错。报错内容是缺少cblas。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cannot <span class="hljs-builtin-name">find</span> -lcblas<br>cannot <span class="hljs-builtin-name">find</span> -latlas<br></code></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cannot <span class="hljs-built_in">find</span> -lcblas<br>cannot <span class="hljs-built_in">find</span> -latlas<br></code></pre></td></tr></table></figure>
 
 <p>查了一下解决方法，有人说CentOS下没有cblas，需用tatlas和satlbas代替，应该将<code>makefile</code>中的cblas和atlas替换掉（CentOS论坛上也有类似的说法）。</p>
 <p>但我按上述方法做了之后，仍是同样的报错。又去看了一下caffe的<code>makefile</code>，相应地方写的也是cblas——所以这么写也没问题吧。</p>
@@ -492,24 +494,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

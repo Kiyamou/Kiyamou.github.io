@@ -15,8 +15,8 @@
   
   <meta name="theme-color" content="#2f4154">
   <meta name="description" content="（内容待整理…orz）
-1.细碎的问题变量命名习惯的变化avs的pitch = vs的stride
-avs的env = vs的vi？那avs的params呢？
+1.细碎的问题变量命名习惯的变化avs的pitch &amp;#x3D; vs的stride
+avs的env &amp;#x3D; vs的vi？那avs的params呢？
 vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
@@ -63,7 +63,9 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -191,7 +193,7 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      757 字
+      759 字
     </span>
   
 
@@ -201,7 +203,7 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
       <i class="iconfont icon-clock-fill"></i>
       
       
-      5
+      6
        分钟
     </span>
   
@@ -235,10 +237,10 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
             
             <div class="markdown-body">
               <p>（内容待整理…orz）</p>
-<h3 id="1-细碎的问题"><a href="#1-细碎的问题" class="headerlink" title="1.细碎的问题"></a>1.细碎的问题</h3><h4 id="变量命名习惯的变化"><a href="#变量命名习惯的变化" class="headerlink" title="变量命名习惯的变化"></a>变量命名习惯的变化</h4><p>avs的<code>pitch</code> = vs的<code>stride</code></p>
-<p>avs的<code>env</code> = vs的<code>vi</code>？那avs的<code>params</code>呢？</p>
+<h3 id="1-细碎的问题"><a href="#1-细碎的问题" class="headerlink" title="1.细碎的问题"></a>1.细碎的问题</h3><h4 id="变量命名习惯的变化"><a href="#变量命名习惯的变化" class="headerlink" title="变量命名习惯的变化"></a>变量命名习惯的变化</h4><p>avs的<code>pitch</code> &#x3D; vs的<code>stride</code></p>
+<p>avs的<code>env</code> &#x3D; vs的<code>vi</code>？那avs的<code>params</code>呢？</p>
 <p>vs中很少见<code>dst-&gt;width</code>之类的写法，而是<code>d-&gt;width</code></p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h4 id="函数的迁移"><a href="#函数的迁移" class="headerlink" title="函数的迁移"></a>函数的迁移</h4><p>1.<code>GetRowSize()</code>到<code>GetWidth()*sizeof()</code>?</p>
 <p>2.<code>BitBlt()</code>到<code>vs_bitblt</code></p>
@@ -261,24 +263,24 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
 <h4 id="调用VapourSynth-API本身的一些问题"><a href="#调用VapourSynth-API本身的一些问题" class="headerlink" title="调用VapourSynth API本身的一些问题"></a>调用VapourSynth API本身的一些问题</h4><p>使用函数（我想说啥来着…）</p>
 <p>我甚至忘了<code>vsapi-&gt;getFrameWidth(src, plane)</code>，把<code>src</code>换成<code>dst</code>就是输出的尺寸了啊..一个劲写<code>d-&gt;target_width</code>总感觉不对劲…</p>
 <h3 id="4-C-基础相关"><a href="#4-C-基础相关" class="headerlink" title="4.C++基础相关"></a>4.C++基础相关</h3><h4 id="this指针"><a href="#this指针" class="headerlink" title="this指针"></a>this指针</h4><h5 id="语法上的概念"><a href="#语法上的概念" class="headerlink" title="语法上的概念"></a>语法上的概念</h5><p>只有成员函数才有this指针，每个对象都能通过this指针访问自己的地址。</p>
-<p>这篇<a href="https://www.runoob.com/cplusplus/cpp-this-pointer.html" target="_blank" rel="noopener">菜鸟教程</a>确实很好，不仅说明了this指针，也更加清楚地理解了<code>-&gt;</code>运算符。</p>
+<p>这篇<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-this-pointer.html">菜鸟教程</a>确实很好，不仅说明了this指针，也更加清楚地理解了<code>-&gt;</code>运算符。</p>
 <p>这是类和对象中的概念，我在迁移后的VapouSynth中根本没有写class，所以不要this指针了吧。</p>
 <p>从语法上讲，this指针不能用于被<code>static</code>标记的（成员）函数。</p>
 <h5 id="具体实现的功能"><a href="#具体实现的功能" class="headerlink" title="具体实现的功能"></a>具体实现的功能</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> (!(<span class="hljs-keyword">this</span>-&gt;*(<span class="hljs-keyword">this</span>-&gt;ResizeHorizontal))(buff, srcp, src_pitch, &amp;params[i]))<br></code></pre></td></tr></table></figure>
 
 <p>从这个判断语句中能得到什么？让我终于明白了代码中四个核心处理函数为什么要写成<code>bool</code>型了。像这样</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">bool</span> AreaResize::ResizeHorizontalPlanar(BYTE* dstp, <span class="hljs-keyword">const</span> BYTE* srcp, <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> src_pitch, <span class="hljs-keyword">const</span> <span class="hljs-keyword">params_t</span>* params)<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">AreaResize::ResizeHorizontalPlanar</span><span class="hljs-params">(BYTE* dstp, <span class="hljs-type">const</span> BYTE* srcp, <span class="hljs-type">const</span> <span class="hljs-type">int</span> src_pitch, <span class="hljs-type">const</span> <span class="hljs-type">params_t</span>* params)</span></span><br></code></pre></td></tr></table></figure>
 
 <p>emmm…但是每个函数最后都写着<code>return true</code>，那<code>false</code>是怎么来的…</p>
 <h4 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h4><p><code>gcd()</code>，求最大公约数，实现如下</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-keyword">int</span> x, <span class="hljs-keyword">int</span> y)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">int</span> m = x % y;<br>	<span class="hljs-keyword">return</span> m == <span class="hljs-number">0</span> ? y : gcd(y, m);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">gcd</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-type">int</span> m = x % y;<br>	<span class="hljs-keyword">return</span> m == <span class="hljs-number">0</span> ? y : <span class="hljs-built_in">gcd</span>(y, m);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <h4 id="C-的多线程"><a href="#C-的多线程" class="headerlink" title="C++的多线程"></a>C++的多线程</h4><p>并发（Concurrency）和并行（Parallelism）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">Concurrency::parallel_for();<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">Concurrency::<span class="hljs-built_in">parallel_for</span>();<br></code></pre></td></tr></table></figure>
 
 <h4 id="switch语句"><a href="#switch语句" class="headerlink" title="switch语句"></a>switch语句</h4><p>在条件并列且写法整齐时，用switch比if…else更简洁一些。</p>
 <h4 id="基础的基础"><a href="#基础的基础" class="headerlink" title="基础的基础"></a>基础的基础</h4><p>第一次看到类似这样的写法</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> index_value = target_width; index_value--; )<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> index_value = target_width; index_value--; )<br></code></pre></td></tr></table></figure>
 
 <p>最后的判断项省略了。</p>
 
@@ -483,24 +485,7 @@ vs中很少见dst-&amp;gt;width之类的写法，而是d-&amp;gt;width">
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

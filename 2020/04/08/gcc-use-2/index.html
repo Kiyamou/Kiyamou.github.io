@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -232,21 +234,21 @@
             <h1 style="display: none">gcc 10尝鲜及后续</h1>
             
             <div class="markdown-body">
-              <p>在<a href="https://github.com/sekrit-twc/zimg" target="_blank" rel="noopener">zimg项目</a>的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把<code>size_t</code>错认成<code>std::size_t</code>，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。</p>
+              <p>在<a target="_blank" rel="noopener" href="https://github.com/sekrit-twc/zimg">zimg项目</a>的Issue中看到这样一个问题，使用gcc 10编译出现了编译器把<code>size_t</code>错认成<code>std::size_t</code>，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到10了，支持了C++20的一些新特性，便想尝试一下。</p>
 <p>看了gcc官网，10版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的Fedora系统更省事一点。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="收集各种Linux发行版"><a href="#收集各种Linux发行版" class="headerlink" title="收集各种Linux发行版"></a>收集各种Linux发行版</h3><p>说起来我也是用过复数个Linux发行版的人了，不再像一年前那样懵懂，能够比较从容地折腾这些发行版了。</p>
 <p>Fedora也是用yum管理依赖包，这才让我想起“我眼中的各Linux发行部用户”那张图。</p>
-<p><img src="https://i.loli.net/2020/04/08/wRYn7JoMeLNOsbq.jpg" srcset="/img/loading.gif" lazyload alt=""><br><img src="https://i.loli.net/2020/04/09/7GU1I5z9oOJX3rL.jpg" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="https://i.loli.net/2020/04/08/wRYn7JoMeLNOsbq.jpg" srcset="/img/loading.gif" lazyload><br><img src="https://i.loli.net/2020/04/09/7GU1I5z9oOJX3rL.jpg" srcset="/img/loading.gif" lazyload></p>
 <blockquote>
 <p>fedora：红帽子家养的小白鼠无误，有什么新想(nao)法(dong)都先往fedora上招呼<br>Archlinux：战斗机，很厉害，B格很高<br>ubuntu：吉祥物，用自己的种种行为卖傻卖萌，负责Linux桌面推广，人民群众喜闻乐见，实际上没有卵用<br>redhat：我是负责服务器的工程师<br>CentOS：我是楼上那个工程师的影分身<br>gentoo linux：相比Arch这个战斗机，我已然冲出大气层<br>openSUSE：YAST就是你的专职妹抖，用♂过都说好<br>Slackware：祖宗之法大于天（任何用户都应该自己解决包依赖）<br>debian：看过动画《轻音少女》的都知道，姐姐没有妹妹来照料起居，基本就活不下去……<br>Mint：ヨーロッパ是欧洲的意思，这表示Mint是Ubuntu偷渡欧洲了？</p>
 </blockquote>
-<p>以上转自<a href="https://www.zhihu.com/question/22605825/answer/76171890" target="_blank" rel="noopener">Kan Kikou@知乎</a></p>
+<p>以上转自<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/22605825/answer/76171890">Kan Kikou@知乎</a></p>
 <h4 id="Fedora"><a href="#Fedora" class="headerlink" title="Fedora"></a>Fedora</h4><p>我对Fedora的感觉</p>
 <ul>
 <li>用和ArchLinux一样的GNOME桌面</li>
-<li>用和CentOS/RedHat一样的yum包管理</li>
+<li>用和CentOS&#x2F;RedHat一样的yum包管理</li>
 <li>工具都是最新的</li>
 </ul>
 <p>不过这倒是挺符合我的胃口，毕竟我就是从CentOS转到ArchLinux的。</p>
@@ -265,27 +267,25 @@
 <p>逐个说一下</p>
 <ul>
 <li>无autoconf，<code>autogen.sh</code>脚本无法运行</li>
-<li>无automake，运行<code>autogen.sh</code>报错缺少<code>aclocal</code>。</li>
+<li>无automake，运行<code>autogen.sh</code>报错缺少<code>aclocal </code>。</li>
 <li>无make，呃…这个你懂的</li>
-<li>无libtool，在执行<code>make</code>命令时，报错<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">error: </span>Libtool library used but 'LIBTOOL' is undefined<br></code></pre></td></tr></table></figure></li>
-<li>无gcc-c++，在执行<code>make</code>命令时，报错<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">error: </span>A compiler with support for C+<span class="hljs-string">+11</span> language features is required.<br></code></pre></td></tr></table></figure>
-
-</li>
+<li>无libtool，在执行<code>make</code>命令时，报错<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">error: </span>Libtool library used but &#x27;LIBTOOL&#x27; is undefined<br></code></pre></td></tr></table></figure></li>
+<li>无gcc-c++，在执行<code>make</code>命令时，报错<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">error: </span>A compiler with support for C+<span class="hljs-string">+11</span> language features is required.<br></code></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="基础设施Plus"><a href="#基础设施Plus" class="headerlink" title="基础设施Plus"></a>基础设施Plus</h3><h4 id="构建与编译工具"><a href="#构建与编译工具" class="headerlink" title="构建与编译工具"></a>构建与编译工具</h4><p>回看之前的<a href="https://kiyamou.github.io/2020/03/11/build-vapoursynth/" target="_blank" rel="noopener">编译VapourSynth的博文</a>，才记起之前接触过autoconf、automake、libtool。这才意识到，autoconf和automake是用于构建的通用工具，而libtool则是编译依赖。</p>
+<h3 id="基础设施Plus"><a href="#基础设施Plus" class="headerlink" title="基础设施Plus"></a>基础设施Plus</h3><h4 id="构建与编译工具"><a href="#构建与编译工具" class="headerlink" title="构建与编译工具"></a>构建与编译工具</h4><p>回看之前的<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/03/11/build-vapoursynth/">编译VapourSynth的博文</a>，才记起之前接触过autoconf、automake、libtool。这才意识到，autoconf和automake是用于构建的通用工具，而libtool则是编译依赖。</p>
 <p><code>gcc-c++</code>是红帽家（CentOS、RedHat、Fedora）yum包管理器中的名字，在Ubuntu、Mint系的apt-get下叫<code>g++</code>。</p>
 <p>在Linux Mint下编译VapourSynth，报错</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">checking</span></span> <span class="hljs-keyword">for</span> PYTHON3... <span class="hljs-keyword">no</span><br><span class="hljs-function"><span class="hljs-title">checking</span></span> <span class="hljs-keyword">for</span> PYTHON3... <span class="hljs-keyword">no</span><br>configure: error: Package requirements (python<span class="hljs-number">-3.6</span>) were <span class="hljs-keyword">not</span> met:<br><span class="hljs-keyword">No</span> package <span class="hljs-string">'python-3.6'</span> found<br></code></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">checking</span></span> <span class="hljs-keyword">for</span> PYTHON3... <span class="hljs-keyword">no</span><br><span class="hljs-function"><span class="hljs-title">checking</span></span> <span class="hljs-keyword">for</span> PYTHON3... <span class="hljs-keyword">no</span><br>configure: error: Package requirements (python<span class="hljs-number">-3.6</span>) were <span class="hljs-keyword">not</span> met:<br><span class="hljs-keyword">No</span> package <span class="hljs-string">&#x27;python-3.6&#x27;</span> found<br></code></pre></td></tr></table></figure>
 
 <p>这是因为缺少<code>python3-dev</code>，在红帽家的yum系中叫<code>python3-devel</code>。</p>
 <h4 id="关于zimg"><a href="#关于zimg" class="headerlink" title="关于zimg"></a>关于zimg</h4><p>在ArchLinux下，居然能用pacman安装zimg，我记得我在ArchLinux编译VapourSynth没有编译zimg的过程，就是通过pacman安装的。</p>
-<p>顺带，这里有必要区分下zimg。我自己所提到的zimg，包括这篇博文与之前编译VapourSynth时用的，都是指<a href="https://github.com/sekrit-twc/zimg" target="_blank" rel="noopener">sekrit-twc/zimg</a>项目，这是图像处理库，提供了位深转换、色彩空间转换、缩放功能，ArchLinux的pacman包管理器提供的zimg，也是指这个；而在另一些语境下，zimg则是指<a href="https://github.com/buaazp/zimg" target="_blank" rel="noopener">buaazp/zimg</a>，这是图像存储与处理系统。</p>
+<p>顺带，这里有必要区分下zimg。我自己所提到的zimg，包括这篇博文与之前编译VapourSynth时用的，都是指<a target="_blank" rel="noopener" href="https://github.com/sekrit-twc/zimg">sekrit-twc&#x2F;zimg</a>项目，这是图像处理库，提供了位深转换、色彩空间转换、缩放功能，ArchLinux的pacman包管理器提供的zimg，也是指这个；而在另一些语境下，zimg则是指<a target="_blank" rel="noopener" href="https://github.com/buaazp/zimg">buaazp&#x2F;zimg</a>，这是图像存储与处理系统。</p>
 <h3 id="回到size-t"><a href="#回到size-t" class="headerlink" title="回到size_t"></a>回到<code>size_t</code></h3><p>这次的折腾缘起于上面Issue中gcc 10对<code>size_t</code>报错，但我尝试之后，没有报错…</p>
 <p>于是搜了一下类似的报错（自定义了类型<code>size_t</code>，却被编译器认为是<code>std::size_t</code>忘了写<code>std</code>），原来由来已久，我还以为的gcc 10支持了什么新特性，导致代码冲突呢…</p>
 <p>搜了下，也是一笔糊涂账，可能是编译环境中有什么问题导致的，先不管了…</p>
 <p>写完才发现跑题了…那我也溜了吧…Orz</p>
 <h3 id="Makefile相关"><a href="#Makefile相关" class="headerlink" title="Makefile相关"></a>Makefile相关</h3><p>既然跑题了，再塞点东西。</p>
-<p>根据这篇博文<a href="https://blog.csdn.net/fzy0201/article/details/17427761" target="_blank" rel="noopener">Makefile/Makefile.am/Makefile.in三者关系</a>，可以梳理一下使用make构建和编译的流程。</p>
+<p>根据这篇博文<a target="_blank" rel="noopener" href="https://blog.csdn.net/fzy0201/article/details/17427761">Makefile&#x2F;Makefile.am&#x2F;Makefile.in三者关系</a>，可以梳理一下使用make构建和编译的流程。</p>
 <ol>
 <li><p>创建工作目录</p>
 </li>
@@ -506,24 +506,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

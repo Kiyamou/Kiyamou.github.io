@@ -60,7 +60,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -188,7 +190,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      458 字
+      459 字
     </span>
   
 
@@ -231,11 +233,11 @@
             <h1 style="display: none">周记 2020.02.24-03.01</h1>
             
             <div class="markdown-body">
-              <h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;mutex&gt;</span></span><br><br><span class="hljs-built_in">std</span>::mutex<br></code></pre></td></tr></table></figure>
+              <h3 id="1-C-互斥锁"><a href="#1-C-互斥锁" class="headerlink" title="1.C++互斥锁"></a>1.C++互斥锁</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;mutex&gt;</span></span><br><br>std::mutex<br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
-<h3 id="2-解决VapourSynth版本问题？"><a href="#2-解决VapourSynth版本问题？" class="headerlink" title="2.解决VapourSynth版本问题？"></a>2.解决VapourSynth版本问题？</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> VAPOURSYNTH_API_VERSION &lt; 0x30002</span><br>	<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<h3 id="2-解决VapourSynth版本问题？"><a href="#2-解决VapourSynth版本问题？" class="headerlink" title="2.解决VapourSynth版本问题？"></a>2.解决VapourSynth版本问题？</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">if</span> VAPOURSYNTH_API_VERSION &lt; 0x30002</span><br>	<span class="hljs-meta">#<span class="hljs-keyword">define</span> FMTC_RESAMPLE_OLD_FIELDBASED_BEHAVIOUR</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
 
 <p>（来自KNLmeansCL？）</p>
 <h3 id="3-OpenCL"><a href="#3-OpenCL" class="headerlink" title="3.OpenCL"></a>3.OpenCL</h3><p>看了《OpenCL异构计算》的两个例子，借助OpenCL加速图像直方图处理和卷积计算。</p>
@@ -244,7 +246,7 @@
 <li>OpenCL中存在主机与设备共享内存？（定义了通用的内存模型，以实现跨平台）</li>
 <li>类似cuda，OpenCL的计算模式大概也是“先传输数据到设备，计算后再传回主机”？（OpenCL通过上下文（Context）在主机与设备间通信）</li>
 <li>OpenCL主要使用 SIMD（数据并行）和 MIMD（任务并行）</li>
-<li>CPU 线程 = OpenCL 工作项（Work Item）</li>
+<li>CPU 线程 &#x3D; OpenCL 工作项（Work Item）</li>
 </ul>
 <h3 id="5-OpenCL与C"><a href="#5-OpenCL与C" class="headerlink" title="5.OpenCL与C++"></a>5.OpenCL与C++</h3><p>在C++中使用OpenCL，可以直接调用OpenCL库，也可以借助Boost库的compute库调用。</p>
 <p>可以不写的<code>.cl</code>文件的说。</p>
@@ -453,24 +455,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

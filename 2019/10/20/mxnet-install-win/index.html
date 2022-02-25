@@ -20,7 +20,7 @@ MXNet版本选择master，其余根据实际情况选择。
 1pip install mxnet-cu91 --pre
 
 安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。
-1python -c &#34;import m">
+1python -c &amp;quot;imp">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -66,7 +66,9 @@ MXNet版本选择master，其余根据实际情况选择。
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -194,7 +196,7 @@ MXNet版本选择master，其余根据实际情况选择。
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      818 字
+      832 字
     </span>
   
 
@@ -238,19 +240,19 @@ MXNet版本选择master，其余根据实际情况选择。
             
             <div class="markdown-body">
               <p>记录一下在Windows下安装GPU版MXNet时踩到的坑。</p>
-<p>MXNet安装引导：<a href="http://mxnet.incubator.apache.org/get_started" target="_blank" rel="noopener">http://mxnet.incubator.apache.org/get_started</a></p>
+<p>MXNet安装引导：<a target="_blank" rel="noopener" href="http://mxnet.incubator.apache.org/get_started">http://mxnet.incubator.apache.org/get_started</a></p>
 <p>MXNet版本选择master，其余根据实际情况选择。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install mxnet-cu91 --pre<br></code></pre></td></tr></table></figure>
 
 <p>安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python -c <span class="hljs-string">"import mxnet; print(mxnet.__version__)"</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python -c <span class="hljs-string">&quot;import mxnet; print(mxnet.__version__)&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>我在检测安装是否成功时，出现以下报错。</p>
-<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">Traceback (most recent call last):<br>  File "&lt;string&gt;", line 1, in &lt;module&gt;<br>  File "C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\U</span>serName<span class="hljs-symbol">\A</span>ppData<span class="hljs-symbol">\L</span>ocal<span class="hljs-symbol">\P</span>rograms<span class="hljs-symbol">\P</span>ython<span class="hljs-symbol">\P</span>ython36<span class="hljs-symbol">\l</span>ib<span class="hljs-symbol">\s</span>ite-packages<span class="hljs-symbol">\m</span>xnet<span class="hljs-symbol">\_</span>_init__.py", line 24, in &lt;module&gt;<br>    from .context import Context, current_context, cpu, gpu, cpu_pinned<br>  File "C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\U</span>serName<span class="hljs-symbol">\A</span>ppData<span class="hljs-symbol">\L</span>ocal<span class="hljs-symbol">\P</span>rograms<span class="hljs-symbol">\P</span>ython<span class="hljs-symbol">\P</span>ython36<span class="hljs-symbol">\l</span>ib<span class="hljs-symbol">\s</span>ite-packages<span class="hljs-symbol">\m</span>xnet<span class="hljs-symbol">\c</span>ontext.py", line 24, in &lt;module&gt;<br>    from .base import classproperty, with_metaclass, _MXClassPropertyMetaClass<br>  File "C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\U</span>serName<span class="hljs-symbol">\A</span>ppData<span class="hljs-symbol">\L</span>ocal<span class="hljs-symbol">\P</span>rograms<span class="hljs-symbol">\P</span>ython<span class="hljs-symbol">\P</span>ython36<span class="hljs-symbol">\l</span>ib<span class="hljs-symbol">\s</span>ite-packages<span class="hljs-symbol">\m</span>xnet<span class="hljs-symbol">\b</span>ase.py", line 214, in &lt;module&gt;<br>    _LIB = _load_lib()<br>  File "C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\U</span>serName<span class="hljs-symbol">\A</span>ppData<span class="hljs-symbol">\L</span>ocal<span class="hljs-symbol">\P</span>rograms<span class="hljs-symbol">\P</span>ython<span class="hljs-symbol">\P</span>ython36<span class="hljs-symbol">\l</span>ib<span class="hljs-symbol">\s</span>ite-packages<span class="hljs-symbol">\m</span>xnet<span class="hljs-symbol">\b</span>ase.py", line 205, in _load_lib<br>    lib = ctypes.CDLL(lib_path[0], ctypes.RTLD_LOCAL)<br>  File "C:<span class="hljs-symbol">\U</span>sers<span class="hljs-symbol">\U</span>serName<span class="hljs-symbol">\A</span>ppData<span class="hljs-symbol">\L</span>ocal<span class="hljs-symbol">\P</span>rograms<span class="hljs-symbol">\P</span>ython<span class="hljs-symbol">\P</span>ython36<span class="hljs-symbol">\l</span>ib<span class="hljs-symbol">\c</span>types<span class="hljs-symbol">\_</span>_init__.py", line 348, in __init__<br>    self._handle = _dlopen(self._name, mode)<br>OSError: [WinError 126] The specified module could not be found<br></code></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs arduino"><span class="hljs-built_in">Traceback</span> (most recent call last):<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;&lt;string&gt;&quot;</span>, line <span class="hljs-number">1</span>, in &lt;<span class="hljs-keyword">module</span>&gt;<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\__init__.py&quot;</span>, line <span class="hljs-number">24</span>, in &lt;<span class="hljs-keyword">module</span>&gt;<br>    from .context <span class="hljs-keyword">import</span> Context, current_context, cpu, gpu, cpu_pinned<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\context.py&quot;</span>, line <span class="hljs-number">24</span>, in &lt;<span class="hljs-keyword">module</span>&gt;<br>    from .base <span class="hljs-keyword">import</span> classproperty, with_metaclass, _MXClassPropertyMetaClass<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;</span>, line <span class="hljs-number">214</span>, in &lt;<span class="hljs-keyword">module</span>&gt;<br>    _LIB = _load_lib()<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\site-packages\mxnet\base.py&quot;</span>, line <span class="hljs-number">205</span>, in _load_lib<br>    lib = ctypes.<span class="hljs-built_in">CDLL</span>(lib_path[<span class="hljs-number">0</span>], ctypes.RTLD_LOCAL)<br>  <span class="hljs-built_in">File</span> <span class="hljs-string">&quot;C:\Users\UserName\AppData\Local\Programs\Python\Python36\lib\ctypes\__init__.py&quot;</span>, line <span class="hljs-number">348</span>, in __init__<br>    self._handle = _dlopen(self._name, mode)<br>OSError: [WinError <span class="hljs-number">126</span>] The specified <span class="hljs-keyword">module</span> could <span class="hljs-keyword">not</span> be found<br></code></pre></td></tr></table></figure>
 
 <p><code>OSError: [WinError 126]</code>应该是一个很通用的报错，可以理解为没有找到所需的dll。</p>
 <p>正如一位Github网友所说，这个报错只告诉你缺少dll，却不会告诉你缺少了什么dll。没办法，自力更生。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>MXNet的“核心dll”是<code>libmxnet.dll</code>，我们需要做的事情就是搞清它所依赖的dll都有什么。</p>
 <p>利用Visual Studio的dumpbin工具，可以查看一个dll所依赖的其他dll。</p>
@@ -269,7 +271,7 @@ MXNet版本选择master，其余根据实际情况选择。
 <p>重新装CUDA，但安装失败了，也许因为我已经有<code>nvcuda.dll</code>导致冲突。<del>别问，问就是我不会。</del></p>
 <p>不管那么多了，直接用压缩软件打开CUDA的exe安装包，把上面几个dll解压出来、复制，完事大吉。执行前面查看版本号的命令，终于看到可爱的版本号了，安装成功。</p>
 <p>顺带一提，对于我所安装的<code>mxnet-cu91</code>，对numpy的版本有限制，版本上限是<code>1.14.6</code>，我原本的<code>numpy 1.15.x</code>被卸掉了；我专门试了一下<code>mxnet-cu90</code>和<code>mxnet-cu92</code>，都没有此限制。和我一样安装了<code>mxnet-cu91</code>的同学可能要留心一下。</p>
-<p>参考：<a href="https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found" target="_blank" rel="noopener">https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found</a></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found">https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found</a></p>
 
             </div>
             <hr>
@@ -468,24 +470,7 @@ MXNet版本选择master，其余根据实际情况选择。
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

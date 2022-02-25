@@ -14,7 +14,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。
+  <meta name="description" content="1.边缘检测突然注意到一个事情，用Laplacian和Sobel算子，过渡&amp;#x2F;渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。
 嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      827 字
+      833 字
     </span>
   
 
@@ -232,15 +234,15 @@
             <h1 style="display: none">周记 2020.02.17-02.23</h1>
             
             <div class="markdown-body">
-              <h3 id="1-边缘检测"><a href="#1-边缘检测" class="headerlink" title="1.边缘检测"></a>1.边缘检测</h3><p>突然注意到一个事情，用Laplacian和Sobel算子，过渡/渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。</p>
+              <h3 id="1-边缘检测"><a href="#1-边缘检测" class="headerlink" title="1.边缘检测"></a>1.边缘检测</h3><p>突然注意到一个事情，用Laplacian和Sobel算子，过渡&#x2F;渐变性的背景不会被误认为是边缘，而用Schaar和Canny，尤其是前者，就有这种问题。</p>
 <p>嗯，虽然是和参数有关的（更何况Schaar调一下就可以变成Sobel），但还是值得注意一下。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="2-utility"><a href="#2-utility" class="headerlink" title="2.utility"></a>2.utility</h3><h3 id="3-自己写ISP"><a href="#3-自己写ISP" class="headerlink" title="3.自己写ISP"></a>3.自己写ISP</h3><p>我自己写，还是用C++吧</p>
 <h3 id="4-回到vs"><a href="#4-回到vs" class="headerlink" title="4.回到vs"></a>4.回到vs</h3><p>之前一直没有用过lut调色板，只是用Expr工具。通过循环给数组赋值，做一个lut，然后用这个lut调节亮度。</p>
 <p>说起来，Python当中的<code>try</code>、<code>append()</code>我都没用过。</p>
 <h3 id="5-并行与MPI与其他"><a href="#5-并行与MPI与其他" class="headerlink" title="5.并行与MPI与其他"></a>5.并行与MPI与其他</h3><p>回想起一年前上的并行计算课，有些东西真的是在不经意间积累，然后又不经意的出现在你身边。</p>
-<p><a href="https://chenxiaowei.gitbook.io/heterogeneous-computing-with-opencl2-0/1.0-chinese/1.9-chinese" target="_blank" rel="noopener">OpenCL 2.0 异构计算</a></p>
+<p><a target="_blank" rel="noopener" href="https://chenxiaowei.gitbook.io/heterogeneous-computing-with-opencl2-0/1.0-chinese/1.9-chinese">OpenCL 2.0 异构计算</a></p>
 <blockquote>
 <p>消息传递接口（MPI）库经历了时间的磨砺，在当今环境下依旧是很受欢迎的消息传递中间件</p>
 </blockquote>
@@ -253,21 +255,21 @@
 <p>说起来fmtc有指令集优化，但没用OpenCL。（话说我见过的用OpenCL的滤镜也只有Canny和KNMeans了）</p>
 <h3 id="6-Mat与IPlImage"><a href="#6-Mat与IPlImage" class="headerlink" title="6.Mat与IPlImage"></a>6.Mat与IPlImage</h3><p>IPlIMage是OpenCV 1中概念，Mat则是OpenCV 2与OpenCV 3中的概念。Mat“更加C++”，引入了类的概念，同时不再需要像IPlIMage那执着于内存管理。</p>
 <p>现在读取raw格式还是用的IPlIMage，总感觉这样不太好，还是用Mat更好吧。我得再整理一下整个处理流程了…要不直接把14bit补成16bit？</p>
-<p>后续就是用<code>cvConvertScale()</code>函数把14bit扩张/收缩到了16bit/8bit。</p>
-<h3 id="7-C-基础"><a href="#7-C-基础" class="headerlink" title="7.C++基础"></a>7.C++基础</h3><p>读到了<a href="https://changkun.de/modern-cpp/" target="_blank" rel="noopener">《现代C++教程：高速上手 C++ 11/14/17/20》</a>这本书，感慨万千啊，过多话不展开了，记录一下我读到的内容。</p>
+<p>后续就是用<code>cvConvertScale()</code>函数把14bit扩张&#x2F;收缩到了16bit&#x2F;8bit。</p>
+<h3 id="7-C-基础"><a href="#7-C-基础" class="headerlink" title="7.C++基础"></a>7.C++基础</h3><p>读到了<a target="_blank" rel="noopener" href="https://changkun.de/modern-cpp/">《现代C++教程：高速上手 C++ 11&#x2F;14&#x2F;17&#x2F;20》</a>这本书，感慨万千啊，过多话不展开了，记录一下我读到的内容。</p>
 <h4 id="auto关键字"><a href="#auto关键字" class="headerlink" title="auto关键字"></a>auto关键字</h4><p><code>auto</code>不能用于函数传参，也不能用于数组推导。</p>
 <h4 id="区间for迭代"><a href="#区间for迭代" class="headerlink" title="区间for迭代"></a>区间for迭代</h4><p>让C++像Python那样简洁地写for循环。</p>
 <h4 id="typename与class"><a href="#typename与class" class="headerlink" title="typename与class"></a>typename与class</h4><p>在写模版时，<code>typename</code>与<code>class</code>大部分时候没有区别，但有嵌套依赖类型的变量时，需要使用<code>typename</code>。</p>
 <h4 id="实例化与外部模版"><a href="#实例化与外部模版" class="headerlink" title="实例化与外部模版"></a>实例化与外部模版</h4><p>C++11引入了外部模版，可以控制编译器是否对模版进行实例化。通过<code>template class</code>与<code>extern template class</code>关键字实现。</p>
 <h4 id="默认模版参数"><a href="#默认模版参数" class="headerlink" title="默认模版参数"></a>默认模版参数</h4><p>C++11可指定默认模版参数。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T = <span class="hljs-keyword">int</span>, <span class="hljs-keyword">typename</span> U = <span class="hljs-keyword">int</span>&gt;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T = <span class="hljs-type">int</span>, <span class="hljs-keyword">typename</span> U = <span class="hljs-type">int</span>&gt;<br></code></pre></td></tr></table></figure>
 
 <h4 id="变长参数模版"><a href="#变长参数模版" class="headerlink" title="变长参数模版"></a>变长参数模版</h4><p>可以对类模板和函数模版使用变长参数（真的~好神奇的感觉~~）。</p>
 <h4 id="面向对象部分的新特性"><a href="#面向对象部分的新特性" class="headerlink" title="面向对象部分的新特性"></a>面向对象部分的新特性</h4><p>这部分有点过于强大…我还得好好理解一下…我之前一直不知道<code>override</code>和<code>final</code>这两个关键字是C++11引入的新特性。</p>
 <h3 id="8-去马赛克"><a href="#8-去马赛克" class="headerlink" title="8.去马赛克"></a>8.去马赛克</h3><p>突发奇想，从某个角度想，raw格式照片的Bayer数据结构，和YUV420的色度半采样有点像。</p>
 <p>一些问题</p>
 <p>难得在运行出错后，在cmd里有了报错信息，如下。</p>
-<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs taggerscript">OpenCV(3.4.9) Error: Assertion failed (size.width&gt;0 &amp;&amp; size.height&gt;0) in cv::imshow, file C:<span class="hljs-symbol">\b</span>uild<span class="hljs-symbol">\3</span>_4_winpack-build-win64-vc15<span class="hljs-symbol">\o</span>pencv<span class="hljs-symbol">\m</span>odules<span class="hljs-symbol">\h</span>ighgui<span class="hljs-symbol">\s</span>rc<span class="hljs-symbol">\w</span>indow.cpp, line382<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">OpenCV</span>(<span class="hljs-number">3</span>.<span class="hljs-number">4</span>.<span class="hljs-number">9</span>) Error: Assertion failed (size.width&gt;<span class="hljs-number">0</span> &amp;&amp; size.height&gt;<span class="hljs-number">0</span>) in cv::imshow, file C:\build\<span class="hljs-number">3</span>_4_winpack-build-win64-vc15\opencv\modules\highgui\src\window.cpp, line382<br></code></pre></td></tr></table></figure>
 
 <h3 id="9-牛客网刷题"><a href="#9-牛客网刷题" class="headerlink" title="9.牛客网刷题"></a>9.牛客网刷题</h3><p>突然想到今天（2.20）明明也认真的，但Github上却没有commit。想了一下，上午在牛客网做题。嗯，这样也挺好的。</p>
 
@@ -468,24 +470,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

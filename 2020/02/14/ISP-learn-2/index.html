@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -189,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      396 字
+      398 字
     </span>
   
 
@@ -234,10 +236,10 @@
             <div class="markdown-body">
               <p>不同的ISP pipeline设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。</p>
 <p>此文绝赞施工中…应该要等到我有更深入理解时，才能写完。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul>
-<li>A/D转换</li>
+<li>A&#x2F;D转换</li>
 <li>黑电平校正（Black Level Correction）</li>
 <li>坏点校正（Bad Pixel Correction）</li>
 <li>阴影校正（Shading Correction）：包括镜片阴影校正和色彩阴影校正（Color Shading Correction）。</li>
@@ -248,7 +250,7 @@
 <li>AWB（Auto White Balance）：自动白平衡</li>
 </ul>
 </li>
-<li>去马赛克/色彩重建（de-mosaic）</li>
+<li>去马赛克&#x2F;色彩重建（de-mosaic）</li>
 <li>颜色校正（Color Correction）：然后非线性化</li>
 <li>Gamma校正（Gamma Correction）</li>
 <li>色调映射（Tone Mapping）</li>
@@ -261,7 +263,7 @@
 <p>算法千差万别，但是目的是一样的，就是通过公式，把输入值HDR颜色或正常颜色映射到0-1范围内去显示。并且根据曝光系数调整曲线，使大部分颜色看起来更加接近该亮度。</p>
 </blockquote>
 <p>其实这个是和曲线相关的。Gamma校正也是属于色调映射。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.<a href="https://github.com/mushfiqulalam/isp" target="_blank" rel="noopener">https://github.com/mushfiqulalam/isp</a><br>2.<a href="https://zhuanlan.zhihu.com/p/36379267" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/36379267</a><br>3.<a href="https://zhuanlan.zhihu.com/p/98820927" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/98820927</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.<a target="_blank" rel="noopener" href="https://github.com/mushfiqulalam/isp">https://github.com/mushfiqulalam/isp</a><br>2.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/36379267">https://zhuanlan.zhihu.com/p/36379267</a><br>3.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98820927">https://zhuanlan.zhihu.com/p/98820927</a></p>
 
             </div>
             <hr>
@@ -460,24 +462,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

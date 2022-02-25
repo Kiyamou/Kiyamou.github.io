@@ -18,9 +18,9 @@
 
 
 《21天实战Caffe》学习笔记第7天
-练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &amp;lt;&amp;lt; &#34;Not Implemented Yet&#34;
+练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &amp;lt;&amp;lt; &amp;quot;Not Implemented Yet&amp;quot;
 
-INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
+INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  ch">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -66,7 +66,9 @@ INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -194,7 +196,7 @@ INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      194 字
+      202 字
     </span>
   
 
@@ -204,7 +206,7 @@ INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
       <i class="iconfont icon-clock-fill"></i>
       
       
-      1
+      2
        分钟
     </span>
   
@@ -242,21 +244,21 @@ INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
 </script>
 
 <p>《21天实战Caffe》学习笔记第7天</p>
-<h3 id="练习题1：Caffe源码中一些宏的原始定义"><a href="#练习题1：Caffe源码中一些宏的原始定义" class="headerlink" title="练习题1：Caffe源码中一些宏的原始定义"></a>练习题1：Caffe源码中一些宏的原始定义</h3><h4 id="NOT-IMPLEMENTED"><a href="#NOT-IMPLEMENTED" class="headerlink" title="NOT_IMPLEMENTED"></a>NOT_IMPLEMENTED</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; <span class="hljs-meta-string">"Not Implemented Yet"</span></span><br></code></pre></td></tr></table></figure>
+<h3 id="练习题1：Caffe源码中一些宏的原始定义"><a href="#练习题1：Caffe源码中一些宏的原始定义" class="headerlink" title="练习题1：Caffe源码中一些宏的原始定义"></a>练习题1：Caffe源码中一些宏的原始定义</h3><h4 id="NOT-IMPLEMENTED"><a href="#NOT-IMPLEMENTED" class="headerlink" title="NOT_IMPLEMENTED"></a>NOT_IMPLEMENTED</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; <span class="hljs-string">&quot;Not Implemented Yet&quot;</span></span><br></code></pre></td></tr></table></figure>
 
-<h4 id="INSTANTIATE-CLASS"><a href="#INSTANTIATE-CLASS" class="headerlink" title="INSTANTIATE_CLASS"></a>INSTANTIATE_CLASS</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> INSTANTIATE_CLASS(classname) \</span><br>  <span class="hljs-keyword">char</span> gInstantiationGuard#<span class="hljs-meta">#classname; \</span><br>  <span class="hljs-keyword">template</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">classname</span>&lt;float&gt;;</span> \<br>  <span class="hljs-keyword">template</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">classname</span>&lt;double&gt;</span><br></code></pre></td></tr></table></figure>
+<h4 id="INSTANTIATE-CLASS"><a href="#INSTANTIATE-CLASS" class="headerlink" title="INSTANTIATE_CLASS"></a>INSTANTIATE_CLASS</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> INSTANTIATE_CLASS(classname) \</span><br><span class="hljs-meta">  char gInstantiationGuard##classname; \</span><br><span class="hljs-meta">  template class classname<span class="hljs-string">&lt;float&gt;</span>; \</span><br><span class="hljs-meta">  template class classname<span class="hljs-string">&lt;double&gt;</span></span><br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="练习题3：推导BNLL-layer的误差反向传播公式"><a href="#练习题3：推导BNLL-layer的误差反向传播公式" class="headerlink" title="练习题3：推导BNLL layer的误差反向传播公式"></a>练习题3：推导BNLL layer的误差反向传播公式</h3><p>BNLL layer的激活函数为</p>
-<p>$$\varphi\left(x\right)=x+\ln\left(1+e^{-x}\right),x&gt;0$$</p>
-<p>$$\varphi\left(x\right)=\ln\left(1+e^x\right),x\leqslant0$$</p>
+<p>$$\varphi\left(x\right)&#x3D;x+\ln\left(1+e^{-x}\right),x&gt;0$$</p>
+<p>$$\varphi\left(x\right)&#x3D;\ln\left(1+e^x\right),x\leqslant0$$</p>
 <h4 id="对激活函数求导"><a href="#对激活函数求导" class="headerlink" title="对激活函数求导"></a>对激活函数求导</h4><p>事实上，激活函数可以写成统一的形式</p>
-<p>$$\varphi\left(x\right)=\ln\left(1+e^x\right)$$</p>
+<p>$$\varphi\left(x\right)&#x3D;\ln\left(1+e^x\right)$$</p>
 <p>求导</p>
-<p>$$\varphi’\left(x\right)=\displaystyle\frac{e^x}{1+e^x}$$</p>
-<h4 id="计算反向误差公式"><a href="#计算反向误差公式" class="headerlink" title="计算反向误差公式"></a>计算反向误差公式</h4><p>反向误差=后一层的反向误差*激活函数导数，即</p>
-<p>$$\delta^{\left(l\right)}=\displaystyle\delta^{\left(l+1\right)}\frac{e^x}{1+e^x}$$</p>
+<p>$$\varphi’\left(x\right)&#x3D;\displaystyle\frac{e^x}{1+e^x}$$</p>
+<h4 id="计算反向误差公式"><a href="#计算反向误差公式" class="headerlink" title="计算反向误差公式"></a>计算反向误差公式</h4><p>反向误差&#x3D;后一层的反向误差*激活函数导数，即</p>
+<p>$$\delta^{\left(l\right)}&#x3D;\displaystyle\delta^{\left(l+1\right)}\frac{e^x}{1+e^x}$$</p>
 
             </div>
             <hr>
@@ -455,24 +457,7 @@ INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  char gInstan">
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

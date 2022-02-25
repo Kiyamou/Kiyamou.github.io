@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,7 +236,7 @@
             <div class="markdown-body">
               <p>《21天实战Caffe》学习笔记第9天</p>
 <h3 id="代码阅读：数据变换器的实现"><a href="#代码阅读：数据变换器的实现" class="headerlink" title="代码阅读：数据变换器的实现"></a>代码阅读：数据变换器的实现</h3><h4 id="实现文件-data-transformer-cpp"><a href="#实现文件-data-transformer-cpp" class="headerlink" title="实现文件 data_transformer.cpp"></a>实现文件 data_transformer.cpp</h4><p>针对Datum和Blob（Blobproto）两种方法，给出了不同输入、输出类型的变换函数，包括由Datum输入、由Blob输入、输入类型为cv::Mat对象，输出为指针、输出到Blob。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>图像处理的实现包括使用OpenCV实现。</p>
 <p><del>在图像处理代码中，很多是描述“辅助条件”的语句，而核心语句其实并不多。</del>是我看错地方了。</p>
@@ -242,7 +244,7 @@
 <p>也没有太理解“数据变换”都包括什么，只做了图像分块。</p>
 <p>于是问题转化为使用Python做图像分块。</p>
 <p>但我连这个都不会……</p>
-<p>借助<a href="https://zhuanlan.zhihu.com/p/39361808" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/39361808</a>的代码，使用Python实现图像分块。</p>
+<p>借助<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/39361808">https://zhuanlan.zhihu.com/p/39361808</a>的代码，使用Python实现图像分块。</p>
 
             </div>
             <hr>
@@ -441,24 +443,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

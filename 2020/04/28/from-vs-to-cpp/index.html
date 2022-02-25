@@ -63,7 +63,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -236,16 +238,16 @@
             <div class="markdown-body">
               <p><del>副标题：从 C + isotream 到 C++</del></p>
 <p>（这是1月底写一点随笔，然后就被丢到一边不管了）</p>
-<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><p>全面讲述智能指针的文章：<a href="https://juejin.im/post/5dcaa857e51d457f7675360b" target="_blank" rel="noopener">https://juejin.im/post/5dcaa857e51d457f7675360b</a></p>
+<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><p>全面讲述智能指针的文章：<a target="_blank" rel="noopener" href="https://juejin.im/post/5dcaa857e51d457f7675360b">https://juejin.im/post/5dcaa857e51d457f7675360b</a></p>
 <p>熟悉的<code>unique_ptr</code>，是“拥有独有对象所有权语义的智能指针”。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h4 id="智能指针的释放"><a href="#智能指针的释放" class="headerlink" title="智能指针的释放"></a>智能指针的释放</h4><p>一个基本概念，要用<code>.</code>而非<code>-&gt;</code>。（<a href="https://blog.csdn.net/delphicui/article/details/4213811）" target="_blank" rel="noopener">https://blog.csdn.net/delphicui/article/details/4213811）</a></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">smartPointer.release();   <span class="hljs-comment">// 正确</span><br>smartPointer-&gt;release();  <span class="hljs-comment">// 错误</span><br></code></pre></td></tr></table></figure>
+<h4 id="智能指针的释放"><a href="#智能指针的释放" class="headerlink" title="智能指针的释放"></a>智能指针的释放</h4><p>一个基本概念，要用<code>.</code>而非<code>-&gt;</code>。（<a target="_blank" rel="noopener" href="https://blog.csdn.net/delphicui/article/details/4213811%EF%BC%89">https://blog.csdn.net/delphicui/article/details/4213811）</a></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">smartPointer.<span class="hljs-built_in">release</span>();   <span class="hljs-comment">// 正确</span><br>smartPointer-&gt;<span class="hljs-built_in">release</span>();  <span class="hljs-comment">// 错误</span><br></code></pre></td></tr></table></figure>
 
 <p>在 VapourSynth Plugin 的编写时，要在<code>Free()</code>函数里写<code>delete d;</code>，但又在<code>Create()</code>函数里写了<code>d.release()</code>。可不可以这么理解，智能指针<code>d</code>在<code>Creat()</code>函数里被声明，所以要在<code>Create()</code>函数内释放一次，但其他地方也用到了<code>d</code>，所以又要写一次<code>delete d</code>？<del>我感觉我在胡说八道</del></p>
 <h4 id="智能指针与数组"><a href="#智能指针与数组" class="headerlink" title="智能指针与数组"></a>智能指针与数组</h4><p>用智能指针创建数组，类似下面这样。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">unique_ptr</span>&lt;<span class="hljs-keyword">float</span>[]&gt; <span class="hljs-built_in">array</span>[<span class="hljs-number">5</span>];<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">std::unique_ptr&lt;<span class="hljs-type">float</span>[]&gt; array[<span class="hljs-number">5</span>];<br></code></pre></td></tr></table></figure>
 
 <p>而且用后并没有释放，这是自然，毕竟智能指针的本意即是如此。</p>
 <p>但我不知道，对于查表用的大数组，有没有必要“升级”成智能指针，对于使用<code>new</code>创建的指针呢？</p>
@@ -452,24 +454,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

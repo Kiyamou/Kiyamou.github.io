@@ -60,7 +60,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -188,7 +190,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      491 字
+      495 字
     </span>
   
 
@@ -231,19 +233,19 @@
             <h1 style="display: none">解释 RemoveGrain</h1>
             
             <div class="markdown-body">
-              <p>本文翻译自 <a href="https://blog.kageru.moe/legacy/removegrain.html" target="_blank" rel="noopener">Actually Explaining RemoveGrain</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
-<a id="more"></a>
+              <p>本文翻译自 <a target="_blank" rel="noopener" href="https://blog.kageru.moe/legacy/removegrain.html">Actually Explaining RemoveGrain</a>，原作者：<a target="_blank" rel="noopener" href="https://github.com/kageru">kageru</a>。</p>
+<span id="more"></span>
 
 <h3 id="Mode-11-与-12"><a href="#Mode-11-与-12" class="headerlink" title="Mode 11 与 12"></a>Mode 11 与 12</h3><p>Mode 11 与 12 等价于</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">std.Convolution(matrix=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>])<br></code></pre></td></tr></table></figure>
 
 <p>Mode 11 和 Mode 12 没有区别，从代码上看是复制过来的，下面的测试也证明了这一点。</p>
-<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">&gt;&gt;&gt; d = core.std.<span class="hljs-constructor">Expr([<span class="hljs-params">clip</span>.<span class="hljs-params">rgvs</span>.RemoveGrain(<span class="hljs-params">mode</span>=11)</span>,<br>clip.rgvs.<span class="hljs-constructor">RemoveGrain(<span class="hljs-params">mode</span>=12)</span>], 'x y - abs')<br>&gt;&gt;&gt; d = d.std.<span class="hljs-constructor">PlaneStats()</span><br>&gt;&gt;&gt; d.get<span class="hljs-constructor">_frame(0)</span>.props.PlaneStatsAverage<br><span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">&gt;&gt;&gt; d = core.std.<span class="hljs-constructor">Expr([<span class="hljs-params">clip</span>.<span class="hljs-params">rgvs</span>.RemoveGrain(<span class="hljs-params">mode</span>=11)</span>,<br>clip.rgvs.<span class="hljs-constructor">RemoveGrain(<span class="hljs-params">mode</span>=12)</span>], &#x27;x y - abs&#x27;)<br>&gt;&gt;&gt; d = d.std.<span class="hljs-constructor">PlaneStats()</span><br>&gt;&gt;&gt; d.get<span class="hljs-constructor">_frame(0)</span>.props.PlaneStatsAverage<br><span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
 
 <p>但这两种模式与对应的卷积操作存在细微差别。</p>
 <p><strong>Edit</strong>：这也可能是 VapourSynth-R36 中已修复的 PlaneStats bug 导致的，因为 0.05 的误差确实太大了。</p>
 <p>（译者注：应该是 bug 导致的，在 VapourSynth-R49 中测试没有差别，下述结果为译者测试结果）</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">&gt;&gt;&gt; d = core<span class="hljs-selector-class">.std</span><span class="hljs-selector-class">.Expr</span>([src<span class="hljs-selector-class">.rgvs</span><span class="hljs-selector-class">.RemoveGrain</span>(mode=<span class="hljs-number">12</span>),<br>src<span class="hljs-selector-class">.std</span><span class="hljs-selector-class">.Convolution</span>(matrix=[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>])], <span class="hljs-string">'x y - abs'</span>)<br>&gt;&gt;&gt; d = d<span class="hljs-selector-class">.std</span><span class="hljs-selector-class">.PlaneStats</span>()<br>&gt;&gt;&gt; d.get_frame(<span class="hljs-number">0</span>)<span class="hljs-selector-class">.props</span><span class="hljs-selector-class">.PlaneStatsAverage</span><br><span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">&gt;&gt;&gt; d = core.std.<span class="hljs-constructor">Expr([<span class="hljs-params">src</span>.<span class="hljs-params">rgvs</span>.RemoveGrain(<span class="hljs-params">mode</span>=12)</span>,<br>src.std.<span class="hljs-constructor">Convolution(<span class="hljs-params">matrix</span>=[1, 2, 1, 2, 4, 2, 1, 2, 1])</span>], &#x27;x y - abs&#x27;)<br>&gt;&gt;&gt; d = d.std.<span class="hljs-constructor">PlaneStats()</span><br>&gt;&gt;&gt; d.get<span class="hljs-constructor">_frame(0)</span>.props.PlaneStatsAverage<br><span class="hljs-number">0.0</span><br></code></pre></td></tr></table></figure>
 
 <p>VapourSynth 内置的卷积滤镜通过插值处理边缘，而 RemoveGrain 则不处理边缘。</p>
 <h3 id="Mode-13-16"><a href="#Mode-13-16" class="headerlink" title="Mode 13 - 16"></a>Mode 13 - 16</h3><p>这些模式为场内插值，速度非常快，但也非常不精确，类似粗制滥造的 EEDI。没有必要使用这些模式（EEDI2 于2005年发布，无论是这些模式还是 EEDI 都没必要使用）。</p>
@@ -454,24 +456,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

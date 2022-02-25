@@ -17,11 +17,11 @@
   <meta name="description" content="1用malloc分配内存
 1double* lut = (double*) malloc(sizeof(double)*d.samples);
 
-sizeof(double)=8
+sizeof(double)&amp;#x3D;8
 21data = malloc(sizeof(d));
 
 而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）
-PS：在HomeOfV">
+PS：在Ho">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -67,7 +67,9 @@ PS：在HomeOfV">
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -195,7 +197,7 @@ PS：在HomeOfV">
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      860 字
+      865 字
     </span>
   
 
@@ -239,45 +241,45 @@ PS：在HomeOfV">
             
             <div class="markdown-body">
               <h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><p>用<code>malloc</code>分配内存</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">double</span>* lut = (<span class="hljs-keyword">double</span>*) <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">double</span>)*d.samples);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">double</span>* lut = (<span class="hljs-type">double</span>*) <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-type">double</span>)*d.samples);<br></code></pre></td></tr></table></figure>
 
-<p><code>sizeof(double)</code>=8</p>
+<p><code>sizeof(double)</code>&#x3D;8</p>
 <h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">data = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(d));<br></code></pre></td></tr></table></figure>
 
 <p>而我修改后，直接省去了<code>data</code>这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要<code>data</code>做某种辅助？）</p>
 <p><strong>PS</strong>：在HomeOfVapourSynthEvolution的Curve.cpp，能看到这种“成对”的模式，用<code>malloc</code>和<code>calloc</code>来分配内存的变量都用<code>free</code>做了释放。相比之下，我自己该的代码，在新定义<code>lut</code>这个变量时，用了<code>malloc</code>，却没有用<code>free</code>，而是用<code>delete</code>去删除的。</p>
 <p><code>delete</code>不仅释放内存，而且会调用析构函数，而<code>free</code>不会调用析构函数。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>Curve.cpp的代码</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span> (*matrix)[<span class="hljs-number">3</span>] = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">double</span>(*)[<span class="hljs-number">3</span>]&gt;(<span class="hljs-built_in">calloc</span>(n, <span class="hljs-keyword">sizeof</span>(*matrix)));<br><span class="hljs-keyword">double</span> * h = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">double</span> *&gt;(<span class="hljs-built_in">malloc</span>((n - <span class="hljs-number">1</span>) * <span class="hljs-keyword">sizeof</span>(*h)));<br><span class="hljs-keyword">double</span> * r = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">double</span> *&gt;(<span class="hljs-built_in">calloc</span>(n, <span class="hljs-keyword">sizeof</span>(*r)));<br><span class="hljs-keyword">if</span> (!matrix || !h || !r)<br>    <span class="hljs-keyword">throw</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&#123; <span class="hljs-string">"malloc failure (matrix/h/r)"</span> &#125;;<br><br><span class="hljs-built_in">free</span>(matrix);<br><span class="hljs-built_in">free</span>(h);<br><span class="hljs-built_in">free</span>(r);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">double</span> (*matrix)[<span class="hljs-number">3</span>] = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-built_in">double</span>(*)[<span class="hljs-number">3</span>]&gt;(<span class="hljs-built_in">calloc</span>(n, <span class="hljs-built_in">sizeof</span>(*matrix)));<br><span class="hljs-type">double</span> * h = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">double</span> *&gt;(<span class="hljs-built_in">malloc</span>((n - <span class="hljs-number">1</span>) * <span class="hljs-built_in">sizeof</span>(*h)));<br><span class="hljs-type">double</span> * r = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">double</span> *&gt;(<span class="hljs-built_in">calloc</span>(n, <span class="hljs-built_in">sizeof</span>(*r)));<br><span class="hljs-keyword">if</span> (!matrix || !h || !r)<br>    <span class="hljs-keyword">throw</span> std::string&#123; <span class="hljs-string">&quot;malloc failure (matrix/h/r)&quot;</span> &#125;;<br><br><span class="hljs-built_in">free</span>(matrix);<br><span class="hljs-built_in">free</span>(h);<br><span class="hljs-built_in">free</span>(r);<br></code></pre></td></tr></table></figure>
 
 <p>我自己的代码</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span>* lut = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">double</span>*&gt;(<span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">double</span>) * d-&gt;samples));<br><br><span class="hljs-keyword">delete</span> d-&gt;lut;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">double</span>* lut = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">double</span>*&gt;(<span class="hljs-built_in">malloc</span>(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">double</span>) * d-&gt;samples));<br><br><span class="hljs-keyword">delete</span> d-&gt;lut;<br></code></pre></td></tr></table></figure>
 
 <p>如知乎上所说，可以把<code>delete</code>看成做了两件事，一是<code>free</code>，另一是调用析构。</p>
-<p>根据<a href="https://juejin.im/post/5d4c1f18e51d4562132030cb" target="_blank" rel="noopener">这篇博文</a>测试的代码，得出“new 和 delete，malloc 和 free 只能匹配使用，不能混用”。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://juejin.im/post/5d4c1f18e51d4562132030cb">这篇博文</a>测试的代码，得出“new 和 delete，malloc 和 free 只能匹配使用，不能混用”。</p>
 <p>虽然这么说，但我想了一会，还是说不出，把我现有代码中的<code>delete d-&gt;lut;</code>改成<code>free(d-&gt;lut)</code>的理由…emm先不管了，我记得之前测试过这两种代码，似乎也没么（速度上的）区别…先这样吧…</p>
 <h4 id="3"><a href="#3" class="headerlink" title="3"></a>3</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-built_in">free</span>(d-&gt;lut);<br><span class="hljs-built_in">free</span>(d);<br></code></pre></td></tr></table></figure>
 
 <p>是不是要这么理解：<code>free</code>和<code>malloc</code>是成对出现的，因为用了两次<code>malloc</code>，所以就要有两次<code>free</code>。</p>
-<h4 id="4"><a href="#4" class="headerlink" title="4"></a>4</h4><p>以下笔记照抄自<a href="https://www.runoob.com/w3cnote/cpp-static-usage.html" target="_blank" rel="noopener">菜鸟教程</a>。</p>
+<h4 id="4"><a href="#4" class="headerlink" title="4"></a>4</h4><p>以下笔记照抄自<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/cpp-static-usage.html">菜鸟教程</a>。</p>
 <p>“类声明只声明一个类的”尺寸和规格”，并不进行实际的内存分配”</p>
 <p>“static 被引入以告知编译器，将变量存储在程序的静态存储区而非栈上空间”</p>
 <p>“static 修饰全局变量的时候，这个全局变量只能在本文件中访问，不能在其它文件中访问”</p>
 <h4 id="5"><a href="#5" class="headerlink" title="5"></a>5</h4><p>从<code>malloc</code>可分配的最大内存，看似去与<code>size_t</code>相关，到一些关于<code>size_t</code>的基础知识。</p>
 <p>涉及到<code>uintptr_t</code>类型。</p>
-<p>在<a href="https://blog.csdn.net/cs_zhanyb/article/details/16973379" target="_blank" rel="noopener">这篇博客</a>中讲得清楚，<code>uintptr_t</code>是类型别名。</p>
+<p>在<a target="_blank" rel="noopener" href="https://blog.csdn.net/cs_zhanyb/article/details/16973379">这篇博客</a>中讲得清楚，<code>uintptr_t</code>是类型别名。</p>
 <p>具体的定义如下</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Types for `void *' pointers.  */</span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> __WORDSIZE == 64</span><br><span class="hljs-meta"># <span class="hljs-meta-keyword">ifndef</span> __intptr_t_defined</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>            <span class="hljs-keyword">intptr_t</span>;<br><span class="hljs-meta">#  <span class="hljs-meta-keyword">define</span> __intptr_t_defined</span><br><span class="hljs-meta"># <span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>   <span class="hljs-keyword">uintptr_t</span>;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span></span><br><span class="hljs-meta"># <span class="hljs-meta-keyword">ifndef</span> __intptr_t_defined</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">int</span>                 <span class="hljs-keyword">intptr_t</span>;<br><span class="hljs-meta">#  <span class="hljs-meta-keyword">define</span> __intptr_t_defined</span><br><span class="hljs-meta"># <span class="hljs-meta-keyword">endif</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>        <span class="hljs-keyword">uintptr_t</span>;<br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">/* Types for `void *&#x27; pointers.  */</span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> __WORDSIZE == 64</span><br><span class="hljs-meta"># <span class="hljs-keyword">ifndef</span> __intptr_t_defined</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>            <span class="hljs-type">intptr_t</span>;<br><span class="hljs-meta">#  <span class="hljs-keyword">define</span> __intptr_t_defined</span><br><span class="hljs-meta"># <span class="hljs-keyword">endif</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>   <span class="hljs-type">uintptr_t</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br><span class="hljs-meta"># <span class="hljs-keyword">ifndef</span> __intptr_t_defined</span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">int</span>                 <span class="hljs-type">intptr_t</span>;<br><span class="hljs-meta">#  <span class="hljs-keyword">define</span> __intptr_t_defined</span><br><span class="hljs-meta"># <span class="hljs-keyword">endif</span></span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>        <span class="hljs-type">uintptr_t</span>;<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
 
 <p>可以看到，<code>unintptr_t</code>是类型<code>unsigned long int</code>（64bit）和<code>unsigned int</code>（32bit）的别名。</p>
 <p><strong>PS</strong>：再回到修改代码的起点，看一下<code>uint8_t</code>和<code>uint16_t</code>等的定义（来自stdint.h）</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>           <span class="hljs-keyword">uint8_t</span>;  <br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">short</span> <span class="hljs-keyword">int</span>      <span class="hljs-keyword">uint16_t</span>;  <br><span class="hljs-meta">#<span class="hljs-meta-keyword">ifndef</span> __uint32_t_defined  </span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span>            <span class="hljs-keyword">uint32_t</span>;  <br><span class="hljs-meta"># <span class="hljs-meta-keyword">define</span> __uint32_t_defined  </span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">endif</span>  </span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> __WORDSIZE == 64  </span><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>       <span class="hljs-keyword">uint64_t</span>;  <br><span class="hljs-meta">#<span class="hljs-meta-keyword">else</span>  </span><br>__extension__  <br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">long</span> <span class="hljs-keyword">int</span>  <span class="hljs-keyword">uint64_t</span>;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">char</span>           <span class="hljs-type">uint8_t</span>;  <br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">short</span> <span class="hljs-type">int</span>      <span class="hljs-type">uint16_t</span>;  <br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> __uint32_t_defined  </span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>            <span class="hljs-type">uint32_t</span>;  <br><span class="hljs-meta"># <span class="hljs-keyword">define</span> __uint32_t_defined  </span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span>  </span><br><span class="hljs-meta">#<span class="hljs-keyword">if</span> __WORDSIZE == 64  </span><br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>       <span class="hljs-type">uint64_t</span>;  <br><span class="hljs-meta">#<span class="hljs-keyword">else</span>  </span><br>__extension__  <br><span class="hljs-keyword">typedef</span> <span class="hljs-type">unsigned</span> <span class="hljs-type">long</span> <span class="hljs-type">long</span> <span class="hljs-type">int</span>  <span class="hljs-type">uint64_t</span>;  <br></code></pre></td></tr></table></figure>
 
 <p>由上可知，<code>uint8_t</code>对应<code>char</code>类型，长度为1字节，<code>uint16_t</code>对应<code>short int</code>类型，长度为2字节。</p>
 <p>在实际代码中，二者分别对应8bit图像和16bit图像（或者说9~16bit图像）。</p>
-<p>现在我需要回答一个问题，这样用不同类型/长度的变量去储存图像，究竟只是为了节省内存，还是必要之举？（我在测试用<code>uint16_t</code>类型变量储存8bit图像时，输出的图像是错误的，这样来看是必要的，但原理呢？为什么10bit图像就没事？-&gt;是否是对于10bit图像，有某种填0的机制？而8bit就会有内存越界的问题？）</p>
+<p>现在我需要回答一个问题，这样用不同类型&#x2F;长度的变量去储存图像，究竟只是为了节省内存，还是必要之举？（我在测试用<code>uint16_t</code>类型变量储存8bit图像时，输出的图像是错误的，这样来看是必要的，但原理呢？为什么10bit图像就没事？-&gt;是否是对于10bit图像，有某种填0的机制？而8bit就会有内存越界的问题？）</p>
 <h4 id="6-数组与指针的区别"><a href="#6-数组与指针的区别" class="headerlink" title="6 数组与指针的区别"></a>6 数组与指针的区别</h4>
             </div>
             <hr>
@@ -469,24 +471,7 @@ PS：在HomeOfV">
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

@@ -64,7 +64,9 @@ srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -239,29 +241,29 @@ srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，
 <p>为了加强理解、尽量全面，可能会有些重复的话。</p>
 <h3 id="srcp、dstp的理解"><a href="#srcp、dstp的理解" class="headerlink" title="srcp、dstp的理解"></a><code>srcp</code>、<code>dstp</code>的理解</h3><p>约定俗成的变量命名，<code>src</code>已经习惯，是输入，而<code>dsp</code>则是结果。</p>
 <p>关于<code>srcp</code>和<code>dstp</code>，通常这样定义</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">const</span> T* srcp = <span class="hljs-keyword">reinterpret_cast</span>&lt;<span class="hljs-keyword">const</span> T*&gt;(vsapi-&gt;getReadPtr(src, plane));<br>T* VS_RESTRICT dstp = <span class="hljs-keyword">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;getWritePtr(dst, plane));<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> T* srcp = <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">const</span> T*&gt;(vsapi-&gt;<span class="hljs-built_in">getReadPtr</span>(src, plane));<br>T* VS_RESTRICT dstp = <span class="hljs-built_in">reinterpret_cast</span>&lt;T*&gt;(vsapi-&gt;<span class="hljs-built_in">getWritePtr</span>(dst, plane));<br></code></pre></td></tr></table></figure>
 
 <ol>
 <li><code>getReadPtr()</code>和<code>getWritePte()</code>均是<code>uint8_t *</code>型，为满足不同位深的输入输出，也就是能够给不同类型的变量赋值，用<code>reinterpret_cast</code>做类型转换，转换为模版中的<code>T</code>。</li>
 <li>需要注意到，<code>srcp</code>和<code>dstp</code>已经包含了平面信息，或者说代表了特定平面，在滤镜核心处理函数中，用for循环遍历各个平面，for循环内就会基于<code>srcp</code>和<code>dstp</code>，对单个平面做处理。</li>
 <li>注意<code>srcp</code>、<code>dstp</code>是指针，这个在稍后会继续说。</li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="stride的理解"><a href="#stride的理解" class="headerlink" title="stride的理解"></a><code>stride</code>的理解</h3><p>avs api和vs api的一大区别，就是隐藏在习惯变量名不同（<code>pitch</code>与<code>stride</code>）之下的单位问题。</p>
 <p>从Doc上看，avs api获取的<code>pitch</code>和vs api获取的<code>stride</code>都是以字节为单位。在使用中，vs框架下要除以变量所占的字节，即</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">int</span> dst_stride = vsapi-&gt;getStride(dst, plane) / <span class="hljs-keyword">sizeof</span>(T);<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> dst_stride = vsapi-&gt;<span class="hljs-built_in">getStride</span>(dst, plane) / <span class="hljs-built_in">sizeof</span>(T);<br></code></pre></td></tr></table></figure>
 
 <p>但我读过的几份avs滤镜代码，都是直接用的，没有除<code>sizeof</code>。</p>
-<p>突然明白，我忘了一个事情，<strong><code>sizeof(uint8_t)</code> = 1啊</strong>，所以不需要除<code>sizeof</code>，是不是以字节为单位，都是一样的啊。</p>
+<p>突然明白，我忘了一个事情，**<code>sizeof(uint8_t) </code> &#x3D; 1啊**，所以不需要除<code>sizeof</code>，是不是以字节为单位，都是一样的啊。</p>
 <h5 id="疑问的解释"><a href="#疑问的解释" class="headerlink" title="疑问的解释"></a>疑问的解释</h5><p>我一直在纠结下面的avs与vs代码会不会有区别。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// avs</span><br>srcp += src_pitch;<br>dstp += target_width;<br><span class="hljs-comment">// vs</span><br>srcp += src_stride;<br>dstp += target_width; <span class="hljs-comment">// dstp += dst_stride;</span><br></code></pre></td></tr></table></figure>
 
-<p>但其实这个问题是不存在的。对于avs，基于全程8bit的假设，<code>sizeof</code> = 1，虽然<code>src_pitch</code>是以字节为单位，但数值上与<code>target_width</code>是同级的；对于vs，<code>src_stride</code>是除过<code>sizof</code>的，与<code>target_width</code>单位一致。</p>
+<p>但其实这个问题是不存在的。对于avs，基于全程8bit的假设，<code>sizeof</code> &#x3D; 1，虽然<code>src_pitch</code>是以字节为单位，但数值上与<code>target_width</code>是同级的；对于vs，<code>src_stride</code>是除过<code>sizof</code>的，与<code>target_width</code>单位一致。</p>
 <p>所以无论vs怎么写，与avs都是一致的，且<code>srcp</code>与<code>dstp</code>数值都是同级的。</p>
 <h3 id="stride与dstp的共同作用"><a href="#stride与dstp的共同作用" class="headerlink" title="stride与dstp的共同作用"></a><code>stride</code>与<code>dstp</code>的共同作用</h3><p>类似<code>dstp += dst_stride;</code>这样的语句，实现了指针的移动，<del>让继续处理下一帧？</del>是处理同列中个下个像素。</p>
 <p><del>而<code>dstp[y + x * dst_stride]</code>应该是二维平面上的指针移动。</del>这话也没有错，但有种误导的感觉，其实和上面是一个意思，只不过上面单独处理列，这个是行和列同时处理。</p>
-<p>详情在<a href="https://kiyamou.github.io/2019/12/18/image-process-code-1/" target="_blank" rel="noopener">另一篇博文</a>里写了。</p>
+<p>详情在<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2019/12/18/image-process-code-1/">另一篇博文</a>里写了。</p>
 <h3 id="VapourSynth数据结构的猜测"><a href="#VapourSynth数据结构的猜测" class="headerlink" title="VapourSynth数据结构的猜测"></a>VapourSynth数据结构的猜测</h3><p>（有人说编程是算法+数据结构，现在终于能理解到这句话了）</p>
 <p>简单地说，是像一维数组那样横着排的？对<code>dstp</code>加上一个<code>width</code>就到下一帧？</p>
 <p>但这样想，上面那样的<code>dstp[y + x * dst_stride]</code>又说不通了。</p>
@@ -269,10 +271,10 @@ srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，
 <p>经过了一个<code>void</code>函数，函数内的全局变量（或者是生存期大过该函数的变量）已经被改变。简单地说，就是“酒肉穿肠过，该变的都变了”的意思。</p>
 <h3 id="vsapi的理解"><a href="#vsapi的理解" class="headerlink" title="vsapi的理解"></a><code>vsapi</code>的理解</h3><p>可以将滤镜分为两类：一类是resize型滤镜，输入输出的尺寸不一致；一类是非resize型滤镜，输入输出的尺寸一致。</p>
 <p>对于后者，在初始化函数<code>FilterInit()</code>中，只需原样写下<code>vi</code>即可</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-keyword">static_cast</span>&lt;FilterData*&gt;(*instanceData);<br>    vsapi-&gt;setVideoInfo(d-&gt;vi, <span class="hljs-number">1</span>, node);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-type">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-type">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-built_in">static_cast</span>&lt;FilterData*&gt;(*instanceData);<br>    vsapi-&gt;<span class="hljs-built_in">setVideoInfo</span>(d-&gt;vi, <span class="hljs-number">1</span>, node);<br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>对于前者，要在初始化中将尺寸改写为输出尺寸</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-keyword">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-keyword">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-keyword">static_cast</span>&lt;FilterData*&gt;(*intanceData);<br>    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;<br>    dst_vi.width = d-&gt;output_width;<br>    dst_vi.height = d-&gt;output_height;<br>    vsapi-&gt;setVideoInfo(&amp;dst_vi, <span class="hljs-number">1</span>, node); <span class="hljs-comment">// 注意d-&gt;vi是指针，这里要取地址</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">void</span> VS_CC <span class="hljs-title">FilterInit</span><span class="hljs-params">(VSMap* in, VSMap* out, <span class="hljs-type">void</span>** instanceData, VSNode* node, VSCore* core, <span class="hljs-type">const</span> VSAPI* vsapi)</span></span><br><span class="hljs-function"></span>&#123;<br>    FilterData* d = <span class="hljs-built_in">static_cast</span>&lt;FilterData*&gt;(*intanceData);<br>    VSVideoInfo dst_vi = (VSVideoInfo)* d-&gt;vi;<br>    dst_vi.width = d-&gt;output_width;<br>    dst_vi.height = d-&gt;output_height;<br>    vsapi-&gt;<span class="hljs-built_in">setVideoInfo</span>(&amp;dst_vi, <span class="hljs-number">1</span>, node); <span class="hljs-comment">// 注意d-&gt;vi是指针，这里要取地址</span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>这样就保证了输出的<code>dst</code>是resize后的尺寸，否则照上面那样写，（与输入源不一样的尺寸）会报错。</p>
 <p>写法不是唯一的，也可以在<code>FilterCreate()</code>函数里写，只是我还不太会…</p>
@@ -485,24 +487,7 @@ srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

@@ -62,7 +62,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -190,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      768 字
+      770 字
     </span>
   
 
@@ -235,19 +237,19 @@
             <div class="markdown-body">
               <p>前几天把CUDA 9.1升级到了CUDA 9.2，以便和PyTorch匹配。升级CUAD以及作为铺垫的升级显卡驱动倒没啥好说的，点开exe，覆盖安装就行了。</p>
 <p>…除了一个地方。安装CUDA 9.2时，需要把和Visual Studio相关的一项取消勾选，否则装不上。等我装完CUDA 9.2，再打开VS2019，弹出一个错误，没太细看，是和CUDA有关的。</p>
-<p>今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，<a href="https://devtalk.nvidia.com/default/topic/1035794/cuda-setup-and-installation/cuda-9-2-quot-nvidia-installer-failed-quot-/2" target="_blank" rel="noopener">CUDA 9.2: “NVIDIA Installer Failed”</a>。</p>
+<p>今天去用CMake编译时，拿libtorch的示例都编译不过去，查了一下，发现CUDA和高版本的VS不兼容…具体可以看这里，<a target="_blank" rel="noopener" href="https://devtalk.nvidia.com/default/topic/1035794/cuda-setup-and-installation/cuda-9-2-quot-nvidia-installer-failed-quot-/2">CUDA 9.2: “NVIDIA Installer Failed”</a>。</p>
 <p>在<code>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v9.2\include\crt\host_config.h</code>的131行开始，有如下语句。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">if</span> _MSC_VER <span class="hljs-meta-string">&lt; 1600 || _MSC_VER &gt; 1913</span></span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">error</span> -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">if</span> _MSC_VER <span class="hljs-string">&lt; 1600 || _MSC_VER &gt;</span> 1913</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">error</span> -- unsupported Microsoft Visual Studio version! Only the versions 2012, 2013, 2015 and 2017 are supported!</span><br></code></pre></td></tr></table></figure>
 
 <p>而我用VS2019，MSVC版本为1921。所以无论是安装时的问题，还是安装后VS2019的报错，抑或是现在的编译不过去，都知道了原因，CUDA 9.2和高版本的MSVC不兼容。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="升级到CUDA-10-1"><a href="#升级到CUDA-10-1" class="headerlink" title="升级到CUDA 10.1"></a>升级到CUDA 10.1</h3><p>这次安装倒没出什么问题，无脑点next就OK了。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">Installed:<br>     - Nsight <span class="hljs-keyword">for</span> Visual Studio <span class="hljs-number">2019</span><br>     - Nsight Monitor <span class="hljs-keyword">and</span> HUD Launcher<br>Not Installed:<br>     - Nsight <span class="hljs-keyword">for</span> Visual Studio <span class="hljs-number">2017</span><br>       Reason: VS2017 was <span class="hljs-keyword">not</span> found<br>     - Nsight <span class="hljs-keyword">for</span> Visual Studio <span class="hljs-number">2015</span><br>       Reason: VS2015 was <span class="hljs-keyword">not</span> found<br></code></pre></td></tr></table></figure>
+<figure class="highlight nestedtext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs nestedtext"><span class="hljs-attribute">Installed</span><span class="hljs-punctuation">:</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">Nsight for Visual Studio 2019</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">Nsight Monitor and HUD Launcher</span><br><span class="hljs-attribute">Not Installed</span><span class="hljs-punctuation">:</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">Nsight for Visual Studio 2017</span><br>       <span class="hljs-attribute">Reason</span><span class="hljs-punctuation">:</span> <span class="hljs-string">VS2017 was not found</span><br>     <span class="hljs-bullet">-</span> <span class="hljs-string">Nsight for Visual Studio 2015</span><br>       <span class="hljs-attribute">Reason</span><span class="hljs-punctuation">:</span> <span class="hljs-string">VS2015 was not found</span><br></code></pre></td></tr></table></figure>
 
 <p>看到上面这样的提示，还是很放心的。然后把Python版和C++版的PyTorch都重装成CUDA 10.1版本的。</p>
 <p>虽然说远离MSVC…但在Windows平台上…不得不低头额…还是真香。</p>
-<h3 id="编译LibTorch的示例"><a href="#编译LibTorch的示例" class="headerlink" title="编译LibTorch的示例"></a>编译LibTorch的示例</h3><p>示例在<a href="https://pytorch.org/cppdocs/installing.html" target="_blank" rel="noopener">这里</a>。</p>
+<h3 id="编译LibTorch的示例"><a href="#编译LibTorch的示例" class="headerlink" title="编译LibTorch的示例"></a>编译LibTorch的示例</h3><p>示例在<a target="_blank" rel="noopener" href="https://pytorch.org/cppdocs/installing.html">这里</a>。</p>
 <p>cpp和CMakeLisits.txt的内容copy过来，编译。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir build &amp; cd build<br>cmake ..<br>cmake --build . --config Release<br></code></pre></td></tr></table></figure>
 
@@ -257,14 +259,14 @@
 <p>因为已经把libtorch添加进了环境变量，所以省去也没关系吧。</p>
 <p>虽然还是没有看到Makefile，但已经编译好了exe。只是这个<code>Release</code>文件夹体积太吓人了，把cuDNN相关的dll、torch和torch_python的本体dll都复制进来了…（诶，话说为什么要有<code>torch_python.dll</code>？）</p>
 <p>最后纪念一下我编译出来的第一个C++版PyTorch代码。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">λ cd Release<br>λ example-app<br> <span class="hljs-number">0.0935</span>  <span class="hljs-number">0.2273</span>  <span class="hljs-number">0.5856</span><br> <span class="hljs-number">0.0627</span>  <span class="hljs-number">0.0996</span>  <span class="hljs-number">0.7945</span><br>[ CPUFloatType&#123;<span class="hljs-number">2</span>,<span class="hljs-number">3</span>&#125; ]<br></code></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stata">λ <span class="hljs-keyword">cd</span> Release<br>λ example-<span class="hljs-keyword">app</span><br> 0.0935  0.2273  0.5856<br> 0.0627  0.0996  0.7945<br>[ CPUFloatType&#123;2,3&#125; ]<br></code></pre></td></tr></table></figure>
 
-<h3 id="LibTorch的模型调用与预测"><a href="#LibTorch的模型调用与预测" class="headerlink" title="LibTorch的模型调用与预测"></a>LibTorch的模型调用与预测</h3><p>这里没太多好说的，照着<a href="https://pytorch.org/tutorials/advanced/cpp_export.html" target="_blank" rel="noopener">官方教程</a>，编译了一遍。</p>
+<h3 id="LibTorch的模型调用与预测"><a href="#LibTorch的模型调用与预测" class="headerlink" title="LibTorch的模型调用与预测"></a>LibTorch的模型调用与预测</h3><p>这里没太多好说的，照着<a target="_blank" rel="noopener" href="https://pytorch.org/tutorials/advanced/cpp_export.html">官方教程</a>，编译了一遍。</p>
 <p>载入模型</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">λ libtorch-test model.pt<br>ok<br></code></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmake">λ libtorch-<span class="hljs-keyword">test</span> model.pt<br>ok<br></code></pre></td></tr></table></figure>
 
 <p>模型预测</p>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs lsl">λ libtorch-test <span class="hljs-string">"PATH/TO/model.pt"</span><br><span class="hljs-number">-0.1862</span>  <span class="hljs-number">0.3385</span> <span class="hljs-number">-0.3066</span> <span class="hljs-number">-0.3085</span> <span class="hljs-number">-0.3040</span><br>[ CPUFloatType&#123;<span class="hljs-number">1</span>,<span class="hljs-number">5</span>&#125; ]<br>ok<br></code></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs subunit">λ libtorch-test &quot;PATH/TO/model.pt&quot;<br><span class="hljs-string">-0</span>.1862  0.3385 <span class="hljs-string">-0</span>.3066 <span class="hljs-string">-0</span>.3085 <span class="hljs-string">-0</span>.3040<br>[ CPUFloatType&#123;1,5&#125; ]<br>ok<br></code></pre></td></tr></table></figure>
 
 <p>代码上没遇到明显的问题，只是概念上要明白，虽然模型都是.pt的后缀，但PyTorch的Python前端和C++前端的模型格式并不一样，Python得到的模型，不能直接在C++中载入，需要转换格式。</p>
 <h4 id="关于模型，额外的话"><a href="#关于模型，额外的话" class="headerlink" title="关于模型，额外的话"></a>关于模型，额外的话</h4><p>顺带一提，在纯Python前端的项目，经常看到<code>model</code>文件夹下只是.py文件，这是生成模型的代码，而不是模型本身啊。</p>
@@ -467,24 +469,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

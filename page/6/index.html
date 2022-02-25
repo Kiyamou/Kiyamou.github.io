@@ -44,7 +44,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -245,10 +247,10 @@
 1ssh-keygen -t rsa
 
 在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。
-1ssh-keygen -t rsa -C 'comment'
+1ssh-keygen -t rsa -C &#x27;comment&#x27;
 
 默认的密钥为2048位，可以使用-b指定密钥位数。
-1ssh-keyge
+
         </a>
       </p>
 
@@ -352,7 +354,7 @@ MXNet版本选择master，其余根据实际情况选择。
 1pip install mxnet-cu91 --pre
 
 安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。
-1python -c "import m
+1python -c &quot;imp
         </a>
       </p>
 
@@ -820,24 +822,7 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

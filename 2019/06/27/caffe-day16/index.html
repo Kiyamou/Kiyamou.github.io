@@ -65,7 +65,9 @@ numpy和/caffe/python/requ">
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -243,13 +245,13 @@ numpy和/caffe/python/requ">
 
 <p>numpy和<code>/caffe/python/requirements.txt</code>清单里的包，均用pip3安装的。</p>
 <p>安装时报错</p>
-<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">ERROR: </span>matplotlib 3.1.0 has requirement python-dateutil&gt;=2.1, but you'll have python-dateutil 1.5 which is incompatible.<br><span class="hljs-keyword">ERROR: </span>pandas 0.24.2 has requirement python-dateutil&gt;=2.5.0, but you'll have python-dateutil 1.5 which is incompatible.<br></code></pre></td></tr></table></figure>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs subunit"><span class="hljs-keyword">ERROR: </span>matplotlib 3.1.0 has requirement python-dateutil&gt;=2.1, but you&#x27;ll have python-dateutil 1.5 which is incompatible.<br><span class="hljs-keyword">ERROR: </span>pandas 0.24.2 has requirement python-dateutil&gt;=2.5.0, but you&#x27;ll have python-dateutil 1.5 which is incompatible.<br></code></pre></td></tr></table></figure>
 
 <p>因为清单里要求python-dateutil的版本不能大于2，所以出现上述问题。但只是不兼容，而上述三个包都装上了，所以先这样。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h5 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h5><p>不知道为什么，要重新编译一次caffe。</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">cd</span> <span class="hljs-string">~/caffe</span><br><span class="hljs-attr">make</span> <span class="hljs-string">clean</span><br><span class="hljs-attr">make</span> <span class="hljs-string">-j</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> ~/caffe<br><span class="hljs-keyword">make</span> clean<br><span class="hljs-keyword">make</span> -<span class="hljs-keyword">j</span><br></code></pre></td></tr></table></figure>
 
 <p>编译时报错。（我不记得之前编译有没有报错了）</p>
 <p>改用</p>
@@ -265,7 +267,7 @@ numpy和/caffe/python/requ">
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> numpy<br></code></pre></td></tr></table></figure>
 
 <p>之后pycaffe编译成功。</p>
-<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">cd ~/caffe/python<br>python3 draw_net<span class="hljs-selector-class">.py</span> ../models/bvlc_reference_caffenet/train_val<span class="hljs-selector-class">.prototxt</span> caffenet.png<br></code></pre></td></tr></table></figure>
+<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd ~<span class="hljs-regexp">/caffe/</span>python<br>python3 draw_net.py ..<span class="hljs-regexp">/models/</span>bvlc_reference_caffenet/train_val.prototxt caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>不行，用<code>python</code>执行也不行，但报错信息不一样。</p>
 <p>直接在命令行下调用python，测试</p>
@@ -286,7 +288,7 @@ numpy和/caffe/python/requ">
 <h4 id="换个思路"><a href="#换个思路" class="headerlink" title="换个思路"></a>换个思路</h4><h5 id="从编译文件入手"><a href="#从编译文件入手" class="headerlink" title="从编译文件入手"></a>从编译文件入手</h5><p>从caffe的编译文件<code>makefile.config</code>入手，看懂了<code>makefile.config</code>文件，发现在编译时忽略了对Python路径的依赖，而我又怕改路径改出乱子。所以根据<code>makefile.config</code>中的注释，将需要的文件复制到对应位置，使<code>makefile.config</code>的默认路径有效。</p>
 <p>主要一点就是，默认路径指向<code>usr/lib</code>，而caffe编译所需的Pyhon相关文件，我这边是在<code>usr/lib64</code>里。</p>
 <p>另外就Python包——site packages和dist packages的问题。</p>
-<h5 id="重新安装依赖"><a href="#重新安装依赖" class="headerlink" title="重新安装依赖"></a>重新安装依赖</h5><p>解决了前述路径问题，自然要重新编译一次，然后也搞明白了目前的<code>pip</code>和<code>pip3</code>命令都指向Python3（这也回答了<a href="https://yimino.github.io/2019/06/27/g-cmake-python/" target="_blank" rel="noopener">https://yimino.github.io/2019/06/27/g-cmake-python/</a>的疑问），所以在安装了Python2的pip后</p>
+<h5 id="重新安装依赖"><a href="#重新安装依赖" class="headerlink" title="重新安装依赖"></a>重新安装依赖</h5><p>解决了前述路径问题，自然要重新编译一次，然后也搞明白了目前的<code>pip</code>和<code>pip3</code>命令都指向Python3（这也回答了<a target="_blank" rel="noopener" href="https://yimino.github.io/2019/06/27/g-cmake-python/">https://yimino.github.io/2019/06/27/g-cmake-python/</a>的疑问），所以在安装了Python2的pip后</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> python-pip<br></code></pre></td></tr></table></figure>
 
 <p>重新安装其他依赖包。</p>
@@ -295,12 +297,12 @@ numpy和/caffe/python/requ">
 <p>至此，<code>import caffe</code>终于正常了。</p>
 <p>（虽然有个warning，但应该无伤大雅。）</p>
 <h5 id="再次画图"><a href="#再次画图" class="headerlink" title="再次画图"></a>再次画图</h5><p>执行，</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python draw_net<span class="hljs-selector-class">.py</span> ../models/bvlc_reference_caffenet/train_val<span class="hljs-selector-class">.prototxt</span> caffenet.png<br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">python draw_net.py ..<span class="hljs-regexp">/models/</span>bvlc_reference_caffenet/train_val.prototxt caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>报错。</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">OSError: [Errno <span class="hljs-number">2</span>] "dot" <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span> <span class="hljs-keyword">in</span> <span class="hljs-type">path</span>.<br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">OSError: [Errno <span class="hljs-number">2</span>] &quot;dot&quot; <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span> <span class="hljs-keyword">in</span> <span class="hljs-type">path</span>.<br></code></pre></td></tr></table></figure>
 
-<p>根据<a href="https://github.com/BVLC/caffe/issues/4911" target="_blank" rel="noopener">https://github.com/BVLC/caffe/issues/4911</a>，需要安装graphviz包。</p>
+<p>根据<a target="_blank" rel="noopener" href="https://github.com/BVLC/caffe/issues/4911">https://github.com/BVLC/caffe/issues/4911</a>，需要安装graphviz包。</p>
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> graphviz<br></code></pre></td></tr></table></figure>
 
 <p>至此，<code>draw_net.py</code>脚本得以正常运行，网络结构图get！</p>
@@ -308,31 +310,31 @@ numpy和/caffe/python/requ">
 <p>首先解决一下主机与虚拟机之间复制文件的缓存问题。</p>
 <p>从虚拟机向主机复制文件，缓存于Windows主机的<code>C:\Users\&quot;User Name&quot;\AppData\Local\Temp\vmware-&quot;User Name&quot;\VMwareDnD</code>中，直接删除即可。</p>
 <p>从主机向虚拟机复制文件，缓存于Linux虚拟机的<code>/root/.cache/vmware/drag_and_drop</code>中，查看日期信息，</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> <span class="hljs-string">/root/.cache/vmware/drag_and_drop</span><br><span class="hljs-keyword">ls</span> -lht<br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<br>ls -lht<br></code></pre></td></tr></table></figure>
 
 <p>查看文件大小，</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">du -h --max-depth=<span class="hljs-number">0</span> <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<span class="hljs-regexp">/*</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">du -h --max-depth=<span class="hljs-number">0</span> <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop/*<br></code></pre></td></tr></table></figure>
 
 <p>删除缓存。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">rm -rf <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<span class="hljs-regexp">/*</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">rm -rf <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop/*<br></code></pre></td></tr></table></figure>
 
 <p>（但我由主机向虚拟机复制文件后，虚拟机所在磁盘的容量似乎减少了复制文件大小的两倍，在清除虚拟机缓存后也是如此…是我的错觉吗…）</p>
 <p><strong>安装过程</strong></p>
 <p>（看安装包里的教程即可）</p>
 <p>挂载iso。</p>
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams">mount -t auto -o <span class="hljs-keyword">loop</span> <span class="hljs-symbol">$</span>PATH<span class="hljs-symbol">$</span>/R2018b_glnxa64_dvd1.iso /mnt/iso<br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">mount -t auto -o loop <span class="hljs-variable">$PATH</span>$<span class="hljs-regexp">/R2018b_glnxa64_dvd1.iso /m</span>nt/iso<br></code></pre></td></tr></table></figure>
 
 <p>若提示</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vim">moun<span class="hljs-variable">t:</span> /dev/loop0 <span class="hljs-keyword">is</span> <span class="hljs-keyword">write</span>-protected, mounting <span class="hljs-keyword">read</span>-<span class="hljs-keyword">only</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">mount: <span class="hljs-regexp">/dev/</span>loop0 is <span class="hljs-keyword">write</span>-<span class="hljs-keyword">protected</span>, mounting <span class="hljs-keyword">read</span>-only<br></code></pre></td></tr></table></figure>
 
 <p>则</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">cd</span> <span class="hljs-string">/</span><br><span class="hljs-attr">chmod</span> <span class="hljs-string">755 mnt</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /<br><span class="hljs-built_in">chmod</span> 755 mnt<br></code></pre></td></tr></table></figure>
 
 <p>挂载成功后，不要进入挂载目录，而是在随便的另外一个目录下执行安装命令。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/mnt/i</span>so<span class="hljs-regexp">/install</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/mnt/i</span>so/install<br></code></pre></td></tr></table></figure>
 
 <p>我这里提示了</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs groovy"><span class="hljs-string">cp:</span> cannot stat ‘<span class="hljs-regexp">/mnt/</span>iso<span class="hljs-regexp">/sys/</span>java<span class="hljs-regexp">/jre/</span>glnxa64<span class="hljs-regexp">/jre/</span>man<span class="hljs-regexp">/ja_JP.UTF-8’: Input/</span>output error<br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">cp: cannot stat ‘<span class="hljs-regexp">/mnt/i</span>so<span class="hljs-regexp">/sys/</span>java<span class="hljs-regexp">/jre/g</span>lnxa64<span class="hljs-regexp">/jre/m</span>an<span class="hljs-regexp">/ja_JP.UTF-8’: Input/</span>output error<br></code></pre></td></tr></table></figure>
 
 <p>但似乎没发现什么问题。</p>
 <p>然后即可进入图像安装界面，按提示操作即可。</p>
@@ -535,24 +537,7 @@ numpy和/caffe/python/requ">
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

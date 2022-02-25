@@ -63,7 +63,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,11 +236,11 @@
             <h1 style="display: none">ArchLinux下VapourSynth和VapourSynth-editor的编译与配置</h1>
             
             <div class="markdown-body">
-              <h3 id="ArchLinux安装桌面"><a href="#ArchLinux安装桌面" class="headerlink" title="ArchLinux安装桌面"></a>ArchLinux安装桌面</h3><p>参考<a href="https://www.viseator.com/2017/05/17/arch_install/" target="_blank" rel="noopener">以官方Wiki的方式安装ArchLinux</a>安装ArchLinux的基本系统。</p>
-<p>参考<a href="https://starrycat.me/archlinux-install-gnome-desktop.html" target="_blank" rel="noopener">ArchLinux安装GNOME图形桌面环境</a>和<a href="https://www.viseator.com/2017/05/19/arch_setup/" target="_blank" rel="noopener">ArchLinux安装后的必须配置与图形界面安装教程</a>安装图形界面。</p>
+              <h3 id="ArchLinux安装桌面"><a href="#ArchLinux安装桌面" class="headerlink" title="ArchLinux安装桌面"></a>ArchLinux安装桌面</h3><p>参考<a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/17/arch_install/">以官方Wiki的方式安装ArchLinux</a>安装ArchLinux的基本系统。</p>
+<p>参考<a target="_blank" rel="noopener" href="https://starrycat.me/archlinux-install-gnome-desktop.html">ArchLinux安装GNOME图形桌面环境</a>和<a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/19/arch_setup/">ArchLinux安装后的必须配置与图形界面安装教程</a>安装图形界面。</p>
 <p>顺带提一下我的经验，若是在VMware虚拟机中安装，不要在VM下拉伸桌面，不然重启系统后黑屏…</p>
-<h3 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h3><p>在之前的<a href="https://kiyamou.github.io/2020/02/07/arch-and-meson/" target="_blank" rel="noopener">一篇博文</a>中，提到了编译VapourSynth。但我不知道为什么，可能是升级了ArchLinux系统（<code>pacman -Syu</code>），导致之前编译好的用不了，只能重新编译一次。</p>
-<a id="more"></a>
+<h3 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h3><p>在之前的<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/02/07/arch-and-meson/">一篇博文</a>中，提到了编译VapourSynth。但我不知道为什么，可能是升级了ArchLinux系统（<code>pacman -Syu</code>），导致之前编译好的用不了，只能重新编译一次。</p>
+<span id="more"></span>
 
 <h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>VapourSynth的必要依赖包括：</p>
 <ul>
@@ -249,7 +251,7 @@
 </ul>
 </li>
 <li>功能依赖<ul>
-<li>zimg <a href="https://github.com/sekrit-twc/zimg/tree/v2.9" target="_blank" rel="noopener">v2.9分支</a> （由于新版R49增加了<code>spline64</code>，这是zimg 2.9.3新增的内容，所以要用新版）</li>
+<li>zimg <a target="_blank" rel="noopener" href="https://github.com/sekrit-twc/zimg/tree/v2.9">v2.9分支</a> （由于新版R49增加了<code>spline64</code>，这是zimg 2.9.3新增的内容，所以要用新版）</li>
 </ul>
 </li>
 <li>Python环境<ul>
@@ -510,24 +512,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

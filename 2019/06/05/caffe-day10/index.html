@@ -64,7 +64,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -239,9 +241,9 @@
 <p>在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。</p>
 <h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><h4 id="逻辑回归分类器的训练"><a href="#逻辑回归分类器的训练" class="headerlink" title="逻辑回归分类器的训练"></a>逻辑回归分类器的训练</h4><p>在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。</p>
 <p>这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ .<span class="hljs-regexp">/build/</span>tools<span class="hljs-regexp">/caffe train --solver=examples/m</span>nist<span class="hljs-regexp">/lenet_lr_solver.prototxt</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ .<span class="hljs-regexp">/build/</span>tools<span class="hljs-regexp">/caffe train --solver=examples/m</span>nist/lenet_lr_solver.prototxt<br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="练习题1：模型设计与代码实现"><a href="#练习题1：模型设计与代码实现" class="headerlink" title="练习题1：模型设计与代码实现"></a>练习题1：模型设计与代码实现</h3><p>Caffe将模型设计与代码实现分开有什么好处？</p>
 <p>1.便于模型修改，而不必在每次修改模型时都去改动代码；</p>
@@ -448,24 +450,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

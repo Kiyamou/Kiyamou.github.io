@@ -62,7 +62,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -190,7 +192,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      626 字
+      634 字
     </span>
   
 
@@ -234,12 +236,12 @@
             
             <div class="markdown-body">
               <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// std::deque</span><br><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;deque&gt;</span></span><br><span class="hljs-keyword">template</span> &lt; <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">T</span>, <span class="hljs-title">class</span> <span class="hljs-title">Alloc</span> = <span class="hljs-title">allocator</span>&lt;T&gt; &gt; <span class="hljs-title">class</span> <span class="hljs-title">deque</span>;</span><br><br><span class="hljs-comment">// example</span><br><span class="hljs-built_in">deque</span> &lt;TreeNode*&gt; tree_que;<br>node = tree_que.front();<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// std::deque</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;deque&gt;</span></span><br><span class="hljs-keyword">template</span> &lt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alloc</span> = allocator&lt;T&gt; &gt; <span class="hljs-keyword">class</span> deque;<br><br><span class="hljs-comment">// example</span><br>deque &lt;TreeNode*&gt; tree_que;<br>node = tree_que.<span class="hljs-built_in">front</span>();<br></code></pre></td></tr></table></figure>
 
 <h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;opencv2/opencv.hpp&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;<br><br>Canny(edge, edge, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// ✔</span><br>Canny(edge, edge, threshold1=<span class="hljs-number">3</span>, threshold2=<span class="hljs-number">9</span>, apertureSize=<span class="hljs-number">3</span>);  <span class="hljs-comment">// ✖</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/opencv.hpp&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;<br><br><span class="hljs-built_in">Canny</span>(edge, edge, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// ✔</span><br><span class="hljs-built_in">Canny</span>(edge, edge, threshold1=<span class="hljs-number">3</span>, threshold2=<span class="hljs-number">9</span>, apertureSize=<span class="hljs-number">3</span>);  <span class="hljs-comment">// ✖</span><br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="3-关于vector"><a href="#3-关于vector" class="headerlink" title="3. 关于vector"></a>3. 关于<code>vector</code></h3><p>不需额外声明头文件，但需要使用<code>std</code>命名空间，即<code>std::vector</code>。</p>
 <p>这天在做二叉树的题和敲OpenCV时，都遇到了<code>vector</code></p>
@@ -247,16 +249,16 @@
 <p>2.<code>#ifndef</code>、<code>#define</code>、<code>#endif</code>配合使用，避免一个.h文件被重复include。</p>
 <h3 id="5-使用Meson编译"><a href="#5-使用Meson编译" class="headerlink" title="5.使用Meson编译"></a>5.使用Meson编译</h3><p>在win下，通过msi安装包安装Meson，再把现成的<code>ninja.exe</code>添加到环境变量中即可。</p>
 <p>编译时出现的问题如下。</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Did <span class="hljs-keyword">not</span> find pkg-config <span class="hljs-keyword">by</span> <span class="hljs-type">name</span> <span class="hljs-string">'pkg-config'</span><br><span class="hljs-built_in">Found</span> Pkg-config: <span class="hljs-keyword">NO</span><br>Did <span class="hljs-keyword">not</span> find CMake <span class="hljs-string">'cmake'</span><br><span class="hljs-built_in">Found</span> CMake: <span class="hljs-keyword">NO</span><br>Run-<span class="hljs-type">time</span> dependency vapoursynth <span class="hljs-built_in">found</span>: <span class="hljs-keyword">NO</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Did <span class="hljs-keyword">not</span> find pkg-config <span class="hljs-keyword">by</span> <span class="hljs-type">name</span> <span class="hljs-string">&#x27;pkg-config&#x27;</span><br><span class="hljs-built_in">Found</span> Pkg-config: <span class="hljs-keyword">NO</span><br>Did <span class="hljs-keyword">not</span> find CMake <span class="hljs-string">&#x27;cmake&#x27;</span><br><span class="hljs-built_in">Found</span> CMake: <span class="hljs-keyword">NO</span><br>Run-<span class="hljs-type">time</span> dependency vapoursynth <span class="hljs-built_in">found</span>: <span class="hljs-keyword">NO</span><br></code></pre></td></tr></table></figure>
 
 <p>就是该装的依赖没有装。（虽然我不好说这里的<code>vapoursynth</code>指什么：.h文件，还是编译好的动态链接库？）</p>
 <p>顺带，下面这些信息，好像也不是我希望的。这应该是我的gcc存在32位和64位共存导致。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-tag">C</span>++ <span class="hljs-selector-tag">compiler</span> <span class="hljs-selector-tag">for</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">host</span> <span class="hljs-selector-tag">machine</span>: <span class="hljs-selector-tag">c</span>++ (<span class="hljs-selector-tag">gcc</span> 8<span class="hljs-selector-class">.2</span><span class="hljs-selector-class">.0</span> "<span class="hljs-selector-tag">c</span>++ (<span class="hljs-selector-tag">MinGW</span><span class="hljs-selector-class">.org</span> <span class="hljs-selector-tag">GCC-8</span><span class="hljs-selector-class">.2</span><span class="hljs-selector-class">.0-5</span>) 8<span class="hljs-selector-class">.2</span><span class="hljs-selector-class">.0</span>")<br><span class="hljs-selector-tag">C</span>++ <span class="hljs-selector-tag">linker</span> <span class="hljs-selector-tag">for</span> <span class="hljs-selector-tag">the</span> <span class="hljs-selector-tag">host</span> <span class="hljs-selector-tag">machine</span>: <span class="hljs-selector-tag">c</span>++ <span class="hljs-selector-tag">GNU</span> <span class="hljs-selector-tag">ld</span><span class="hljs-selector-class">.bfd</span> 2<span class="hljs-selector-class">.32</span><br><span class="hljs-selector-tag">Host</span> <span class="hljs-selector-tag">machine</span> <span class="hljs-selector-tag">cpu</span> <span class="hljs-selector-tag">family</span>: <span class="hljs-selector-tag">x86</span><br><span class="hljs-selector-tag">Host</span> <span class="hljs-selector-tag">machine</span> <span class="hljs-selector-tag">cpu</span>: <span class="hljs-selector-tag">x86</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">C</span>++ <span class="hljs-comment">compiler for the host machine:</span> <span class="hljs-comment">c</span>++ <span class="hljs-comment">(gcc</span> <span class="hljs-comment">8</span><span class="hljs-string">.</span><span class="hljs-comment">2</span><span class="hljs-string">.</span><span class="hljs-comment">0</span> <span class="hljs-comment">&quot;c</span>++ <span class="hljs-comment">(MinGW</span><span class="hljs-string">.</span><span class="hljs-comment">org</span> <span class="hljs-comment">GCC</span><span class="hljs-literal">-</span><span class="hljs-comment">8</span><span class="hljs-string">.</span><span class="hljs-comment">2</span><span class="hljs-string">.</span><span class="hljs-comment">0</span><span class="hljs-literal">-</span><span class="hljs-comment">5)</span> <span class="hljs-comment">8</span><span class="hljs-string">.</span><span class="hljs-comment">2</span><span class="hljs-string">.</span><span class="hljs-comment">0&quot;)</span><br><span class="hljs-comment">C</span>++ <span class="hljs-comment">linker for the host machine:</span> <span class="hljs-comment">c</span>++ <span class="hljs-comment">GNU</span> <span class="hljs-comment">ld</span><span class="hljs-string">.</span><span class="hljs-comment">bfd</span> <span class="hljs-comment">2</span><span class="hljs-string">.</span><span class="hljs-comment">32</span><br><span class="hljs-comment">Host machine cpu family: x86</span><br><span class="hljs-comment">Host</span> <span class="hljs-comment">machine</span> <span class="hljs-comment">cpu:</span> <span class="hljs-comment">x86</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="6-VapourSynth着手支持音频处理"><a href="#6-VapourSynth着手支持音频处理" class="headerlink" title="6.VapourSynth着手支持音频处理"></a>6.VapourSynth着手支持音频处理</h3><p>才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。</p>
-<p>先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了<code>vnode</code>。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的<code>VSNodeRef</code>，而不是现在<code>cython/vapoursynth.pyx</code>里Python api的<code>VideoNode</code>。但我继续看这个说明，提到了<code>VSMap</code>和其他context，这个C++ api里也有。</p>
+<p>先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了<code>vnode</code>。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的<code>VSNodeRef</code>，而不是现在<code>cython/vapoursynth.pyx</code>里Python api的<code>VideoNode</code>。但我继续看这个说明，提到了<code>VSMap </code>和其他context，这个C++ api里也有。</p>
 <p>音频源滤镜：<code>BestAudioSource .dll</code></p>
-<p>函数：<code>bas.Source</code>、<code>bas.BlankAudio 、</code>bas.AudioSplice <code>、</code>bas.AudioTrim`</p>
+<p>函数：<code>bas.Source</code>、<code>bas.BlankAudio 、</code>bas.AudioSplice <code>、</code>bas.AudioTrim&#96;</p>
 <p>在脚本最后，输出音频要用<code>audio.set_output(1)</code>，要给<code>set_output</code>加标号了。</p>
 <p>输出结果可喂给VSPipe（VS pipeline，和ISP pipeline一个意思的其实吧）、AVFS、VFW。</p>
 <h3 id="7-可以考虑学一学Cython"><a href="#7-可以考虑学一学Cython" class="headerlink" title="7.可以考虑学一学Cython"></a>7.可以考虑学一学Cython</h3><p>或许有可能写面向进阶用户的东西的时候，会用上？</p>
@@ -462,24 +464,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

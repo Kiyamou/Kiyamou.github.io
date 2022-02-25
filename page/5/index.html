@@ -44,7 +44,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -191,9 +193,9 @@
             
           
           重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。
-讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。
+讲道理，从功能上看，用C&#x2F;C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。
 印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了…
-限于教学条件，那个时候自然是
+限于教学条件，那个
         </a>
       </p>
 
@@ -380,9 +382,9 @@
             
           
           1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。
-感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的.proto储存格式。
+感觉和Caffe好像，无论是block、program等逻辑&#x2F;数据结构，还是具体的.proto储存格式。
 LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。
-而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点写
+而Python前端+C++后端这种模式，也让人觉得很亲切。我
         </a>
       </p>
 
@@ -426,11 +428,11 @@ LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没�
           1用malloc分配内存
 1double* lut = (double*) malloc(sizeof(double)*d.samples);
 
-sizeof(double)=8
+sizeof(double)&#x3D;8
 21data = malloc(sizeof(d));
 
 而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？）
-PS：在HomeOfV
+PS：在Ho
         </a>
       </p>
 
@@ -789,24 +791,7 @@ C++的类型转换编写Vap
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

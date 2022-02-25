@@ -14,10 +14,10 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march=native）
+  <meta name="description" content="指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章GCC神坑：-march&amp;#x3D;native）
 对于GCC编译器，在编译命令中加入-march=native选项，可调用本地的库，使用AVX指令集优化。
 Functions（Doc在这里，直接搜索想查的函数即可）
-（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる - その">
+（另外也可看一下Intel AVX を使用して SIMD 演算を試してみる">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -63,7 +63,9 @@ Functions（Doc在这里，直接搜索想查的函数即可）
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -191,7 +193,7 @@ Functions（Doc在这里，直接搜索想查的函数即可）
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      587 字
+      588 字
     </span>
   
 
@@ -234,32 +236,32 @@ Functions（Doc在这里，直接搜索想查的函数即可）
             <h1 style="display: none">JincResize 代码重构（2）</h1>
             
             <div class="markdown-body">
-              <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a href="http://enigmahuang.me/2017/09/29/AVX-SIMD/" target="_blank" rel="noopener">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a href="https://zhuanlan.zhihu.com/p/59868499" target="_blank" rel="noopener">GCC神坑：-march=native</a>）</p>
+              <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a target="_blank" rel="noopener" href="http://enigmahuang.me/2017/09/29/AVX-SIMD/">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59868499">GCC神坑：-march&#x3D;native</a>）</p>
 <p>对于GCC编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用AVX指令集优化。</p>
-<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc" target="_blank" rel="noopener">这里</a>，直接搜索想查的函数即可）</p>
-<p>（另外也可看一下<a href="http://kawa0810.hateblo.jp/entry/20120304/1330852197" target="_blank" rel="noopener">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
+<h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc在<a target="_blank" rel="noopener" href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc">这里</a>，直接搜索想查的函数即可）</p>
+<p>（另外也可看一下<a target="_blank" rel="noopener" href="http://kawa0810.hateblo.jp/entry/20120304/1330852197">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的Doc详细）</p>
 <p><code>_mm_malloc(size_t size, size_t align)</code>：对齐的问题</p>
 <p><code>_mm256_load_ps</code>：float类型输入</p>
 <p><code>_mm256_load_pd</code>：double类型输入</p>
 <p><code>__m256d _mm256_mul_pd(__m256d, __m256d)</code>：256位双精度乘法</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h4 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h4><p>（来自<a href="https://www.xlsoft.com/jp/products/intel/compilers/manual/14/cpp/GUID-A9C3B12F-7A9A-4C8D-A6CD-9974ABC570E9.htm" target="_blank" rel="noopener">インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細</a>）</p>
+<h4 id="Type"><a href="#Type" class="headerlink" title="Type"></a>Type</h4><p>（来自<a target="_blank" rel="noopener" href="https://www.xlsoft.com/jp/products/intel/compilers/manual/14/cpp/GUID-A9C3B12F-7A9A-4C8D-A6CD-9974ABC570E9.htm">インテル® アドバンスト・ベクトル・エクステンション (インテル® AVX) 組込み関数の詳細</a>）</p>
 <p><code>__m256</code>：容纳8个32位单精度浮点数值</p>
 <p><code>__m256d</code>：容纳4个64位双精度浮点数值</p>
 <h4 id="实际代码"><a href="#实际代码" class="headerlink" title="实际代码"></a>实际代码</h4><p>这部分代码来自luglio，我只是做了一点适配，因为我现在还没有把JincResize的中间数据从double改为float。</p>
-<h5 id="对齐的问题"><a href="#对齐的问题" class="headerlink" title="对齐的问题"></a>对齐的问题</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span>* lut = (<span class="hljs-keyword">double</span> *)_mm_malloc(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">double</span>) * d-&gt;sample, <span class="hljs-number">64</span>);<br></code></pre></td></tr></table></figure>
+<h5 id="对齐的问题"><a href="#对齐的问题" class="headerlink" title="对齐的问题"></a>对齐的问题</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">double</span>* lut = (<span class="hljs-type">double</span> *)_mm_malloc(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">double</span>) * d-&gt;sample, <span class="hljs-number">64</span>);<br></code></pre></td></tr></table></figure>
 
-<p><code>_mm_malloc</code>相比一般的<code>malloc</code>，增加了一个用于数据对齐的参数。具体在这里（<a href="https://software.intel.com/zh-cn/articles/data-alignment-to-assist-vectorization" target="_blank" rel="noopener">数据对齐有助于实现向量化</a>）有讲。</p>
+<p><code>_mm_malloc</code>相比一般的<code>malloc</code>，增加了一个用于数据对齐的参数。具体在这里（<a target="_blank" rel="noopener" href="https://software.intel.com/zh-cn/articles/data-alignment-to-assist-vectorization">数据对齐有助于实现向量化</a>）有讲。</p>
 <p>虽然我现在还不能完全理解这个概念，但经过测试，对于JincResize现有的代码，把上面的<code>64</code>写成<code>32</code>，和没有AVX优化的速度几乎一样。</p>
 <h5 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">__mm256_store_ps(lut + j * <span class="hljs-number">8</span>, rl);  <span class="hljs-comment">// float</span><br>__mm256_store_pd(lut + j * <span class="hljs-number">4</span>, rl);  <span class="hljs-comment">// double</span><br></code></pre></td></tr></table></figure>
 
 <p>看一下两个函数的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">void</span> _mm256_store_ps (<span class="hljs-keyword">float</span> * mem_addr, __m256 a)<br><span class="hljs-keyword">void</span> _mm256_store_pd (<span class="hljs-keyword">double</span> * mem_addr, __m256d a)<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">void</span> _mm256_store_ps (<span class="hljs-type">float</span> * mem_addr, __m256 a)<br><span class="hljs-type">void</span> _mm256_store_pd (<span class="hljs-type">double</span> * mem_addr, __m256d a)<br></code></pre></td></tr></table></figure>
 
 <p>注意到第二个参数类型分别是<code>__m256</code>、<code>__m256d</code>，所以有了上述区别。</p>
 <h3 id="代码细节的整理"><a href="#代码细节的整理" class="headerlink" title="代码细节的整理"></a>代码细节的整理</h3><p>（2020.3.2完成 2020.3.8补记）</p>
-<h4 id="删去冗余代码"><a href="#删去冗余代码" class="headerlink" title="删去冗余代码"></a>删去冗余代码</h4><p>之前没注意，可以直接获取特定平面尺寸的啊（commit <a href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/83eb7fb83a887d1237607621926c40d68aff7830" target="_blank" rel="noopener">83eb7f</a>）。</p>
+<h4 id="删去冗余代码"><a href="#删去冗余代码" class="headerlink" title="删去冗余代码"></a>删去冗余代码</h4><p>之前没注意，可以直接获取特定平面尺寸的啊（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/83eb7fb83a887d1237607621926c40d68aff7830">83eb7f</a>）。</p>
 <h4 id="把乘方换成乘法"><a href="#把乘方换成乘法" class="headerlink" title="把乘方换成乘法"></a>把乘方换成乘法</h4><p>嗯，就是求平方嘛，直接乘多好，用<code>pow()</code>更慢。</p>
 <p>说起来虽然是这么一个小改动，但速度提升真是明显（从r5到r6的25%速度提升，AVX优化贡献的可能还不如这里多）。毕竟是在计算量最大的四重循环内，微小的改动就能有大的影响。</p>
 <p>经过从r5到r6的修改，以及对卷积的认识，算是把JincResize代码重新认识了一遍，哪里是速度敏感的，怎么样让代码简洁一点，也有了体会。</p>
@@ -461,24 +463,7 @@ Functions（Doc在这里，直接搜索想查的函数即可）
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

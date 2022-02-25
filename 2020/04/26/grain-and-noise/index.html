@@ -62,7 +62,9 @@ Grai">
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -233,12 +235,12 @@ Grai">
             <h1 style="display: none">Grain 与 Noise</h1>
             
             <div class="markdown-body">
-              <p>本文翻译自 <a href="https://blog.kageru.moe/legacy/grain.html" target="_blank" rel="noopener">Grain and Noise</a>，原作者：<a href="https://github.com/kageru" target="_blank" rel="noopener">kageru</a>。</p>
+              <p>本文翻译自 <a target="_blank" rel="noopener" href="https://blog.kageru.moe/legacy/grain.html">Grain and Noise</a>，原作者：<a target="_blank" rel="noopener" href="https://github.com/kageru">kageru</a>。</p>
 <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>在数字图像处理中存在多种噪声（noise）和瑕疵（artifacts），同时也有多种降噪算法。在本文中，有时将 grain 与 noise 作为同义词使用；通常而言，noise 是一种不符合预期的瑕疵，而 grain 则是为了实现某种特效——如回忆特效、模仿胶片电影颗粒感而添加，或为掩盖色带（banding）而添加。</p>
 <p>Grain 增加了画面混乱程度，是熵增的过程，在视频编码时会导致比特率增加，特别是对于用来掩盖色带的噪点。这种比特率的增加并不能提升编码质量（梯度除外，这个问题我们会在后续讨论）。</p>
 <p>Grain 并非都是坏的，对于消除或减弱色带而言甚至是必要的，但工业化制作时通常会使用动态 grain，这会极大地占用比特率。与此形成对比的是，采用 10bit 编码时，色带的问题并不明显，而且诸如静态 grain （如 f3kdb 的 grain）同样能实现良好的去色带效果。</p>
-<p>有些人为获得干净的画面，喜欢降噪处理（denoise / degrain），仁者见仁智者见智。</p>
-<a id="more"></a>
+<p>有些人为获得干净的画面，喜欢降噪处理（denoise &#x2F; degrain），仁者见仁智者见智。</p>
+<span id="more"></span>
 
 <h3 id="不同类型的-grain-与-noise"><a href="#不同类型的-grain-与-noise" class="headerlink" title="不同类型的 grain 与 noise"></a>不同类型的 grain 与 noise</h3><h4 id="1-回忆特效（Flashbacks）"><a href="#1-回忆特效（Flashbacks）" class="headerlink" title="1.回忆特效（Flashbacks）"></a>1.回忆特效（Flashbacks）</h4><h4 id="2-静态胶片颗粒（Constant-film-grain）"><a href="#2-静态胶片颗粒（Constant-film-grain）" class="headerlink" title="2.静态胶片颗粒（Constant film grain）"></a>2.静态胶片颗粒（Constant film grain）</h4><h4 id="3-背景噪点（Background-grain）"><a href="#3-背景噪点（Background-grain）" class="headerlink" title="3.背景噪点（Background grain）"></a>3.背景噪点（Background grain）</h4><h4 id="4-TV-横纹（TV-grain）"><a href="#4-TV-横纹（TV-grain）" class="headerlink" title="4.TV 横纹（TV grain）"></a>4.TV 横纹（TV grain）</h4><h4 id="5-其他特效噪点（Exceptional-grain）"><a href="#5-其他特效噪点（Exceptional-grain）" class="headerlink" title="5.其他特效噪点（Exceptional grain）"></a>5.其他特效噪点（Exceptional grain）</h4><h3 id="不同的降噪方法"><a href="#不同的降噪方法" class="headerlink" title="不同的降噪方法"></a>不同的降噪方法</h3><h4 id="1-基于傅里叶变换的频域降噪（如-dfttest、FFT3D）"><a href="#1-基于傅里叶变换的频域降噪（如-dfttest、FFT3D）" class="headerlink" title="1.基于傅里叶变换的频域降噪（如 dfttest、FFT3D）"></a>1.基于傅里叶变换的频域降噪（如 dfttest、FFT3D）</h4><p>dfftest 是一个较旧的滤镜，自 2007 年起开始开发，是一个很有效的滤镜，具有良好的细节保留能力，但会大幅降低速度，特别是在缺乏多线程支持的 AviSynth 下。VapourSynth 接口的 dfftest 速度更快，且有相同的效果。</p>
 <p>FFT3DGPU 具有硬件加速功能，同样使用了频域降噪算法，速度更快，但细节保留方面精度较低，同时可能更容易导致模糊，可以通过反差补偿锐化来修补。该滤镜提供了 AviSynth 和 VapourSynth 接口，二者没有太大区别。</p>
@@ -246,11 +248,11 @@ Grai">
 <h4 id="2-非局部均值降噪（如-KNLmeans、TNLmeans）"><a href="#2-非局部均值降噪（如-KNLmeans、TNLmeans）" class="headerlink" title="2.非局部均值降噪（如 KNLmeans、TNLmeans）"></a>2.非局部均值降噪（如 KNLmeans、TNLmeans）</h4><p>非局部均值（non-local means）降噪由一系列 solid 降噪方法组成。KNLmeans 降噪滤镜基于 OpenCL 对 GPU 运算进行了高度优化，对整体图像处理速度无显著影响，这一点非常吸引人。在较旧的 AviSynth 视频处理框架下，与FFT3DGPU类似，使用GPU版 KNLmeans 还可以绕开 AviSynth 的单线程限制。因此除非无 GPU 设备，否则没有理由使用 CPU 版本（译者注：由于 KNLmeans 基于 OpenCL 进行 GPU 优化，所以在 NVIDIA、AMD、Intel 三家平台通用，很难遇上无 GPU 可用的情况，但在某些 GPU 设备上 KNLmeans 可能因 Bug 而无法使用，这时候才需要考虑 CPU 版本的 TNLmeans）。</p>
 <p>KNLmeans 可以消除相当一部分（a lot of） noise，同时保留很多（a lot of）细节（尽管少于 dft 或 BM3D）。对于历史较久远的动画，推荐使用这一滤镜，因为这些动画往往存在很多 grain（通常是在蓝光重制时添加），但细节并不丰富。这种情况下，适合使用具有硬件加速且降噪力度大的滤镜，比起 FFT3D，KNLmeans 更加合适 。</p>
 <p>需要注意这一滤镜的时-空混合模式（Spatio-Temporal mode），在默认设置下，AviSynth 和 VapourSynth 版本的 KNLmeans 均不使用时间参考帧，当参数<code>d</code>大于 0 时，在降噪中启用时间参考帧，开启时间参考帧可以改善质量。对于 YUV444 采样格式的视频，请将<code>cmode</code>参数设置为<code>True</code>，以开启色度平面降噪，因为在默认设置下仅对亮度平面进行处理。</p>
-<p>上述两个参数的设置均会降低速度，但除非使用古老的 GPU 或者同时使用多个 GPU 优化的滤镜，否则不会对编码速度产生明显影响，控速步仍为 CPU 的编码过程。KNLmeans 的文档在<a href="https://github.com/Khanattila/KNLMeansCL/wiki" target="_blank" rel="noopener">这里</a>。</p>
+<p>上述两个参数的设置均会降低速度，但除非使用古老的 GPU 或者同时使用多个 GPU 优化的滤镜，否则不会对编码速度产生明显影响，控速步仍为 CPU 的编码过程。KNLmeans 的文档在<a target="_blank" rel="noopener" href="https://github.com/Khanattila/KNLMeansCL/wiki">这里</a>。</p>
 <h4 id="3-三维块匹配算法（BM3D）"><a href="#3-三维块匹配算法（BM3D）" class="headerlink" title="3.三维块匹配算法（BM3D）"></a>3.三维块匹配算法（BM3D）</h4><p>BM3D 很有价值，也很慢，仅有 VapourSynth 接口。在 AviSynth 上运行可能会导致崩溃，除非大幅优化内存占用，否则很难实现 AviSynth 接口。</p>
-<p>BM3D可以并行化并在 GPU 上运行（可参考此处的<a href="https://books.google.com/books?id=xqfNBQAAQBAJ&pg=PA380&lpg=PA380&dq=bm3d+GPU+parallel&source=bl&ots=MS9-Kzi-8u&sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&hl=en&sa=X&ei=wljeVI-LKcqAywPVyILgDQ&ved=0CDQQ6AEwBA#v=onepage&q=bm3d%20GPU%20parallel&f=false" target="_blank" rel="noopener">文献</a>，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现（译者注：在<a href="http://vsdb.top/plugins/bm3dgpu" target="_blank" rel="noopener">这里</a>提到了一份 VapourSynth 接口的 BM3D-GPU 实现，但原始代码库已无法获取）。</p>
+<p>BM3D可以并行化并在 GPU 上运行（可参考此处的<a target="_blank" rel="noopener" href="https://books.google.com/books?id=xqfNBQAAQBAJ&pg=PA380&lpg=PA380&dq=bm3d+GPU+parallel&source=bl&ots=MS9-Kzi-8u&sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&hl=en&sa=X&ei=wljeVI-LKcqAywPVyILgDQ&ved=0CDQQ6AEwBA#v=onepage&q=bm3d%20GPU%20parallel&f=false">文献</a>，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现（译者注：在<a target="_blank" rel="noopener" href="http://vsdb.top/plugins/bm3dgpu">这里</a>提到了一份 VapourSynth 接口的 BM3D-GPU 实现，但原始代码库已无法获取）。</p>
 <p>BM3D 实现了模糊程度与体积的最佳平衡（因此也导致了细节损失），但在基于 CPU 的降噪滤镜中，BM3D 是速度最慢的。</p>
-<p>值得注意的是，BM3D 滤镜有一个<code>ref</code>参数，用以设定降噪时的参考视频，可以将<code>ref</code>设定为其他降噪滤镜的处理结果，从而实现 BM3D 与其他降噪滤镜的协同处理。在 BM3D <a href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D" target="_blank" rel="noopener">文档</a>中有如下举例：</p>
+<p>值得注意的是，BM3D 滤镜有一个<code>ref</code>参数，用以设定降噪时的参考视频，可以将<code>ref</code>设定为其他降噪滤镜的处理结果，从而实现 BM3D 与其他降噪滤镜的协同处理。在 BM3D <a target="_blank" rel="noopener" href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D">文档</a>中有如下举例：</p>
 <blockquote>
 <p>使用自定义降噪滤镜作为基础降噪结果，并使用V-BM3D的最终降噪函数做精细化处理</p>
 <p>这样做可以在两种降噪滤镜间取长补短。在下面的例子中，SMDegrain滤镜在时空平滑上很有效，但可能导致鬼影（blending）和细节损失，V-BM3D可以很好地保留细节，但对于大的噪声pattern（例如粗颗粒）效果不好</p>
@@ -259,14 +261,14 @@ Grai">
 <p>最关键的参数为<code>sigam</code>，可以为不同平面设定不同的数值。</p>
 <h4 id="4-SMDegrain"><a href="#4-SMDegrain" class="headerlink" title="4.SMDegrain"></a>4.SMDegrain</h4><p>SMDegrain 似乎是很多人降噪的首选，因为它不会导致过多的模糊，而且降噪效果似乎弱到对图像没有明显影响，不会明显改变文件体积。</p>
 <p>较弱的降噪效果也能使（因降噪而暴露的）色带更少，这在希望保留细节而不太考虑比特率的情况下很有用。</p>
-<p>与此同时，即使不在降噪后进行反差补偿锐化，SMDegrain 似乎也可以对某些边缘起到收线/细化线条的效果。</p>
+<p>与此同时，即使不在降噪后进行反差补偿锐化，SMDegrain 似乎也可以对某些边缘起到收线&#x2F;细化线条的效果。</p>
 <p>需要注意的是，SMDegrain 在处理色度平面时可能会带来副作用，AviSynth Wiki 描述如下：</p>
 <blockquote>
 <p>注意在<code>plane=1-4</code>时色度平面可能会产生色度鬼影，这种情况下建议在空域中处理色度平面。</p>
 </blockquote>
 <p>事实上，这可以通过将多个帧模糊为单个帧进行修补。</p>
 <h4 id="5-基于卷积神经网络的-Waifu2x"><a href="#5-基于卷积神经网络的-Waifu2x" class="headerlink" title="5.基于卷积神经网络的 Waifu2x"></a>5.基于卷积神经网络的 Waifu2x</h4><p>Waifu2x 使用深度卷积神经网络进行超分辨率与降噪，听上去很棒但需要大量算力。在图形处理器上使用 Waifu2x 对 720p 视频进行降噪，其速度可能低于 1fps（译者注：Waifu2x 进行了更新，见下文的<strong>Edit</strong>）。降噪有三种级别可供选择，2 级和 3 级降噪难以保留细节，无法使用，1 级降噪可以恰当地去除 grain，但细节的保留程度可能与输入源关系很大，且无法调节。因此在使用中，要么接受 Waifu2x 单一模式的降噪结果（而且这还可能是最慢的算法），要么换用其他降噪滤镜（译者注：Waifu2x 进行了更新，见下文的<strong>Edit</strong>）。</p>
-<p>基于深度神经网络的算法还有很多（如<a href="https://www.researchgate.net/publication/300688682_Deep_Gaussian_Conditional_Random_Field_Network_A_Model-Based_Deep_Network_for_Discriminative_Denoising" target="_blank" rel="noopener">文献</a>），但多数未公开算法。</p>
+<p>基于深度神经网络的算法还有很多（如<a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/300688682_Deep_Gaussian_Conditional_Random_Field_Network_A_Model-Based_Deep_Network_for_Discriminative_Denoising">文献</a>），但多数未公开算法。</p>
 <p>对于动画风格的图像使用 Waifu2x 进行降噪没有问题，但对于真实图像，其纹理可能被识别为噪点，进而被破坏。</p>
 <p><strong>Edit</strong>：在写完本节后，Waifu2x 进行了重大升级，速度进一步提升，并且在降噪功能上提供了更多选项。</p>
 <h4 id="6-去色带（Debanding）"><a href="#6-去色带（Debanding）" class="headerlink" title="6.去色带（Debanding）"></a>6.去色带（Debanding）</h4><h3 id="Grain-编码"><a href="#Grain-编码" class="headerlink" title="Grain 编码"></a>Grain 编码</h3>
@@ -469,24 +471,7 @@ Grai">
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

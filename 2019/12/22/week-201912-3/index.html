@@ -64,7 +64,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -192,7 +194,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      694 字
+      695 字
     </span>
   
 
@@ -238,9 +240,9 @@
               <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。</p>
 <p>总之，把日记改成周记吧。</p>
 <p><del>还是别用“周报”这个字眼了2333</del></p>
-<h3 id="对JincResize的完善"><a href="#对JincResize的完善" class="headerlink" title="对JincResize的完善"></a>对JincResize的完善</h3><h4 id="发布r4：添加32bit支持"><a href="#发布r4：添加32bit支持" class="headerlink" title="发布r4：添加32bit支持"></a>发布r4：添加32bit支持</h4><p>详情写在<a href="https://kiyamou.github.io/2019/11/24/rebuild-JincResize/" target="_blank" rel="noopener">JincResize代码的重构</a>，这里就不再copy了。</p>
+<h3 id="对JincResize的完善"><a href="#对JincResize的完善" class="headerlink" title="对JincResize的完善"></a>对JincResize的完善</h3><h4 id="发布r4：添加32bit支持"><a href="#发布r4：添加32bit支持" class="headerlink" title="发布r4：添加32bit支持"></a>发布r4：添加32bit支持</h4><p>详情写在<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2019/11/24/rebuild-JincResize/">JincResize代码的重构</a>，这里就不再copy了。</p>
 <p>要是再补充一句的话，就是多个分支的if语句的写法，之前用Python时只写过<code>if else</code>和<code>if elif</code>，没有把三者写在一起过…没错…我的基础知识实在是匮乏得可怜。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>在C++中</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">if</span> ()<br>	...<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ()<br>	...<br><span class="hljs-keyword">else</span><br>	...<br></code></pre></td></tr></table></figure>
@@ -259,7 +261,7 @@
 <p>周四周五下午，和周六一天，基本上都在做基础的迁移（搭框架、改写不一样的C++后端函数、<del>人工copy代码</del>）。说实话，看着400+行的代码，还是很满意这几天的工作的。</p>
 <p>虽然周日从文本编辑器到IDE后，望着<code>80+</code>+<code>20+</code>的error，让我有种写了两天bug的感觉。</p>
 <h3 id="日常生活"><a href="#日常生活" class="headerlink" title="日常生活"></a>日常生活</h3><p>把超期半年多的书还回了图书馆，借了两本和并行计算相关的书，外加我之前借过的数字图像处理。</p>
-<p>我只是想看看和AVX/SSE指令集优化相关的，但..那两本书讲得也是…比较宏观，甚至让我有种上并行计算课的感觉。而搜索网上的教程，也不知从何下手，似乎最直接地，还是死磕现有的代码…</p>
+<p>我只是想看看和AVX&#x2F;SSE指令集优化相关的，但..那两本书讲得也是…比较宏观，甚至让我有种上并行计算课的感觉。而搜索网上的教程，也不知从何下手，似乎最直接地，还是死磕现有的代码…</p>
 
             </div>
             <hr>
@@ -451,24 +453,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

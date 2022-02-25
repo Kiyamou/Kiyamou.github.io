@@ -63,7 +63,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -191,7 +193,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      380 字
+      382 字
     </span>
   
 
@@ -237,16 +239,16 @@
               <h3 id="1-异常处理"><a href="#1-异常处理" class="headerlink" title="1.异常处理"></a>1.异常处理</h3><p><del>敲OpenCV，阈值化，故意尝试一个异常。</del></p>
 <p><del>把两个回调函数的<code>imshow(&quot;Output&quot;, dst)</code>的<code>dst</code>写成同一个变量，引发如下异常。</del></p>
 <p>上述操作根本不会引发异常…即使是拖动Trackbar也互补影响。引发异常的原因是我把<code>adaptiveThreshold()</code>的参数写错了…</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript"><span class="hljs-number">0x000007FEFD77B87D</span> 处(位于 <span class="hljs-number">6.7</span>_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 <span class="hljs-number">0x000000000029EC98</span> 处。<br></code></pre></td></tr></table></figure>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">0x000007FEFD77B87D</span> 处(位于 <span class="hljs-number">6</span>.<span class="hljs-number">7</span>_Threshold.exe 中)有未经处理的异常: Microsoft C++ 异常: cv::Exception，位于内存位置 <span class="hljs-number">0</span>x000000000029EC98 处。<br></code></pre></td></tr></table></figure>
 
 <p>抛出异常的函数</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">CV_INLINE CV_NORETURN <span class="hljs-keyword">void</span> <span class="hljs-title">errorNoReturn</span><span class="hljs-params">()</span>  <span class="hljs-comment">// bash.hpp 308行</span></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">CV_INLINE CV_NORETURN <span class="hljs-type">void</span> <span class="hljs-title">errorNoReturn</span><span class="hljs-params">()</span>  <span class="hljs-comment">// bash.hpp 308行</span></span><br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <h3 id="2-自己实现ISP基本流程"><a href="#2-自己实现ISP基本流程" class="headerlink" title="2.自己实现ISP基本流程"></a>2.自己实现ISP基本流程</h3><p>这就是我的第三个项目。</p>
 <p>核心部分，至少实现Retinex吧。</p>
-<h3 id="3-做个学习项目？"><a href="#3-做个学习项目？" class="headerlink" title="3.做个学习项目？"></a>3.做个学习项目？</h3><p>把VapourSynth的经验用OpenCV实现一遍，放到Github上（C++实现，或许还能来个Python/Matlab多语言，或干脆Jupyter）。或许…能骗赞？</p>
+<h3 id="3-做个学习项目？"><a href="#3-做个学习项目？" class="headerlink" title="3.做个学习项目？"></a>3.做个学习项目？</h3><p>把VapourSynth的经验用OpenCV实现一遍，放到Github上（C++实现，或许还能来个Python&#x2F;Matlab多语言，或干脆Jupyter）。或许…能骗赞？</p>
 <p>虽然对我学习本身的帮助可能不是很大。</p>
 <h3 id="4-阅读OpenCV源码"><a href="#4-阅读OpenCV源码" class="headerlink" title="4.阅读OpenCV源码"></a>4.阅读OpenCV源码</h3><p>想看一下<code>guidedFilter()</code>的实现过程。<del>虽然官网就有，不用我折腾一圈去查OpenCV…</del></p>
 <h3 id="5-VS-GuideFilter"><a href="#5-VS-GuideFilter" class="headerlink" title="5. VS GuideFilter"></a>5. VS GuideFilter</h3><p><del>话说vs有方块滤波（boxfilter）吗？</del> 不就是<code>RemoveGrain(20)</code>嘛。</p>
@@ -257,7 +259,7 @@
 <h3 id="6-话说学一下Matlab"><a href="#6-话说学一下Matlab" class="headerlink" title="6.话说学一下Matlab"></a>6.话说学一下Matlab</h3><p>虽然从大二就接触了Matlab，但似乎没有把它视为一门语言。</p>
 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs matlab">[hei, wid] = <span class="hljs-built_in">size</span>(I);<br></code></pre></td></tr></table></figure>
 
-<p>上面这句话告诉我们，Matlab与C/C++不同，左值也是可以赋值的。</p>
+<p>上面这句话告诉我们，Matlab与C&#x2F;C++不同，左值也是可以赋值的。</p>
 <h3 id="7-准备面试"><a href="#7-准备面试" class="headerlink" title="7.准备面试"></a>7.准备面试</h3><p>话说除了算法题，智力题什么的，也要准备一下。</p>
 <p>话说面试面向OpenCV且要求不使用<code>Mat</code>的那类题，要看一下。</p>
 
@@ -451,24 +453,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

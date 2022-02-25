@@ -66,7 +66,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -244,22 +246,20 @@
 <li><p>头文件和库文件设置错误，64位和32位搞混</p>
 </li>
 </ul>
-<a id="more"></a>
+<span id="more"></span>
 
 <ul>
 <li><p>面向对象时，少写了public函数的定义<br>向下面这样，少写了<code>func1()</code>函数的定义，就有报错。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">className</span></span><br><span class="hljs-class">&#123;</span><br><span class="hljs-keyword">public</span>:<br>    className();<br>    <span class="hljs-function"><span class="hljs-keyword">double</span> <span class="hljs-title">func1</span><span class="hljs-params">(<span class="hljs-keyword">double</span> parameter)</span></span>;<br><span class="hljs-keyword">private</span>:<br>    ...<br>&#125;;<br><br>className::className()<br>&#123;<br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    className one;<br>    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; one.func1(<span class="hljs-number">1.0</span>) &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">className</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">className</span>();<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">func1</span><span class="hljs-params">(<span class="hljs-type">double</span> parameter)</span></span>;<br><span class="hljs-keyword">private</span>:<br>    ...<br>&#125;;<br><br>className::<span class="hljs-built_in">className</span>()<br>&#123;<br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    className one;<br>    std::cout &lt;&lt; one.<span class="hljs-built_in">func1</span>(<span class="hljs-number">1.0</span>) &lt;&lt; std::endl;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
 <p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
 <p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
 <h3 id="3-图像处理的warning"><a href="#3-图像处理的warning" class="headerlink" title="3.图像处理的warning"></a>3.图像处理的warning</h3><p> 某张png图片</p>
-<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs applescript">libpng warning: iCCP: cHRM chunk <span class="hljs-keyword">does</span> <span class="hljs-keyword">not</span> match sRGB<br></code></pre></td></tr></table></figure>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mel">libpng <span class="hljs-keyword">warning</span>: iCCP: cHRM chunk does not <span class="hljs-keyword">match</span> sRGB<br></code></pre></td></tr></table></figure>
 
 <p>另一张png图片报了两个warning，多了一个这个</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs groovy">libpng <span class="hljs-string">warning:</span> <span class="hljs-string">iCPP:</span> known incorrect sRGB profile<br></code></pre></td></tr></table></figure>
+<figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs aspectj">libpng <span class="hljs-keyword">warning</span>: iCPP: known incorrect sRGB profile <br></code></pre></td></tr></table></figure>
 
 <h3 id="4-declspec-dllexport"><a href="#4-declspec-dllexport" class="headerlink" title="4.__declspec(dllexport)"></a>4.<code>__declspec(dllexport)</code></h3><p>关于<code>__declspec(dllexport)</code></p>
 <p>一般的理解如下：</p>
@@ -464,24 +464,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

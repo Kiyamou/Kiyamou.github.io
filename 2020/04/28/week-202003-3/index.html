@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,10 +236,10 @@
             <div class="markdown-body">
               <p>strncpy() -&gt; memcpy() 从内存中复制，gcc对后者兼容性更好？避免warning？</p>
 <p>学习编程的三个方向<br>1.整体结构设计，特别以类和对象为基础的面向对象的构成<br>2.算法优化，同样一个算法，怎么运行更快，这是coder该想的事情，而非算法专家想的事情<br>3.Debug，找bug并更正的能力</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>再拖着不接触核心算法真不是事，先用vs框架实现算法吧</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">tmp_array.resize(tmp_array.size() + coeff_per_pixel, <span class="hljs-number">0.f</span>); <span class="hljs-comment">// 调整大小，填零</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">tmp_array.<span class="hljs-built_in">resize</span>(tmp_array.<span class="hljs-built_in">size</span>() + coeff_per_pixel, <span class="hljs-number">0.f</span>); <span class="hljs-comment">// 调整大小，填零</span><br></code></pre></td></tr></table></figure>
             </div>
             <hr>
             <div>
@@ -435,24 +437,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

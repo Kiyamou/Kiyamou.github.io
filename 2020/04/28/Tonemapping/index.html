@@ -60,7 +60,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -188,7 +190,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      132 字
+      133 字
     </span>
   
 
@@ -231,10 +233,10 @@
             <h1 style="display: none">色调映射（Tone mapping）</h1>
             
             <div class="markdown-body">
-              <p>在<a href="https://kiyamou.github.io/2020/02/08/ISP-learn-1/" target="_blank" rel="noopener">之前的博文</a>中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。</p>
-<a id="more"></a>
+              <p>在<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/02/08/ISP-learn-1/">之前的博文</a>中提到过色调映射，色调映射可以做很多事情，既包括对相机 raw 文件的亮度调整，也可以做 HDR 的转换。</p>
+<span id="more"></span>
 
-<p>在 VapourSynth 社区中，原生的色调映射滤镜/脚本有两个，一个<a href="https://github.com/ifb/vapoursynth-tonemap" target="_blank" rel="noopener">滤镜</a>、一个<a href="https://github.com/age1988/vapoursynth-tonemapping" target="_blank" rel="noopener">脚本</a>，另外还有基于 placebo 库的<a href="https://github.com/Lypheo/vs-placebo" target="_blank" rel="noopener">vs-placebo滤镜</a>，以及一个<a href="https://github.com/xyx98/my-vapoursynth-script/blob/master/xvs.py#L1087" target="_blank" rel="noopener">高级函数</a>。</p>
+<p>在 VapourSynth 社区中，原生的色调映射滤镜&#x2F;脚本有两个，一个<a target="_blank" rel="noopener" href="https://github.com/ifb/vapoursynth-tonemap">滤镜</a>、一个<a target="_blank" rel="noopener" href="https://github.com/age1988/vapoursynth-tonemapping">脚本</a>，另外还有基于 placebo 库的<a target="_blank" rel="noopener" href="https://github.com/Lypheo/vs-placebo">vs-placebo滤镜</a>，以及一个<a target="_blank" rel="noopener" href="https://github.com/xyx98/my-vapoursynth-script/blob/master/xvs.py#L1087">高级函数</a>。</p>
 <p>这些工具中，除了基于 placebo 库的 vs-placebo，因为要用 vulkan 而我的老旧设备不支持外，其余都尝试过了。</p>
 
             </div>
@@ -427,24 +429,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

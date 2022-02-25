@@ -60,7 +60,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -188,7 +190,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      354 字
+      357 字
     </span>
   
 
@@ -198,7 +200,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      2
+      3
        分钟
     </span>
   
@@ -232,28 +234,28 @@
             
             <div class="markdown-body">
               <p>提到去雾算法，首先想到的便是 2009 年的暗通道去雾算法，以及后续的导向滤波，搜索博客和 Github 发现了一些较新的去雾算法，也算是尝试跟上学术界的脚步。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <ul>
-<li><p>2013年基于对比度增强的去雾算法<br><a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">http://mcl.korea.ac.kr/projects/dehazing/#userconsent#</a></p>
+<li><p>2013年基于对比度增强的去雾算法<br><a target="_blank" rel="noopener" href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#">http://mcl.korea.ac.kr/projects/dehazing/#userconsent#</a></p>
 </li>
-<li><p>2016年非局部均值去雾算法<br><a href="https://github.com/danaberman/non-local-dehazing" target="_blank" rel="noopener">https://github.com/danaberman/non-local-dehazing</a></p>
+<li><p>2016年非局部均值去雾算法<br><a target="_blank" rel="noopener" href="https://github.com/danaberman/non-local-dehazing">https://github.com/danaberman/non-local-dehazing</a></p>
 </li>
 </ul>
-<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>基于对比度增强的去雾算法（以下简称 DehazingCE，CE =  Contrast enhancement）的作者给出了完整的 C++ 代码，只是是基于 OpenCV 2 的（而且代码风格也有些复古）。对我来说，从头完整地把代码迁移到 VapourSynth 上有点困难，所以先做原始代码从 OpenCV 2 到 OpenCV 3 的迁移。</p>
+<h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p>基于对比度增强的去雾算法（以下简称 DehazingCE，CE &#x3D;  Contrast enhancement）的作者给出了完整的 C++ 代码，只是是基于 OpenCV 2 的（而且代码风格也有些复古）。对我来说，从头完整地把代码迁移到 VapourSynth 上有点困难，所以先做原始代码从 OpenCV 2 到 OpenCV 3 的迁移。</p>
 <h4 id="数据类型的变化"><a href="#数据类型的变化" class="headerlink" title="数据类型的变化"></a>数据类型的变化</h4><p>从 OpenCV 2 的 IplImage 到 OpenCV 3 的 Mat。</p>
 <h4 id="函数名与类型名的变化"><a href="#函数名与类型名的变化" class="headerlink" title="函数名与类型名的变化"></a>函数名与类型名的变化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">cvCopyImage → cvCopy<br>cvCvtPixToPlane → cvSplit<br>POINT → cv::Point           <span class="hljs-comment">// 这个像是手滑</span><br></code></pre></td></tr></table></figure>
 
-<h4 id="数据类型的变化-1"><a href="#数据类型的变化-1" class="headerlink" title="数据类型的变化"></a>数据类型的变化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">double</span> deMean[<span class="hljs-number">3</span>];<br>→<br>  <span class="hljs-keyword">double</span> deMean_value[<span class="hljs-number">3</span>];<br>  CvScalar dpMean = cvScalar(deMean_value[<span class="hljs-number">1</span>], deMean_value[<span class="hljs-number">2</span>], deMean_value[<span class="hljs-number">3</span>]);<br></code></pre></td></tr></table></figure>
+<h4 id="数据类型的变化-1"><a href="#数据类型的变化-1" class="headerlink" title="数据类型的变化"></a>数据类型的变化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">double</span> deMean[<span class="hljs-number">3</span>];<br>→<br>  <span class="hljs-type">double</span> deMean_value[<span class="hljs-number">3</span>];<br>  CvScalar dpMean = <span class="hljs-built_in">cvScalar</span>(deMean_value[<span class="hljs-number">1</span>], deMean_value[<span class="hljs-number">2</span>], deMean_value[<span class="hljs-number">3</span>]);<br></code></pre></td></tr></table></figure>
 
-<h4 id="添加头文件"><a href="#添加头文件" class="headerlink" title="添加头文件"></a>添加头文件</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;opencv2/videoio.hpp&gt;</span></span><br></code></pre></td></tr></table></figure>
+<h4 id="添加头文件"><a href="#添加头文件" class="headerlink" title="添加头文件"></a>添加头文件</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/videoio.hpp&gt;</span></span><br></code></pre></td></tr></table></figure>
 
 <h4 id="补齐依赖项"><a href="#补齐依赖项" class="headerlink" title="补齐依赖项"></a>补齐依赖项</h4><p>缺少 OpenCV 2.4.3 的四个 .lib 静态库</p>
 <p>缺少 MSVCP100D.dll、MSVCR100D.dll</p>
 <h4 id="运行时遇到的问题"><a href="#运行时遇到的问题" class="headerlink" title="运行时遇到的问题"></a>运行时遇到的问题</h4><h5 id="问题1"><a href="#问题1" class="headerlink" title="问题1"></a>问题1</h5><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">引发了异常: 读取访问权限冲突。 **iminput** 是 <span class="hljs-literal">null</span>ptr。<br></code></pre></td></tr></table></figure>
 
 <p>空指针，具体而言是没有定义输入图像…</p>
-<h5 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h5><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dockerfile"><span class="hljs-keyword">Run</span><span class="bash">-Time Check Failure <span class="hljs-comment">#2 - Stack around the variable 'deMean_value' was corrupted.</span></span><br></code></pre></td></tr></table></figure>
+<h5 id="问题2"><a href="#问题2" class="headerlink" title="问题2"></a>问题2</h5><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lasso">Run<span class="hljs-params">-Time</span> Check Failure #2 - <span class="hljs-built_in">Stack</span> around the <span class="hljs-built_in">variable</span> <span class="hljs-string">&#x27;deMean_value&#x27;</span> was corrupted.<br></code></pre></td></tr></table></figure>
 
 <p>指针越界了…</p>
 
@@ -447,24 +449,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

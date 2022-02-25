@@ -65,7 +65,9 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -193,7 +195,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.7k 字
+      1.8k 字
     </span>
   
 
@@ -203,7 +205,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
       <i class="iconfont icon-clock-fill"></i>
       
       
-      13
+      14
        分钟
     </span>
   
@@ -236,7 +238,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
             <h1 style="display: none">PyTorch流水账与基于Torch的Waifu2x代码分析</h1>
             
             <div class="markdown-body">
-              <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）" target="_blank" rel="noopener">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
+              <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a target="_blank" rel="noopener" href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py%EF%BC%89">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
 <p>2.字面上，bias是偏差的意思。</p>
 <blockquote>
 <p>bias(<code>tensor</code>) - 卷积的偏置系数，大小是（<code>out_channel</code>）</p>
@@ -247,8 +249,8 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 <li>网络的结构和模型参数</li>
 <li>只保存网络的模型参数</li>
 </ul>
-<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。</p>
-<a id="more"></a>
+<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字&#96;&#96;-&gt;&#96;）。</p>
+<span id="more"></span>
 
 <h3 id="扫盲"><a href="#扫盲" class="headerlink" title="扫盲"></a>扫盲</h3><p>4.Waifu2x中vgg_7 -&gt; cunet?</p>
 <p>5.话说waifu-caffe中的cNet是代表什么啊，莫不就是cunet？</p>
@@ -265,7 +267,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 </li>
 <li><p>caffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.</p>
 <blockquote>
-<p>Generate prototxt of waifu2x’s cunet/upcunet arch. Training is not possible.</p>
+<p>Generate prototxt of waifu2x’s cunet&#x2F;upcunet arch. Training is not possible.</p>
 </blockquote>
 </li>
 <li><p>其余是markdown说明和.sh文件</p>
@@ -287,7 +289,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 </ul>
 <p>Only has a gen.lua file, which has this code. So it’s for generating images. However, I can’t understand the meanings of dots.</p>
 <p>But ever, this is for cmd…So…I can ignore it now?</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:text(<span class="hljs-string">"dot image generator"</span>)<br>image.save(<span class="hljs-built_in">path</span>.join(opt.o, i .. <span class="hljs-string">".png"</span>), img)<br></code></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:text(<span class="hljs-string">&quot;dot image generator&quot;</span>)<br>image.save(<span class="hljs-built_in">path</span>.join(opt.o, i .. <span class="hljs-string">&quot;.png&quot;</span>), img)<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>images</p>
 <p>Using for description, although some images aren’t used in readme, yet they all seems to used to show the networks. </p>
@@ -301,7 +303,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 <li><p>lib</p>
 <p>Seem to build the newtwork, such as <code>srcnn.lua</code>, which is decripted the SRCNN?</p>
 <p>看了一下w2nn.Lua，感觉Lua这门语言，有点…简单得过分了，调用其他文件，用类似这样的写法，还是在代码的结尾</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-built_in">require</span> <span class="hljs-string">'Print'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-built_in">require</span> <span class="hljs-string">&#x27;Print&#x27;</span><br></code></pre></td></tr></table></figure>
 </li>
 <li><p>models</p>
 <p>models</p>
@@ -313,7 +315,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 
 <p>这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实..在Lua里这是注释的意思）</p>
 <p>在代码结尾有好看的东西</p>
-<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:option(<span class="hljs-string">"-i"</span>, <span class="hljs-string">"input.t7"</span>, <span class="hljs-string">'Specify the input torch model'</span>)<br>cmd:option(<span class="hljs-string">"-o"</span>, <span class="hljs-string">"output.json"</span>, <span class="hljs-string">'Specify the output json file'</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:option(<span class="hljs-string">&quot;-i&quot;</span>, <span class="hljs-string">&quot;input.t7&quot;</span>, <span class="hljs-string">&#x27;Specify the input torch model&#x27;</span>)<br>cmd:option(<span class="hljs-string">&quot;-o&quot;</span>, <span class="hljs-string">&quot;output.json&quot;</span>, <span class="hljs-string">&#x27;Specify the output json file&#x27;</span>)<br></code></pre></td></tr></table></figure>
 
 <p>这话说的是，进去t7，出来json。依此分析，文件名<code>export</code>的含义，并不是把Torch用的模型输出成t7，而是把导出的t7模型转换成json。也就是说，t7和json的内容，是一致的。</p>
 <p>（顺带一提，看这Lua写的命令行构建代码，真是简洁啊。之前看av1的rust命令行构建代码，虽然不能说比C++更复杂，但也挺长的。）</p>
@@ -329,7 +331,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 <li>waifu2x.lua</li>
 <li>web.lua</li>
 <li>Dockerfile</li>
-<li><strong><em>Other Files</em></strong></li>
+<li><em><strong>Other Files</strong></em></li>
 </ul>
 </li>
 </ul>
@@ -337,10 +339,10 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 <h3 id="回到保存的模型"><a href="#回到保存的模型" class="headerlink" title="回到保存的模型"></a>回到保存的模型</h3><p>由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的<code>export_model.lua</code>。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-built_in">io</span>.<span class="hljs-built_in">write</span>(cjson.encode(jmodules))<br></code></pre></td></tr></table></figure>
 
-<p>所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测/前向传播不限于Torch（+CUDA）的框架。</p>
+<p>所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测&#x2F;前向传播不限于Torch（+CUDA）的框架。</p>
 <p>当然，json模型下那一堆小数（与t7模型中整齐的模型参数形成了对比），应该是转换过程中近似计算导致的。这应该很好理解，在Torch下的函数别的地方没有，那只能把数值算出来，用类似查表的方式提供给其他框架。</p>
 <p>比如Waifu2x-convert，在<code>modelHandler.hpp/.cpp</code>就用下面的语句读取json模型的内容（借助picojson）</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">picojson::<span class="hljs-built_in">array</span> &amp;wOutputPlane = jsonObj[<span class="hljs-string">"weight"</span>].get&lt;picojson::<span class="hljs-built_in">array</span>&gt;();<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">picojson::array &amp;wOutputPlane = jsonObj[<span class="hljs-string">&quot;weight&quot;</span>].<span class="hljs-built_in">get</span>&lt;picojson::array&gt;();<br></code></pre></td></tr></table></figure>
 
 <p>所以可以推测，用json模型会比用t7模型（以及直接由t7转向其他框架模型，如由t7转向pt）精度低？</p>
 <p>所以延伸一下，我不能偷懒（或者说瞎折腾），把json模型喂给PyTorch，而还是要借助低版本PyTorch完成从t7到pt的模型转换。但忘了在哪看到了，说PyTorch的C++前端没有明显提速、甚至慢于Python前端，很大程度是因为读取pt模型拖慢了速度。那我能否使用json模型实现精度换速度？</p>
@@ -356,8 +358,8 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 </thead>
 <tbody><tr>
 <td align="center">Waifu2x</td>
-<td align="center">json/t7</td>
-<td align="center">/</td>
+<td align="center">json&#x2F;t7</td>
+<td align="center">&#x2F;</td>
 <td align="center">√</td>
 </tr>
 <tr>
@@ -375,9 +377,9 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 </tbody></table>
 <h4 id="关于t7转pt"><a href="#关于t7转pt" class="headerlink" title="关于t7转pt"></a>关于t7转pt</h4><p>这个别想了，用目前查到的<code>convert_torch.py</code>，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，<code>convert_torch.py</code>不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。</p>
 <p>不过话说回来，json模型是怎么转成caffe的caffemodel的？（这样转是为了提高读入速度吗？）</p>
-<p>而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json/caffemodel），代码上总归得有点区别吧。</p>
+<p>而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json&#x2F;caffemodel），代码上总归得有点区别吧。</p>
 <h4 id="下一步的模型转换计划"><a href="#下一步的模型转换计划" class="headerlink" title="下一步的模型转换计划"></a>下一步的模型转换计划</h4><p>所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？</p>
-<p>在<a href="https://github.com/yu45020/Waifu2x/blob/master/Models.py" target="_blank" rel="noopener">Waifu2x-PyTorch</a>版中，作者自定义了函数<code>load_pre_train_weights()</code>用以加载json模型，所以我可以直接拿来用了？</p>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/yu45020/Waifu2x/blob/master/Models.py">Waifu2x-PyTorch</a>版中，作者自定义了函数<code>load_pre_train_weights()</code>用以加载json模型，所以我可以直接拿来用了？</p>
 <p>但Waifu2x-PyTorch的Readme中有句话很让人在意。</p>
 <blockquote>
 <p>Model inference (32 fp only) can run in cpu only.</p>
@@ -584,24 +586,7 @@ bias(tensor) - 卷积的偏置系数，大小是（out_channel）
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

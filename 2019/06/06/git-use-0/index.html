@@ -65,7 +65,9 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -193,7 +195,7 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      875 字
+      885 字
     </span>
   
 
@@ -238,26 +240,26 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
             <div class="markdown-body">
               <p>一些Git命令</p>
 <h3 id="一、添加GPG密钥"><a href="#一、添加GPG密钥" class="headerlink" title="一、添加GPG密钥"></a>一、添加GPG密钥</h3><h4 id="准备工作：安装与配置GPG"><a href="#准备工作：安装与配置GPG" class="headerlink" title="准备工作：安装与配置GPG"></a>准备工作：安装与配置GPG</h4><p>（虽然Git自带GPG，但这里仍单独安装了GPG程序）</p>
-<p>在Windows下，安装Gpg4win，下载地址：<a href="https://gpg4win.org/download.html" target="_blank" rel="noopener">https://gpg4win.org/download.html</a>。</p>
+<p>在Windows下，安装Gpg4win，下载地址：<a target="_blank" rel="noopener" href="https://gpg4win.org/download.html">https://gpg4win.org/download.html</a>。</p>
 <p>Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。</p>
 <p>安装完成后，执行如下命令，指定使用我们刚安装的GnuPG。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>--global gpg.program <span class="hljs-string">"C:\Program Files (x86)\GnuPG\bin\gpg.exe"</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">git config --<span class="hljs-keyword">global</span> gpg.<span class="hljs-keyword">program</span> <span class="hljs-string">&quot;C:\Program Files (x86)\GnuPG\bin\gpg.exe&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="创建与设置密钥"><a href="#创建与设置密钥" class="headerlink" title="创建与设置密钥"></a>创建与设置密钥</h4><p>使用<code>--full-generate-key</code>选项，即在创建密钥时进行完整的密钥选项设置。</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">gpg --full-<span class="hljs-keyword">generate</span>-key<br></code></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<span id="more"></span>
 
 <p><i class="fas fa-exclamation-triangle"></i>在旧版本GPG及对应的教程中，直接输入<code>gpg --gen-key</code>便会显示完整的密钥选项设置，至少在GPG 2.2及以后版本中，输入<code>gpg --gen-key</code>会直接创建默认设置的密钥（2048位，存在有效期限制）。</p>
 <p>下面开始密钥设置。</p>
 <h5 id="1-选择加密算法"><a href="#1-选择加密算法" class="headerlink" title="1.选择加密算法"></a>1.选择加密算法</h5><p>选择默认的1即可，表示加密和签名均使用 RSA 算法。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql">Please <span class="hljs-keyword">select</span> what kind <span class="hljs-keyword">of</span> <span class="hljs-keyword">key</span> you want:<br>   (<span class="hljs-number">1</span>) RSA <span class="hljs-keyword">and</span> RSA (<span class="hljs-keyword">default</span>)<br>   (<span class="hljs-number">2</span>) DSA <span class="hljs-keyword">and</span> Elgamal<br>   (<span class="hljs-number">3</span>) DSA (<span class="hljs-keyword">sign</span> <span class="hljs-keyword">only</span>)<br>   (<span class="hljs-number">4</span>) RSA (<span class="hljs-keyword">sign</span> <span class="hljs-keyword">only</span>)<br>Your selection?<br></code></pre></td></tr></table></figure>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs fortran">Please <span class="hljs-keyword">select</span> what <span class="hljs-keyword">kind</span> of key you want:<br>   (<span class="hljs-number">1</span>) RSA and RSA (<span class="hljs-keyword">default</span>)<br>   (<span class="hljs-number">2</span>) DSA and Elgamal<br>   (<span class="hljs-number">3</span>) DSA (<span class="hljs-built_in">sign</span> <span class="hljs-keyword">only</span>)<br>   (<span class="hljs-number">4</span>) RSA (<span class="hljs-built_in">sign</span> <span class="hljs-keyword">only</span>)<br>Your selection?<br></code></pre></td></tr></table></figure>
 
 <h5 id="2-设置密钥长度"><a href="#2-设置密钥长度" class="headerlink" title="2.设置密钥长度"></a>2.设置密钥长度</h5><p>最长为4096位，设置为4096位即可。</p>
-<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs angelscript">RSA keys may be between <span class="hljs-number">1024</span> <span class="hljs-keyword">and</span> <span class="hljs-number">4096</span> bits long.<br>What keysize <span class="hljs-keyword">do</span> you want? (<span class="hljs-number">2048</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">RSA keys may <span class="hljs-keyword">be </span><span class="hljs-keyword">between </span><span class="hljs-number">1024</span> <span class="hljs-keyword">and </span><span class="hljs-number">4096</span> <span class="hljs-keyword">bits </span>long.<br>What keysize do you want? (<span class="hljs-number">2048</span>)<br></code></pre></td></tr></table></figure>
 
 <h5 id="3-设置密钥有效期"><a href="#3-设置密钥有效期" class="headerlink" title="3.设置密钥有效期"></a>3.设置密钥有效期</h5><p>选择0为永久有效。</p>
-<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">Please specify how <span class="hljs-built_in">long</span> the <span class="hljs-keyword">key</span> should be valid.<br>         <span class="hljs-number">0</span> = <span class="hljs-keyword">key</span> does <span class="hljs-keyword">not</span> expire<br>      &lt;n&gt;  = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n days<br>      &lt;n&gt;w = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n weeks<br>      &lt;n&gt;m = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n months<br>      &lt;n&gt;y = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n years<br><span class="hljs-keyword">Key</span> <span class="hljs-keyword">is</span> valid <span class="hljs-keyword">for</span>? (<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vbnet">Please specify how <span class="hljs-type">long</span> the <span class="hljs-keyword">key</span> should be valid.<br>         <span class="hljs-number">0</span> = <span class="hljs-keyword">key</span> does <span class="hljs-built_in">not</span> expire<br>      &lt;n&gt;  = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n days<br>      &lt;n&gt;w = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n weeks<br>      &lt;n&gt;m = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n months<br>      &lt;n&gt;y = <span class="hljs-keyword">key</span> expires <span class="hljs-keyword">in</span> n years<br><span class="hljs-keyword">Key</span> <span class="hljs-built_in">is</span> valid <span class="hljs-keyword">for</span>? (<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
 
 <p>完成上述设置后，会要求确认。</p>
 <h5 id="4-输入Github账号信息"><a href="#4-输入Github账号信息" class="headerlink" title="4.输入Github账号信息"></a>4.输入Github账号信息</h5><p>输入Github账号、Github邮箱地址、密钥备注（即Comment，此项可留空）。</p>
@@ -267,28 +269,28 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
 <h4 id="输出密钥与上传"><a href="#输出密钥与上传" class="headerlink" title="输出密钥与上传"></a>输出密钥与上传</h4><h5 id="1-输出密钥"><a href="#1-输出密钥" class="headerlink" title="1.输出密钥"></a>1.输出密钥</h5><p>获取GPG key ID的两种方法：</p>
 <p>1.在密钥创建完成后，会出现一长串字符，在这里似乎代表GPG key ID，以此ID执行以下命令，也是可以输出密钥文件的应该。</p>
 <p>2.打开Gpg4win程序，在图形界面会看到4*4的字符，这个可以确认是GPG key ID，以此ID执行以下命令（不要输空格），输出密钥文件。</p>
-<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs dsconfig"><span class="hljs-string">gpg </span><span class="hljs-built_in">--armor</span> <span class="hljs-built_in">--output</span> <span class="hljs-string">public-key.</span><span class="hljs-string">txt </span><span class="hljs-built_in">--export</span> <span class="hljs-string">"GPG key ID"</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">gpg <span class="hljs-attr">--armor</span> <span class="hljs-attr">--output</span> public-key<span class="hljs-selector-class">.txt</span> <span class="hljs-attr">--export</span> <span class="hljs-string">&quot;GPG key ID&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p><i class="fas fa-exclamation-triangle"></i>在旧版本GPG及对应的教程中，会有一条短GPG key ID，但新版本似乎没有。</p>
 <h5 id="2-上传密钥至Github"><a href="#2-上传密钥至Github" class="headerlink" title="2.上传密钥至Github"></a>2.上传密钥至Github</h5><p>将密钥文件的内容复制到Github设置页面—SSH and GPG keys—New GPG key中即可。</p>
 <p>（新建GPG key后，也可以在SSH and GPG keys页面上看到GPG key ID，与Gpg4win程序图形界面中看到的ID是一致的）</p>
 <h4 id="在Git中配置密钥"><a href="#在Git中配置密钥" class="headerlink" title="在Git中配置密钥"></a>在Git中配置密钥</h4><p>在Git添加密钥。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>--global user.signingkey <span class="hljs-string">"GPG key ID"</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">git config <span class="hljs-attr">--global</span> user<span class="hljs-selector-class">.signingkey</span> <span class="hljs-string">&quot;GPG key ID&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>在全局上使用该密钥。<br>（也可以专门在一个项目上使用该密钥）</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>--global commit.gpgsign <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">git config --global commit.gpgsign <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
 
 <p>（取消全局的命令如下）</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>--global commit.gpgsign <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">git config --global commit.gpgsign <span class="hljs-literal">false</span><br></code></pre></td></tr></table></figure>
 
 <p>执行以下命令，检查密钥配置情况。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">git<span class="hljs-built_in"> config </span>-l<br></code></pre></td></tr></table></figure>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arduino">git config -l<br></code></pre></td></tr></table></figure>
 
 <p>若包含以下信息，则说明密钥配置成功。</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">user.signingkey</span>= <span class="hljs-string">"GPG key ID"</span><br><span class="hljs-attr">commit.gpgsign</span>=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">user.signingkey</span>= <span class="hljs-string">&quot;GPG key ID&quot;</span><br><span class="hljs-attr">commit.gpgsign</span>=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="二、通过Git命令提交代码"><a href="#二、通过Git命令提交代码" class="headerlink" title="二、通过Git命令提交代码"></a>二、通过Git命令提交代码</h3><p>在本地修改完代码后，进入项目文件夹，执行以下命令，提交代码至master分支。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>git add .<br><span class="hljs-variable">$ </span>git commit -m <span class="hljs-string">"messsage for code update"</span><br><span class="hljs-variable">$ </span>git push -u origin master<br></code></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>git add .<br><span class="hljs-variable">$ </span>git commit -m <span class="hljs-string">&quot;messsage for code update&quot;</span><br><span class="hljs-variable">$ </span>git push -u origin master<br></code></pre></td></tr></table></figure>
 
 <p>在执行第3条命令后会要求输入Github账号密码，输入后即成功向Github提交代码。</p>
 
@@ -489,24 +491,7 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

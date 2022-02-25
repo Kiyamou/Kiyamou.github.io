@@ -64,7 +64,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -236,63 +238,63 @@
             
             <div class="markdown-body">
               <h3 id="起始编译过程"><a href="#起始编译过程" class="headerlink" title="起始编译过程"></a>起始编译过程</h3><h4 id="pthread-h文件"><a href="#pthread-h文件" class="headerlink" title="pthread.h文件"></a><code>pthread.h</code>文件</h4><p>提示缺失<code>pthread.h</code>文件</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Looking <span class="hljs-keyword">for</span> pthread.h - <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">Looking</span> for pthread.h - not found<br></code></pre></td></tr></table></figure>
 
-<p>根据教程<a href="https://blog.csdn.net/qianchenglenger/article/details/16907821" target="_blank" rel="noopener">https://blog.csdn.net/qianchenglenger/article/details/16907821</a>，在windows下配置pthread。</p>
-<p>下载<code>pthreads-w32-2-9-1-release.zip</code>，由于年久失修，需要在镜像站下载<br><a href="https://sourceware.org/mirrors.html" target="_blank" rel="noopener">https://sourceware.org/mirrors.html</a>-&gt;<a href="https://mirrors.kernel.org/sourceware/pthreads-win32/" target="_blank" rel="noopener">https://mirrors.kernel.org/sourceware/pthreads-win32/</a>。</p>
+<p>根据教程<a target="_blank" rel="noopener" href="https://blog.csdn.net/qianchenglenger/article/details/16907821">https://blog.csdn.net/qianchenglenger/article/details/16907821</a>，在windows下配置pthread。</p>
+<p>下载<code>pthreads-w32-2-9-1-release.zip</code>，由于年久失修，需要在镜像站下载<br><a target="_blank" rel="noopener" href="https://sourceware.org/mirrors.html">https://sourceware.org/mirrors.html</a>-&gt;<a target="_blank" rel="noopener" href="https://mirrors.kernel.org/sourceware/pthreads-win32/">https://mirrors.kernel.org/sourceware/pthreads-win32/</a>。</p>
 <p>具体操作只涉及<code>/Pre-built.2</code>中的文件。</p>
 <p>1.将<code>/Pre-built.2/include</code>和<code>/Pre-built.2/lib</code>的文件分别放入VS 2019的对应文件夹下。</p>
 <p>2.将<code>/Pre-built.2/dll</code>中<code>/x64</code>和<code>/x86</code>的文件分别放入<code>system32</code>和<code>SysWOW64</code>中。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h4 id="再次pthread-h文件"><a href="#再次pthread-h文件" class="headerlink" title="再次pthread.h文件"></a>再次<code>pthread.h</code>文件</h4><p>但完成上述操作后，仍找不到<code>pthread.h</code>文件</p>
 <p>虽然命令行终端中显示的报错内容与之前一致，但在<code>Error.log</code>中，增加了一行报错信息。</p>
-<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-params">...</span>\pthread.h error C2011:  <span class="hljs-string">'timespec'</span>: <span class="hljs-string">'struct'</span> <span class="hljs-keyword">type</span> redefinition <span class="hljs-params">...</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lasso"><span class="hljs-params">...</span>\pthread.h error C2011:  <span class="hljs-string">&#x27;timespec&#x27;</span>: <span class="hljs-string">&#x27;struct&#x27;</span> <span class="hljs-keyword">type</span> redefinition <span class="hljs-params">...</span><br></code></pre></td></tr></table></figure>
 
 <p>通过这个报错信息可知，我们上一步向VS 2019中添加头文件等操作是起了作用的，虽然终端上仍说找不到<code>pthread.h</code>文件，但报错信息表明cmake已经找到了<code>pthread.h</code>文件。</p>
 <p>在<code>pthread.h</code>文件内添加</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> HAVE_STRUCT_TIMESPEC </span><br><span class="hljs-comment">// add by https://blog.csdn.net/user11223344abc/article/details/80536809</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">define</span> HAVE_STRUCT_TIMESPEC </span><br><span class="hljs-comment">// add by https://blog.csdn.net/user11223344abc/article/details/80536809</span><br></code></pre></td></tr></table></figure>
 
 <p>后，终于能找到<code>pthread.h</code>文件</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">Looking <span class="hljs-keyword">for</span> pthread<span class="hljs-selector-class">.h</span> - found<br></code></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nginx"><span class="hljs-attribute">Looking</span> for pthread.h - found<br></code></pre></td></tr></table></figure>
 
 <p>但又出现新的问题。</p>
 <p>终端下</p>
-<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs haml">-<span class="ruby">- Performing Test CMAKE_HAVE_LIBC_PTHREAD</span><br><span class="ruby">-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthreads</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthreads - <span class="hljs-keyword">not</span> found</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthread</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthread - <span class="hljs-keyword">not</span> found</span><br><span class="ruby">-- Check <span class="hljs-keyword">if</span> compiler accepts -pthread</span><br><span class="ruby">-- Check <span class="hljs-keyword">if</span> compiler accepts -pthread - no</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-comment">-- Performing Test CMAKE_HAVE_LIBC_PTHREAD</span><br><span class="hljs-comment">-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed</span><br><span class="hljs-comment">-- Looking for pthread_create in pthreads</span><br><span class="hljs-comment">-- Looking for pthread_create in pthreads - not found</span><br><span class="hljs-comment">-- Looking for pthread_create in pthread</span><br><span class="hljs-comment">-- Looking for pthread_create in pthread - not found</span><br><span class="hljs-comment">-- Check if compiler accepts -pthread</span><br><span class="hljs-comment">-- Check if compiler accepts -pthread - no</span><br></code></pre></td></tr></table></figure>
 
 <p><code>Error.log</code>中</p>
-<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">cannot <span class="hljs-built_in">open</span> <span class="hljs-built_in">file</span> <span class="hljs-string">'pthreads.lib'</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">cannot <span class="hljs-built_in">open</span> <span class="hljs-built_in">file</span> <span class="hljs-string">&#x27;pthreads.lib&#x27;</span> <br></code></pre></td></tr></table></figure>
 
 <p>把放入系统内存的dll重新向<code>tools</code>下的<code>bin</code>文件夹放了一份，但不起作用，同样的报错。</p>
-<p>在<a href="https://github.com/tensorflow/tensorflow/issues/5576" target="_blank" rel="noopener">https://github.com/tensorflow/tensorflow/issues/5576</a>，有人说把<code>Cmakelist.txt</code>中的</p>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lisp">find_package (<span class="hljs-name">Threads</span>)<br></code></pre></td></tr></table></figure>
+<p>在<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/issues/5576">https://github.com/tensorflow/tensorflow/issues/5576</a>，有人说把<code>Cmakelist.txt</code>中的</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">find_package</span> (Threads)<br></code></pre></td></tr></table></figure>
 
 <p>注释掉，因为在Windows下根本不需要pthreads。</p>
 <p>但我试着单独注释掉上面那句话、注释掉整个if块，都不成功，仍得到同样的报错。</p>
 <h4 id="Linux下的结果"><a href="#Linux下的结果" class="headerlink" title="Linux下的结果"></a>Linux下的结果</h4><p>在CentOS 7.6 虚拟机下编译</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> <span class="hljs-string">"aom的上级目录"</span><br>cmake aom<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> <span class="hljs-string">&quot;aom的上级目录&quot;</span><br>cmake aom<br></code></pre></td></tr></table></figure>
 
 <p>同样报错</p>
-<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs haml">-<span class="ruby">- Looking <span class="hljs-keyword">for</span> pthread_create</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create - <span class="hljs-keyword">not</span> found</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthreads</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthreads - <span class="hljs-keyword">not</span> found</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthread</span><br><span class="ruby">-- Looking <span class="hljs-keyword">for</span> pthread_create <span class="hljs-keyword">in</span> pthread - found</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs ada"><span class="hljs-comment">-- Looking for pthread_create</span><br><span class="hljs-comment">-- Looking for pthread_create - not found</span><br><span class="hljs-comment">-- Looking for pthread_create in pthreads</span><br><span class="hljs-comment">-- Looking for pthread_create in pthreads - not found</span><br><span class="hljs-comment">-- Looking for pthread_create in pthread</span><br><span class="hljs-comment">-- Looking for pthread_create in pthread - found</span><br></code></pre></td></tr></table></figure>
 
 <p>日志文件中</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cannot <span class="hljs-builtin-name">find</span> -lpthreads<br></code></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cannot <span class="hljs-built_in">find</span> -lpthreads<br></code></pre></td></tr></table></figure>
 
 <p>（其实在完成上述操作后，编译环境的铺垫已经完成。）</p>
-<h3 id="VS模式编译"><a href="#VS模式编译" class="headerlink" title="VS模式编译"></a>VS模式编译</h3><h4 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cd <span class="hljs-string">"aom上级目录"</span><br>cmake aom <span class="hljs-attribute">-DAOM_TARGET_CPU</span>=generic<br></code></pre></td></tr></table></figure>
+<h3 id="VS模式编译"><a href="#VS模式编译" class="headerlink" title="VS模式编译"></a>VS模式编译</h3><h4 id="源码编译"><a href="#源码编译" class="headerlink" title="源码编译"></a>源码编译</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cd <span class="hljs-string">&quot;aom上级目录&quot;</span><br>cmake aom <span class="hljs-attribute">-DAOM_TARGET_CPU</span>=generic<br></code></pre></td></tr></table></figure>
 
 <p>使用以下两个命令编译，都不成功，而控制台输出不一致。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> <span class="hljs-string">"aom上级目录"</span><br>cmake aom<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> <span class="hljs-string">&quot;aom上级目录&quot;</span><br>cmake aom<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gams">cd aom<br><span class="hljs-function"><span class="hljs-title">cmake</span></span> ../aom<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> aom<br>cmake ../aom<br></code></pre></td></tr></table></figure>
 
 <p>正确而优雅的编译方式，在<code>/aom</code>所在目录下新建<code>/aom_build</code>，执行以下命令。</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cmake <span class="hljs-built_in">..</span>/aom <span class="hljs-attribute">-DAOM_TARGET_CPU</span>=generic<br></code></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-function"><span class="hljs-title">cmake</span></span> ../aom -DAOM_TARGET_CPU=generic<br></code></pre></td></tr></table></figure>
 
 <p>至此，cmake步骤完成，生成包含<code>aom.sln</code>解决方法在内的VS项目。</p>
 <h4 id="由sln到exe"><a href="#由sln到exe" class="headerlink" title="由sln到exe"></a>由sln到exe</h4><p>在VS中（将语言调整为中文Orz…，）设置好<code>release</code>模式后，开始build，以生成可执行的exe文件。</p>
 <p>报错信息如下</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">aom_build\aom_av1_common<span class="hljs-selector-class">.vcxproj</span> : error MSB4014: 生成已意外停止，因为发生内部故障。<br>aom_build\aom_av1_common<span class="hljs-selector-class">.vcxproj</span> : error MSB4014: System<span class="hljs-selector-class">.Text</span><span class="hljs-selector-class">.EncoderFallbackException</span>: 无法将位于索引 <span class="hljs-number">1646</span> 处的 Unicode 字符 \uDD62 转换为指定的代码页。<br></code></pre></td></tr></table></figure>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs moonscript">aom_build\aom_av1_common.vcxproj : <span class="hljs-built_in">error</span> <span class="hljs-name">MSB4014</span>: 生成已意外停止，因为发生内部故障。<br>aom_build\aom_av1_common.vcxproj : <span class="hljs-built_in">error</span> <span class="hljs-name">MSB4014</span>: System.Text.<span class="hljs-name">EncoderFallbackException</span>: 无法将位于索引 <span class="hljs-number">1646</span> 处的 Unicode 字符 \uDD62 转换为指定的代码页。<br></code></pre></td></tr></table></figure>
 
 <p>在将系统内部语言（非显示语言）更改为英语并重新编译源码后，仍是同样的报错。</p>
 <p>（检查了其他报错文件，一样的报错）</p>
@@ -302,8 +304,8 @@
 <p>但装完后，除了在编译完成后能找到Doxygen，VS中多了一个要处理的文件和索引位置延后之外，本质上与之前无区别。</p>
 <h3 id="关于GCC"><a href="#关于GCC" class="headerlink" title="关于GCC"></a>关于GCC</h3><p>期间安装了GCC，并将<code>MinGW-make.exe</code>改名为<code>make.exe</code>（据说是防止cmake找不到）；而之前安装的GnuWin32，其bin也叫<code>make.exe</code>，为了防止冲突，又将GnuWin32从环境变量中删去。</p>
 <p>上述操作的一个结果是，在编译aom的doc时，提示缺少<code>dot</code>（但控制台只是提了一下，无waring和error，而且在后续用命令行成功编译exe后，同时编译出的doc也能正常打开（html的doc，而tex的还没看））。</p>
-<h3 id="命令行编译"><a href="#命令行编译" class="headerlink" title="命令行编译"></a>命令行编译</h3><p>参考<a href="https://blog.csdn.net/u014426939/article/details/80080635" target="_blank" rel="noopener">https://blog.csdn.net/u014426939/article/details/80080635</a></p>
-<h4 id="生成Cache"><a href="#生成Cache" class="headerlink" title="生成Cache"></a>生成Cache</h4><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cd build<br>cmake <span class="hljs-built_in">..</span>/aom <span class="hljs-attribute">-DAOM_TARGET_CPU</span>=generic<br></code></pre></td></tr></table></figure>
+<h3 id="命令行编译"><a href="#命令行编译" class="headerlink" title="命令行编译"></a>命令行编译</h3><p>参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/u014426939/article/details/80080635">https://blog.csdn.net/u014426939/article/details/80080635</a></p>
+<h4 id="生成Cache"><a href="#生成Cache" class="headerlink" title="生成Cache"></a>生成Cache</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> build<br>cmake ../aom -DAOM_TARGET_CPU=generic<br></code></pre></td></tr></table></figure>
 
 <h4 id="生成exe"><a href="#生成exe" class="headerlink" title="生成exe"></a>生成exe</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-keyword">cd</span> build<br>cmake <span class="hljs-params">--build</span> <span class="hljs-string">./</span> <span class="hljs-params">--config</span> Release<br></code></pre></td></tr></table></figure>
 
@@ -506,24 +508,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>

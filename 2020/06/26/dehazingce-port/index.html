@@ -14,7 +14,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE = contrast enhancement）。
+  <meta name="description" content="这一去雾算法在2013年提出，论文见 Optimized contrast enhancement for real-time image and video dehazing，我们称其为 DehazingCE （CE &amp;#x3D; contrast enhancement）。
 算法概述DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
@@ -61,7 +61,9 @@
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 4.2.1"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -232,15 +234,15 @@
             <h1 style="display: none">DehazingCE：基于对比度增强的去雾算法及 VapourSynth 迁移</h1>
             
             <div class="markdown-body">
-              <p>这一去雾算法在2013年提出，论文见 <a href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#" target="_blank" rel="noopener">Optimized contrast enhancement for real-time image and video dehazing</a>，我们称其为 DehazingCE （CE = contrast enhancement）。</p>
+              <p>这一去雾算法在2013年提出，论文见 <a target="_blank" rel="noopener" href="http://mcl.korea.ac.kr/projects/dehazing/#userconsent#">Optimized contrast enhancement for real-time image and video dehazing</a>，我们称其为 DehazingCE （CE &#x3D; contrast enhancement）。</p>
 <h3 id="算法概述"><a href="#算法概述" class="headerlink" title="算法概述"></a>算法概述</h3><p>DehazingCE 基于大气散射模型，分别估计大气光强度和透射率，得到去雾结果。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p>大气光估计通过图像分块、寻找像素差异最小的子块，以该子块最亮的点作为大气光的估计值。但这里存在一个问题，不知道是我理解有问题，还是我代码迁移有问题，或者算法本身就有问题。如果图像整体偏暗，那寻找到的子块就会很暗，最后以一个像素值很小的点作为大气光估计值，用这个值继续计算，最终结果就是全黑。我对迁移到 VapourSynth 的代码进行测试，确实发现了这一问题。</p>
 <p>透射率估计分为粗算和细化两步。粗算是基于大气散射模型进行次数不多的迭代，并自定义像素损失值（大气散射模型的直接计算结果可能会超过 [0, peak]，导致像素越界）以决定是否继续迭代。细化通过导向滤波实现。</p>
 <p>后处理包括 Gamma 亮度调整和类似均值滤波的均值化计算。前者是避免去雾后图像过暗，后者是避免透射率过低时导致的块效应。在我迁移的代码中，Gamma 亮度调整表现不错，但均值化计算可能是我的代码还有问题，测试结果是不如不做，做了反而凭空多了瑕疵。</p>
 <h3 id="代码迁移"><a href="#代码迁移" class="headerlink" title="代码迁移"></a>代码迁移</h3><p>代码迁移着实花了很久，满打满算从 4 月份开始读原始代码，到 6 月份完成初版的迁移，几乎花了两个月…原始代码风格很古典，着实有点费力。</p>
-<h4 id="从-OpenCV-2-到-OpenCV-3"><a href="#从-OpenCV-2-到-OpenCV-3" class="headerlink" title="从 OpenCV 2 到 OpenCV 3"></a>从 OpenCV 2 到 OpenCV 3</h4><p>在最开始，我觉得一下子迁移到 VapourSynth 有点费力，便想尝试着把原始代码先跑起来。原始代码基于 OpenCV 2，存储图像还是用的 IplImage 指针而非 Mat 类。这一部分工作在<a href="https://kiyamou.github.io/2020/04/28/dehazing/" target="_blank" rel="noopener">前面的博文</a>有提到。但折腾好久，也没把原始代码跑起来，最后放弃了，直接迁移。</p>
+<h4 id="从-OpenCV-2-到-OpenCV-3"><a href="#从-OpenCV-2-到-OpenCV-3" class="headerlink" title="从 OpenCV 2 到 OpenCV 3"></a>从 OpenCV 2 到 OpenCV 3</h4><p>在最开始，我觉得一下子迁移到 VapourSynth 有点费力，便想尝试着把原始代码先跑起来。原始代码基于 OpenCV 2，存储图像还是用的 IplImage 指针而非 Mat 类。这一部分工作在<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/04/28/dehazing/">前面的博文</a>有提到。但折腾好久，也没把原始代码跑起来，最后放弃了，直接迁移。</p>
 <h4 id="YUV-还是-RGB"><a href="#YUV-还是-RGB" class="headerlink" title="YUV 还是 RGB"></a>YUV 还是 RGB</h4><p>在着手迁移之初，是先支持 YUV 还是先支持 RGB 纠结了好久。其中一部分原因是我还没完全搞懂原始代码的处理流程，从大气光估计部分看，原始代码用的是 RGB 格式，从透射率估计看，原始代码既有只算灰度的（这像是面向 YUV），又有 RGB 三个通道都计算的。最后决定先支持 RGB（因为我先读明白了原始代码的大气光估计部分，沿用了这一部分的 RGB 格式）。</p>
 <h4 id="数据结构的转换与基础操作的迁移"><a href="#数据结构的转换与基础操作的迁移" class="headerlink" title="数据结构的转换与基础操作的迁移"></a>数据结构的转换与基础操作的迁移</h4><p>确定 RGB 后便开始转换图像数据结构，为减少工作量，尽量不去动原始代码的函数输入输出模式，把 VapourSynth 接口传递过来的图像指针转化为普通指针，送给核心计算函数。在这个过程中，我越来越感觉到 VapourSynth 接口的概念，或者什么叫接口。我渐渐懂得把核心处理剥离开，不再依赖 VapourSynth API 提供的数据类型，而是使用普通指针和数组完成核心计算，在把结果送给 VapourSynth API。</p>
 <p>在计算过程中需要进行图像分块、计算图像像素值均值和标准差。在原始代码中，这些操作都是使用的 OpenCV 函数。对于这些并不复杂的操作，我自然不能接受调用第三方库来实现。图像分块最开始是用两层 for 循环赋值，后来才想到用<code>memcpy()</code>函数直接拷贝。计算均值和标准差直接 copy 了一份代码。</p>
@@ -462,24 +464,7 @@
 
 
 <!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
-</script>
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-      all[i].SourceElement().parentNode.className += ' has-jax';
-    }
-  });
-</script>
-
-<script type="text/javascript" src="">
-</script>
-<!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
+<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 </body>
