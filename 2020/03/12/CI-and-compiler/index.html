@@ -14,13 +14,12 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="Travis CI的部署很早就有体验Travis CI持续集成的想法，于是拿VapourSynth-JincResize项目试一试。
-依赖问题昨天给JincResize项目照猫画虎写了.travis.yml脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的.travis.yml脚本。
-但">
+  <meta name="description" content="Travis CI 的部署很早就有体验 Travis CI 持续集成的想法，于是拿 VapourSynth-JincResize 项目试一试。
+依赖问题昨天给 JincResize 项目照猫画虎写了.travis.yml脚本。一开始打算沿用我在 Linux 下编译的模式，基于meson+ninja构建。为此还专门去搜了 Github Issues，从 Issues 上面抄了使用 meson 的.t">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-  <title>Travis CI持续集成与各编译器对C++新特性的支持 - 308实验室</title>
+  <title>Travis CI 持续集成与各编译器对 C++ 新特性的支持 - 308实验室</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -64,7 +63,7 @@
   <script  src="/js/color-schema.js" ></script>
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
 </head>
 
 
@@ -168,9 +167,9 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Travis CI持续集成与各编译器对C++新特性的支持">
+            <span class="h2" id="subtitle" title="Travis CI 持续集成与各编译器对 C++ 新特性的支持">
               
-                Travis CI持续集成与各编译器对C++新特性的支持
+                Travis CI 持续集成与各编译器对 C++ 新特性的支持
               
             </span>
 
@@ -192,7 +191,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      611 字
+      627 字
     </span>
   
 
@@ -232,20 +231,21 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Travis CI持续集成与各编译器对C++新特性的支持</h1>
+            <h1 style="display: none">Travis CI 持续集成与各编译器对 C++ 新特性的支持</h1>
             
             <div class="markdown-body">
-              <h3 id="Travis-CI的部署"><a href="#Travis-CI的部署" class="headerlink" title="Travis CI的部署"></a>Travis CI的部署</h3><p>很早就有体验Travis CI持续集成的想法，于是拿<a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize">VapourSynth-JincResize</a>项目试一试。</p>
-<h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给JincResize项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在Linux下编译的模式，基于meson+ninja构建。为此还专门去搜了Github Issues，从Issues上面抄了使用meson的<code>.travis.yml</code>脚本。</p>
-<p>但等我上传了脚本、部署完成之后才想起，JincResize项目使用pkg-config解决依赖的问题，而配置pkg-config需要先编译VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用gcc编译，反正我的项目结构简单。</p>
+              <h3 id="Travis-CI-的部署"><a href="#Travis-CI-的部署" class="headerlink" title="Travis CI 的部署"></a>Travis CI 的部署</h3><p>很早就有体验 Travis CI 持续集成的想法，于是拿 <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize">VapourSynth-JincResize</a> 项目试一试。</p>
+<h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给 JincResize 项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在 Linux 下编译的模式，基于meson+ninja构建。为此还专门去搜了 Github Issues，从 Issues 上面抄了使用 meson 的<code>.travis.yml</code>脚本。</p>
+<p>但等我上传了脚本、部署完成之后才想起，JincResize 项目使用 pkg-config 解决依赖的问题，而配置 pkg-config 需要先编译 VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用 gcc 编译，反正我的项目结构简单。</p>
 <span id="more"></span>
 
-<p>直接用gcc编译也需要解决VapourSynth头文件的依赖，绞尽脑汁想了个略显蛋疼的办法，从VapourSynth的官方仓库中下载头文件到服务器，再移到相应位置。之所以这么折腾，而不是把需要的头文件传到JincResize项目的仓库中，是因为<del>很多其他VapourSynth的Plugin项目都不传这类通用头文件</del>不同版本VapourSynth头文件对应不同版本的VapourSynth API，API版本不同，编译出来的动态链接库没法被VapourSynth主程序调用。如果我自己向仓库传了某一版本的头文件，反而可能误导其他人。</p>
-<p>然而VapourSynth毕竟不是一个小项目，起初想试一下git 2.25.0新增的部分克隆功能，只克隆我需要的两个头文件，但我太笨了…不会用。遂用wget下载Release中打包好的源码（体积毕竟比整个仓库小），然后再解压我想要的文件、移动。</p>
-<h4 id="编译器版本问题"><a href="#编译器版本问题" class="headerlink" title="编译器版本问题"></a>编译器版本问题</h4><p>Travis CI服务器用的是ubuntu 16 + gcc 5，由于JincResize项目使用了C++17的特殊数学函数（<code>cyl_bessel_j()</code>），需要gcc 7及以上版本。好办，直接给服务器装gcc 7呗。</p>
-<p>话是这么说，而且也部署成功并编译通过了，但我总觉得安装gcc 7时要把系统依赖都升级一遍（<code>sudo apt-get upgrade</code>）有点不太环保（<del>虽然Travis CI的服务器性能强劲</del>）。于是改了一下代码，当gcc版本小于7时，用传统的<code>ji()</code>函数，不涉及C++17。</p>
+<p>直接用 gcc 编译也需要解决 VapourSynth 头文件的依赖，绞尽脑汁想了个略显蛋疼的办法，从 VapourSynth 的官方仓库中下载头文件到服务器，再移到相应位置。之所以这么折腾，而不是把需要的头文件传到 JincResize 项目的仓库中，是因为<del>很多其他 VapourSynth 的 Plugin 项目都不传这类通用头文件</del>不同版本 VapourSynth 头文件对应不同版本的 VapourSynth API，API 版本不同，编译出来的动态链接库没法被 VapourSynth 主程序调用。如果我自己向仓库传了某一版本的头文件，反而可能误导其他人。</p>
+<p>然而 VapourSynth 毕竟不是一个小项目，起初想试一下 git 2.25.0 新增的部分克隆功能，只克隆我需要的两个头文件，但我太笨了…不会用。遂用 wget 下载 Release 中打包好的源码（体积毕竟比整个仓库小），然后再解压我想要的文件、移动。</p>
+<h4 id="编译器版本问题"><a href="#编译器版本问题" class="headerlink" title="编译器版本问题"></a>编译器版本问题</h4><p>Travis CI 服务器用的是 ubuntu 16 + gcc 5，由于 JincResize 项目使用了 C++17 的特殊数学函数（<code>cyl_bessel_j()</code>），需要 gcc 7 及以上版本。好办，直接给服务器装 gcc 7 呗。</p>
+<p>话是这么说，而且也部署成功并编译通过了，但我总觉得安装 gcc 7 时要把系统依赖都升级一遍（<code>sudo apt-get upgrade</code>）有点不太环保（<del>虽然 Travis CI 的服务器性能强劲</del>）。于是改了一下代码，当 gcc 版本小于 7 时，用传统的<code>ji()</code>函数，不涉及 C++17。</p>
 <p>总算环保地在服务器上编译通过了。</p>
-<h3 id="各编译器对C-新特性的支持"><a href="#各编译器对C-新特性的支持" class="headerlink" title="各编译器对C++新特性的支持"></a>各编译器对C++新特性的支持</h3>
+<h3 id="各编译器对-C-新特性的支持"><a href="#各编译器对-C-新特性的支持" class="headerlink" title="各编译器对 C++ 新特性的支持"></a>各编译器对 C++ 新特性的支持</h3><p>（未完待续…）</p>
+
             </div>
             <hr>
             <div>
@@ -284,7 +284,7 @@
                     
                     
                       <a href="/2020/03/11/build-vapoursynth/">
-                        <span class="hidden-mobile">ArchLinux下VapourSynth和VapourSynth-editor的编译与配置</span>
+                        <span class="hidden-mobile">ArchLinux 下 VapourSynth 和 VapourSynth-editor 的编译与配置</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

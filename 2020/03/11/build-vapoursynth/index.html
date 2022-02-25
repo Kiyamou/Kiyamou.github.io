@@ -14,14 +14,14 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="ArchLinux安装桌面参考以官方Wiki的方式安装ArchLinux安装ArchLinux的基本系统。
-参考ArchLinux安装GNOME图形桌面环境和ArchLinux安装后的必须配置与图形界面安装教程安装图形界面。
-顺带提一下我的经验，若是在VMware虚拟机中安装，不要在VM下拉伸桌面，不然重启系统后黑屏…
-编译VapourSynth在之前的一篇博文中，提到了编译VapourSynth">
+  <meta name="description" content="ArchLinux 安装桌面参考以官方 Wiki 的方式安装 ArchLinux 安装 ArchLinux 的基本系统。
+参考 ArchLinux 安装 GNOME 图形桌面环境和 ArchLinux 安装后的必须配置与图形界面安装教程安装图形界面。
+顺带提一下我的经验，若是在 VMware 虚拟机中安装，不要在 VM 下拉伸桌面，不然重启系统后黑屏…
+编译 VapourSynth在之前的一篇博文">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-  <title>ArchLinux下VapourSynth和VapourSynth-editor的编译与配置 - 308实验室</title>
+  <title>ArchLinux 下 VapourSynth 和 VapourSynth-editor 的编译与配置 - 308实验室</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -65,7 +65,7 @@
   <script  src="/js/color-schema.js" ></script>
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml">
 </head>
 
 
@@ -169,9 +169,9 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="ArchLinux下VapourSynth和VapourSynth-editor的编译与配置">
+            <span class="h2" id="subtitle" title="ArchLinux 下 VapourSynth 和 VapourSynth-editor 的编译与配置">
               
-                ArchLinux下VapourSynth和VapourSynth-editor的编译与配置
+                ArchLinux 下 VapourSynth 和 VapourSynth-editor 的编译与配置
               
             </span>
 
@@ -233,30 +233,30 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">ArchLinux下VapourSynth和VapourSynth-editor的编译与配置</h1>
+            <h1 style="display: none">ArchLinux 下 VapourSynth 和 VapourSynth-editor 的编译与配置</h1>
             
             <div class="markdown-body">
-              <h3 id="ArchLinux安装桌面"><a href="#ArchLinux安装桌面" class="headerlink" title="ArchLinux安装桌面"></a>ArchLinux安装桌面</h3><p>参考<a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/17/arch_install/">以官方Wiki的方式安装ArchLinux</a>安装ArchLinux的基本系统。</p>
-<p>参考<a target="_blank" rel="noopener" href="https://starrycat.me/archlinux-install-gnome-desktop.html">ArchLinux安装GNOME图形桌面环境</a>和<a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/19/arch_setup/">ArchLinux安装后的必须配置与图形界面安装教程</a>安装图形界面。</p>
-<p>顺带提一下我的经验，若是在VMware虚拟机中安装，不要在VM下拉伸桌面，不然重启系统后黑屏…</p>
-<h3 id="编译VapourSynth"><a href="#编译VapourSynth" class="headerlink" title="编译VapourSynth"></a>编译VapourSynth</h3><p>在之前的<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/02/07/arch-and-meson/">一篇博文</a>中，提到了编译VapourSynth。但我不知道为什么，可能是升级了ArchLinux系统（<code>pacman -Syu</code>），导致之前编译好的用不了，只能重新编译一次。</p>
+              <h3 id="ArchLinux-安装桌面"><a href="#ArchLinux-安装桌面" class="headerlink" title="ArchLinux 安装桌面"></a>ArchLinux 安装桌面</h3><p>参考<a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/17/arch_install/">以官方 Wiki 的方式安装 ArchLinux</a> 安装 ArchLinux 的基本系统。</p>
+<p>参考 <a target="_blank" rel="noopener" href="https://starrycat.me/archlinux-install-gnome-desktop.html">ArchLinux 安装 GNOME 图形桌面环境</a>和 <a target="_blank" rel="noopener" href="https://www.viseator.com/2017/05/19/arch_setup/">ArchLinux 安装后的必须配置与图形界面安装教程</a>安装图形界面。</p>
+<p>顺带提一下我的经验，若是在 VMware 虚拟机中安装，不要在 VM 下拉伸桌面，不然重启系统后黑屏…</p>
+<h3 id="编译-VapourSynth"><a href="#编译-VapourSynth" class="headerlink" title="编译 VapourSynth"></a>编译 VapourSynth</h3><p>在之前的<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2020/02/07/arch-and-meson/">一篇博文</a>中，提到了编译 VapourSynth。但我不知道为什么，可能是升级了 ArchLinux 系统（<code>pacman -Syu</code>），导致之前编译好的用不了，只能重新编译一次。</p>
 <span id="more"></span>
 
-<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>VapourSynth的必要依赖包括：</p>
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>VapourSynth 的必要依赖包括：</p>
 <ul>
 <li>构建与编译依赖<ul>
 <li>Autoconf、Automake、Libtool</li>
 <li>pkg-config</li>
-<li>GCC 4.8及以上版本 或 Clang</li>
+<li>GCC 4.8 及以上版本或 Clang</li>
 </ul>
 </li>
 <li>功能依赖<ul>
-<li>zimg <a target="_blank" rel="noopener" href="https://github.com/sekrit-twc/zimg/tree/v2.9">v2.9分支</a> （由于新版R49增加了<code>spline64</code>，这是zimg 2.9.3新增的内容，所以要用新版）</li>
+<li>zimg <a target="_blank" rel="noopener" href="https://github.com/sekrit-twc/zimg/tree/v2.9">v2.9分支</a> （由于新版R49增加了<code>spline64</code>，这是 zimg 2.9.3 新增的内容，所以要用新版）</li>
 </ul>
 </li>
-<li>Python环境<ul>
-<li>Python 3 （Python 3即可，不需要指定3.x，只有Windows下安装编译好的二进制文件时，才需要限定小版本）</li>
-<li>Cython 0.28及以上版本</li>
+<li>Python 环境<ul>
+<li>Python 3 （Python 3 即可，不需要指定 3.x，只有 Windows 下安装编译好的二进制文件时，才需要限定小版本）</li>
+<li>Cython 0.28 及以上版本</li>
 </ul>
 </li>
 </ul>
@@ -264,15 +264,15 @@
 <ul>
 <li>构建文档：Sphinx</li>
 <li>编译字幕滤镜：iconv、libass、ffmpeg</li>
-<li>编译读写图片的Imwri滤镜：ImageMagick 7</li>
-<li>编译OCR滤镜：Tesseract 3</li>
+<li>编译读写图片的 Imwri 滤镜：ImageMagick 7</li>
+<li>编译 OCR 滤镜：Tesseract 3</li>
 </ul>
-<p>我感兴趣的是Imwri，而ImageMagick 7作为ArchLinux默认安装的包已经装好了。</p>
-<p>在ArchLinux下，安装必要依赖的命令如下。</p>
-<p>（gcc和Python 3应该是装好系统就自带了，没写。（在ArchLinux的pacman语境下，gcc指最新版的gcc（目前是9.2.1），这个应该是系统默认就安装了的，gcc8指gcc 8.x的稳定版，应该需要自己安装。））</p>
+<p>我感兴趣的是 Imwri，而 ImageMagick 7 作为 ArchLinux 默认安装的包已经装好了。</p>
+<p>在 ArchLinux 下，安装必要依赖的命令如下。</p>
+<p>（gcc 和 Python 3 应该是装好系统就自带了，没写。（在 ArchLinux 的 pacman 语境下，gcc 指最新版的 gcc（目前是 9.2.1），这个应该是系统默认就安装了的，gcc8 指 gcc 8.x 的稳定版，应该需要自己安装。））</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs shell">pacman -S autoconf automake libtool<br>pacman -S pkg-config<br>pacman -S zimg<br><br>pip install cython<br></code></pre></td></tr></table></figure>
 
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>下载VapourSynth源码。</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>下载 VapourSynth 源码。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">git clone https://github.com/vapoursynth/vapoursynth.git<br>cd vapoursynth<br></code></pre></td></tr></table></figure>
 
 <p>若担心开发中的版本不稳定，可下载打包发布的版本。</p>
@@ -281,34 +281,34 @@
 <p>进行构建和编译。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">./autogen.sh<br>./configure<br>make<br>make install<br></code></pre></td></tr></table></figure>
 
-<p>在这里提一下我编译时遇到的问题。我用的源码是R49-RC1版本，自带的<code>resize</code>函数新增了<code>spline64</code>，然而我在编译中报错说<code>ZIMG_RESIZE_SPLINE64</code>未声明。于是把两行相关代码注释掉（位于<code>src/core/vsresize.cpp</code>），编译通过。可能和zimg版本问题有关？我猜的。</p>
-<p>补记：猜的没错，新版R49增加了<code>spline64</code>，这是zimg 2.9.3新增的内容。</p>
-<p>顺带试了一下R48，因为这个版本还没有添加<code>spline64</code>，结果出现了一个通用的报错，没有去深究，放弃了。</p>
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>编译好后，配置搜索路径和Python环境。</p>
+<p>在这里提一下我编译时遇到的问题。我用的源码是 R49-RC1 版本，自带的<code>resize</code>函数新增了<code>spline64</code>，然而我在编译中报错说<code>ZIMG_RESIZE_SPLINE64</code>未声明。于是把两行相关代码注释掉（位于<code>src/core/vsresize.cpp</code>），编译通过。可能和 zimg 版本问题有关？我猜的。</p>
+<p>补记：猜的没错，新版 R49 增加了<code>spline64</code>，这是 zimg 2.9.3 新增的内容。</p>
+<p>顺带试了一下 R48，因为这个版本还没有添加<code>spline64</code>，结果出现了一个通用的报错，没有去深究，放弃了。</p>
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>编译好后，配置搜索路径和 Python 环境。</p>
 <p>编译完成，会在<code>/usr/local/lib</code>（或其他类似的文件中）得到相关<code>.so</code>库文件，包括<code>libvaoursynth.so</code>、<code>libvapoursynth-script.so.0.0.0</code>，把这些库文件链接到<code>/usr/lib</code>中，完成搜索路径的配置。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">ln -s /usr/local/lib/libvapoursynth.so /usr/lib/libvapoursynth.so<br>ln -s /usr/local/lib/libvapoursynht-script.so.0.0.0 /usr/lib/libvapoursynth-script.so<br></code></pre></td></tr></table></figure>
 
-<p>配置好搜索路径，在Python中安装VapourSynth。这听上去有点怪，但根据VapourSynth的设计思路，需要先完成上面的编译和配置，才能用pip安装。</p>
+<p>配置好搜索路径，在 Python 中安装 VapourSynth。这听上去有点怪，但根据 VapourSynth 的设计思路，需要先完成上面的编译和配置，才能用 pip 安装。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">pip install vapoursynth<br></code></pre></td></tr></table></figure>
 
-<p>完成上述配置后，vsedit就能搜索到VapourSynth。</p>
-<h3 id="编译vsedit"><a href="#编译vsedit" class="headerlink" title="编译vsedit"></a>编译vsedit</h3><h4 id="安装依赖-1"><a href="#安装依赖-1" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>vsedit是基于qt的图形界面程序，需要qt5相关的依赖包。</p>
-<p>下面列出的这个包是我个人在编译vsedit中需要的。根据官方的编译指南，需要<code>build-essential</code>、<code>qtbase5-dev</code>。但在ArchLinux下似乎不叫这两个名字，没有去深究。强行编译，发现缺少下面这个包。</p>
+<p>完成上述配置后，vsedit 就能搜索到 VapourSynth。</p>
+<h3 id="编译vsedit"><a href="#编译vsedit" class="headerlink" title="编译vsedit"></a>编译vsedit</h3><h4 id="安装依赖-1"><a href="#安装依赖-1" class="headerlink" title="安装依赖"></a>安装依赖</h4><p>vsedit 是基于 qt 的图形界面程序，需要 qt5 相关的依赖包。</p>
+<p>下面列出的这个包是我个人在编译vsedit中需要的。根据官方的编译指南，需要<code>build-essential</code>、<code>qtbase5-dev</code>。但在 ArchLinux 下似乎不叫这两个名字，没有去深究。强行编译，发现缺少下面这个包。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">pacman -S qt5-websockets<br></code></pre></td></tr></table></figure>
 
-<h4 id="配置头文件"><a href="#配置头文件" class="headerlink" title="配置头文件"></a>配置头文件</h4><p>编译时需要VapourSynth的头文件，也就是<code>vapoursynth/include</code>文件下的三个<code>.h</code>文件。在<code>/usr/include</code>中新建一个<code>vapoursynth</code>文件夹，把这三个文件复制过去即可。</p>
+<h4 id="配置头文件"><a href="#配置头文件" class="headerlink" title="配置头文件"></a>配置头文件</h4><p>编译时需要 VapourSynth 的头文件，也就是<code>vapoursynth/include</code>文件下的三个<code>.h</code>文件。在<code>/usr/include</code>中新建一个<code>vapoursynth</code>文件夹，把这三个文件复制过去即可。</p>
 <h4 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h4><p>下载源码。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">git clone https://bitbucket.org/mystery_keeper/vapoursynth-editor.git<br>cd vapoursynth-editor/pro<br></code></pre></td></tr></table></figure>
 
 <p>进行构建和编译。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">qmake -norecursive pro.pro CONFIG+=release<br>make<br></code></pre></td></tr></table></figure>
 
-<p>在<code>vapoursynth-editor/build/release-64bit-gcc</code>或类似的地方，得到vsedit等二进制文件，可以用<code>ln</code>命令做一个链接，方便平时使用。</p>
+<p>在<code>vapoursynth-editor/build/release-64bit-gcc</code>或类似的地方，得到 vsedit 等二进制文件，可以用<code>ln</code>命令做一个链接，方便平时使用。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ln -s $Home/vapoursynth-editor/build/release-64bit-gcc/vsedit ~/Desktop/vsedit<br></code></pre></td></tr></table></figure>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd ~/Desktop<br>./vsedit<br></code></pre></td></tr></table></figure>
 
-<p>运行vsedit，即可弹出图形界面。</p>
+<p>运行 vsedit，即可弹出图形界面。</p>
 <h3 id="关于滤镜"><a href="#关于滤镜" class="headerlink" title="关于滤镜"></a>关于滤镜</h3><p>滤镜应该放在<code>/usr/local/lib/vapoursynth</code>下。</p>
 
             </div>
@@ -344,7 +344,7 @@
                     
                       <a href="/2020/03/12/CI-and-compiler/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Travis CI持续集成与各编译器对C++新特性的支持</span>
+                        <span class="hidden-mobile">Travis CI 持续集成与各编译器对 C++ 新特性的支持</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
