@@ -14,8 +14,8 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="JincResize avs版迁移工作告一段落了，速度比之前快了5-6倍，在这个过程中学到了C&amp;#x2F;C++结构、C++类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。
-当修改好readme，发布了JincResize-r7-RC1，再来回看commit历史，有些感动。在这一周的时间中，有些印象很深的改动">
+  <meta name="description" content="JincResize avs 版迁移工作告一段落了，速度比之前快了 5-6 倍，在这个过程中学到了 C&amp;#x2F;C++ 结构、C++ 类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++ 内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。
+当修改好 readme，发布了 JincResize-r7-RC1，再来回看 commit 历史，有些感动。在这一周的时间">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      11
+      12
        分钟
     </span>
   
@@ -234,12 +234,12 @@
             <h1 style="display: none">JincResize 代码重构（3）</h1>
             
             <div class="markdown-body">
-              <p>JincResize avs版迁移工作告一段落了，速度比之前快了5-6倍，在这个过程中学到了C&#x2F;C++结构、C++类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。</p>
-<p>当修改好readme，发布了JincResize-r7-RC1，再来回看commit历史，有些感动。在这一周的时间中，有些印象很深的改动，都忘记了是早期的几天就完成的；而同时在最初的几天，以现在的视角看，更多的是四处尝试，像在黑暗中一样，但最终是看到了光亮。</p>
+              <p>JincResize avs 版迁移工作告一段落了，速度比之前快了 5-6 倍，在这个过程中学到了 C&#x2F;C++ 结构、C++ 类和对象（特别是通过调用构造函数、公有函数实现抽象）、C++ 内存对齐与回收的知识，对堆栈有了初步的概念，同时对程序整体设计有了大致的概念。</p>
+<p>当修改好 readme，发布了 JincResize-r7-RC1，再来回看 commit 历史，有些感动。在这一周的时间中，有些印象很深的改动，都忘记了是早期的几天就完成的；而同时在最初的几天，以现在的视角看，更多的是四处尝试，像在黑暗中一样，但最终是看到了光亮。</p>
 <span id="more"></span>
 
-<p>如果说早期的coding是崎岖但知道方向；那么中期之后，在我得到一份能看到结果、但带有问题的代码时，再往前走，就有些戏剧性了。虽然通过Debug找到一些改正的线索，但还不够，真要靠一些运气才走下去的。当时主要是为了在实际代码中应用一下类，其实不用类完全也可以实现当时预想的目的。在这个过程中学到基础知识且不提，在把计算Lut（Look up table）的过程放到Lut类后，我突然意识到，把整个计算好的Lut表传给函数，（占用了过多内存），可能是导致编译好dll调用一次就崩溃的原因。这时我才明白avs版代码为什么要封装一个函数，Lut表中的数据随用随调。虽然是仿写，但我自己能独立想到原因，这也是值得欣喜的。之后又经历了一两天的折腾，才明白怎么去正确地初始化变量。终于不崩溃了。</p>
-<p>虽然还有一个bug未解决，但这两三天也为此花了不少时间，该放下就放下，先告一段落吧，这一周的工作已经收获很多了。</p>
+<p>如果说早期的 coding 是崎岖但知道方向；那么中期之后，在我得到一份能看到结果、但带有问题的代码时，再往前走，就有些戏剧性了。虽然通过 Debug 找到一些改正的线索，但还不够，真要靠一些运气才走下去的。当时主要是为了在实际代码中应用一下类，其实不用类完全也可以实现当时预想的目的。在这个过程中学到基础知识且不提，在把计算 Lut（Look up table）的过程放到Lut类后，我突然意识到，把整个计算好的 Lut 表传给函数，（占用了过多内存），可能是导致编译好dll调用一次就崩溃的原因。这时我才明白 avs 版代码为什么要封装一个函数，Lut 表中的数据随用随调。虽然是仿写，但我自己能独立想到原因，这也是值得欣喜的。之后又经历了一两天的折腾，才明白怎么去正确地初始化变量。终于不崩溃了。</p>
+<p>虽然还有一个 bug 未解决，但这两三天也为此花了不少时间，该放下就放下，先告一段落吧，这一周的工作已经收获很多了。</p>
 <p>要学会发现和留住成就感，这是增加自信的一种方式。</p>
 <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p><code>_aligned_malloc()</code>、<code>_aligned_free()</code>是微软提出的动态申请、释放内存对齐函数。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">void</span>* _aligned_malloc(<span class="hljs-type">size_t</span> size, <span class="hljs-type">size_t</span> alignment);<br><span class="hljs-type">void</span>* _aligned_free(<span class="hljs-type">void</span>* memblock);<br></code></pre></td></tr></table></figure>
@@ -247,31 +247,31 @@
 <p>Examples：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++">_aligned_malloc(array_size * <span class="hljs-built_in">sizeof</span>(<span class="hljs-type">float</span>), <span class="hljs-number">64</span>);<br>_aligned_free(array);<br></code></pre></td></tr></table></figure>
 
-<p>Windows下的gcc编译器也可以接受上述函数，但Linux下的gcc编译器就不行了。</p>
-<p>Linux下的通用替代方法且不提，在VapourSynth下有专门的替代函数<code>vs_aligned_malloc()</code>、<code>vs_aligned_free()</code>，用法和前面的原始函数一样（虽然就是给Linux下的相应函数起个别名，但毕竟方便很多）。</p>
-<h3 id="从结构到类"><a href="#从结构到类" class="headerlink" title="从结构到类"></a>从结构到类</h3><p>这次迁移了AviSynth版JincResize中的EWA（椭圆加权平均）重采样方法，关于算法本身的疑问先放一下（因为我还是觉得，AviSynth版用的重采样也是通过圆划定范围、进行计算，而非椭圆——虽然直观时上觉得，干脆用椭圆的长轴长为半径画圆不是更精确吗？或许椭圆本身能减少不太必要的计算？），在实现算法时，设计了两个类，一个（辅助的）类用来存放重采样&#x2F;反向映射用的圆&#x2F;椭圆半径、指针移动相关的数据，另一个类用来存放传递过来的核心Lut表及其他辅助数据（包括前一个类）。</p>
-<p>以上这些都是常规设计，但计算时的函数调用，让我感觉把结构改成类，或许看上去更C++一点。</p>
+<p>Windows 下的 gcc 编译器也可以接受上述函数，但 Linux 下的 gcc 编译器就不行了。</p>
+<p>Linux 下的通用替代方法且不提，在 VapourSynth 下有专门的替代函数<code>vs_aligned_malloc()</code>、<code>vs_aligned_free()</code>，用法和前面的原始函数一样（虽然就是给 Linux 下的相应函数起个别名，但毕竟方便很多）。</p>
+<h3 id="从结构到类"><a href="#从结构到类" class="headerlink" title="从结构到类"></a>从结构到类</h3><p>这次迁移了 AviSynth 版 JincResize 中的 EWA（椭圆加权平均）重采样方法，关于算法本身的疑问先放一下（因为我还是觉得，AviSynth 版用的重采样也是通过圆划定范围、进行计算，而非椭圆——虽然直观时上觉得，干脆用椭圆的长轴长为半径画圆不是更精确吗？或许椭圆本身能减少不太必要的计算？），在实现算法时，设计了两个类，一个（辅助的）类用来存放重采样&#x2F;反向映射用的圆&#x2F;椭圆半径、指针移动相关的数据，另一个类用来存放传递过来的核心Lut表及其他辅助数据（包括前一个类）。</p>
+<p>以上这些都是常规设计，但计算时的函数调用，让我感觉把结构改成类，或许看上去更 C++ 一点。</p>
 <p>如果就是单独存一些数据，那似乎是没必要把结构写成类，但类似构造函数的初始化、计算，类似析构函数的内存释放都出来了，而且就单独写一个函数放在头文件里，可能写成类和成员函数看上去更舒服一点。</p>
-<p>带着这种想法，我打算先把主cpp中计算Lut表的过程单独拿出来写成类（至于上面提到的EWA重采样过程，既然结构已经完善，先这样放着吧）。具体的过程，写几个私有变量、构造函数、Lut计算函数、空的析构函数，再写一个销毁数组释放内存的函数，大概就OK了。</p>
-<p>调用，用new方法新建一个Lut对象（实际操作为创建一个数组），将Lut计算函数作用于该对象（由于数组用new方法创建，所以用指针运算符<code>-&gt;</code>访问成员函数），将lut数组定义为Lut类的公有变量，在主cpp里调用lut数组，传递给后续函数（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/8fbcfdc1797f7209997eaee3aea8c898ef755f28"><code>8fbcfdc</code></a>）。</p>
-<h3 id="不要一次都塞进来"><a href="#不要一次都塞进来" class="headerlink" title="不要一次都塞进来"></a>不要一次都塞进来</h3><p>在当时，代码存在一个问题，虽然能正常运行，但只能运行一次，每次关闭vsedit的预览窗口，再打开，就会崩溃。</p>
-<p>我想到，现在把计算Lut表的过程封装&#x2F;抽象成类，但本质上和之前没有区别，还是把整个lut数组传递给函数，这可能导致内存泄漏，可能是导致崩溃的原因。</p>
+<p>带着这种想法，我打算先把主 cpp 中计算 Lut 表的过程单独拿出来写成类（至于上面提到的 EWA 重采样过程，既然结构已经完善，先这样放着吧）。具体的过程，写几个私有变量、构造函数、Lut 计算函数、空的析构函数，再写一个销毁数组释放内存的函数，大概就 OK 了。</p>
+<p>调用，用 new 方法新建一个 Lut 对象（实际操作为创建一个数组），将Lut计算函数作用于该对象（由于数组用new方法创建，所以用指针运算符<code>-&gt;</code>访问成员函数），将 lut 数组定义为 Lut 类的公有变量，在主cpp里调用 lut 数组，传递给后续函数（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/8fbcfdc1797f7209997eaee3aea8c898ef755f28"><code>8fbcfdc</code></a>）。</p>
+<h3 id="不要一次都塞进来"><a href="#不要一次都塞进来" class="headerlink" title="不要一次都塞进来"></a>不要一次都塞进来</h3><p>在当时，代码存在一个问题，虽然能正常运行，但只能运行一次，每次关闭 vsedit 的预览窗口，再打开，就会崩溃。</p>
+<p>我想到，现在把计算 Lut 表的过程封装&#x2F;抽象成类，但本质上和之前没有区别，还是把整个 lut 数组传递给函数，这可能导致内存泄漏，可能是导致崩溃的原因。</p>
 <p>同时，我发现我在写构造函数、创建lut数组时，没有确定数组长度，像下面这样。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span><br>&#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> lut_size;<br>    <span class="hljs-type">double</span> radius;<br>    <span class="hljs-type">double</span> blur;<br>&#125;;<br><br>Lut::<span class="hljs-built_in">Lut</span>()<br>&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> defined(_MSC_VER)</span><br>    lut = <span class="hljs-keyword">new</span> <span class="hljs-type">double</span>[lut_size];<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>    lut = (<span class="hljs-type">double</span>*)_mm_malloc(<span class="hljs-built_in">sizeof</span>(<span class="hljs-type">double</span>) * lut_size, <span class="hljs-number">64</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
 
 <p>于是从两个方向入手解决。</p>
 <ul>
-<li><p>增加获取Lut数组的函数，这样改后应该是一次传递一个，而不是把每次都把整个数组传递过去（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/70100f24e645f5a08e912451425be0365110c934"><code>70100f</code></a>）</p>
+<li><p>增加获取 Lut 数组的函数，这样改后应该是一次传递一个，而不是把每次都把整个数组传递过去（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/70100f24e645f5a08e912451425be0365110c934"><code>70100f</code></a>）</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">float</span> <span class="hljs-title">Lut::GetFactor</span><span class="hljs-params">(<span class="hljs-type">int</span> index)</span></span><br><span class="hljs-function"></span>&#123;<br>  <span class="hljs-keyword">return</span> (<span class="hljs-type">float</span>)lut[index];<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
 <li><p>给<code>lut_size</code>手动设定初始值（commit <a target="_blank" rel="noopener" href="https://github.com/Kiyamou/VapourSynth-JincResize/commit/5fcf58470c157c1329214aaea6f7a507872c6c64"><code>5fcf58</code></a>），虽然代码不好看，但毕竟解决问题了</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span><br>&#123;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">int</span> lut_size = <span class="hljs-number">1024</span>;<br>&#125;;<br></code></pre></td></tr></table></figure></li>
 </ul>
-<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><h4 id="基于vsedit自带的信息"><a href="#基于vsedit自带的信息" class="headerlink" title="基于vsedit自带的信息"></a>基于vsedit自带的信息</h4><p>最开始写好初版代码，编译好后，vsedit居然打不开了。于是先打开vsedit再把dll丢进去，终于看到报错信息，原来是我把python接口的<code>float</code>写成了<code>foat</code>…orz…在编译时肯定看不出来问题，在调用时肯定出问题…</p>
-<h4 id="VS-Debug"><a href="#VS-Debug" class="headerlink" title="VS Debug"></a>VS Debug</h4><h5 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h5><p>在“调试”-“命令”里把vsedit的路径写进去，就可以用VS调试了。</p>
-<p>一开始我傻傻地把gcc编译好dll丢进去，让VS调试…呃，肯定是加载不了啊。</p>
-<h5 id="崩溃问题"><a href="#崩溃问题" class="headerlink" title="崩溃问题"></a>崩溃问题</h5><p>前面提到的<code>lut_size</code>没有初始化，就是借助VS Debug发现的。</p>
-<h5 id="文字的Bug"><a href="#文字的Bug" class="headerlink" title="文字的Bug"></a>文字的Bug</h5><p>虽然用断点查看具体计算过程有些有趣，但对解决文字Bug没有实质性的帮助。这个问题先放一放吧。</p>
+<h3 id="Debug"><a href="#Debug" class="headerlink" title="Debug"></a>Debug</h3><h4 id="基于-vsedit-自带的信息"><a href="#基于-vsedit-自带的信息" class="headerlink" title="基于 vsedit 自带的信息"></a>基于 vsedit 自带的信息</h4><p>最开始写好初版代码，编译好后，vsedit 居然打不开了。于是先打开 vsedit 再把 dll 丢进去，终于看到报错信息，原来是我把 python 接口的<code>float</code>写成了<code>foat</code>…orz…在编译时肯定看不出来问题，在调用时肯定出问题…</p>
+<h4 id="VS-Debug"><a href="#VS-Debug" class="headerlink" title="VS Debug"></a>VS Debug</h4><h5 id="调试方法"><a href="#调试方法" class="headerlink" title="调试方法"></a>调试方法</h5><p>在“调试”-“命令”里把 vsedit 的路径写进去，就可以用 VS 调试了。</p>
+<p>一开始我傻傻地把 gcc 编译好 dll 丢进去，让 VS 调试…呃，肯定是加载不了啊。</p>
+<h5 id="崩溃问题"><a href="#崩溃问题" class="headerlink" title="崩溃问题"></a>崩溃问题</h5><p>前面提到的<code>lut_size</code>没有初始化，就是借助 VS Debug 发现的。</p>
+<h5 id="文字的-Bug"><a href="#文字的-Bug" class="headerlink" title="文字的 Bug"></a>文字的 Bug</h5><p>虽然用断点查看具体计算过程有些有趣，但对解决文字 Bug 没有实质性的帮助。这个问题先放一放吧。</p>
 
             </div>
             <hr>
