@@ -711,14 +711,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/ISP/</loc>
+    <loc>http://yoursite.com/tags/C/</loc>
     <lastmod>2022-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/C/</loc>
+    <loc>http://yoursite.com/tags/ISP/</loc>
     <lastmod>2022-03-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
