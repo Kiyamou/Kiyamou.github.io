@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>子模块相关</title>
+    <link href="/2022/03/18/git-submodule/"/>
+    <url>/2022/03/18/git-submodule/</url>
+    
+    <content type="html"><![CDATA[<h3 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h3><h4 id="为项目添加子模块"><a href="#为项目添加子模块" class="headerlink" title="为项目添加子模块"></a>为项目添加子模块</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git submodule add &quot;repository-address&quot;<br></code></pre></td></tr></table></figure><p>上述命令会在项目根目录下建立一个与子模块同名的文件夹。同时在项目根目录新建<code>.gitmodules</code>文件，内容如下。</p><span id="more"></span><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-section">[submodule &quot;repository-name&quot;]</span><br><span class="hljs-attr">path</span> = repository-name<br><span class="hljs-attr">url</span> = <span class="hljs-string">&quot;repository-address&quot;</span><br></code></pre></td></tr></table></figure><p>若需指定子模块的存储未知，可在上述命令后添加存储路径</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git submodule add &quot;repository-address&quot; deps/repository-name<br></code></pre></td></tr></table></figure><h4 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git submodule init<br></code></pre></td></tr></table></figure><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git submodule update --init<br></code></pre></td></tr></table></figure><h4 id="子模块的更新"><a href="#子模块的更新" class="headerlink" title="子模块的更新"></a>子模块的更新</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">git submodule update --remote<br></code></pre></td></tr></table></figure><p>上述两个命令会更新所有（平级的）子模块，但不会涉及子模块的子模块。</p><p>若想对子模块的子模块进行初始化或者更新，需要进入相应子模块，重复执行上述命令。</p><h3 id="dirty-问题"><a href="#dirty-问题" class="headerlink" title="dirty 问题"></a>dirty 问题</h3><p>在已有的本地项目中更新子模块，更新后会在<code>Subproject commit xxxxxx</code>后出现后缀<code>-dirty</code>，表示这个子模块做了与远程仓库不同的修改。目前没有深究和找到确切的原因。但怀疑是子模块的子模块初始化&#x2F;版本错配导致的。使用<code>git status</code>查看项目整体状态如下。</p><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs vim">On branch master<br>Your branch <span class="hljs-keyword">is</span> <span class="hljs-keyword">up</span>-<span class="hljs-keyword">to</span>-date with <span class="hljs-string">&#x27;origin/master&#x27;</span>.<br>Changes not staged <span class="hljs-keyword">for</span> commit:<br>  (use <span class="hljs-string">&quot;git add &lt;file&gt;...&quot;</span> <span class="hljs-keyword">to</span> <span class="hljs-keyword">update</span> what will <span class="hljs-keyword">be</span> committed)<br>  (use <span class="hljs-string">&quot;git checkout -- &lt;file&gt;...&quot;</span> <span class="hljs-keyword">to</span> discard <span class="hljs-keyword">changes</span> in working directory)<br><br>        modified:   deps/repository-name (<span class="hljs-keyword">new</span> commits)<br><br><span class="hljs-keyword">no</span> <span class="hljs-keyword">changes</span> added <span class="hljs-keyword">to</span> commit (use <span class="hljs-string">&quot;git add&quot;</span> <span class="hljs-built_in">and</span>/<span class="hljs-built_in">or</span> <span class="hljs-string">&quot;git commit -a&quot;</span>)<br></code></pre></td></tr></table></figure><p>其中，子模块被标记了 modified，而且有新的 commit；同时我并没有对子模块的代码进行修改。所以基本能印证上述猜测。</p><p>在上一节提到，初始化&#x2F;更新子模块的子模块需要手动操作，这样就很有可能导致子模块版本与子模块的子模块版本不一致的问题。进而被标记为 dirty。</p><p>暂时也没有什么好的解决办法，把子模块的子模块删了，或者把整改子模块都删了，重新逐级手动初始化&#x2F;更新。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>工具使用</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>构建与编译</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>2021 年中书单/影评：只我是那个荒唐</title>
     <link href="/2021/07/11/2021-mid-books/"/>
     <url>/2021/07/11/2021-mid-books/</url>
