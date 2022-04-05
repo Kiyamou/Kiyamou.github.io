@@ -183,6 +183,57 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/02/07/rebuild-JincResize-2/">JincResize 代码重构（2）</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/02/07/rebuild-JincResize-2/">
+          
+          
+            
+          
+          指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章 GCC 神坑：-march&#x3D;native）
+对于 GCC 编译器，在编译命令中加入-march=native选项，可调用本地的库，使用 AVX 指令集优化。
+Functions（Doc 在这里，直接搜索想查的函数即可）
+（另外也可看一下Intel AVX を使用して SIMD 演
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-02-07 21:13" pubdate>
+              2020-02-07
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/Code/">Code</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/02/07/arch-and-meson/">ArchLinux和Meson构建工具的使用</a>
       </h1>
 
@@ -234,7 +285,7 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2020/02/06/ported-to-vs-3/">记一次从AviSynth到VapourSynth的迁移（3）：找不到的Bug与代码优化</a>
+        <a href="/2020/02/06/ported-to-vs-3/">记一次从 AviSynth 到 VapourSynth 的迁移（3）：找不到的 Bug 与代码优化</a>
       </h1>
 
       <p class="index-excerpt">
@@ -243,8 +294,8 @@
           
             
           
-          回忆重连离写这个系列的上一篇Blog已经一个月有余，离发布VapourSynth版AreaResize也三个星期了。一直没有继续写Blog，有些东西都要忘了。这个时候发现commit表情还是挺有用的。
-从功能上讲，上一篇Blog写到（基于原始avs版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如960x540这样的，在一些稍“不常规”的尺寸上（如1280x9
+          回忆重连离写这个系列的上一篇 Blog 已经一个月有余，离发布 VapourSynth 版 AreaResize 也三个星期了。一直没有继续写 Blog，有些东西都要忘了。这个时候发现 commit 表情还是挺有用的。
+从功能上讲，上一篇 Blog 写到（基于原始 avs 版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如 960x540 这样的，在一些稍“不
         </a>
       </p>
 
@@ -617,61 +668,6 @@ srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，
             <i class="iconfont icon-date"></i>
             <time datetime="2020-01-01 00:54" pubdate>
               2020-01-01
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/Code/">Code</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-              <a href="/tags/VapourSynth/">VapourSynth</a>
-            
-              <a href="/tags/Avisynth/">Avisynth</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2019/12/28/ported-to-vs/">记一次从AviSynth到VapourSynth的迁移（1）：感受不同的API 上</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/12/28/ported-to-vs/">
-          
-          
-            
-          
-          （内容待整理…orz）
-1.细碎的问题变量命名习惯的变化avs的pitch &#x3D; vs的stride
-avs的env &#x3D; vs的vi？那avs的params呢？
-vs中很少见dst-&gt;width之类的写法，而是d-&gt;width
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2019-12-28 23:04" pubdate>
-              2019-12-28
             </time>
           </div>
         

@@ -6,7 +6,7 @@
   <link href="http://yoursite.com/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2022-03-18T08:52:26.249Z</updated>
+  <updated>2022-04-05T17:25:38.460Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>VapourSynth API4 体验</title>
+    <link href="http://yoursite.com/2022/04/05/vs-api4/"/>
+    <id>http://yoursite.com/2022/04/05/vs-api4/</id>
+    <published>2022-04-05T14:21:59.000Z</published>
+    <updated>2022-04-05T17:25:38.460Z</updated>
+    
+    <content type="html"><![CDATA[<p>2021 年 9 月下旬，VapourSynth 发布 R55 版本，从这一版本开始使用 API4。API4 的启用使大量脚本需要更新，一些滤镜似乎也需要做相应的适配。同时，由于大版本的升级和滤镜开发的迁移，配套的 IDE、对应的 Python 版本都需要关注一下。</p><span id="more"></span><h3 id="脚本-API4-适配"><a href="#脚本-API4-适配" class="headerlink" title="脚本 API4 适配"></a>脚本 API4 适配</h3><p>常见的 API 替换：</p><ul><li><p><code>core = vs.get_core()</code><br>-&gt; <code>from vapoursynth import core</code><br>-&gt; <code>core = vs.core</code></p></li><li><p>色彩空间 YCoCg 和 COMPAT 系列被弃用</p></li><li><p>内置函数的更新<br>比如 <code>AverageFrames()</code> 从 <code>misc</code> 迁移到 <code>std</code></p></li><li><p>命名规则中 <code>_</code> 从后缀变为前缀，避免和 Python 变量名冲突<br>比如<code>lambda_</code>改为<code>_lambda</code></p></li></ul><p>在调试中遇到过如下报错</p><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-symbol">analyse:</span> <span class="hljs-keyword">function</span> does <span class="hljs-built_in">not</span> <span class="hljs-keyword">take</span> argument(s) named _global<br></code></pre></td></tr></table></figure><p>可能是后缀变前缀，但滤镜没有适配导致的。后来直接升级 VapourSynth 和 Python 大版本就没有这个问题了。</p><h3 id="滤镜-API4-适配"><a href="#滤镜-API4-适配" class="headerlink" title="滤镜 API4 适配"></a>滤镜 API4 适配</h3><p>新版 API 对滤镜的影响有限，除了 Histogram 外暂时没有遇到因为 API 更新导致不可用的问题（也可能是我没注意到）。不过 API4 启用后不止一个滤镜发布了更新，稍稍关注一下。比如 fmtconv 久违近两年，连续发布多个更新。</p><p>一些 API 的变化：</p><ul><li><p>变量类型：</p><ul><li><code>VSFrameRef</code> -&gt; <code>VSFrame</code></li><li><code>VSFormat</code> -&gt; <code>VSVideoFormat</code></li></ul></li><li><p>函数（<code>prop</code> -&gt; <code>map</code>）</p><ul><li><code>propGetNode()</code> -&gt; <code>mapGetNode()</code></li><li><code>propSetInt()</code> -&gt; <code>mapSetInt()</code></li></ul></li></ul><p>官方 Doc 似乎还没有完全更新，没事看看 <a href="https://github.com/vapoursynth/vapoursynth/blob/master/src/core/vsapi.cpp">vsapi.cpp</a> 总是好的。</p><h3 id="依赖索引"><a href="#依赖索引" class="headerlink" title="依赖索引"></a>依赖索引</h3><ul><li><p>VapourSynth Organization 增加了数个滤镜，把一些滤镜从 VapourSynth 本体中剥离了出来。</p><p>部分滤镜指路：</p><ul><li>单张图像读写：<a href="https://github.com/vapoursynth/vs-imwri">vapoursynth&#x2F;vs-imwri</a></li><li>降噪与修复 Removegrain：<a href="https://github.com/vapoursynth/vs-removegrain">vapoursynth&#x2F;vs-removegrain</a></li><li>场匹配与删除重复帧（反胶卷过带）：<a href="https://github.com/vapoursynth/vivtc">vapoursynth&#x2F;vivtc</a></li><li>源滤镜 lsmas：<a href="https://github.com/AkarinVS/L-SMASH-Works">AkarinVS&#x2F;L-SMASH-Works</a></li></ul></li><li><p>越来越多的脚本放到了 Python Package Index（PyPI）上，所以动手前先试一下<code>pip install xxx</code>不是个坏主意。</p></li></ul><h3 id="IDE：从-VSEditor-到-VSEditor2"><a href="#IDE：从-VSEditor-到-VSEditor2" class="headerlink" title="IDE：从 VSEditor 到 VSEditor2"></a>IDE：从 VSEditor 到 VSEditor2</h3><p>我的 VSEditor 很久之前失去了语法高亮，时间太久想不起来当时搞了什么操作。删了重下、重装 VapourSynth 都无济于事。D9 论坛上提到删除 xx.config，但我这是 Windows 系统啊…</p><h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><p>顺势改用 VSEditor2。VSEditor2 目前更新到 R6.5。其中，R6.5 版本需要 <a href="https://github.com/DJATOM/LibP2P-Vapoursynth">LibP2P</a>，<a href="AkarinVS/vapoursynth-plugin">AkarinVS&#x2F;vapoursynth-plugin</a>，<a href="https://github.com/dubhater/vapoursynth-histogram">Histogram</a>。R6.4 及之前的 R6.x 版本不需要后两者。</p><p>但我在使用 R6.5 版本时 VSEditor2 发生崩溃，怀疑与 Histogram 有关。Histogram 在适配 API4 后未发布相应版本，并且似乎没有完全适配，简单改了代码编译后 VSEditor2 仍然崩溃。幸好 VSEditor2 的作者做了相应适配（<a href="https://github.com/gundamftw/vapoursynth-histogram">gundamftw&#x2F;vapoursynth-histogram</a>），R6.5 版本顺利运行。</p><p>应该说 VSEditor2 正处于开发阶段，加上新版 VapourSynth API 的启用可能引发潜在的问题，遇到问题多看看<a href="https://forum.doom9.org/showthread.php?t=181708">作者的帖子</a>是值得的。</p><h4 id="功能与界面"><a href="#功能与界面" class="headerlink" title="功能与界面"></a>功能与界面</h4><p>基本的功能都和 VSEidtor 保持了一致，右侧的工具栏提供了一些方便的小工具，比如单独查看 Y、U、V 各个平面，裁剪助手等，预览界面下方的进度条也让查找视频内容更加便捷。总之增添了不少人性化的细节。</p><p>但不得不吐槽一句，把预览界面和代码界面放到同一个窗口，取消原来单独的预览窗口，真是对小屏幕太不友好了。</p><h3 id="Python-版本升级"><a href="#Python-版本升级" class="headerlink" title="Python 版本升级"></a>Python 版本升级</h3><p>截至目前，最新版的 VapourSynth R58-RC2 仅适配 Python 3.10.x 版本和 Python 3.8.x 版本。</p><p>在调用脚本时遇上一个报错。</p><figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ceylon"><span class="hljs-string">&#x27;ABCMeta&#x27;</span> <span class="hljs-keyword">object</span> <span class="hljs-keyword">is</span> not subscriptable<br></code></pre></td></tr></table></figure><p>当时环境为 VapourSynth R57 + Python 3.8。这似乎是一个蛋疼的语言问题，直接升级版本到 VapourSynth R58-RC2 + Python 3.10，之后相安无事。</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;2021 年 9 月下旬，VapourSynth 发布 R55 版本，从这一版本开始使用 API4。API4 的启用使大量脚本需要更新，一些滤镜似乎也需要做相应的适配。同时，由于大版本的升级和滤镜开发的迁移，配套的 IDE、对应的 Python 版本都需要关注一下。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="工具使用" scheme="http://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
+    
+    
+    <category term="VapourSynth" scheme="http://yoursite.com/tags/VapourSynth/"/>
+    
+  </entry>
   
   <entry>
     <title>子模块相关</title>
@@ -466,29 +487,6 @@
     
     
     <category term="C++" scheme="http://yoursite.com/tags/C/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Travis CI 持续集成与各编译器对 C++ 新特性的支持</title>
-    <link href="http://yoursite.com/2020/03/12/CI-and-compiler/"/>
-    <id>http://yoursite.com/2020/03/12/CI-and-compiler/</id>
-    <published>2020-03-11T17:36:45.000Z</published>
-    <updated>2022-02-25T17:29:32.061Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="Travis-CI-的部署"><a href="#Travis-CI-的部署" class="headerlink" title="Travis CI 的部署"></a>Travis CI 的部署</h3><p>很早就有体验 Travis CI 持续集成的想法，于是拿 <a href="https://github.com/Kiyamou/VapourSynth-JincResize">VapourSynth-JincResize</a> 项目试一试。</p><h4 id="依赖问题"><a href="#依赖问题" class="headerlink" title="依赖问题"></a>依赖问题</h4><p>昨天给 JincResize 项目照猫画虎写了<code>.travis.yml</code>脚本。一开始打算沿用我在 Linux 下编译的模式，基于meson+ninja构建。为此还专门去搜了 Github Issues，从 Issues 上面抄了使用 meson 的<code>.travis.yml</code>脚本。</p><p>但等我上传了脚本、部署完成之后才想起，JincResize 项目使用 pkg-config 解决依赖的问题，而配置 pkg-config 需要先编译 VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用 gcc 编译，反正我的项目结构简单。</p><span id="more"></span><p>直接用 gcc 编译也需要解决 VapourSynth 头文件的依赖，绞尽脑汁想了个略显蛋疼的办法，从 VapourSynth 的官方仓库中下载头文件到服务器，再移到相应位置。之所以这么折腾，而不是把需要的头文件传到 JincResize 项目的仓库中，是因为<del>很多其他 VapourSynth 的 Plugin 项目都不传这类通用头文件</del>不同版本 VapourSynth 头文件对应不同版本的 VapourSynth API，API 版本不同，编译出来的动态链接库没法被 VapourSynth 主程序调用。如果我自己向仓库传了某一版本的头文件，反而可能误导其他人。</p><p>然而 VapourSynth 毕竟不是一个小项目，起初想试一下 git 2.25.0 新增的部分克隆功能，只克隆我需要的两个头文件，但我太笨了…不会用。遂用 wget 下载 Release 中打包好的源码（体积毕竟比整个仓库小），然后再解压我想要的文件、移动。</p><h4 id="编译器版本问题"><a href="#编译器版本问题" class="headerlink" title="编译器版本问题"></a>编译器版本问题</h4><p>Travis CI 服务器用的是 ubuntu 16 + gcc 5，由于 JincResize 项目使用了 C++17 的特殊数学函数（<code>cyl_bessel_j()</code>），需要 gcc 7 及以上版本。好办，直接给服务器装 gcc 7 呗。</p><p>话是这么说，而且也部署成功并编译通过了，但我总觉得安装 gcc 7 时要把系统依赖都升级一遍（<code>sudo apt-get upgrade</code>）有点不太环保（<del>虽然 Travis CI 的服务器性能强劲</del>）。于是改了一下代码，当 gcc 版本小于 7 时，用传统的<code>ji()</code>函数，不涉及 C++17。</p><p>总算环保地在服务器上编译通过了。</p><h3 id="各编译器对-C-新特性的支持"><a href="#各编译器对-C-新特性的支持" class="headerlink" title="各编译器对 C++ 新特性的支持"></a>各编译器对 C++ 新特性的支持</h3><p>（未完待续…）</p>]]></content>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;Travis-CI-的部署&quot;&gt;&lt;a href=&quot;#Travis-CI-的部署&quot; class=&quot;headerlink&quot; title=&quot;Travis CI 的部署&quot;&gt;&lt;/a&gt;Travis CI 的部署&lt;/h3&gt;&lt;p&gt;很早就有体验 Travis CI 持续集成的想法，于是拿 &lt;a href=&quot;https://github.com/Kiyamou/VapourSynth-JincResize&quot;&gt;VapourSynth-JincResize&lt;/a&gt; 项目试一试。&lt;/p&gt;
-&lt;h4 id=&quot;依赖问题&quot;&gt;&lt;a href=&quot;#依赖问题&quot; class=&quot;headerlink&quot; title=&quot;依赖问题&quot;&gt;&lt;/a&gt;依赖问题&lt;/h4&gt;&lt;p&gt;昨天给 JincResize 项目照猫画虎写了&lt;code&gt;.travis.yml&lt;/code&gt;脚本。一开始打算沿用我在 Linux 下编译的模式，基于meson+ninja构建。为此还专门去搜了 Github Issues，从 Issues 上面抄了使用 meson 的&lt;code&gt;.travis.yml&lt;/code&gt;脚本。&lt;/p&gt;
-&lt;p&gt;但等我上传了脚本、部署完成之后才想起，JincResize 项目使用 pkg-config 解决依赖的问题，而配置 pkg-config 需要先编译 VapourSynth…在服务器上编译也不是不行，但这样也太脱裤子放屁了…于是我便想不借助构建工具了，直接用 gcc 编译，反正我的项目结构简单。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="工具使用" scheme="http://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/"/>
-    
-    
-    <category term="构建与编译" scheme="http://yoursite.com/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/"/>
     
   </entry>
   
