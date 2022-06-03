@@ -14,12 +14,12 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="MSVC：从入门到放弃从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。
-思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一">
+  <meta name="description" content="MSVC：从入门到放弃从一开始修改 JincResize 代码到现在，代码编译后 dll 运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5 fps vs 9 fps）。改了一些代码（主要是涉及 C 语言和 C++ 的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。
+思考了一下，做了一下对照实验。使用原作者代码，直接在 VS2019 中编译（除了为在">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-  <title>Windows下使用gcc/g++编译器 - 308实验室</title>
+  <title>Windows 下使用 gcc/g++ 编译器 - 308实验室</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
 
@@ -167,9 +167,9 @@
       <div class="full-bg-img">
         <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
           <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="Windows下使用gcc/g++编译器">
+            <span class="h2" id="subtitle" title="Windows 下使用 gcc/g++ 编译器">
               
-                Windows下使用gcc/g++编译器
+                Windows 下使用 gcc/g++ 编译器
               
             </span>
 
@@ -201,7 +201,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      7
+      8
        分钟
     </span>
   
@@ -231,44 +231,44 @@
         <div class="py-5" id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Windows下使用gcc/g++编译器</h1>
+            <h1 style="display: none">Windows 下使用 gcc/g++ 编译器</h1>
             
             <div class="markdown-body">
-              <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改JincResize代码到现在，代码编译后dll运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5s vs 9s）。改了一些代码（主要是涉及C语言和C++的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
-<p>思考了一下，做了一下对照实验。使用原作者代码，直接在VS2019中编译（除了为在VS2019中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s&#x2F;帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
-<p>我又仿照HomeOfVapourSynthEvolution的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
-<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从C到C++的迁移，但仍有C的风格，导致和VS的纯C++编译器八字不合？）</p>
-<p>不管怎么说，改用gcc&#x2F;g++。</p>
+              <h3 id="MSVC：从入门到放弃"><a href="#MSVC：从入门到放弃" class="headerlink" title="MSVC：从入门到放弃"></a>MSVC：从入门到放弃</h3><p>从一开始修改 JincResize 代码到现在，代码编译后 dll 运行缓慢的问题一直困扰着我。虽然原作者说运行速度慢，但我自己编译的也太慢了（1.5 fps vs 9 fps）。改了一些代码（主要是涉及 C 语言和 C++ 的区别），但对速度无肉眼可见的影响。这样下去，代码重构也没有动力。</p>
+<p>思考了一下，做了一下对照实验。使用原作者代码，直接在 VS2019 中编译（除了为在 VS2019 中编译通过，修改了一处代码外，其余代码均未改动），也很慢，也是约9s&#x2F;帧。这样让我明确了一点，就是编译方面的问题，导致运行速度缓慢的。</p>
+<p>我又仿照 HomeOfVapourSynthEvolution 的预处理设置，并在编译中尽量使用加快代码速度的优化参数，但最终的编译结果仍没有什么改善。</p>
+<p>所以我有理由判断，是编译器的锅。（也许是现在的代码，虽然做了从 C 到 C++ 的迁移，但仍有 C 的风格，导致和 VS 的纯 C++ 编译器八字不合？）</p>
+<p>不管怎么说，改用 gcc&#x2F;g++。</p>
 <span id="more"></span>
 
-<h3 id="使用gcc编译C语言代码"><a href="#使用gcc编译C语言代码" class="headerlink" title="使用gcc编译C语言代码"></a>使用gcc编译C语言代码</h3><p>前两天用了一次gcc编译C语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。</p>
+<h3 id="使用-gcc-编译-C-语言代码"><a href="#使用-gcc-编译-C-语言代码" class="headerlink" title="使用 gcc 编译 C 语言代码"></a>使用 gcc 编译 C 语言代码</h3><p>前两天用了一次 gcc 编译 C 语言代码，但不知道怎么自行设置头文件和库文件路径，所以就放弃了。</p>
 <p>今天明白了，库文件不一定需要，而反正我所需要的头文件就两个，直接复制过来就好了。</p>
 <p>直接编译原作者代码。</p>
 <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">gcc -o ew<span class="hljs-built_in">a_lanczos</span>.dll -shared ew<span class="hljs-built_in">a_lanczos</span>.c<br></code></pre></td></tr></table></figure>
 
-<p>能编译通过，但VapourSynth中无法调用。想了一下，这里的gcc是32位，和64位的VapourSynth不搭，于是换用64位的gcc，并打开<code>-O2</code>优化。</p>
+<p>能编译通过，但 VapourSynth 中无法调用。想了一下，这里的 gcc 是 32 位，和 64 位的 VapourSynth 不搭，于是换用64位的gcc，并打开<code>-O2</code>优化。</p>
 <figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey">x86_64-w64-mingw32-gcc -o ew<span class="hljs-built_in">a_lanczos</span>.dll -shared -O2 ew<span class="hljs-built_in">a_lanczos</span>.c<br></code></pre></td></tr></table></figure>
 
-<p>VapourSynth成功运行，而且速度也和原作者的差不多了！Dll体积也差不多，<del>我感觉原作者就是这么编译的</del>。</p>
-<h3 id="使用g-编译C-代码"><a href="#使用g-编译C-代码" class="headerlink" title="使用g++编译C++代码"></a>使用g++编译C++代码</h3><h4 id="动态编译"><a href="#动态编译" class="headerlink" title="动态编译"></a>动态编译</h4><p>虽说gcc也不是不能编译C++，但毕竟…还是用专业的g++吧。</p>
+<p>VapourSynth 成功运行，而且速度也和原作者的差不多了！Dll 体积也差不多，<del>我感觉原作者就是这么编译的</del>。</p>
+<h3 id="使用-g-编译-C-代码"><a href="#使用-g-编译-C-代码" class="headerlink" title="使用 g++ 编译 C++ 代码"></a>使用 g++ 编译 C++ 代码</h3><h4 id="动态编译"><a href="#动态编译" class="headerlink" title="动态编译"></a>动态编译</h4><p>虽说 gcc 也不是不能编译 C++，但毕竟…还是用专业的 g++ 吧。</p>
 <figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">x86_64-w64-mingw32-g++ -<span class="hljs-keyword">shared </span>-o <span class="hljs-keyword">JincResize.dll </span>-O2 <span class="hljs-keyword">JincResize.cpp</span><br></code></pre></td></tr></table></figure>
 
-<p>编译出来的dll，VapourSynth无法调用。我怀疑是没有配置库文件的锅，因为在CSDN上看到<a target="_blank" rel="noopener" href="https://blog.csdn.net/jmppok/article/details/17118669">一篇博文</a>，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题</p>
+<p>编译出来的 dll，VapourSynth 无法调用。我怀疑是没有配置库文件的锅，因为在 CSDN 上看到<a target="_blank" rel="noopener" href="https://blog.csdn.net/jmppok/article/details/17118669">一篇博文</a>，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题</p>
 <p>于是我照这篇博文的方法，加上了<code>-Wl,--no-undefined</code>参数，这样就能暴露缺失库文件问题。</p>
 <figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">x86_64</span><span class="hljs-literal">-</span><span class="hljs-comment">w64</span><span class="hljs-literal">-</span><span class="hljs-comment">mingw32</span><span class="hljs-literal">-</span><span class="hljs-comment">g</span>++ <span class="hljs-literal">-</span><span class="hljs-comment">o</span> <span class="hljs-comment">JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">dll</span> <span class="hljs-literal">-</span><span class="hljs-comment">shared</span> <span class="hljs-literal">-</span><span class="hljs-comment">O2</span> <span class="hljs-literal">-</span><span class="hljs-comment">Wl</span><span class="hljs-string">,</span>--<span class="hljs-comment">no</span><span class="hljs-literal">-</span><span class="hljs-comment">undefined</span> <span class="hljs-comment">JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">cpp</span><br></code></pre></td></tr></table></figure>
 
 <p>但我试了一次，仍没有报错，正常地编译通过。</p>
-<p>在<a target="_blank" rel="noopener" href="http://turbinee.blog.sohu.com/271861881.html">这篇博文</a>的帮助下，我明白了g++是动态编译，编译好的dll依赖于其他dll。想起了之前<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2019/10/20/mxnet-install-win/">安装MXNet的踩坑经历</a>，（<del>我也能自引了</del>，积累是有用的）。使用Visual Studio的dumpbin工具查到了依赖的两个dll。</p>
-<p>但与博文中把dll放到程序目录就OK不同的是，这两个dll我无论是放到VapourSynth的文件（VapourSynth下各种文件夹都试过了），还是<code>System32</code>中，都依然无法调用我编译的dll。只得另寻他法。</p>
+<p>在<a target="_blank" rel="noopener" href="http://turbinee.blog.sohu.com/271861881.html">这篇博文</a>的帮助下，我明白了 g++ 是动态编译，编译好的 dll 依赖于其他 dll。想起了之前<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2019/10/20/mxnet-install-win/">安装MXNet的踩坑经历</a>，（<del>我也能自引了</del>，积累是有用的）。使用 Visual Studio 的 dumpbin 工具查到了依赖的两个dll。</p>
+<p>但与博文中把 dll 放到程序目录就 OK 不同的是，这两个 dll 我无论是放到 VapourSynth 的文件（VapourSynth 下各种文件夹都试过了），还是<code>System32</code>中，都依然无法调用我编译的 dll。只得另寻他法。</p>
 <p>（况且就算这种方法能行，我也不能这么干，我不可能在发布时再“顺带”发布两个依赖，这也太蛋疼了）</p>
 <h4 id="静态编译"><a href="#静态编译" class="headerlink" title="静态编译"></a>静态编译</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/houjin_cn/article/details/37507781">这篇博文</a>告诉我，可以通过静态编译的方式避免上述依赖的问题。</p>
 <p>只加上<code>-static-libgcc</code>和<code>-static-libstdc++</code>这两个参数，还是不行。于是干脆使用<code>-static</code>，全局静态编译。</p>
 <figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs d">x86_64-w64-mingw32-g++ -<span class="hljs-keyword">shared</span> -o JincResize.dll -O2 -<span class="hljs-keyword">static</span> JincResize.cpp<br></code></pre></td></tr></table></figure>
 
-<p>终于成功了。（dll大小：63kb -&gt; 415kb -&gt; 451kb）</p>
-<p>Dll运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。</p>
+<p>终于成功了。（dll 大小：63kb -&gt; 415kb -&gt; 451kb）</p>
+<p>Dll 运行速度也是和原作者的相似（所以我增加模板函数和其他修改并没有拖垮速度嘛）。</p>
 <p>这样后续的代码重构也有动力了！</p>
-<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾CodeBlocks和MinGW，从第一次使用gcc编译成功C语言代码、获得能用的dll，到动态编译C++虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。</p>
+<h3 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h3><p>这半天加晚上的折腾过程，从一开始的毫无头绪，到折腾 CodeBlocks 和 MinGW，从第一次使用 gcc 编译成功 C 语言代码、获得能用的 dll，到动态编译 C++ 虽缺少依赖，但能平静地寻找解决办法。真的是很棒的经历。</p>
 <p>加油吧，相信自己。</p>
 
             </div>
