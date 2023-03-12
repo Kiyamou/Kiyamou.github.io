@@ -295,10 +295,10 @@ Blog 写得详细一些，这也是我学习 C++ 基础知识的过程。
 <p>唯一涉及的就是这句话</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">pixel = std::<span class="hljs-built_in">max</span>(std::<span class="hljs-built_in">min</span>(pixel / normalizer, (<span class="hljs-number">1</span> &lt;&lt; d-&gt;vi-&gt;format-&gt;bitsPerSample) - <span class="hljs-number">1.0</span>), <span class="hljs-number">0.0</span>);<br></code></pre></td></tr></table></figure>
 
-<p>这种比较两次大小的操作在图像处理中很常见，用最大值和最小值限制，得到一个中间值的值，以防结果“溢出”色彩取值范围。对于整型而言，限制无非就是色彩<code>[0,2^depth-1]</code>，比如熟悉的8bit，色彩取值<code>[0,255]</code>，16bit 是<code>[0,65335]</code>。而对于32bit浮点型，取值范围则是<code>[-1.0,1.0]</code>，这样更好比较了，先判断一下<code>stInteger</code>（vs中判断是否为整型的操作），若否，则</p>
+<p>这种比较两次大小的操作在图像处理中很常见，用最大值和最小值限制，得到一个中间值的值，以防结果“溢出”色彩取值范围。对于整型而言，限制无非就是色彩<code>[0,2^depth-1]</code>，比如熟悉的8bit，色彩取值<code>[0,255]</code>，16bit 是<code>[0,65335]</code>。而对于 32bit 浮点型，取值范围则是<code>[-1.0,1.0]</code>，这样更好比较了，先判断一下<code>stInteger</code>（vs中判断是否为整型的操作），若否，则</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">pixel = std::<span class="hljs-built_in">max</span>(std::<span class="hljs-built_in">min</span>(pixel / normalizer, <span class="hljs-number">-1.0</span>), <span class="hljs-number">1.0</span>);<br></code></pre></td></tr></table></figure>
 
-<p>至此，运算部分对32bit浮点型的支持也完成了。</p>
+<p>至此，运算部分对 32bit 浮点型的支持也完成了。</p>
 <h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><h4 id="使用-gcc-编译"><a href="#使用-gcc-编译" class="headerlink" title="使用 gcc 编译"></a>使用 gcc 编译</h4><p>主要参考了这篇文章： <a target="_blank" rel="noopener" href="https://www.qiufengblog.com/articles/gcc-dll.html">https://www.qiufengblog.com/articles/gcc-dll.html</a> 。</p>
 <p>使用 gcc 编译 C 语言代码，编译为 dll。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">gcc -o func.dll -shared main.c<br></code></pre></td></tr></table></figure>
