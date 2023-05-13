@@ -183,6 +183,57 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2020/04/08/gcc-use-2/">gcc 10 尝鲜及后续</a>
+      </h1>
+
+      <p class="index-excerpt">
+        <a href="/2020/04/08/gcc-use-2/">
+          
+          
+            
+          
+          在 zimg 项目的 Issue 中看到这样一个问题，使用 gcc 10 编译出现了编译器把size_t错认成std::size_t，从而导致编译出错。看到这个问题有点惊讶，gcc居然都出到 10 了，支持了 C++20 的一些新特性，便想尝试一下。
+看了 gcc 官网，10 版本还没发布编译好的版本，想了一下，比起自己编译，还是装个新版的 Fedora 系统更省事一点。
+        </a>
+      </p>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2020-04-08 17:30" pubdate>
+              2020-04-08
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-category"></i>
+            
+              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
+            
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+            
+              <a href="/tags/C/">C++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2020/03/23/rebuild-JincResize-3/">JincResize 代码重构（3）</a>
       </h1>
 
@@ -609,58 +660,6 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/ISP/">ISP</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2020/02/13/week-202002-1/">周记 2020.02.03-02.09</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2020/02/13/week-202002-1/">
-          
-          
-            
-          
-          1.dequedeque的声明
-12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();
-
-        </a>
-      </p>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2020-02-13 13:50" pubdate>
-              2020-02-13
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-category"></i>
-            
-              <a href="/categories/%E7%AC%94%E8%AE%B0/">笔记</a>
-            
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/C/">C++</a>
-            
-              <a href="/tags/VapourSynth/">VapourSynth</a>
             
           </div>
         
