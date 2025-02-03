@@ -192,7 +192,7 @@ Grai">
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2k 字
+      2.1k 字
     </span>
   
 
@@ -202,7 +202,7 @@ Grai">
       <i class="iconfont icon-clock-fill"></i>
       
       
-      14
+      15
        分钟
     </span>
   
@@ -250,7 +250,7 @@ Grai">
 <p>需要注意这一滤镜的时-空混合模式（Spatio-Temporal mode），在默认设置下，AviSynth 和 VapourSynth 版本的 KNLmeans 均不使用时间参考帧，当参数<code>d</code>大于 0 时，在降噪中启用时间参考帧，开启时间参考帧可以改善质量。对于 YUV444 采样格式的视频，请将<code>cmode</code>参数设置为<code>True</code>，以开启色度平面降噪，因为在默认设置下仅对亮度平面进行处理。</p>
 <p>上述两个参数的设置均会降低速度，但除非使用古老的 GPU 或者同时使用多个 GPU 优化的滤镜，否则不会对编码速度产生明显影响，控速步仍为 CPU 的编码过程。KNLmeans 的文档在<a target="_blank" rel="noopener" href="https://github.com/Khanattila/KNLMeansCL/wiki">这里</a>。</p>
 <h4 id="3-三维块匹配算法（BM3D）"><a href="#3-三维块匹配算法（BM3D）" class="headerlink" title="3.三维块匹配算法（BM3D）"></a>3.三维块匹配算法（BM3D）</h4><p>BM3D 很有价值，也很慢，仅有 VapourSynth 接口。在 AviSynth 上运行可能会导致崩溃，除非大幅优化内存占用，否则很难实现 AviSynth 接口。</p>
-<p>BM3D可以并行化并在 GPU 上运行（可参考此处的<a target="_blank" rel="noopener" href="https://books.google.com/books?id=xqfNBQAAQBAJ&pg=PA380&lpg=PA380&dq=bm3d+GPU+parallel&source=bl&ots=MS9-Kzi-8u&sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&hl=en&sa=X&ei=wljeVI-LKcqAywPVyILgDQ&ved=0CDQQ6AEwBA#v=onepage&q=bm3d%20GPU%20parallel&f=false">文献</a>，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现（译者注：在<a target="_blank" rel="noopener" href="http://vsdb.top/plugins/bm3dgpu">这里</a>提到了一份 VapourSynth 接口的 BM3D-GPU 实现，但原始代码库已无法获取）。</p>
+<p>BM3D可以并行化并在 GPU 上运行（可参考此处的<a target="_blank" rel="noopener" href="https://books.google.com/books?id=xqfNBQAAQBAJ&pg=PA380&lpg=PA380&dq=bm3d+GPU+parallel&source=bl&ots=MS9-Kzi-8u&sig=fMcblGOrD-wCUrZzijmAdQF2Tj8&hl=en&sa=X&ei=wljeVI-LKcqAywPVyILgDQ&ved=0CDQQ6AEwBA#v=onepage&q=bm3d%20GPU%20parallel&f=false">文献</a>，译者注：BM3D 已经有诸多 GPU 版本，可以在 Github 等地方搜索到），但 AviSynth 或 VapourSynth 尚无 GPU 实现。</p>
 <p>BM3D 实现了模糊程度与体积的最佳平衡（因此也导致了细节损失），但在基于 CPU 的降噪滤镜中，BM3D 是速度最慢的。</p>
 <p>值得注意的是，BM3D 滤镜有一个<code>ref</code>参数，用以设定降噪时的参考视频，可以将<code>ref</code>设定为其他降噪滤镜的处理结果，从而实现 BM3D 与其他降噪滤镜的协同处理。在 BM3D <a target="_blank" rel="noopener" href="https://github.com/HomeOfVapourSynthEvolution/VapourSynth-BM3D">文档</a>中有如下举例：</p>
 <blockquote>
@@ -271,7 +271,9 @@ Grai">
 <p>基于深度神经网络的算法还有很多（如<a target="_blank" rel="noopener" href="https://www.researchgate.net/publication/300688682_Deep_Gaussian_Conditional_Random_Field_Network_A_Model-Based_Deep_Network_for_Discriminative_Denoising">文献</a>），但多数未公开算法。</p>
 <p>对于动画风格的图像使用 Waifu2x 进行降噪没有问题，但对于真实图像，其纹理可能被识别为噪点，进而被破坏。</p>
 <p><strong>Edit</strong>：在写完本节后，Waifu2x 进行了重大升级，速度进一步提升，并且在降噪功能上提供了更多选项。</p>
-<h4 id="6-去色带（Debanding）"><a href="#6-去色带（Debanding）" class="headerlink" title="6.去色带（Debanding）"></a>6.去色带（Debanding）</h4><h3 id="Grain-编码"><a href="#Grain-编码" class="headerlink" title="Grain 编码"></a>Grain 编码</h3>
+<h4 id="6-去色带（Debanding）"><a href="#6-去色带（Debanding）" class="headerlink" title="6.去色带（Debanding）"></a>6.去色带（Debanding）</h4><p>部分降噪算法在体积控制&#x2F;压缩率方面效果明显，但它们都有一个共同的问题，色带。为解决这个问题，我们需要进行进行去色带，并将颗粒施加到画面颜色渐变的部分。这听上去可能反直觉，因为我们刚刚花费了大量的时间来去除颗粒，我们接下来会谈论这个问题。</p>
+<p>（原文中有图片）在使用 BM3D 降噪后，使用 f3kdb 进行去色带，并且使用合适的 mask 保护图中的纹理。</p>
+<h3 id="Grain-编码"><a href="#Grain-编码" class="headerlink" title="Grain 编码"></a>Grain 编码</h3>
             </div>
             <hr>
             <div>
