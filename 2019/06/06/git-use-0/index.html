@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -284,7 +284,7 @@
 <p>在Windows下，安装Gpg4win，下载地址：<a target="_blank" rel="noopener" href="https://gpg4win.org/download.html">https://gpg4win.org/download.html</a>。</p>
 <p>Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。</p>
 <p>安装完成后，执行如下命令，指定使用我们刚安装的GnuPG。</p>
-<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stata">git config --<span class="hljs-keyword">global</span> gpg.<span class="hljs-keyword">program</span> <span class="hljs-string">&quot;C:\Program Files (x86)\GnuPG\bin\gpg.exe&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">git config <span class="hljs-operator">-</span>-global gpg.program <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\P</span>rogram Files (x86)<span class="hljs-char escape_">\G</span>nuPG<span class="hljs-char escape_">\b</span>in<span class="hljs-char escape_">\g</span>pg.exe&quot;</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="创建与设置密钥"><a href="#创建与设置密钥" class="headerlink" title="创建与设置密钥"></a>创建与设置密钥</h4><p>使用<code>--full-generate-key</code>选项，即在创建密钥时进行完整的密钥选项设置。</p>
 <figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs verilog">gpg --full-<span class="hljs-keyword">generate</span>-key<br></code></pre></td></tr></table></figure>
@@ -331,7 +331,7 @@
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">user.signingkey</span>= <span class="hljs-string">&quot;GPG key ID&quot;</span><br><span class="hljs-attr">commit.gpgsign</span>=<span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="二、通过Git命令提交代码"><a href="#二、通过Git命令提交代码" class="headerlink" title="二、通过Git命令提交代码"></a>二、通过Git命令提交代码</h3><p>在本地修改完代码后，进入项目文件夹，执行以下命令，提交代码至master分支。</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs elixir"><span class="hljs-variable">$ </span>git add .<br><span class="hljs-variable">$ </span>git commit -m <span class="hljs-string">&quot;messsage for code update&quot;</span><br><span class="hljs-variable">$ </span>git push -u origin master<br></code></pre></td></tr></table></figure>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs erlang"><span class="hljs-string">$ </span>git add .<br><span class="hljs-string">$ </span>git commit -m <span class="hljs-string">&quot;messsage for code update&quot;</span><br><span class="hljs-string">$ </span>git push -u origin master<br></code></pre></td></tr></table></figure>
 
 <p>在执行第3条命令后会要求输入Github账号密码，输入后即成功向Github提交代码。</p>
 

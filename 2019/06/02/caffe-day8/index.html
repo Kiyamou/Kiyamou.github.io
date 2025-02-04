@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -282,18 +282,18 @@
                 <p>《21天实战Caffe》学习笔记第8天</p>
 <h3 id="代码测试"><a href="#代码测试" class="headerlink" title="代码测试"></a>代码测试</h3><p>运行书中的测试代码，按照书中介绍的执行流程进行，遇到一些问题，如下。</p>
 <h4 id="报错1"><a href="#报错1" class="headerlink" title="报错1"></a>报错1</h4><p>执行如下编译语句时，</p>
-<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">$ g++ -o app blob_demo.cpp -I ~<span class="hljs-regexp">/caffe/i</span>nclude -D CPU_ONLY -I ~<span class="hljs-regexp">/caffe/</span>.build_release/src -L ~<span class="hljs-regexp">/build/</span>lib -lcaffe<br></code></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>g++ -o app blob_demo.cpp -I ~<span class="hljs-regexp">/caffe/include</span> -D CPU_ONLY -I ~<span class="hljs-regexp">/caffe/</span>.build_release/src -L ~<span class="hljs-regexp">/build/lib</span> -lcaffe<br></code></pre></td></tr></table></figure>
 
 <p>报错。</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">cannot <span class="hljs-built_in">find</span> -lcaffe<br></code></pre></td></tr></table></figure>
 
 <p>解决方法是在编译前执行下列语句，将Caffe的<code>libcaffe.so</code>文件复制到系统的<code>/lib</code>文件下，否则g++编译命令中的<code>-lcaffe</code>无法执行。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">$ cp ~<span class="hljs-regexp">/caffe/</span>build<span class="hljs-regexp">/lib/</span>libcaffe.so <span class="hljs-regexp">/usr/</span>local/lib<br></code></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>cp ~<span class="hljs-regexp">/caffe/build</span><span class="hljs-regexp">/lib/libcaffe</span>.so /usr/local/<span class="hljs-class"><span class="hljs-keyword">lib</span></span><br></code></pre></td></tr></table></figure>
 
 <span id="more"></span>
 
 <h4 id="报错2"><a href="#报错2" class="headerlink" title="报错2"></a>报错2</h4><p>在使用<code>mutable_cpu_data()</code>后，编译时需要调用glog，即在编译命令中加入<code>-lglog</code>。</p>
-<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs arcade">$ g++ -o app blob_demo.cpp -I ~<span class="hljs-regexp">/caffe/i</span>nclude -D CPU_ONLY -I ~<span class="hljs-regexp">/caffe/</span>.build_release/src -L ~<span class="hljs-regexp">/build/</span>lib -lcaffe -lglog<br></code></pre></td></tr></table></figure>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crystal"><span class="hljs-variable">$ </span>g++ -o app blob_demo.cpp -I ~<span class="hljs-regexp">/caffe/include</span> -D CPU_ONLY -I ~<span class="hljs-regexp">/caffe/</span>.build_release/src -L ~<span class="hljs-regexp">/build/lib</span> -lcaffe -lglog<br></code></pre></td></tr></table></figure>
 
 <p>否则会报错。</p>
 <figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs livescript"><span class="hljs-literal">undefined</span> reference <span class="hljs-keyword">to</span> symbol <span class="hljs-string">&#x27;_ZN6google4base21CheckOpMessageBuilder7ForVar2Ev&#x27;</span><br></code></pre></td></tr></table></figure>

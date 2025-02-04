@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -282,7 +282,7 @@
                 <p>《21天实战Caffe》学习笔记第19天</p>
 <h3 id="艺术风格迁移"><a href="#艺术风格迁移" class="headerlink" title="艺术风格迁移"></a>艺术风格迁移</h3><p>运行<a target="_blank" rel="noopener" href="http://github.com/fzliu/style-transfer">http://github.com/fzliu/style-transfer</a>的脚本，运行中有几个小问题。</p>
 <p>测试命令如下。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd style-transfer<br>python style.py -s images<span class="hljs-regexp">/style/</span>starry_night.jpg -c images<span class="hljs-regexp">/content/</span>johannesburg.jpg -g -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">cd <span class="hljs-built_in">style</span>-transfer<br>python <span class="hljs-built_in">style</span>.py -s images/<span class="hljs-built_in">style</span>/starry_night.jpg -c images/<span class="hljs-built_in">content</span>/johannesburg.jpg -g -<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
 
 <p>（以下几个Error依次发生，即解决Error 1后才引发Error 2。）</p>
 <h4 id="Error-1"><a href="#Error-1" class="headerlink" title="Error 1"></a>Error 1</h4><figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs vbnet"><span class="hljs-symbol">ValueError:</span> can <span class="hljs-built_in">not</span> convert <span class="hljs-type">object</span> <span class="hljs-keyword">to</span> float64.<br></code></pre></td></tr></table></figure>

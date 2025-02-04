@@ -88,7 +88,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -301,7 +301,7 @@
 
 <p>编译出来的 dll，VapourSynth 无法调用。我怀疑是没有配置库文件的锅，因为在 CSDN 上看到<a target="_blank" rel="noopener" href="https://blog.csdn.net/jmppok/article/details/17118669">一篇博文</a>，说需要库文件却没有配置时，这样也能编译通过、不报错。也就是默认编译模式下，看不见缺失库文件的问题</p>
 <p>于是我照这篇博文的方法，加上了<code>-Wl,--no-undefined</code>参数，这样就能暴露缺失库文件问题。</p>
-<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">x86_64</span><span class="hljs-literal">-</span><span class="hljs-comment">w64</span><span class="hljs-literal">-</span><span class="hljs-comment">mingw32</span><span class="hljs-literal">-</span><span class="hljs-comment">g</span>++ <span class="hljs-literal">-</span><span class="hljs-comment">o</span> <span class="hljs-comment">JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">dll</span> <span class="hljs-literal">-</span><span class="hljs-comment">shared</span> <span class="hljs-literal">-</span><span class="hljs-comment">O2</span> <span class="hljs-literal">-</span><span class="hljs-comment">Wl</span><span class="hljs-string">,</span>--<span class="hljs-comment">no</span><span class="hljs-literal">-</span><span class="hljs-comment">undefined</span> <span class="hljs-comment">JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">cpp</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs brainfuck"><span class="hljs-comment">x86_64</span><span class="hljs-literal">-</span><span class="hljs-comment">w64</span><span class="hljs-literal">-</span><span class="hljs-comment">mingw32</span><span class="hljs-literal">-</span><span class="hljs-comment">g</span><span class="hljs-literal">++</span> <span class="hljs-literal">-</span><span class="hljs-comment">o JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">dll</span> <span class="hljs-literal">-</span><span class="hljs-comment">shared</span> <span class="hljs-literal">-</span><span class="hljs-comment">O2</span> <span class="hljs-literal">-</span><span class="hljs-comment">Wl</span><span class="hljs-string">,</span><span class="hljs-literal">--</span><span class="hljs-comment">no</span><span class="hljs-literal">-</span><span class="hljs-comment">undefined JincResize</span><span class="hljs-string">.</span><span class="hljs-comment">cpp</span><br></code></pre></td></tr></table></figure>
 
 <p>但我试了一次，仍没有报错，正常地编译通过。</p>
 <p>在<a target="_blank" rel="noopener" href="http://turbinee.blog.sohu.com/271861881.html">这篇博文</a>的帮助下，我明白了 g++ 是动态编译，编译好的 dll 依赖于其他 dll。想起了之前<a target="_blank" rel="noopener" href="https://kiyamou.github.io/2019/10/20/mxnet-install-win/">安装MXNet的踩坑经历</a>，（<del>我也能自引了</del>，积累是有用的）。使用 Visual Studio 的 dumpbin 工具查到了依赖的两个dll。</p>

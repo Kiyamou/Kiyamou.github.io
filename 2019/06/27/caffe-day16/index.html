@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -308,7 +308,7 @@
 <figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmake">yum <span class="hljs-keyword">install</span> numpy<br></code></pre></td></tr></table></figure>
 
 <p>之后pycaffe编译成功。</p>
-<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd ~<span class="hljs-regexp">/caffe/</span>python<br>python3 draw_net.py ..<span class="hljs-regexp">/models/</span>bvlc_reference_caffenet/train_val.prototxt caffenet.png<br></code></pre></td></tr></table></figure>
+<h5 id="运行与画图"><a href="#运行与画图" class="headerlink" title="运行与画图"></a>运行与画图</h5><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs vim"><span class="hljs-keyword">cd</span> ~/caffe/<span class="hljs-keyword">python</span><br><span class="hljs-keyword">python3</span> draw_net.<span class="hljs-keyword">py</span> ../models/bvlc_reference_caffenet/train_val.prototxt caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>不行，用<code>python</code>执行也不行，但报错信息不一样。</p>
 <p>直接在命令行下调用python，测试</p>
@@ -338,7 +338,7 @@
 <p>至此，<code>import caffe</code>终于正常了。</p>
 <p>（虽然有个warning，但应该无伤大雅。）</p>
 <h5 id="再次画图"><a href="#再次画图" class="headerlink" title="再次画图"></a>再次画图</h5><p>执行，</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">python draw_net.py ..<span class="hljs-regexp">/models/</span>bvlc_reference_caffenet/train_val.prototxt caffenet.png<br></code></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">python draw_net<span class="hljs-selector-class">.py</span> ../models/bvlc_reference_caffenet/train_val<span class="hljs-selector-class">.prototxt</span> caffenet.png<br></code></pre></td></tr></table></figure>
 
 <p>报错。</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">OSError: [Errno <span class="hljs-number">2</span>] &quot;dot&quot; <span class="hljs-keyword">not</span> <span class="hljs-built_in">found</span> <span class="hljs-keyword">in</span> <span class="hljs-type">path</span>.<br></code></pre></td></tr></table></figure>
@@ -351,7 +351,7 @@
 <p>首先解决一下主机与虚拟机之间复制文件的缓存问题。</p>
 <p>从虚拟机向主机复制文件，缓存于Windows主机的<code>C:\Users\&quot;User Name&quot;\AppData\Local\Temp\vmware-&quot;User Name&quot;\VMwareDnD</code>中，直接删除即可。</p>
 <p>从主机向虚拟机复制文件，缓存于Linux虚拟机的<code>/root/.cache/vmware/drag_and_drop</code>中，查看日期信息，</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">cd <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop<br>ls -lht<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /root/.cache/vmware/drag_and_drop<br><span class="hljs-built_in">ls</span> -lht<br></code></pre></td></tr></table></figure>
 
 <p>查看文件大小，</p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">du -h --max-depth=<span class="hljs-number">0</span> <span class="hljs-regexp">/root/</span>.cache<span class="hljs-regexp">/vmware/</span>drag_and_drop/*<br></code></pre></td></tr></table></figure>
@@ -363,10 +363,10 @@
 <p><strong>安装过程</strong></p>
 <p>（看安装包里的教程即可）</p>
 <p>挂载iso。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">mount -t auto -o loop <span class="hljs-variable">$PATH</span>$<span class="hljs-regexp">/R2018b_glnxa64_dvd1.iso /m</span>nt/iso<br></code></pre></td></tr></table></figure>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams">mount -t auto -o <span class="hljs-keyword">loop</span> <span class="hljs-symbol">$</span>PATH<span class="hljs-symbol">$</span>/R2018b_glnxa64_dvd1.iso /mnt/iso<br></code></pre></td></tr></table></figure>
 
 <p>若提示</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">mount: <span class="hljs-regexp">/dev/</span>loop0 is <span class="hljs-keyword">write</span>-<span class="hljs-keyword">protected</span>, mounting <span class="hljs-keyword">read</span>-only<br></code></pre></td></tr></table></figure>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs delphi">mount: /dev/loop0 <span class="hljs-keyword">is</span> <span class="hljs-keyword">write</span>-<span class="hljs-keyword">protected</span>, mounting <span class="hljs-keyword">read</span>-only<br></code></pre></td></tr></table></figure>
 
 <p>则</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> /<br><span class="hljs-built_in">chmod</span> 755 mnt<br></code></pre></td></tr></table></figure>

@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="创建 SSH key创建密钥在 Windows 下，使用 Git bash，创建秘钥。 1ssh-keygen -t rsa  在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。 1ssh-keygen -t rsa -C &amp;#x27;comment&amp;#x27;  默认的密钥为 2048 位，可以使用-b指定">
+    <meta name="description" content="创建 SSH key创建密钥在 Windows 下，使用 Git bash，创建秘钥。 1ssh-keygen -t rsa  在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。 1ssh-keygen -t rsa -C &#x27;comment&#x27;  默认的密钥为 2048 位，可以使用-b指定">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Git 的使用：创建 SSH key、多账号共存、提交代码及进阶使用">
 <meta property="og:url" content="http://yoursite.com/2019/11/03/git-use-1/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="创建 SSH key创建密钥在 Windows 下，使用 Git bash，创建秘钥。 1ssh-keygen -t rsa  在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。 1ssh-keygen -t rsa -C &amp;#x27;comment&amp;#x27;  默认的密钥为 2048 位，可以使用-b指定">
+<meta property="og:description" content="创建 SSH key创建密钥在 Windows 下，使用 Git bash，创建秘钥。 1ssh-keygen -t rsa  在这一步可以使用-C &#39;comment&#39;对秘钥进行注释。一些教程中要求在-C后写邮箱，其实写什么都可以，不写也行，注释而已。 1ssh-keygen -t rsa -C &#x27;comment&#x27;  默认的密钥为 2048 位，可以使用-b指定">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-11-03T04:33:32.000Z">
 <meta property="article:modified_time" content="2019-11-03T04:33:32.000Z">
@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -289,7 +289,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&#x27;comment&#x27;</span><br></code></pre></td></tr></table></figure>
 
 <p>之后会确认密钥文件的存放位置和文件名，如下。</p>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle">Enter <span class="hljs-keyword">file</span> in which to save the key (<span class="hljs-regexp">/c/U</span>sers<span class="hljs-regexp">/UserName/</span>.ssh/id_rsa):<br></code></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">Enter file <span class="hljs-keyword">in</span> <span class="hljs-built_in">which</span> to save the key (/c/Users/UserName/.ssh/id_rsa):<br></code></pre></td></tr></table></figure>
 
 <p>回车即使用括号内的默认位置和名称，如果有多个密钥文件，注意修改文件名。如果不更改存放位置，只修改文件名，直接输入想要的文件名即可。密钥的私钥文件无后缀，公钥文件无需命名，与私钥一致，以<code>.pub</code>为后缀。</p>
 <p>之后会要求设置密码，回车则密码留空。</p>
@@ -312,7 +312,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> ~/.ssh<br><span class="hljs-built_in">touch</span> config<br></code></pre></td></tr></table></figure>
 
 <p>在<code>config</code>文件中写入如下内容，注意将 Github 部分的<code>User UserName</code>修改为实际用户名。</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-comment"># gitlab</span><br>Host gitlab.com<br>HostName gitlab.com<br>PreferredAuthentications publickey<br>IdentityFile ~<span class="hljs-regexp">/.ssh/i</span>d_rsa_gitlab<br><br><span class="hljs-comment"># github</span><br>Host github.com<br>User UserName<br>Hostname ssh.github.com<br>PreferredAuthentications publickey<br>IdentityFile ~<span class="hljs-regexp">/.ssh/i</span>d_rsa_github<br>Port <span class="hljs-number">443</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs crmsh"><span class="hljs-comment"># gitlab</span><br>Host gitlab.com<br>HostName gitlab.com<br>PreferredAuthentications publickey<br>IdentityFile ~/.ssh/id_rsa_gitlab<br><br><span class="hljs-comment"># github</span><br>Host github.com<br><span class="hljs-keyword">User</span> <span class="hljs-title">UserName</span><br>Hostname ssh.github.com<br>PreferredAuthentications publickey<br>IdentityFile ~/.ssh/id_rsa_github<br>Port <span class="hljs-number">443</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="测试-ssh-key-的配置情况"><a href="#测试-ssh-key-的配置情况" class="headerlink" title="测试 ssh-key 的配置情况"></a>测试 ssh-key 的配置情况</h3><p>使用<code>ssh -T</code>命令测试密钥配置情况。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh -T git@github.com<br>ssh -T git@gitlab.com<br></code></pre></td></tr></table></figure>

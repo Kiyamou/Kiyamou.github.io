@@ -87,7 +87,7 @@
   
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -336,7 +336,7 @@
 <p>至此，cmake步骤完成，生成包含<code>aom.sln</code>解决方法在内的VS项目。</p>
 <h4 id="由sln到exe"><a href="#由sln到exe" class="headerlink" title="由sln到exe"></a>由sln到exe</h4><p>在VS中（将语言调整为中文Orz…，）设置好<code>release</code>模式后，开始build，以生成可执行的exe文件。</p>
 <p>报错信息如下</p>
-<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs moonscript">aom_build\aom_av1_common.vcxproj : <span class="hljs-built_in">error</span> <span class="hljs-name">MSB4014</span>: 生成已意外停止，因为发生内部故障。<br>aom_build\aom_av1_common.vcxproj : <span class="hljs-built_in">error</span> <span class="hljs-name">MSB4014</span>: System.Text.<span class="hljs-name">EncoderFallbackException</span>: 无法将位于索引 <span class="hljs-number">1646</span> 处的 Unicode 字符 \uDD62 转换为指定的代码页。<br></code></pre></td></tr></table></figure>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs nix">aom_build\aom_av1_common.<span class="hljs-params">vcxproj :</span> error <span class="hljs-params">MSB4014:</span> 生成已意外停止，因为发生内部故障。<br>aom_build\aom_av1_common.<span class="hljs-params">vcxproj :</span> error <span class="hljs-params">MSB4014:</span> System.Text.<span class="hljs-params">EncoderFallbackException:</span> 无法将位于索引 <span class="hljs-number">1646</span> 处的 Unicode 字符 \uDD62 转换为指定的代码页。<br></code></pre></td></tr></table></figure>
 
 <p>在将系统内部语言（非显示语言）更改为英语并重新编译源码后，仍是同样的报错。</p>
 <p>（检查了其他报错文件，一样的报错）</p>
