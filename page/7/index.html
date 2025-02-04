@@ -1,49 +1,79 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/favicon.png">
-  <link rel="icon" href="/img/favicon.png">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
+    <meta property="og:type" content="website">
+<meta property="og:title" content="308实验室">
+<meta property="og:url" content="http://yoursite.com/page/7/index.html">
+<meta property="og:site_name" content="308实验室">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Kiyamou">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
   <title>308实验室</title>
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
 
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
 
 
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
 
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.8.9","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"yoursite.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 <!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
@@ -51,11 +81,17 @@
 
 
 <body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header style="height: 60vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>308实验室</strong>&nbsp;</a>
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
             data-target="#navbarSupportedContent"
@@ -72,9 +108,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                首页
+                <span>首页</span>
               </a>
             </li>
           
@@ -84,9 +120,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                归档
+                <span>归档</span>
               </a>
             </li>
           
@@ -96,9 +132,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                分类
+                <span>分类</span>
               </a>
             </li>
           
@@ -108,9 +144,9 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                标签
+                <span>标签</span>
               </a>
             </li>
           
@@ -120,23 +156,26 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                关于
+                <span>关于</span>
               </a>
             </li>
           
         
         
           <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" href="javascript:">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
           </li>
         
       </ul>
@@ -144,32 +183,40 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/img/bg.webp') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="">
-              
-                
-              
-            </span>
+  
 
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="An elegant Material-Design theme for Hexo"></span>
           
         </div>
+
+        
       </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
     
       <div class="container nopadding-x-md">
-        <div class="py-5" id="board"
-          >
+        <div id="board"
+          style="margin-top: 0">
           
           <div class="container">
             <div class="row">
@@ -181,22 +228,19 @@
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/07/05/literature001/">文献阅读 1811.12231</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/05/literature001/">
-          
-          
-            
-          
-          从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。
-（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）
-However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
+        <a href="/2019/07/05/literature001/" target="_self">
+          文献阅读 1811.12231
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/07/05/literature001/" target="_self">
+        <div>
+          从文献中提到的几个模型开始——AlexNet，GoogleNet，VGG-16，ResNet-50。 （从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。） However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -208,18 +252,32 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">文献阅读</a>
+              <a href="/tags/%E6%96%87%E7%8C%AE%E9%98%85%E8%AF%BB/">#文献阅读</a>
             
           </div>
         
@@ -231,21 +289,19 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/07/04/caffe-day14/">Day14 Caffe实用工具</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/07/04/caffe-day14/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第14天
-我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。
+        <a href="/2019/07/04/caffe-day14/" target="_self">
+          Day14 Caffe实用工具
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/07/04/caffe-day14/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第14天 我觉得读源码是一方面，但或许就目前阶段而言，（像操作员工一样）掌握使用方法（和Day14介绍的工具）相对而言是更重要的。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -257,18 +313,32 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -280,25 +350,19 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/30/caffe-day19/">Day19 放之四海而皆准</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/30/caffe-day19/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第19天
-艺术风格迁移运行http://github.com/fzliu/style-transfer的脚本，运行中有几个小问题。
-测试命令如下。
-12cd style-transferpython style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1
-
-
+        <a href="/2019/06/30/caffe-day19/" target="_self">
+          Day19 放之四海而皆准
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/30/caffe-day19/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第19天 艺术风格迁移运行http://github.com/fzliu/style-transfer的脚本，运行中有几个小问题。 测试命令如下。 12cd style-transferpython style.py -s images/style/starry_night.jpg -c images/content/johannesburg.jpg -g -1
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -310,18 +374,32 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -333,24 +411,19 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/28/caffe-day18/">Day18 关于ILSVRC不得不说的一些事儿</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/28/caffe-day18/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第18天
-因为ILSVRC数据集过于庞大，没有操作。
-因为涉及到去均值，回去读了一下Day14中提到的计算均值代码。
-这一代码相对于前面求解器的实现、传播的实现等代码，看上去简单了。
-又看了一下一个caffe应用实例的代码，代码更是简单了。
+        <a href="/2019/06/28/caffe-day18/" target="_self">
+          Day18 关于ILSVRC不得不说的一些事儿
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/28/caffe-day18/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第18天 因为ILSVRC数据集过于庞大，没有操作。 因为涉及到去均值，回去读了一下Day14中提到的计算均值代码。 这一代码相对于前面求解器的实现、传播的实现等代码，看上去简单了。 又看了一下一个caffe应用实例的代码，代码更是简单了。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -362,18 +435,32 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -385,23 +472,19 @@ However，上面几个模型好像有点复杂，所以先从LeNet-5开始。
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/28/caffe-day17/">Day17 Caffe迁移和部署</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/28/caffe-day17/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第17天
-docker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。
-把运行docker时的log保存了下来，多少有些帮助。
-根据https://mirrors.tuna.tsinghua.edu.cn/help/centos/，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。
+        <a href="/2019/06/28/caffe-day17/" target="_self">
+          Day17 Caffe迁移和部署
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/28/caffe-day17/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第17天 docker的使用内容主要是讲了docker的安装、配置与基本使用，内容相对而言不多。 把运行docker时的log保存了下来，多少有些帮助。 根据https://mirrors.tuna.tsinghua.edu.cn/help/centos/，将yum源换成清华源，但似乎还是（因为网不好）导致超时错误。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -413,18 +496,32 @@ docker的使用内容主要是讲了docker的安装、配置与基本使用，�
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -436,25 +533,19 @@ docker的使用内容主要是讲了docker的安装、配置与基本使用，�
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/27/caffe-day16/">Day16 Caffe可视化方法</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/27/caffe-day16/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第16天
-数据可视化把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。
-模型可视化网络结构可视化安装依赖用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？）
-1yum install python-devel
-
-numpy和/caffe/python/requ
+        <a href="/2019/06/27/caffe-day16/" target="_self">
+          Day16 Caffe可视化方法
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/27/caffe-day16/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第16天 数据可视化把书上的matlab代码敲出来即可，对mnist手写数字数据集和cifar10图片数据集的数据做可视化。 模型可视化网络结构可视化安装依赖用以下命令安装的python-devel，还是2.7版本的。（那我前面装python 3.7是白忙活了？） 1yum install python-devel  numpy和/caffe/python/requ
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -466,18 +557,32 @@ numpy和/caffe/python/requ
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -489,24 +594,19 @@ numpy和/caffe/python/requ
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/15/av1-aom/">编译AV1编码器libaom的记录</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/15/av1-aom/">
-          
-          
-            
-          
-          起始编译过程pthread.h文件提示缺失pthread.h文件
-1Looking for pthread.h - not found
-
-根据教程https://blog.csdn.net/qianchenglenger/article/details/16907821，在windows下配置pthread。
-下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜
+        <a href="/2019/06/15/av1-aom/" target="_self">
+          编译AV1编码器libaom的记录
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/15/av1-aom/" target="_self">
+        <div>
+          起始编译过程pthread.h文件提示缺失pthread.h文件 1Looking for pthread.h - not found  根据教程https://blog.csdn.net/qianchenglenger/article/details/16907821，在windows下配置pthread。 下载pthreads-w32-2-9-1-release.zip，由于年久失修，需要在镜
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -518,18 +618,32 @@ numpy和/caffe/python/requ
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="category-chain-item">工具使用</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">构建与编译</a>
+              <a href="/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/">#构建与编译</a>
             
           </div>
         
@@ -541,22 +655,19 @@ numpy和/caffe/python/requ
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/06/caffe-day12/">Day12 Caffe反向传播计算</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/06/caffe-day12/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第12天
-代码阅读本以为是继续阅读昨天/src/caffe/net.cpp代码中余下关于反向传播的部分，但先讲了关于损失层与损失函数的代码。
-这也是符合直观想法的，因为反向传播的关键，就是反向传递误差（即损失）。                                                                              
+        <a href="/2019/06/06/caffe-day12/" target="_self">
+          Day12 Caffe反向传播计算
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/06/caffe-day12/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第12天 代码阅读本以为是继续阅读昨天/src/caffe/net.cpp代码中余下关于反向传播的部分，但先讲了关于损失层与损失函数的代码。 这也是符合直观想法的，因为反向传播的关键，就是反向传递误差（即损失）。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -568,18 +679,32 @@ numpy和/caffe/python/requ
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -591,25 +716,19 @@ numpy和/caffe/python/requ
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/06/git-use-0/">GPG密钥的配置与Git的使用</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/06/git-use-0/">
-          
-          
-            
-          
-          一些Git命令
-一、添加GPG密钥准备工作：安装与配置GPG（虽然Git自带GPG，但这里仍单独安装了GPG程序）
-在Windows下，安装Gpg4win，下载地址：https://gpg4win.org/download.html。
-Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
-安装完成后，执行如下命令，指定使用我们刚安装的GnuPG。
-1git config --global
+        <a href="/2019/06/06/git-use-0/" target="_self">
+          GPG密钥的配置与Git的使用
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/06/git-use-0/" target="_self">
+        <div>
+          一些Git命令 一、添加GPG密钥准备工作：安装与配置GPG（虽然Git自带GPG，但这里仍单独安装了GPG程序） 在Windows下，安装Gpg4win，下载地址：https://gpg4win.org/download.html。 Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。 安装完成后，执行如下命令，指定使用我们刚安装的GnuPG。 1git config --global
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -621,18 +740,32 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/">工具使用</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="category-chain-item">工具使用</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Git/">Git</a>
+              <a href="/tags/Git/">#Git</a>
             
           </div>
         
@@ -644,22 +777,19 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
     
     
     <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
+      <h2 class="index-header">
         
-        <a href="/2019/06/05/caffe-day11/">Day11 Caffe前向传播计算</a>
-      </h1>
-
-      <p class="index-excerpt">
-        <a href="/2019/06/05/caffe-day11/">
-          
-          
-            
-          
-          《21天实战Caffe》学习笔记第11天
-代码阅读这一章是带领读者阅读/src/caffe/net.cpp，即描述网络（Net）的代码。
-涉及了Net的构造函数，负责初始化的Init()函数，负责输出Blob、输入Blob、权值Blob的函数，以及关于Forward实现的函数。
+        <a href="/2019/06/05/caffe-day11/" target="_self">
+          Day11 Caffe前向传播计算
         </a>
-      </p>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2019/06/05/caffe-day11/" target="_self">
+        <div>
+          《21天实战Caffe》学习笔记第11天 代码阅读这一章是带领读者阅读/src/caffe/net.cpp，即描述网络（Net）的代码。 涉及了Net的构造函数，负责初始化的Init()函数，负责输出Blob、输入Blob、权值Blob的函数，以及关于Forward实现的函数。
+        </div>
+      </a>
 
       <div class="index-btm post-metas">
         
@@ -671,18 +801,32 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
           </div>
         
         
-          <div class="post-meta mr-3">
+          <div class="post-meta mr-3 d-flex align-items-center">
             <i class="iconfont icon-category"></i>
             
-              <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a>
-            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" class="category-chain-item">机器学习</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
           </div>
         
         
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/Caffe/">Caffe</a>
+              <a href="/tags/Caffe/">#Caffe</a>
             
           </div>
         
@@ -708,7 +852,7 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
     
 
     
-      <a id="scroll-top-button" href="#" role="button">
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
         <i class="iconfont icon-arrowup" aria-hidden="true"></i>
       </a>
     
@@ -727,35 +871,36 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
   
-
   
-</footer>
-
-
-  <!-- SCRIPTS -->
   
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -766,13 +911,28 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
   </script>
 
 
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
 
 
   
@@ -781,55 +941,22 @@ Gpg4win中包含了GnuPG（GnuPG即GPG的全名）。
 
 
 
-  
-
-
-
-
-
-
-
-
-
-  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
-
-
-
-
-
-
-
 
   <script  src="/js/local-search.js" ></script>
-  <script>
-    (function () {
-      var path = "/local-search.xml";
-      $('#local-search-input').on('click', function() {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      });
-      $('#modalSearch').on('shown.bs.modal', function() {
-        $('#local-search-input').focus();
-      });
-    })()
-  </script>
 
 
 
 
 
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
 
 
+  
 
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-
-
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </body>
 </html>
