@@ -279,7 +279,7 @@
             
               <div class="markdown-body">
                 
-                <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a target="_blank" rel="noopener" href="http://enigmahuang.me/2017/09/29/AVX-SIMD/">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59868499">GCC 神坑：-march&#x3D;native</a>）</p>
+                <h3 id="指令集优化"><a href="#指令集优化" class="headerlink" title="指令集优化"></a>指令集优化</h3><h4 id="Generation"><a href="#Generation" class="headerlink" title="Generation"></a>Generation</h4><p>（更多内容可查看<a target="_blank" rel="noopener" href="https://enigmahuang.me/files/old-blog-archive/2017-%E4%BD%BF%E7%94%A8_AVX_%E7%B3%BB%E5%88%97%E6%8C%87%E4%BB%A4%E9%9B%86%E8%BF%9B%E8%A1%8C%E5%90%91%E9%87%8F%E5%8C%96.pdf">使用 AVX 系列指令集进行向量化</a>，也可看一下这篇很欢乐的文章 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/59868499">GCC 神坑：-march&#x3D;native</a>）</p>
 <p>对于 GCC 编译器，在编译命令中加入<code>-march=native</code>选项，可调用本地的库，使用 AVX 指令集优化。</p>
 <h4 id="Functions"><a href="#Functions" class="headerlink" title="Functions"></a>Functions</h4><p>（Doc 在<a target="_blank" rel="noopener" href="https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_malloc">这里</a>，直接搜索想查的函数即可）</p>
 <p>（另外也可看一下<a target="_blank" rel="noopener" href="http://kawa0810.hateblo.jp/entry/20120304/1330852197">Intel AVX を使用して SIMD 演算を試してみる - その2 -</a>，但函数参数不如上面的 Doc 详细）</p>
