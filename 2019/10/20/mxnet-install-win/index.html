@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="记录一下在Windows下安装GPU版MXNet时踩到的坑。 MXNet安装引导：http:&#x2F;&#x2F;mxnet.incubator.apache.org&#x2F;get_started MXNet版本选择master，其余根据实际情况选择。 1pip install mxnet-cu91 --pre  安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。 1python -c &quot;imp">
+    <meta name="description" content="记录一下在Windows下安装GPU版MXNet时踩到的坑。 MXNet安装引导：http:&#x2F;&#x2F;mxnet.incubator.apache.org&#x2F;get_started MXNet版本选择master，其余根据实际情况选择。 1pip install mxnet-cu91 --pre 安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。 1python -c &quot;impo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows下MXNet的安装（针对 OSError: [WinError 126] 错误）">
 <meta property="og:url" content="http://yoursite.com/2019/10/20/mxnet-install-win/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="记录一下在Windows下安装GPU版MXNet时踩到的坑。 MXNet安装引导：http:&#x2F;&#x2F;mxnet.incubator.apache.org&#x2F;get_started MXNet版本选择master，其余根据实际情况选择。 1pip install mxnet-cu91 --pre  安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。 1python -c &quot;imp">
+<meta property="og:description" content="记录一下在Windows下安装GPU版MXNet时踩到的坑。 MXNet安装引导：http:&#x2F;&#x2F;mxnet.incubator.apache.org&#x2F;get_started MXNet版本选择master，其余根据实际情况选择。 1pip install mxnet-cu91 --pre 安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。 1python -c &quot;impo">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2019-10-20T09:44:19.000Z">
 <meta property="article:modified_time" content="2019-10-20T09:44:19.000Z">
@@ -85,9 +85,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -283,32 +281,25 @@
 <p>MXNet安装引导：<a target="_blank" rel="noopener" href="http://mxnet.incubator.apache.org/get_started">http://mxnet.incubator.apache.org/get_started</a></p>
 <p>MXNet版本选择master，其余根据实际情况选择。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install mxnet-cu91 --pre<br></code></pre></td></tr></table></figure>
-
 <p>安装完成后，执行以下命令，查看MXNet版本号，检测是否安装成功。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python -c <span class="hljs-string">&quot;import mxnet; print(mxnet.__version__)&quot;</span><br></code></pre></td></tr></table></figure>
-
 <p>我在检测安装是否成功时，出现以下报错。</p>
 <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs nix">Traceback (most recent call last):<br>  File <span class="hljs-string">&quot;&lt;string&gt;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span> <span class="hljs-symbol">&lt;module&gt;</span><br>  File <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\U</span>serName<span class="hljs-char escape_">\A</span>ppData<span class="hljs-char escape_">\L</span>ocal<span class="hljs-char escape_">\P</span>rograms<span class="hljs-char escape_">\P</span>ython<span class="hljs-char escape_">\P</span>ython36<span class="hljs-char escape_">\l</span>ib<span class="hljs-char escape_">\s</span>ite-packages<span class="hljs-char escape_">\m</span>xnet<span class="hljs-char escape_">\_</span>_init__.py&quot;</span>, line <span class="hljs-number">24</span>, <span class="hljs-keyword">in</span> <span class="hljs-symbol">&lt;module&gt;</span><br>    from .context <span class="hljs-built_in">import</span> Context, current_context, cpu, gpu, cpu_pinned<br>  File <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\U</span>serName<span class="hljs-char escape_">\A</span>ppData<span class="hljs-char escape_">\L</span>ocal<span class="hljs-char escape_">\P</span>rograms<span class="hljs-char escape_">\P</span>ython<span class="hljs-char escape_">\P</span>ython36<span class="hljs-char escape_">\l</span>ib<span class="hljs-char escape_">\s</span>ite-packages<span class="hljs-char escape_">\m</span>xnet<span class="hljs-char escape_">\c</span>ontext.py&quot;</span>, line <span class="hljs-number">24</span>, <span class="hljs-keyword">in</span> <span class="hljs-symbol">&lt;module&gt;</span><br>    from .base <span class="hljs-built_in">import</span> classproperty, with_metaclass, _MXClassPropertyMetaClass<br>  File <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\U</span>serName<span class="hljs-char escape_">\A</span>ppData<span class="hljs-char escape_">\L</span>ocal<span class="hljs-char escape_">\P</span>rograms<span class="hljs-char escape_">\P</span>ython<span class="hljs-char escape_">\P</span>ython36<span class="hljs-char escape_">\l</span>ib<span class="hljs-char escape_">\s</span>ite-packages<span class="hljs-char escape_">\m</span>xnet<span class="hljs-char escape_">\b</span>ase.py&quot;</span>, line <span class="hljs-number">214</span>, <span class="hljs-keyword">in</span> <span class="hljs-symbol">&lt;module&gt;</span><br>    <span class="hljs-attr">_LIB</span> <span class="hljs-operator">=</span> _load_lib()<br>  File <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\U</span>serName<span class="hljs-char escape_">\A</span>ppData<span class="hljs-char escape_">\L</span>ocal<span class="hljs-char escape_">\P</span>rograms<span class="hljs-char escape_">\P</span>ython<span class="hljs-char escape_">\P</span>ython36<span class="hljs-char escape_">\l</span>ib<span class="hljs-char escape_">\s</span>ite-packages<span class="hljs-char escape_">\m</span>xnet<span class="hljs-char escape_">\b</span>ase.py&quot;</span>, line <span class="hljs-number">205</span>, <span class="hljs-keyword">in</span> _load_lib<br>    <span class="hljs-attr">lib</span> <span class="hljs-operator">=</span> ctypes.CDLL(lib_path[<span class="hljs-number">0</span>], ctypes.RTLD_LOCAL)<br>  File <span class="hljs-string">&quot;C:<span class="hljs-char escape_">\U</span>sers<span class="hljs-char escape_">\U</span>serName<span class="hljs-char escape_">\A</span>ppData<span class="hljs-char escape_">\L</span>ocal<span class="hljs-char escape_">\P</span>rograms<span class="hljs-char escape_">\P</span>ython<span class="hljs-char escape_">\P</span>ython36<span class="hljs-char escape_">\l</span>ib<span class="hljs-char escape_">\c</span>types<span class="hljs-char escape_">\_</span>_init__.py&quot;</span>, line <span class="hljs-number">348</span>, <span class="hljs-keyword">in</span> __init__<br>    <span class="hljs-attr">self._handle</span> <span class="hljs-operator">=</span> _dlopen(self._name, mode)<br><span class="hljs-params">OSError:</span> [WinError <span class="hljs-number">126</span>] The specified module could not be found<br></code></pre></td></tr></table></figure>
-
 <p><code>OSError: [WinError 126]</code>应该是一个很通用的报错，可以理解为没有找到所需的dll。</p>
 <p>正如一位Github网友所说，这个报错只告诉你缺少dll，却不会告诉你缺少了什么dll。没办法，自力更生。</p>
 <span id="more"></span>
-
 <p>MXNet的“核心dll”是<code>libmxnet.dll</code>，我们需要做的事情就是搞清它所依赖的dll都有什么。</p>
 <p>利用Visual Studio的dumpbin工具，可以查看一个dll所依赖的其他dll。</p>
 <p>打开Developer Command Prompt，进入<code>libmxnet.dll</code>所在文件夹（位于<code>Python\Python36\lib\site-packages\mxnet</code>），执行以下命令。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">dumpbin /dependents libmxnet.dll<br></code></pre></td></tr></table></figure>
-
 <p>得到如下结果。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs bash">Dump of file libmxnet.dll<br><br>File Type: DLL<br><br>  Image has the following dependencies:<br><br>    libopenblas.dll<br>    cudnn64_7.dll<br>    cublas64_91.dll<br>    cufft64_91.dll<br>    cusolver64_91.dll<br>    curand64_91.dll<br>    nvrtc64_91.dll<br>    nvcuda.dll<br>    KERNEL32.dll<br>    USER32.dll<br>    VCOMP140.DLL<br><br>  Summary<br><br>    ......（这部分省略）<br></code></pre></td></tr></table></figure>
-
 <p>我们需要的是第一部分，在这里列出了<code>libmxnet.dll</code>所依赖的dll。在<code>libmxnet.dll</code>所在文件夹和<code>C:\Windows\System32</code>里逐个对比，我缺少的是以下几个dll。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">cublas64_91.dll<br>cufft64_91.dll<br>cusolver64_91.dll<br>curand64_91.dll<br>nvrtc64_91.dll<br></code></pre></td></tr></table></figure>
-
 <p>看名字就和CUDA有关，搜索了一下确实如此。按照常规的套路，把CUDA安装目录里相应的dll复制到<code>C:\Windows\System32</code>就OK了。</p>
 <p>（对于正常安装了CUDA的同学，看到了这里，复制了那几个dll后，工作就结束了）</p>
 <p>但我惊讶地发现，我好像没有CUDA安装目录。一瞬间我惊呆了。那我的<code>nvcuda.dll</code>是从哪飞来的…我之前用GPU版的Pytorch和Waifu2x又是怎么用的…难道我只下了一个<code>nvcuda.dll</code>…（好像真的是…）</p>
-<p>重新装CUDA，但安装失败了，也许因为我已经有<code>nvcuda.dll</code>导致冲突。<del>别问，问就是我不会。</del></p>
+<p>重新装CUDA，但安装失败了，也许因为我已经有<code>nvcuda.dll</code>导致冲突。<s>别问，问就是我不会。</s></p>
 <p>不管那么多了，直接用压缩软件打开CUDA的exe安装包，把上面几个dll解压出来、复制，完事大吉。执行前面查看版本号的命令，终于看到可爱的版本号了，安装成功。</p>
 <p>顺带一提，对于我所安装的<code>mxnet-cu91</code>，对numpy的版本有限制，版本上限是<code>1.14.6</code>，我原本的<code>numpy 1.15.x</code>被卸掉了；我专门试了一下<code>mxnet-cu90</code>和<code>mxnet-cu92</code>，都没有此限制。和我一样安装了<code>mxnet-cu91</code>的同学可能要留心一下。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found">https://stackoverflow.com/questions/54870595/oserror-winerror-126-module-could-not-be-found</a></p>

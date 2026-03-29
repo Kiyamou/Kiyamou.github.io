@@ -74,9 +74,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,7 +232,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/01/15/week-202001-2/" target="_self">
         <div>
-          最近的生活也算是走上正轨，但却好像抽不出时间写周记。这是不好的，因为就算再忙，也要知道我在忙什么，不然可能会很危险的。 姑且把上周写的一些C++笔记当作周记吧，毕竟也是涵盖了上周的大部分活动。 预处理预处理功能有三种：宏定义，文件包含和条件编译 条件编译 #ifndef与#endif配套使用 1#if defined(__GNUC__) || defined(__clang__)  这是条件编译的
+          最近的生活也算是走上正轨，但却好像抽不出时间写周记。这是不好的，因为就算再忙，也要知道我在忙什么，不然可能会很危险的。 姑且把上周写的一些C++笔记当作周记吧，毕竟也是涵盖了上周的大部分活动。 预处理 预处理功能有三种：宏定义，文件包含和条件编译 条件编译 #ifndef与#endif配套使用 1#if defined(__GNUC__) || defined(__clang__) 这是条件编译的
         </div>
       </a>
 
@@ -295,7 +293,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/01/01/ported-to-vs-2/" target="_self">
         <div>
-          距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。 为了加强理解、尽量全面，可能会有些重复的话。 srcp、dstp的理解约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。 关于srcp和dstp，通常这样定义 12const T* srcp =
+          距离写上一篇博文已经过去几天了（事实上那篇博文在更早的几天就写了草稿）。这几天学到了不少东西，硬塞到上一篇博文中好像不太合适；而且上一篇博文就是在思路不太清时写，有点混乱。总之，干脆新写一篇。 为了加强理解、尽量全面，可能会有些重复的话。 srcp、dstp的理解 约定俗成的变量命名，src已经习惯，是输入，而dsp则是结果。 关于srcp和dstp，通常这样定义 12const T* srcp
         </div>
       </a>
 
@@ -360,7 +358,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/28/ported-to-vs/" target="_self">
         <div>
-          （内容待整理…orz） 1.细碎的问题变量命名习惯的变化avs的pitch &#x3D; vs的stride avs的env &#x3D; vs的vi？那avs的params呢？ vs中很少见dst-&gt;width之类的写法，而是d-&gt;width
+          （内容待整理…orz） 1.细碎的问题 变量命名习惯的变化 avs的pitch = vs的stride avs的env = vs的vi？那avs的params呢？ vs中很少见dst-&gt;width之类的写法，而是d-&gt;width
         </div>
       </a>
 
@@ -425,7 +423,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/27/OpenCV-learn-1/" target="_self">
         <div>
-          记录一下学习《OpenCV3编程入门》的过程。由于有图像处理的基础，感觉很多内容都很亲切。 这几天学习的总结 OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章） OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章） OpenCV的常用函数（第三章） Mat矩阵变量的初始化和输出（第四章） 一些C++相关的基础知识（第二章） printf()格式输出函数 一些变量
+          记录一下学习《OpenCV3编程入门》的过程。由于有图像处理的基础，感觉很多内容都很亲切。 这几天学习的总结  OpenCV在VS下的配置，OpenCV头文件的引用关系（第一章） OpenCV基础的操作（感受到变量是怎样在函数中传递的）（第一章） OpenCV的常用函数（第三章） Mat矩阵变量的初始化和输出（第四章） 一些C++相关的基础知识（第二章）  printf()格式输出函数 一些变量的
         </div>
       </a>
 
@@ -488,7 +486,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/27/Phase-trans-to-vs/" target="_self">
         <div>
-          重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。 讲道理，从功能上看，用C&#x2F;C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。 印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了… 限于教学条件，那个
+          重新拾起大二时写过，或者说照着教材修改过的一份计算并绘制相图的代码。 讲道理，从功能上看，用C/C++来写似乎不是一个好的选择，没什么计算量，用Python应该会更简单一些（我仿佛又看到了一个坑…）。 印象中教程上的原始代码是用一门上古的C语言（变体？）写的，名字已经记不太清。当时是在机房装了那个语言的IDE，看着蓝屏一般的背景色和又大又复古的字体，幼小的我被吓坏了… 限于教学条件，那个时候自然是
         </div>
       </a>
 
@@ -549,7 +547,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/22/week-201912-3/" target="_self">
         <div>
-          引言不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善发布r4：添加32bit支持详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前用Py
+          引言 不写点东西督促，日子真的会从指尖溜走。但写日记…一方面真的是不一定保证能每天都写，另一方面，毕竟学业上还有其他的事情，有时候一天学到的东西也没多少可写。 总之，把日记改成周记吧。 还是别用“周报”这个字眼了2333 对JincResize的完善 发布r4：添加32bit支持 详情写在JincResize代码的重构，这里就不再copy了。 要是再补充一句的话，就是多个分支的if语句的写法，之前
         </div>
       </a>
 
@@ -603,7 +601,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/18/image-process-code-1/" target="_self">
         <div>
-          引言接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。 色彩空间是最基础的概念，当然谈不上“底层”。但和色彩空间相关联的、图像的像素点是以和何种方式储存的，换句话说，数字图像的数据结构是怎样的，应当称得上是从表面到深入的一个转折点了。学数字图像处理，当然不能满足于output = intput.filter()这样的模式。 引言写
+          引言 接触图像处理也有两年了，如果算上大二时H老师的课，甚至有三年多了。我真的很想“上岸”，而不是流于表面，只学到花拳绣腿。 色彩空间是最基础的概念，当然谈不上“底层”。但和色彩空间相关联的、图像的像素点是以和何种方式储存的，换句话说，数字图像的数据结构是怎样的，应当称得上是从表面到深入的一个转折点了。学数字图像处理，当然不能满足于output = intput.filter()这样的模式。 引言
         </div>
       </a>
 
@@ -668,7 +666,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/14/day-191214/" target="_self">
         <div>
-          1继续基础知识 “C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。” “C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。” 2开始刷洛谷…明明是给中学生做的题… 也开始Leetcode，但感觉有点难…
+          1 继续基础知识 “C++ 不允许返回一个完整的数组作为函数的参数。 但可以定义指针函数。” “C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。” 2 开始刷洛谷…明明是给中学生做的题… 也开始Leetcode，但感觉有点难…
         </div>
       </a>
 
@@ -722,7 +720,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/14/day-191213/" target="_self">
         <div>
-          1 飞浆开始看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。 感觉和Caffe好像，无论是block、program等逻辑&#x2F;数据结构，还是具体的.proto储存格式。 LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。 而Python前端+C++后端这种模式，也让人觉得很亲切。我
+          1 飞浆开始 看了一下paddlepaddle Fluid的教材，买书时没细看，发现是百度大佬自己写的。 感觉和Caffe好像，无论是block、program等逻辑/数据结构，还是具体的.proto储存格式。 LoD Tensor的概念倒是很新鲜，之前看Caffe和Pytorch，不知是我没细看还是怎么，感觉都没有类似的概念。 而Python前端+C++后端这种模式，也让人觉得很亲切。我甚至有点
         </div>
       </a>
 
@@ -776,7 +774,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/12/12/day-191212/" target="_self">
         <div>
-          1用malloc分配内存 1double* lut = (double*) malloc(sizeof(double)*d.samples);  sizeof(double)&#x3D;8 21data = malloc(sizeof(d));  而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？） PS：在Ho
+          1 用malloc分配内存 1double* lut = (double*) malloc(sizeof(double)*d.samples); sizeof(double)=8 2 1data = malloc(sizeof(d)); 而我修改后，直接省去了data这个变量，因为看不到有什么用。（或许是，我修改后的代码，因为使用了智能指针，所以不需要data做某种辅助？） PS：在HomeOfV
         </div>
       </a>
 

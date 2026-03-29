@@ -731,7 +731,7 @@
 
   
   <url>
-    <loc>http://yoursite.com/tags/C/</loc>
+    <loc>http://yoursite.com/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -745,7 +745,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/%E6%9E%84%E5%BB%BA%E4%B8%8E%E7%BC%96%E8%AF%91/</loc>
+    <loc>http://yoursite.com/tags/C/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -766,14 +766,14 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/VapourSynth/</loc>
+    <loc>http://yoursite.com/tags/Caffe/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/Caffe/</loc>
+    <loc>http://yoursite.com/tags/VapourSynth/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -845,13 +845,6 @@
 
   
   <url>
-    <loc>http://yoursite.com/categories/%E6%97%A5%E8%AE%B0/</loc>
-    <lastmod>2026-03-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/categories/%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
@@ -859,7 +852,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/</loc>
+    <loc>http://yoursite.com/categories/%E6%97%A5%E8%AE%B0/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -867,6 +860,13 @@
   
   <url>
     <loc>http://yoursite.com/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</loc>
+    <lastmod>2026-03-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/</loc>
     <lastmod>2026-03-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

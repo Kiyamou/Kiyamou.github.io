@@ -85,9 +85,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -226,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          378 字
+          376 字
         
       </span>
     
@@ -282,20 +280,21 @@
                 <p>不同的 ISP pipeline 设计还是有些区别的，相较第一篇针对一个具体项目进行分析，这篇尽量做稍微全面的总结。</p>
 <p>此文绝赞施工中…应该要等到我有更深入理解时，才能写完。</p>
 <span id="more"></span>
-
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul>
-<li>A&#x2F;D 转换</li>
+<h3 id="列表">列表</h3>
+<ul>
+<li>A/D 转换</li>
 <li>黑电平校正（Black Level Correction）</li>
 <li>坏点校正（Bad Pixel Correction）</li>
 <li>阴影校正（Shading Correction）：包括镜片阴影校正和色彩阴影校正（Color Shading Correction）。</li>
 <li>耀斑补偿（Flare Offset）：由于镜片等组件产生的反光，导致图像灰蒙蒙的。Flare Offset 要在线性空间下进行，不能在RGB下进行。</li>
-<li>3A：<ul>
+<li>3A：
+<ul>
 <li>AE（Auto Exposure）：自动曝光</li>
 <li>AF（Auto Focus）：自动对焦</li>
 <li>AWB（Auto White Balance）：自动白平衡</li>
 </ul>
 </li>
-<li>去马赛克&#x2F;色彩重建（de-mosaic）</li>
+<li>去马赛克/色彩重建（de-mosaic）</li>
 <li>颜色校正（Color Correction）：然后非线性化</li>
 <li>Gamma 校正（Gamma Correction）</li>
 <li>色调映射（Tone Mapping）</li>
@@ -304,11 +303,15 @@
 <li>输出编码</li>
 </ul>
 <p>重点应该还是放在降噪、图像增强以及去马赛克等方面（除了 3A 之外），因为其他的应该说比较成熟了。</p>
-<h3 id="色调映射"><a href="#色调映射" class="headerlink" title="色调映射"></a>色调映射</h3><blockquote>
+<h3 id="色调映射">色调映射</h3>
+<blockquote>
 <p>算法千差万别，但是目的是一样的，就是通过公式，把输入值 HDR 颜色或正常颜色映射到0-1范围内去显示。并且根据曝光系数调整曲线，使大部分颜色看起来更加接近该亮度。</p>
 </blockquote>
 <p>其实这个是和曲线相关的。Gamma 校正也是属于色调映射。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>1.<a target="_blank" rel="noopener" href="https://github.com/mushfiqulalam/isp">https://github.com/mushfiqulalam/isp</a><br>2.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/36379267">https://zhuanlan.zhihu.com/p/36379267</a><br>3.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98820927">https://zhuanlan.zhihu.com/p/98820927</a></p>
+<h3 id="参考">参考</h3>
+<p>1.<a target="_blank" rel="noopener" href="https://github.com/mushfiqulalam/isp">https://github.com/mushfiqulalam/isp</a><br>
+2.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/36379267">https://zhuanlan.zhihu.com/p/36379267</a><br>
+3.<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/98820927">https://zhuanlan.zhihu.com/p/98820927</a></p>
 
                 
               </div>

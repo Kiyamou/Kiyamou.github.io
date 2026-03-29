@@ -85,9 +85,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -283,9 +281,12 @@
 <p>（从头到尾读文献自然效率低，而按照抓实验重点的常规读文献方法，好像也不太适合现在的我。倒不如先看看文献中提到了哪些我不知道的概念与内容，先学一学，把文献阅读迅速上手。）</p>
 <p>However，上面几个模型好像有点复杂，所以先从LeNet-5开始。</p>
 <span id="more"></span>
-
-<h3 id="LeNet-5"><a href="#LeNet-5" class="headerlink" title="LeNet-5"></a>LeNet-5</h3><p><a target="_blank" rel="noopener" href="https://www.charleychai.com/blogs/2018/ai/NN/lenet.html">https://www.charleychai.com/blogs/2018/ai/NN/lenet.html</a></p>
-<p>1.卷积-&gt;局部感受野（同时卷积带来权值共享（？））<br>1.2 同一层中，多个卷积核独立操作，获得针对不同特征的输出。<br>2.为什么池化不采用全连接，（即采用子采样）：不对称连接获取更高级的特征<br>2.0 池化-&gt;（子）采样：直接扔掉部分数据，以期待保留主要特征，同时提升鲁棒性（减少次要信息的干扰）。</p>
+<h3 id="LeNet-5">LeNet-5</h3>
+<p><a target="_blank" rel="noopener" href="https://www.charleychai.com/blogs/2018/ai/NN/lenet.html">https://www.charleychai.com/blogs/2018/ai/NN/lenet.html</a></p>
+<p>1.卷积-&gt;局部感受野（同时卷积带来权值共享（？））<br>
+1.2 同一层中，多个卷积核独立操作，获得针对不同特征的输出。<br>
+2.为什么池化不采用全连接，（即采用子采样）：不对称连接获取更高级的特征<br>
+2.0 池化-&gt;（子）采样：直接扔掉部分数据，以期待保留主要特征，同时提升鲁棒性（减少次要信息的干扰）。</p>
 
                 
               </div>

@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="C++语法explicitexplicit用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：https:&#x2F;&#x2F;zh.cppreference.com&#x2F;w&#x2F;cpp&#x2F;language&#x2F;explicit）。 功能  被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换 不能用于复制初始化  注意  explicit只能用于构造函数的声明">
+    <meta name="description" content="C++语法 explicit explicit用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：https:&#x2F;&#x2F;zh.cppreference.com&#x2F;w&#x2F;cpp&#x2F;language&#x2F;explicit）。 功能  被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换 不能用于复制初始化  注意  explicit只能用于构造函数的声明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="周记 2020.03.09-03.15">
 <meta property="og:url" content="http://yoursite.com/2020/04/28/week-202003-2/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="C++语法explicitexplicit用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：https:&#x2F;&#x2F;zh.cppreference.com&#x2F;w&#x2F;cpp&#x2F;language&#x2F;explicit）。 功能  被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换 不能用于复制初始化  注意  explicit只能用于构造函数的声明">
+<meta property="og:description" content="C++语法 explicit explicit用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：https:&#x2F;&#x2F;zh.cppreference.com&#x2F;w&#x2F;cpp&#x2F;language&#x2F;explicit）。 功能  被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换 不能用于复制初始化  注意  explicit只能用于构造函数的声明">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-28T08:23:47.000Z">
 <meta property="article:modified_time" content="2020-04-28T08:23:47.000Z">
@@ -85,9 +85,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -279,7 +277,9 @@
             
               <div class="markdown-body">
                 
-                <h3 id="C-语法"><a href="#C-语法" class="headerlink" title="C++语法"></a>C++语法</h3><h4 id="explicit"><a href="#explicit" class="headerlink" title="explicit"></a><code>explicit</code></h4><p><code>explicit</code>用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：<a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/explicit%EF%BC%89%E3%80%82">https://zh.cppreference.com/w/cpp/language/explicit）。</a></p>
+                <h3 id="C-语法">C++语法</h3>
+<h4 id="explicit"><code>explicit</code></h4>
+<p><code>explicit</code>用来修饰构造函数、转换函数（C++11）、推导指引（C++17），C++20可以在其后加表达式（详见：<a target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/explicit%EF%BC%89%E3%80%82">https://zh.cppreference.com/w/cpp/language/explicit）。</a></p>
 <p><strong>功能</strong></p>
 <ul>
 <li>被修饰的构造函数的类，不能进行隐式类型转换，只能进行显示类型转换</li>
@@ -290,15 +290,14 @@
 <li><code>explicit</code>只能用于构造函数的声明</li>
 </ul>
 <span id="more"></span>
-
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/this-543273659/archive/2011/08/02/2124596.html">这篇博文</a>中的例子。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/* without explicit */</span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">circle</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">circle</span>(<span class="hljs-type">double</span> r) : <span class="hljs-built_in">R</span>(r) &#123;&#125;<br>    <span class="hljs-built_in">circle</span>(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y = <span class="hljs-number">0</span>) : <span class="hljs-built_in">X</span>(x), <span class="hljs-built_in">Y</span>(y) &#123;&#125;<br>    <span class="hljs-built_in">circle</span>(<span class="hljs-type">const</span> circle&amp; c) : <span class="hljs-built_in">R</span>(c.R), <span class="hljs-built_in">X</span>(c.X), <span class="hljs-built_in">Y</span>(c.Y) &#123;&#125;<br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> R;<br>    <span class="hljs-type">int</span> X, Y;<br>&#125;;<br><br><span class="hljs-type">int</span> _tmain()<br>&#123;<br>    circle A = <span class="hljs-number">1.23</span>;<br>    circle B = <span class="hljs-number">123</span>;<br>    circle C = A;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">/* with explicit */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">circle</span><br>&#123;<br>    <span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">circle</span><span class="hljs-params">(<span class="hljs-type">double</span> r)</span> : R(r) &#123;</span>&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">circle</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y = <span class="hljs-number">0</span>)</span> : X(x), Y(y) &#123;</span>&#125;<br>    <span class="hljs-function"><span class="hljs-keyword">explicit</span> <span class="hljs-title">circle</span><span class="hljs-params">(<span class="hljs-type">const</span> circle&amp; c)</span> : R(c.R), X(c.X), Y(c.Y) &#123;</span>&#125;<br>    <span class="hljs-keyword">private</span>:<br>    <span class="hljs-type">double</span> R;<br>    <span class="hljs-type">int</span> X, Y;<br>&#125;;<br><br><span class="hljs-type">int</span> _tmain()<br>&#123;<br>    <span class="hljs-function">circle <span class="hljs-title">A</span><span class="hljs-params">(<span class="hljs-number">1.23</span>)</span></span>;<br>    <span class="hljs-function">circle <span class="hljs-title">B</span><span class="hljs-params">(<span class="hljs-number">123</span>)</span></span>;<br>    <span class="hljs-function">circle <span class="hljs-title">C</span><span class="hljs-params">(A)</span></span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>在结构中也可以这么用。</p>
-<h4 id="非常量引用的初始值必须是左值"><a href="#非常量引用的初始值必须是左值" class="headerlink" title="非常量引用的初始值必须是左值"></a>非常量引用的初始值必须是左值</h4><p>可能是存在不被允许的隐式类型转换。</p>
-<h4 id="assert"><a href="#assert" class="headerlink" title="assert"></a><code>assert</code></h4><p><code>assert</code>是宏，不仅用来报错。</p>
+<h4 id="非常量引用的初始值必须是左值">非常量引用的初始值必须是左值</h4>
+<p>可能是存在不被允许的隐式类型转换。</p>
+<h4 id="assert"><code>assert</code></h4>
+<p><code>assert</code>是宏，不仅用来报错。</p>
 
                 
               </div>

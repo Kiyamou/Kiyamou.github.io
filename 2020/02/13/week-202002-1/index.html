@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
+    <meta name="description" content="1.deque deque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
 <meta property="og:type" content="article">
 <meta property="og:title" content="周记 2020.02.03-02.09">
 <meta property="og:url" content="http://yoursite.com/2020/02/13/week-202002-1/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.dequedeque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
+<meta property="og:description" content="1.deque deque的声明 12345678&#x2F;&#x2F; std::deque#include &lt;deque&gt;template &lt; class T, class Alloc &#x3D; allocator&lt;T&gt; &gt; class deque;&#x2F;&#x2F; exampledeque &lt;TreeNode*&gt; tree_que;node &#x3D; tree_que.front();">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-13T05:50:42.000Z">
 <meta property="article:modified_time" content="2020-02-13T05:50:42.000Z">
@@ -86,9 +86,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -227,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          592 字
+          591 字
         
       </span>
     
@@ -280,35 +278,39 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-deque"><a href="#1-deque" class="headerlink" title="1.deque"></a>1.<code>deque</code></h3><p><code>deque</code>的声明</p>
+                <h3 id="1-deque">1.<code>deque</code></h3>
+<p><code>deque</code>的声明</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// std::deque</span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;deque&gt;</span></span><br><span class="hljs-keyword">template</span> &lt; <span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>, <span class="hljs-keyword">class</span> <span class="hljs-title class_">Alloc</span> = allocator&lt;T&gt; &gt; <span class="hljs-keyword">class</span> deque;<br><br><span class="hljs-comment">// example</span><br>deque &lt;TreeNode*&gt; tree_que;<br>node = tree_que.<span class="hljs-built_in">front</span>();<br></code></pre></td></tr></table></figure>
-
-<h3 id="2-C-调用函数"><a href="#2-C-调用函数" class="headerlink" title="2.C++调用函数"></a>2.C++调用函数</h3><p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
+<h3 id="2-C-调用函数">2.C++调用函数</h3>
+<p>用Python用惯了，才发现在C++中调用函数，这样把形参写进去的写法，是不行的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;opencv2/opencv.hpp&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> cv;<br><br><span class="hljs-built_in">Canny</span>(edge, edge, <span class="hljs-number">3</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>);  <span class="hljs-comment">// ✔</span><br><span class="hljs-built_in">Canny</span>(edge, edge, threshold1=<span class="hljs-number">3</span>, threshold2=<span class="hljs-number">9</span>, apertureSize=<span class="hljs-number">3</span>);  <span class="hljs-comment">// ✖</span><br></code></pre></td></tr></table></figure>
-
 <span id="more"></span>
-
-<h3 id="3-关于vector"><a href="#3-关于vector" class="headerlink" title="3. 关于vector"></a>3. 关于<code>vector</code></h3><p>不需额外声明头文件，但需要使用<code>std</code>命名空间，即<code>std::vector</code>。</p>
+<h3 id="3-关于vector">3. 关于<code>vector</code></h3>
+<p>不需额外声明头文件，但需要使用<code>std</code>命名空间，即<code>std::vector</code>。</p>
 <p>这天在做二叉树的题和敲OpenCV时，都遇到了<code>vector</code></p>
-<h3 id="4-cpp拆分"><a href="#4-cpp拆分" class="headerlink" title="4.cpp拆分"></a>4.cpp拆分</h3><p>1.<code>static</code>修饰的函数，只能在本文件中调用。</p>
+<h3 id="4-cpp拆分">4.cpp拆分</h3>
+<p>1.<code>static</code>修饰的函数，只能在本文件中调用。</p>
 <p>2.<code>#ifndef</code>、<code>#define</code>、<code>#endif</code>配合使用，避免一个.h文件被重复include。</p>
-<h3 id="5-使用Meson编译"><a href="#5-使用Meson编译" class="headerlink" title="5.使用Meson编译"></a>5.使用Meson编译</h3><p>在win下，通过msi安装包安装Meson，再把现成的<code>ninja.exe</code>添加到环境变量中即可。</p>
+<h3 id="5-使用Meson编译">5.使用Meson编译</h3>
+<p>在win下，通过msi安装包安装Meson，再把现成的<code>ninja.exe</code>添加到环境变量中即可。</p>
 <p>编译时出现的问题如下。</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Did <span class="hljs-keyword">not</span> find pkg-config <span class="hljs-keyword">by</span> <span class="hljs-type">name</span> <span class="hljs-string">&#x27;pkg-config&#x27;</span><br><span class="hljs-built_in">Found</span> Pkg-config: <span class="hljs-keyword">NO</span><br>Did <span class="hljs-keyword">not</span> find CMake <span class="hljs-string">&#x27;cmake&#x27;</span><br><span class="hljs-built_in">Found</span> CMake: <span class="hljs-keyword">NO</span><br>Run-<span class="hljs-type">time</span> dependency vapoursynth <span class="hljs-built_in">found</span>: <span class="hljs-keyword">NO</span><br></code></pre></td></tr></table></figure>
-
 <p>就是该装的依赖没有装。（虽然我不好说这里的<code>vapoursynth</code>指什么：.h文件，还是编译好的动态链接库？）</p>
 <p>顺带，下面这些信息，好像也不是我希望的。这应该是我的gcc存在32位和64位共存导致。</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">C</span>++ compiler for the host machine: c++ (gcc <span class="hljs-number">8</span>.<span class="hljs-number">2</span>.<span class="hljs-number">0</span> <span class="hljs-string">&quot;c++ (MinGW.org GCC-8.2.0-5) 8.2.0&quot;</span>)<br><span class="hljs-attribute">C</span>++ linker for the host machine: c++ GNU ld.bfd <span class="hljs-number">2</span>.<span class="hljs-number">32</span><br><span class="hljs-attribute">Host</span> machine cpu family: x86<br><span class="hljs-attribute">Host</span> machine cpu: x86<br></code></pre></td></tr></table></figure>
-
-<h3 id="6-VapourSynth着手支持音频处理"><a href="#6-VapourSynth着手支持音频处理" class="headerlink" title="6.VapourSynth着手支持音频处理"></a>6.VapourSynth着手支持音频处理</h3><p>才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。</p>
+<h3 id="6-VapourSynth着手支持音频处理">6.VapourSynth着手支持音频处理</h3>
+<p>才发现上个月底，VapourSynth官网发布了一个预告性质的说明，要支持音频处理了。不过还没有发布。</p>
 <p>先不谈音频问题，一个需要关注的问题是api的更改，clip类型变成了<code>vnode</code>。但似乎，好像对编写plugin没有影响？因为写plugin用的是C++ api的<code>VSNodeRef</code>，而不是现在<code>cython/vapoursynth.pyx</code>里Python api的<code>VideoNode</code>。但我继续看这个说明，提到了<code>VSMap </code>和其他context，这个C++ api里也有。</p>
 <p>音频源滤镜：<code>BestAudioSource .dll</code></p>
-<p>函数：<code>bas.Source</code>、<code>bas.BlankAudio 、</code>bas.AudioSplice <code>、</code>bas.AudioTrim&#96;</p>
+<p>函数：<code>bas.Source</code>、<code>bas.BlankAudio 、</code>bas.AudioSplice <code>、</code>bas.AudioTrim`</p>
 <p>在脚本最后，输出音频要用<code>audio.set_output(1)</code>，要给<code>set_output</code>加标号了。</p>
 <p>输出结果可喂给VSPipe（VS pipeline，和ISP pipeline一个意思的其实吧）、AVFS、VFW。</p>
-<h3 id="7-可以考虑学一学Cython"><a href="#7-可以考虑学一学Cython" class="headerlink" title="7.可以考虑学一学Cython"></a>7.可以考虑学一学Cython</h3><p>或许有可能写面向进阶用户的东西的时候，会用上？</p>
-<h3 id="8-脑洞"><a href="#8-脑洞" class="headerlink" title="8.脑洞"></a>8.脑洞</h3><p>侦测-&gt;抠像-&gt;用vs代替pr？</p>
-<h3 id="9-指令集优化与编译原理"><a href="#9-指令集优化与编译原理" class="headerlink" title="9.指令集优化与编译原理"></a>9.指令集优化与编译原理</h3><p>既然修改JincResize代码涉及到了指令集优化，就要重新翻开编译原理了。</p>
+<h3 id="7-可以考虑学一学Cython">7.可以考虑学一学Cython</h3>
+<p>或许有可能写面向进阶用户的东西的时候，会用上？</p>
+<h3 id="8-脑洞">8.脑洞</h3>
+<p>侦测-&gt;抠像-&gt;用vs代替pr？</p>
+<h3 id="9-指令集优化与编译原理">9.指令集优化与编译原理</h3>
+<p>既然修改JincResize代码涉及到了指令集优化，就要重新翻开编译原理了。</p>
 
                 
               </div>

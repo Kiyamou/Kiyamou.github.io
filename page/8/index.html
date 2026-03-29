@@ -74,9 +74,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,7 +232,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/06/05/caffe-day10/" target="_self">
         <div>
-          《21天实战Caffe》学习笔记第10天 在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。 代码实现逻辑回归分类器的训练在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。 这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。 1$
+          《21天实战Caffe》学习笔记第10天 在这一天重新看了训练日志，因为在Day6运行手写数字识别代码时，由于刚接触，很多log都没有来得及看。这一天结合相应源码看了看log。 代码实现 逻辑回归分类器的训练 在使用Caffe进行训练时，默认文件路径，自然是针对Caffe根目录的，要在Caffe根目录下执行以下命令。 这里的“默认文件路径”不仅指下面的命令，而且指参数文件中调用其他文件的路径。 1
         </div>
       </a>
 
@@ -295,7 +293,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/06/05/caffe-day9/" target="_self">
         <div>
-          《21天实战Caffe》学习笔记第9天 代码阅读：数据变换器的实现实现文件 data_transformer.cpp针对Datum和Blob（Blobproto）两种方法，给出了不同输入、输出类型的变换函数，包括由Datum输入、由Blob输入、输入类型为cv::Mat对象，输出为指针、输出到Blob。
+          《21天实战Caffe》学习笔记第9天 代码阅读：数据变换器的实现 实现文件 data_transformer.cpp 针对Datum和Blob（Blobproto）两种方法，给出了不同输入、输出类型的变换函数，包括由Datum输入、由Blob输入、输入类型为cv::Mat对象，输出为指针、输出到Blob。
         </div>
       </a>
 
@@ -356,7 +354,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/06/02/caffe-day8/" target="_self">
         <div>
-          《21天实战Caffe》学习笔记第8天 代码测试运行书中的测试代码，按照书中介绍的执行流程进行，遇到一些问题，如下。 报错1执行如下编译语句时， 1$ g++ -o app blob_demo.cpp -I ~/caffe/include -D CPU_ONLY -I ~/caffe/.build_release/src -L ~/build/lib -lcaffe  报错。 1cannot fi
+          《21天实战Caffe》学习笔记第8天 代码测试 运行书中的测试代码，按照书中介绍的执行流程进行，遇到一些问题，如下。 报错1 执行如下编译语句时， 1$ g++ -o app blob_demo.cpp -I ~/caffe/include -D CPU_ONLY -I ~/caffe/.build_release/src -L ~/build/lib -lcaffe 报错。 1cannot f
         </div>
       </a>
 
@@ -417,7 +415,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/06/01/caffe-day7/" target="_self">
         <div>
-          《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义NOT_IMPLEMENTED1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; &quot;Not Implemented Yet&quot;  INSTANTIATE_CLASS1234#define INSTANTIATE_CLASS(classname) \  ch
+          《21天实战Caffe》学习笔记第7天 练习题1：Caffe源码中一些宏的原始定义 NOT_IMPLEMENTED 1#define NOT_IMPLEMENTED LOG(FATAL) &lt;&lt; &quot;Not Implemented Yet&quot; INSTANTIATE_CLASS 1234#define INSTANTIATE_CLASS(classname) \  cha
         </div>
       </a>
 
@@ -478,7 +476,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2019/06/01/caffe-day6/" target="_self">
         <div>
-          《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例下载数据集12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh  数据的格式转换将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh  修改训练参数由于在虚拟机下运行，无法使
+          《21天实战Caffe》学习笔记第6天 练习题3：完成Caffe Cifar10示例 下载数据集 12$ cd ~/caffe/data/cifar10$ ./get_cifar10.sh 数据的格式转换 将下载的数据集转换为caffe支持的lmdb格式。 12$ cd ~/caffe/examples/cifar10$ ./create_cifar10.sh 修改训练参数 由于在虚拟机下运行，无
         </div>
       </a>
 

@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…  头文件和库文件设置错误，64位和32位搞混">
+    <meta name="description" content="1.LINK 2019错误 LINK 2019错误，目前遇到的错误原因：   没有写main()函数 但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…   头文件和库文件设置错误，64位和32位搞混">
 <meta property="og:type" content="article">
 <meta property="og:title" content="周记 2020.01.27-02.02">
 <meta property="og:url" content="http://yoursite.com/2020/02/04/week-202001-4/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…  头文件和库文件设置错误，64位和32位搞混">
+<meta property="og:description" content="1.LINK 2019错误 LINK 2019错误，目前遇到的错误原因：   没有写main()函数 但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…   头文件和库文件设置错误，64位和32位搞混">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-04T05:14:11.000Z">
 <meta property="article:modified_time" content="2020-02-04T05:14:11.000Z">
@@ -85,9 +85,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -279,29 +277,36 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-LINK-2019错误"><a href="#1-LINK-2019错误" class="headerlink" title="1.LINK 2019错误"></a>1.<code>LINK 2019</code>错误</h3><p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
+                <h3 id="1-LINK-2019错误">1.<code>LINK 2019</code>错误</h3>
+<p><code>LINK 2019</code>错误，目前遇到的错误原因：</p>
 <ul>
-<li><p>没有写<code>main()</code>函数<br>但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</p>
+<li>
+<p>没有写<code>main()</code>函数<br>
+但我记得之前写dll的时候，根本不需要写<code>main()</code>，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…</p>
 </li>
-<li><p>头文件和库文件设置错误，64位和32位搞混</p>
+<li>
+<p>头文件和库文件设置错误，64位和32位搞混</p>
 </li>
 </ul>
 <span id="more"></span>
-
 <ul>
-<li><p>面向对象时，少写了public函数的定义<br>向下面这样，少写了<code>func1()</code>函数的定义，就有报错。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">className</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">className</span>();<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">func1</span><span class="hljs-params">(<span class="hljs-type">double</span> parameter)</span></span>;<br><span class="hljs-keyword">private</span>:<br>    ...<br>&#125;;<br><br>className::<span class="hljs-built_in">className</span>()<br>&#123;<br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    className one;<br>    std::cout &lt;&lt; one.<span class="hljs-built_in">func1</span>(<span class="hljs-number">1.0</span>) &lt;&lt; std::endl;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>
+<p>面向对象时，少写了public函数的定义<br>
+向下面这样，少写了<code>func1()</code>函数的定义，就有报错。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">className</span><br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">className</span>();<br>    <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">func1</span><span class="hljs-params">(<span class="hljs-type">double</span> parameter)</span></span>;<br><span class="hljs-keyword">private</span>:<br>    ...<br>&#125;;<br><br>className::<span class="hljs-built_in">className</span>()<br>&#123;<br>    ...<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    className one;<br>    std::cout &lt;&lt; one.<span class="hljs-built_in">func1</span>(<span class="hljs-number">1.0</span>) &lt;&lt; std::endl;<br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="2-Debug的过程"><a href="#2-Debug的过程" class="headerlink" title="2.Debug的过程"></a>2.<code>Debug</code>的过程</h3><p>Q：Debug时，<code>index</code>值为-858993460</p>
+<h3 id="2-Debug的过程">2.<code>Debug</code>的过程</h3>
+<p>Q：Debug时，<code>index</code>值为-858993460</p>
 <p>A：没赋值就输出，这是未赋值时的随机值。“C语言中，变量要先赋值，才能引用，否则是任意值。”</p>
 <p>Q：但我的问题是，<code>start</code>变量明明直接赋值为0，但在Debug过程却显示为-1。</p>
-<h3 id="3-图像处理的warning"><a href="#3-图像处理的warning" class="headerlink" title="3.图像处理的warning"></a>3.图像处理的warning</h3><p> 某张png图片</p>
+<h3 id="3-图像处理的warning">3.图像处理的warning</h3>
+<p>某张png图片</p>
 <figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs mel">libpng <span class="hljs-keyword">warning</span>: iCCP: cHRM chunk does not <span class="hljs-keyword">match</span> sRGB<br></code></pre></td></tr></table></figure>
-
 <p>另一张png图片报了两个warning，多了一个这个</p>
 <figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs nix">libpng <span class="hljs-params">warning:</span> <span class="hljs-params">iCPP:</span> known incorrect sRGB profile <br></code></pre></td></tr></table></figure>
-
-<h3 id="4-declspec-dllexport"><a href="#4-declspec-dllexport" class="headerlink" title="4.__declspec(dllexport)"></a>4.<code>__declspec(dllexport)</code></h3><p>关于<code>__declspec(dllexport)</code></p>
+<h3 id="4-declspec-dllexport">4.<code>__declspec(dllexport)</code></h3>
+<p>关于<code>__declspec(dllexport)</code></p>
 <p>一般的理解如下：</p>
 <blockquote>
 <p><code>__declspec(dllimport)</code>和<code>__declspec(dllexport)</code>是一对的，在动态链接库中<code>__declspec(dllexport)</code>管导出，<code>__declspec(dllimport)</code>管导出，有出口也有进口</p>

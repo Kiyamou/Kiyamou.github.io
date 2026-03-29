@@ -74,9 +74,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -234,7 +232,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/13/week-202002-1/" target="_self">
         <div>
-          1.dequedeque的声明 12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();
+          1.deque deque的声明 12345678// std::deque#include &lt;deque&gt;template &lt; class T, class Alloc = allocator&lt;T&gt; &gt; class deque;// exampledeque &lt;TreeNode*&gt; tree_que;node = tree_que.front();
         </div>
       </a>
 
@@ -297,7 +295,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/08/ISP-learn-1/" target="_self">
         <div>
-          通过学习 mushfiqulalam&#x2F;isp 项目整理一下 ISP 的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。 基本的印象镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍 Jinc 函数的 pdf 里。 最后的降噪和锐化，是我很熟悉的。降噪用了 sigma filter，代码还没有
+          通过学习 mushfiqulalam/isp 项目整理一下 ISP 的流程。虽然这类博文很多，但不自己写一下总感觉不扎实，而且很多博文没有代码只是概述，更觉得不扎实。 基本的印象 镜片阴影校正（Lens shading correction），话说最开始接触这个概念，还是在看介绍 Jinc 函数的 pdf 里。 最后的降噪和锐化，是我很熟悉的。降噪用了 sigma filter，代码还没有读，盲猜
         </div>
       </a>
 
@@ -336,9 +334,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/C/">#C++</a>
-            
               <a href="/tags/ISP/">#ISP</a>
+            
+              <a href="/tags/C/">#C++</a>
             
           </div>
         
@@ -360,7 +358,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/07/rebuild-JincResize-2/" target="_self">
         <div>
-          指令集优化Generation（更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章 GCC 神坑：-march&#x3D;native） 对于 GCC 编译器，在编译命令中加入-march=native选项，可调用本地的库，使用 AVX 指令集优化。 Functions（Doc 在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演
+          指令集优化 Generation （更多内容可查看使用 AVX 系列指令集进行向量化，也可看一下这篇很欢乐的文章 GCC 神坑：-march=native） 对于 GCC 编译器，在编译命令中加入-march=native选项，可调用本地的库，使用 AVX 指令集优化。 Functions （Doc 在这里，直接搜索想查的函数即可） （另外也可看一下Intel AVX を使用して SIMD 演算を
         </div>
       </a>
 
@@ -421,7 +419,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/07/arch-and-meson/" target="_self">
         <div>
-          爱恨交加的CentOS我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。 但这次编译VapourSynth着实让我感觉蛋疼。
+          爱恨交加的CentOS 我最开始接触的Linux系统是CentOS，因为有sob的讲解，很快上手。CentOS简洁明亮的界面给我留下了很深的好感，也不需要时不时就敲个sudo。从分子动力学和量子化学，到用LaTex写论文，再到学习Caffe，2019年上半年的经历甚至都能用CentOS穿出一条线。 但这次编译VapourSynth着实让我感觉蛋疼。
         </div>
       </a>
 
@@ -484,7 +482,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/06/ported-to-vs-3/" target="_self">
         <div>
-          回忆重连离写这个系列的上一篇 Blog 已经一个月有余，离发布 VapourSynth 版 AreaResize 也三个星期了。一直没有继续写 Blog，有些东西都要忘了。这个时候发现 commit 表情还是挺有用的。 从功能上讲，上一篇 Blog 写到（基于原始 avs 版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如 960x540 这样的，在一些稍“不
+          回忆重连 离写这个系列的上一篇 Blog 已经一个月有余，离发布 VapourSynth 版 AreaResize 也三个星期了。一直没有继续写 Blog，有些东西都要忘了。这个时候发现 commit 表情还是挺有用的。 从功能上讲，上一篇 Blog 写到（基于原始 avs 版）修正了颜色问题，也在一定程度上支持高位深输入；但目标尺寸仍必须是“常规”的尺寸，比如 960x540 这样的，在一些稍“
         </div>
       </a>
 
@@ -547,7 +545,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/04/2020-winter-holiday/" target="_self">
         <div>
-          目前要做的东西真是太多了，而我还在顾着发朋友圈，没有完全进入状态。这个假期要做的事情，能想到的有这么多：  BM3D算法介绍的后续工作 基于BM3D算法的去模糊和神经网络（选一个，就前者？） JincResize的代码维护 增加dering 结构整理（✔） 修改算法介绍的博文 （指令集优化）（✔）   剑指Offer和LeetCode刷题（进度：20%） 准备三级考试（这个可以缓一下，但别忘了报名
+          目前要做的东西真是太多了，而我还在顾着发朋友圈，没有完全进入状态。这个假期要做的事情，能想到的有这么多：  BM3D算法介绍的后续工作 基于BM3D算法的去模糊和神经网络（选一个，就前者？） JincResize的代码维护  增加dering 结构整理（✔） 修改算法介绍的博文 （指令集优化）（✔）   剑指Offer和LeetCode刷题（进度：20%） 准备三级考试（这个可以缓一下，但别忘了报
         </div>
       </a>
 
@@ -601,7 +599,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/02/04/week-202001-4/" target="_self">
         <div>
-          1.LINK 2019错误LINK 2019错误，目前遇到的错误原因：  没有写main()函数但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…  头文件和库文件设置错误，64位和32位搞混
+          1.LINK 2019错误 LINK 2019错误，目前遇到的错误原因：   没有写main()函数 但我记得之前写dll的时候，根本不需要写main()，也出现了类似的错误，然后我从VS2019换到了GCC，就不报错了…   头文件和库文件设置错误，64位和32位搞混
         </div>
       </a>
 
@@ -716,7 +714,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2020/01/19/pytorch-model-waifu2x/" target="_self">
         <div>
-          开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已
+          开始 1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件
         </div>
       </a>
 

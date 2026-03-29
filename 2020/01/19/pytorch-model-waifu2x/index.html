@@ -19,12 +19,12 @@
   <meta name="author" content="Kiyamou">
   <meta name="keywords" content="">
   
-    <meta name="description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
+    <meta name="description" content="开始 1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PyTorch流水账与基于Torch的Waifu2x代码分析">
 <meta property="og:url" content="http://yoursite.com/2020/01/19/pytorch-model-waifu2x/index.html">
 <meta property="og:site_name" content="308实验室">
-<meta property="og:description" content="开始1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件已">
+<meta property="og:description" content="开始 1.nn.PixelShuffle这个函数从名字上看，和ShufflePlanes好像。（https:&#x2F;&#x2F;github.com&#x2F;XuecaiHu&#x2F;Meta-SR-Pytorch&#x2F;blob&#x2F;master&#x2F;model&#x2F;common.py） 2.字面上，bias是偏差的意思。  bias(tensor) - 卷积的偏置系数，大小是（out_channel）  3.现在的libtorch模型读入文件">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-01-19T14:29:10.000Z">
 <meta property="article:modified_time" content="2020-01-19T14:29:10.000Z">
@@ -86,9 +86,7 @@
 
 
   
-<!-- hexo injector head_end start -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+<meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="308实验室" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 </head>
 
 
@@ -280,21 +278,23 @@
             
               <div class="markdown-body">
                 
-                <h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a target="_blank" rel="noopener" href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py%EF%BC%89">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
+                <h3 id="开始">开始</h3>
+<p>1.<code>nn.PixelShuffle</code>这个函数从名字上看，和<code>ShufflePlanes</code>好像。（<a target="_blank" rel="noopener" href="https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py%EF%BC%89">https://github.com/XuecaiHu/Meta-SR-Pytorch/blob/master/model/common.py）</a></p>
 <p>2.字面上，bias是偏差的意思。</p>
 <blockquote>
 <p>bias(<code>tensor</code>) - 卷积的偏置系数，大小是（<code>out_channel</code>）</p>
 </blockquote>
 <p>3.现在的libtorch模型读入文件已经解决，而Torch模型的Json与t7的关系虽尚未明白，但具体内容人类可读，已经看了大概。</p>
 <p>现在的任务是明白网络内容，网络结构保存了什么信息。</p>
-<h3 id="模型保存的内容"><a href="#模型保存的内容" class="headerlink" title="模型保存的内容"></a>模型保存的内容</h3><ul>
+<h3 id="模型保存的内容">模型保存的内容</h3>
+<ul>
 <li>网络的结构和模型参数</li>
 <li>只保存网络的模型参数</li>
 </ul>
-<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字&#96;&#96;-&gt;&#96;）。</p>
+<p>在waifu2x的<code>appendix/arch/cunet.txt</code>中是网络结构的描述。虽然我还不知道这仅仅是个文档性能的描述，还是确是导入了代码中…看上去只是一个描述（我不觉得会专门写一段代码，去匹配这样的文字``-&gt;`）。</p>
 <span id="more"></span>
-
-<h3 id="扫盲"><a href="#扫盲" class="headerlink" title="扫盲"></a>扫盲</h3><p>4.Waifu2x中vgg_7 -&gt; cunet?</p>
+<h3 id="扫盲">扫盲</h3>
+<p>4.Waifu2x中vgg_7 -&gt; cunet?</p>
 <p>5.话说waifu-caffe中的cNet是代表什么啊，莫不就是cunet？</p>
 <p>6.一个灵魂发问，这些代码，抛开实用化的接口，不就是在搭网络吗？</p>
 <p>所以我现在学这些代码，除了我耽误之急要用的模型和前向传播相关，余下的核心，不就是怎么搭网络吗。</p>
@@ -302,30 +302,39 @@
 <ul>
 <li><code>SpatialZeroPadding()</code></li>
 </ul>
-<h3 id="waifu2x-项目结构分析"><a href="#waifu2x-项目结构分析" class="headerlink" title="waifu2x 项目结构分析"></a>waifu2x 项目结构分析</h3><ul>
-<li><p>appendix (附录 -&gt; 所以<code>cunet.txt</code>果然只是说明文件)</p>
+<h3 id="waifu2x-项目结构分析">waifu2x 项目结构分析</h3>
 <ul>
-<li><p>arch: descripte network for torch (only has two files for cunet)</p>
+<li>
+<p>appendix (附录 -&gt; 所以<code>cunet.txt</code>果然只是说明文件)</p>
+<ul>
+<li>
+<p>arch: descripte network for torch (only has two files for cunet)</p>
 </li>
-<li><p>caffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.</p>
+<li>
+<p>caffe_prototxt: prototxt is for caffee, and has a .py file for making cunet.</p>
 <blockquote>
-<p>Generate prototxt of waifu2x’s cunet&#x2F;upcunet arch. Training is not possible.</p>
+<p>Generate prototxt of waifu2x’s cunet/upcunet arch. Training is not possible.</p>
 </blockquote>
 </li>
-<li><p>其余是markdown说明和.sh文件</p>
+<li>
+<p>其余是markdown说明和.sh文件</p>
 </li>
 </ul>
 </li>
-<li><p>assets</p>
+<li>
+<p>assets</p>
 <p>看名字是和网站相关的，里面的文件也是html、css、js三剑客，不用管</p>
 </li>
-<li><p>cache</p>
+<li>
+<p>cache</p>
 <p>顾名思义，里面也没有内容</p>
 </li>
-<li><p>data</p>
+<li>
+<p>data</p>
 <p>同样没有内容，不知道这是什么套路</p>
 </li>
-<li><p>image_generators</p>
+<li>
+<p>image_generators</p>
 <ul>
 <li>dots (字面上是点)</li>
 </ul>
@@ -333,39 +342,45 @@
 <p>But ever, this is for cmd…So…I can ignore it now?</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:text(<span class="hljs-string">&quot;dot image generator&quot;</span>)<br>image.save(<span class="hljs-built_in">path</span>.join(opt.o, i .. <span class="hljs-string">&quot;.png&quot;</span>), img)<br></code></pre></td></tr></table></figure>
 </li>
-<li><p>images</p>
-<p>Using for description, although some images aren’t used in readme, yet they all seems to used to show the networks. </p>
+<li>
+<p>images</p>
+<p>Using for description, although some images aren’t used in readme, yet they all seems to used to show the networks.</p>
 <ul>
-<li><p>layer_outputs folder</p>
+<li>
+<p>layer_outputs folder</p>
 </li>
-<li><p>Other images and .sh file</p>
+<li>
+<p>Other images and .sh file</p>
 </li>
 </ul>
 </li>
-<li><p>lib</p>
+<li>
+<p>lib</p>
 <p>Seem to build the newtwork, such as <code>srcnn.lua</code>, which is decripted the SRCNN?</p>
 <p>看了一下w2nn.Lua，感觉Lua这门语言，有点…简单得过分了，调用其他文件，用类似这样的写法，还是在代码的结尾</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-built_in">require</span> <span class="hljs-string">&#x27;Print&#x27;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p>models</p>
+<li>
+<p>models</p>
 <p>models</p>
 </li>
-<li><p>tools</p>
+<li>
+<p>tools</p>
 <p>在这里看到了<code>export_model.Lua</code>，这应该能解答我对模型内容的疑惑。</p>
 <p>emmm，<code>export_model.Lua</code>开篇第一句就是</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Lua"><span class="hljs-comment">-- adapted from https://github.com/marcan/cl-waifu2x</span><br></code></pre></td></tr></table></figure>
-
-<p>这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实..在Lua里这是注释的意思）</p>
+<p>这是什么意思，cl-waifu2x明明是建立在waifu2x基础上的OpenCL支持项目。（其实…在Lua里这是注释的意思）</p>
 <p>在代码结尾有好看的东西</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Lua">cmd:option(<span class="hljs-string">&quot;-i&quot;</span>, <span class="hljs-string">&quot;input.t7&quot;</span>, <span class="hljs-string">&#x27;Specify the input torch model&#x27;</span>)<br>cmd:option(<span class="hljs-string">&quot;-o&quot;</span>, <span class="hljs-string">&quot;output.json&quot;</span>, <span class="hljs-string">&#x27;Specify the output json file&#x27;</span>)<br></code></pre></td></tr></table></figure>
-
 <p>这话说的是，进去t7，出来json。依此分析，文件名<code>export</code>的含义，并不是把Torch用的模型输出成t7，而是把导出的t7模型转换成json。也就是说，t7和json的内容，是一致的。</p>
 <p>（顺带一提，看这Lua写的命令行构建代码，真是简洁啊。之前看av1的rust命令行构建代码，虽然不能说比C++更复杂，但也挺长的。）</p>
 </li>
-<li><p>webgen</p>
+<li>
+<p>webgen</p>
 <p>For web app, can ignore it.</p>
 </li>
-<li><p>Single Files</p>
+<li>
+<p>Single Files</p>
 <ul>
 <li>convert_data.lua -&gt; 似乎是图片预处理的过程</li>
 <li>install_lua_modules.sh -&gt; 安装依赖</li>
@@ -378,56 +393,61 @@
 </li>
 </ul>
 <p>综上分析，与核心处理相关的代码，位于<code>lib</code>文件夹（描述网络）和主文件（调用）下，核心代码并不是很多，甚至让我觉得，比Caffe版还要简洁一点。</p>
-<h3 id="回到保存的模型"><a href="#回到保存的模型" class="headerlink" title="回到保存的模型"></a>回到保存的模型</h3><p>由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的<code>export_model.lua</code>。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）</p>
+<h3 id="回到保存的模型">回到保存的模型</h3>
+<p>由上面的代码分析，并且去看了历史提交，发现json版的模型文件在初始提交中并没有，而是稍晚时添加的，同时添加了上面的<code>export_model.lua</code>。（虽然初始代码还没有像现在这样构建命令行，但意思是一样的）</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-built_in">io</span>.<span class="hljs-built_in">write</span>(cjson.encode(jmodules))<br></code></pre></td></tr></table></figure>
-
-<p>所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测&#x2F;前向传播不限于Torch（+CUDA）的框架。</p>
+<p>所以先前的判断是没错的，json模型和t7模型就是一致的。json模型是为了“跨框架”而准备的，使预测/前向传播不限于Torch（+CUDA）的框架。</p>
 <p>当然，json模型下那一堆小数（与t7模型中整齐的模型参数形成了对比），应该是转换过程中近似计算导致的。这应该很好理解，在Torch下的函数别的地方没有，那只能把数值算出来，用类似查表的方式提供给其他框架。</p>
 <p>比如Waifu2x-convert，在<code>modelHandler.hpp/.cpp</code>就用下面的语句读取json模型的内容（借助picojson）</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">picojson::array &amp;wOutputPlane = jsonObj[<span class="hljs-string">&quot;weight&quot;</span>].<span class="hljs-built_in">get</span>&lt;picojson::array&gt;();<br></code></pre></td></tr></table></figure>
-
 <p>所以可以推测，用json模型会比用t7模型（以及直接由t7转向其他框架模型，如由t7转向pt）精度低？</p>
 <p>所以延伸一下，我不能偷懒（或者说瞎折腾），把json模型喂给PyTorch，而还是要借助低版本PyTorch完成从t7到pt的模型转换。但忘了在哪看到了，说PyTorch的C++前端没有明显提速、甚至慢于Python前端，很大程度是因为读取pt模型拖慢了速度。那我能否使用json模型实现精度换速度？</p>
 <p>…有想法，但我目前还是按套路出牌吧…</p>
-<h3 id="进一步说模型"><a href="#进一步说模型" class="headerlink" title="进一步说模型"></a>进一步说模型</h3><h4 id="各版本模型情况"><a href="#各版本模型情况" class="headerlink" title="各版本模型情况"></a>各版本模型情况</h4><table>
+<h3 id="进一步说模型">进一步说模型</h3>
+<h4 id="各版本模型情况">各版本模型情况</h4>
+<table>
 <thead>
 <tr>
-<th align="center">版本</th>
-<th align="center">主体文件</th>
-<th align="center">辅助文件</th>
-<th align="center">hash一致</th>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">主体文件</th>
+<th style="text-align:center">辅助文件</th>
+<th style="text-align:center">hash一致</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="center">Waifu2x</td>
-<td align="center">json&#x2F;t7</td>
-<td align="center">&#x2F;</td>
-<td align="center">√</td>
+<tbody>
+<tr>
+<td style="text-align:center">Waifu2x</td>
+<td style="text-align:center">json/t7</td>
+<td style="text-align:center">/</td>
+<td style="text-align:center">√</td>
 </tr>
 <tr>
-<td align="center">Waifu2x-caffe</td>
-<td align="center">json</td>
-<td align="center">prototxt</td>
-<td align="center">√</td>
+<td style="text-align:center">Waifu2x-caffe</td>
+<td style="text-align:center">json</td>
+<td style="text-align:center">prototxt</td>
+<td style="text-align:center">√</td>
 </tr>
 <tr>
-<td align="center">VapourSynth-Waifu2x-caffe</td>
-<td align="center">json.caffemodel</td>
-<td align="center">protobin</td>
-<td align="center">×</td>
+<td style="text-align:center">VapourSynth-Waifu2x-caffe</td>
+<td style="text-align:center">json.caffemodel</td>
+<td style="text-align:center">protobin</td>
+<td style="text-align:center">×</td>
 </tr>
-</tbody></table>
-<h4 id="关于t7转pt"><a href="#关于t7转pt" class="headerlink" title="关于t7转pt"></a>关于t7转pt</h4><p>这个别想了，用目前查到的<code>convert_torch.py</code>，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，<code>convert_torch.py</code>不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。</p>
+</tbody>
+</table>
+<h4 id="关于t7转pt">关于t7转pt</h4>
+<p>这个别想了，用目前查到的<code>convert_torch.py</code>，因为模型结构的原因，没法转cunet的模型，其他的没试（其实在两天前，周五的时候，就在某篇博文上读到过，<code>convert_torch.py</code>不是万能的，今天更是在Github issues上看到了作者类似的回复）。所以Waifu2x-caffe直接用的json模型。</p>
 <p>不过话说回来，json模型是怎么转成caffe的caffemodel的？（这样转是为了提高读入速度吗？）</p>
-<p>而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json&#x2F;caffemodel），代码上总归得有点区别吧。</p>
-<h4 id="下一步的模型转换计划"><a href="#下一步的模型转换计划" class="headerlink" title="下一步的模型转换计划"></a>下一步的模型转换计划</h4><p>所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？</p>
+<p>而我从来没注意过Waifu2x-caffe和VapourSynth版代码的区别，读这两种不同格式的模型（json/caffemodel），代码上总归得有点区别吧。</p>
+<h4 id="下一步的模型转换计划">下一步的模型转换计划</h4>
+<p>所以对于写libtorch，要么想办法手动读入json模型，要么…onnx？</p>
 <p>在<a target="_blank" rel="noopener" href="https://github.com/yu45020/Waifu2x/blob/master/Models.py">Waifu2x-PyTorch</a>版中，作者自定义了函数<code>load_pre_train_weights()</code>用以加载json模型，所以我可以直接拿来用了？</p>
 <p>但Waifu2x-PyTorch的Readme中有句话很让人在意。</p>
 <blockquote>
 <p>Model inference (32 fp only) can run in cpu only.</p>
 </blockquote>
 <p>像只做预测的VapourSynth-Waifu2x-caffe、ncnn版是在GPU中运行的。这里只能在CPU中运行，这是一个可改进的地方。</p>
-<p>Whatever，现在情况已经明了了，基于不重复造轮子的原则<del>和我什么不会的实际情况</del>，我完全可以在现有Waifu2x-PyTorch的基础上，去写libtorch的前向计算。至于是写出独立项目，还是基于VapourSynth，这个可以后续再考虑。</p>
+<p>Whatever，现在情况已经明了了，基于不重复造轮子的原则<s>和我什么不会的实际情况</s>，我完全可以在现有Waifu2x-PyTorch的基础上，去写libtorch的前向计算。至于是写出独立项目，还是基于VapourSynth，这个可以后续再考虑。</p>
 
                 
               </div>
